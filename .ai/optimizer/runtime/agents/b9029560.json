@@ -1,0 +1,20 @@
+{
+  "sessionId": "b9029560",
+  "taskId": "task-8",
+  "status": "failed",
+  "phase": "execution",
+  "step": 0,
+  "totalSteps": 2,
+  "context": {
+    "lastError": "Network error"
+  },
+  "startedAt": "2026-07-20T18:55:46.041Z",
+  "updatedAt": "2026-07-20T18:55:46.045Z",
+  "checkpoint": {
+    "path": "",
+    "hash": "",
+    "timestamp": "",
+    "filesChanged": []
+  },
+  "history": []
+}

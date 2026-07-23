@@ -1,0 +1,21 @@
+{
+  "sessionId": "432f2701",
+  "taskId": "task-4",
+  "status": "paused",
+  "phase": "execution",
+  "step": 0,
+  "totalSteps": 5,
+  "context": {},
+  "startedAt": "2026-07-22T11:27:26.022Z",
+  "updatedAt": "2026-07-22T11:27:26.026Z",
+  "checkpoint": {
+    "path": "F:\\PROJETOS\\ai-devkit-workspace\\IDEIA\\packages\\cli\\.ai\\optimizer\\runtime\\agents\\432f2701.json",
+    "hash": "6e186a949ab7",
+    "timestamp": "2026-07-22T11:27:26.026Z",
+    "filesChanged": [
+      "file1.ts",
+      "file2.ts"
+    ]
+  },
+  "history": []
+}

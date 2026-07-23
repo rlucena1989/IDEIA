@@ -1,0 +1,64 @@
+name: Audit Scripts Smoke Test
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - '.ai/bin/*.js'
+      - '.github/workflows/audit-scripts.yml'
+  pull_request:
+    paths:
+      - '.ai/bin/*.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  smoke-test:
+    name: Audit Scripts Verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        script:
+          - gap-check
+          - compliance-check
+          - verify-study-compliance
+          - package-consistency
+          - check-package-consistency
+          - check-secrets
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Run ${{ matrix.script }}
+        run: node .ai/bin/${{ matrix.script }}.js
+        continue-on-error: true
+        timeout-minutes: 5
+
+  full-audit:
+    name: Full Audit Report
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Generate audit report
+        run: node .ai/bin/generate-audit-report.js
+        continue-on-error: true
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-report
+          path: .ai/audit/reports/

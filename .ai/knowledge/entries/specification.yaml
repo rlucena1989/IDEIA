@@ -1,0 +1,7 @@
+id: specification
+title: "Specification Pattern"
+category: design
+tags: ["specification", "ddd", "business-rules", "predicate", "reuse"]
+summary: "Specification encapsula uma regra de negocio em um objeto reutilizavel e combinavel com AND/OR/NOT."
+content: |
+  Specification: interface com isSatisfiedBy(candidate). Combinacoes: AndSpecification, OrSpecification, NotSpecification. Exemplo: ClienteEspecialSpec (compras > R$1000 AND cliente ha > 1 ano), ProdutoEmPromocaoSpec. Beneficio: regras de negocio reutilizaveis e combinaveis, evitando duplicacao de logicas em queries e validacao.

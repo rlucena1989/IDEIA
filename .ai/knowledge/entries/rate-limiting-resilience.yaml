@@ -1,0 +1,7 @@
+id: rate-limiting-resilience
+title: "Client-Side Rate Limiting & Backpressure"
+category: resilience
+tags: ["rate-limit", "backpressure", "client", "throttle", "resilience"]
+summary: "Aplicacoes cliente devem respeitar limites de taxa (rate limits) e aplicar backpressure para nao sobrecarregar servicos."
+content: |
+  Client-Side Rate Limiting: token bucket local, respeitar headers Retry-After e 429 Too Many Requests. Backpressure: se servico esta lento, reduzir taxa de envio. Estrategias: exponential backoff (espera dobra a cada tentativa), jitter (aleatoriedade para evitar thundering herd), queue with bounded size (se fila cheia, descarta ou erro). Implementacao: p-limit, bottleneck, promise-queue.

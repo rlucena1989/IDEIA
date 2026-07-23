@@ -1,0 +1,1 @@
+Converta a documentação consolidada da IDE local em um plano de implementação orientado por fases. Produza uma lista de ações práticas, dependências, checkpoints e arquivos que devem ser implementados primeiro. Mantenha o foco no MVP e em uma evolução controlada.

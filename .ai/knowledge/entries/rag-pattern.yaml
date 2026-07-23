@@ -1,0 +1,7 @@
+id: rag-pattern
+title: "RAG — Retrieval-Augmented Generation"
+category: ai
+tags: ["rag", "retrieval", "vector-db", "embeddings", "llm"]
+summary: "RAG combina recuperacao de informacao (vector search) com geracao de texto (LLM) para respostas precisas e contextualizadas."
+content: |
+  Pipeline: 1) Ingestion: documentos → chunks → embeddings → vector store. 2) Retrieval: query → embedding → similar search → top-k chunks. 3) Generation: prompt + retrieved chunks → LLM → resposta. Variantes: Naive RAG (simples), Advanced RAG (pre/post-processing, re-ranking, query transform), Modular RAG (componentes intercambiaveis). Ferramentas: LangChain, LlamaIndex, ChromaDB, Pinecone, Weaviate.

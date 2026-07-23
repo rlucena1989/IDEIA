@@ -1,0 +1,7 @@
+id: testing-strategy
+title: "Testing Strategy — Piramide de Testes"
+category: testing
+tags: ["testing", "unit", "integration", "e2e", "pyramid"]
+summary: "A Piramide de Testes recomenda muitos testes unitarios, alguns testes de integracao e poucos testes E2E."
+content: |
+  Base: Unit Tests (70%+) — testam uma unidade isolada, rapidos, sem IO. Meio: Integration Tests (20%) — testam interacao entre camadas, banco real ou mock. Topo: E2E Tests (10%) — testam fluxos completos, lentos, frageis. Contrario da piramide invertida (mais E2E que unit) causa suites lentas e instaveis.

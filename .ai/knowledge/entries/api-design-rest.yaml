@@ -1,0 +1,7 @@
+id: api-design-rest
+title: "REST API Design Best Practices"
+category: api
+tags: ["rest", "api", "http", "resources", "hateoas"]
+summary: "Boas praticas de design de APIs RESTful incluindo naming, versionamento, paginacao e error handling."
+content: |
+  Recursos no plural (/users, /orders). Metodos HTTP semanticos (GET=ler, POST=criar, PUT=substituir, PATCH=atualizar parcial, DELETE=remover). Status codes corretos (200 OK, 201 Created, 204 No Content, 400 Bad Request, 404 Not Found, 500 Internal Error). Versionamento via URL (/v1/users) ou header (Accept: application/vnd.api+json;version=1). Paginacao com cursor ou page/pageSize. Filtros via query params. HATEOAS opcional.

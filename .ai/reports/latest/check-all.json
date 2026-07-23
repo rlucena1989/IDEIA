@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-07-10T19:01:54.174Z",
+  "total": 12,
+  "passed": 12,
+  "failed": 0,
+  "skipped": 0,
+  "scanners": [
+    {
+      "name": "placeholder-policy",
+      "passed": true,
+      "exitCode": 0,
+      "output": "Placeholder policy check passed.",
+      "error": ""
+    },
+    {
+      "name": "ph-value-policy",
+      "passed": true,
+      "exitCode": 0,
+      "output": "[PASS] ph-value-policy.yaml found (.ai\\policies\\ph-value-policy.yaml)\n[PASS] 4 patterns defined\n[PASS] Required keys present: version, patterns, enforcement\nEXIT_CODE=0",
+      "error": ""
+    },
+    {
+      "name": "design-system",
+      "passed": true,
+      "exitCode": 0,
+      "output": "Design System Check: 277 issues (0 errors, 277 warnings)\n  [WARNING] .ai/design-system/contract.yaml: Contract missing forbidden rules\n  [WARNING] packages\\cli\\coverage\\lcov-report\\attestations\\chain.js.html: Input sem label ou aria-label\n  [WARNING] packages\\cli\\coverage\\lcov-report\\attestations\\index.html: Estilo inline detectado\n  [WARNING] packages\\cli\\coverage\\lcov-report\\attestations\\index.html: Input sem label ou aria-label",
+      "error": ""
+    },
+    {
+      "name": "portability",
+      "passed": true,
+      "exitCode": 0,
+      "output": "Portability check passed. Allowed files bypassed via Policy.",
+      "error": ""
+    },
+    {
+      "name": "contracts",
+      "passed": true,
+      "exitCode": 0,
+      "output": "\u001b[36m-> openapi-validate.js: OK\u001b[0m\n\u001b[36m-> Paths defined: 2\u001b[0m\n\u001b[36m-> Endpoints defined: 2\u001b[0m\n\u001b[36m-> OpenAPI validation complete: OK2 warnings\u001b[0m\n\u001b[36m-> asyncapi-validate.js: OK\u001b[0m",
+      "error": ""
+    },
+    {
+      "name": "package-scripts",
+      "passed": true,
+      "exitCode": 0,
+      "output": "Package scripts check passed.",
+      "error": ""
+    },
+    {
+      "name": "template-consistency",
+      "passed": true,
+      "exitCode": 0,
+      "output": "✅ Template consistency OK.",
+      "error": ""
+    },
+    {
+      "name": "installer",
+      "passed": true,
+      "exitCode": 0,
+      "output": "✅ CLI build passed\n✅ dry-run did not change filesystem\n✅ invalid flavor rejected without filesystem changes\n✅ safe init preserved human change\n✅ --force created backup directory",
+      "error": ""
+    },
+    {
+      "name": "empty-or-decorative",
+      "passed": true,
+      "exitCode": 0,
+      "output": "Empty/decorative files check passed.",
+      "error": ""
+    },
+    {
+      "name": "boundaries",
+      "passed": true,
+      "exitCode": 0,
+      "output": "\u001b[36m-> No modules found in src/modules/\u001b[0m",
+      "error": ""
+    },
+    {
+      "name": "generated-code-risk",
+      "passed": true,
+      "exitCode": 0,
+      "output": "Generated Code Risk check passed.",
+      "error": ""
+    },
+    {
+      "name": "artifact-manifest",
+      "passed": true,
+      "exitCode": 0,
+      "output": "",
+      "error": "No artifact-manifest.json found, skipping check."
+    }
+  ]
+}

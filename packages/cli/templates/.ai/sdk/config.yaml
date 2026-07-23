@@ -1,0 +1,4 @@
+# Configuracao do SDK gerado
+baseUrl: 'http://localhost:3000'
+language: typescript
+outputDir: 'sdk/'

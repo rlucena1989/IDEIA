@@ -1,0 +1,7 @@
+id: chaos-engineering
+title: "Chaos Engineering"
+category: testing
+tags: ["chaos-engineering", "resilience", "failure-testing", "chaos-monkey", "litmus"]
+summary: "Chaos Engineering testa a resiliencia do sistema introduzindo falhas controladas em producao ou staging."
+content: |
+  Principios: 1) Definir estado normal (baseline). 2) Introduzir falha (kill pod, latencia de rede, CPU alta). 3) Medir impacto. 4) Mitigar e melhorar. Ferramentas: Chaos Monkey (Netflix), Gremlin, Litmus, Chaos Mesh. Exemplos: matar pods aleatorios em Kubernetes, injetar latencia entre servicos, derrubar banco de dados.

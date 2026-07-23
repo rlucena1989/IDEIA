@@ -1,0 +1,16 @@
+{
+  "name": "@ideia/widget-contributions",
+  "description": "WidgetFactory binding, ViewContribution interface, widget lifecycle, view registration",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": { "build": "tsc" },
+  "dependencies": {
+    "@ideia/core-contributions": "^0.0.0"
+  },
+  "files": ["dist"],
+  "publishConfig": { "access": "public" },
+  "repository": { "type": "git", "url": "https://github.com/anomalyco/ideia.git" },
+  "homepage": "https://ideia.dev",
+  "bugs": { "url": "https://github.com/anomalyco/ideia/issues" }
+}

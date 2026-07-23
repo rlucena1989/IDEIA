@@ -1,0 +1,7 @@
+id: snapshot-testing
+title: "Snapshot Testing"
+category: testing
+tags: ["snapshot", "testing", "jest", "vitest", "golden-file"]
+summary: "Snapshot testing compara a saida atual de uma funcao com uma versao salva anteriormente (golden file)."
+content: |
+  Primeira execucao: salva snapshot como arquivo de referencia. Execucoes seguintes: compara saida com snapshot salvo. Se mudou: ou a mudanca e intencional (atualizar snapshot) ou um bug. Cuidados: snapshots grandes sao dificeis de revisar, falsos positivos (mudancas nao intencionais em componentes). Melhor para: output de componentes, serializacao, mensagens de erro.

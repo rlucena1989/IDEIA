@@ -1,0 +1,33 @@
+{
+  "name": "@ideia/self-optimization-panel",
+  "description": "Self-Optimization Panel Ã¢â‚¬â€ React dashboard data layer with health scores, evolution charts, tech radar, and self-chat",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/event-bus": "*",
+    "@ideia/autonomous-evolution-engine": "*",
+    "@ideia/technology-radar": "*",
+    "@ideia/auto-adr": "*",
+    "@ideia/metrics-store": "*",
+    "@ideia/control-tower": "*",
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

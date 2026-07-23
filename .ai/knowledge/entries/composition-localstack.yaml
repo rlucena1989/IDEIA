@@ -1,0 +1,7 @@
+id: composition-localstack
+title: "Local Stack para Desenvolvimento"
+category: devops
+tags: ["localstack", "docker", "dev-env", "aws", "testing"]
+summary: "Use LocalStack para emular servicos AWS localmente durante desenvolvimento e testes."
+content: |
+  LocalStack emula S3, DynamoDB, SQS, SNS, Lambda, API Gateway, CloudFormation e mais. Executa em Docker. Beneficios: sem custos AWS, rapido, testavel offline, sem contaminate de ambiente compartilhado.

@@ -1,0 +1,18 @@
+{
+  "sessionId": "668e3b33",
+  "taskId": "task-1",
+  "status": "created",
+  "phase": "planning",
+  "step": 0,
+  "totalSteps": 5,
+  "context": {},
+  "startedAt": "2026-07-20T23:22:19.646Z",
+  "updatedAt": "2026-07-20T23:22:19.651Z",
+  "checkpoint": {
+    "path": "",
+    "hash": "",
+    "timestamp": "",
+    "filesChanged": []
+  },
+  "history": []
+}

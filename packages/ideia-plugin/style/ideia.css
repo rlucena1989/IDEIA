@@ -1,0 +1,71 @@
+:root {
+  --ideia-bg: #0d0d0d;
+  --ideia-surface: #141414;
+  --ideia-raised: #1a1a1a;
+  --ideia-glass: rgba(20, 20, 20, 0.82);
+  --ideia-border: rgba(255, 255, 255, 0.04);
+  --ideia-border-hover: rgba(255, 255, 255, 0.08);
+  --ideia-text: #e0e0e0;
+  --ideia-text-dim: #999;
+  --ideia-text-muted: #666;
+  --ideia-accent-cyan: #2dd4bf;
+  --ideia-accent-purple: #8b5cf6;
+  --ideia-accent-green: #16a34a;
+  --ideia-accent-orange: #ea580c;
+  --ideia-accent-red: #dc2626;
+  --ideia-accent-blue: #3b82f6;
+}
+
+#ideia-chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.ideia-message {
+  animation: ideia-fade-in 0.2s ease-out;
+}
+
+.ideia-message-enter {
+  animation: ideia-slide-up 0.3s ease-out;
+}
+
+.ideia-tool-call {
+  border-left: 3px solid var(--ideia-accent-purple);
+  padding-left: 8px;
+  margin: 4px 0;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.ideia-checkpoint-pending {
+  border-left: 3px solid var(--ideia-accent-orange);
+}
+
+.ideia-checkpoint-approved {
+  border-left: 3px solid var(--ideia-accent-green);
+}
+
+.ideia-checkpoint-rejected {
+  border-left: 3px solid var(--ideia-accent-red);
+}
+
+@keyframes ideia-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ideia-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

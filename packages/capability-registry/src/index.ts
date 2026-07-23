@@ -1,0 +1,11 @@
+export type * from './types/capability';
+export * from './types/capability.zod';
+export type * from './registry/registry.interface';
+export { CapabilityRegistryService } from './registry/registry.service';
+export type * from './discovery/discovery.interface';
+export { PackageScanner } from './discovery/package-scanner';
+export type * from './matcher/matcher.interface';
+export { SemanticCapabilityMatcher } from './matcher/semantic-matcher';
+export type * from './resolver/resolver.interface';
+export { CapabilityDependencyResolver } from './resolver/dependency-resolver';
+export { CATALOG, getCapabilitiesByCategory, getCapabilityById, searchCapabilities } from './catalog';

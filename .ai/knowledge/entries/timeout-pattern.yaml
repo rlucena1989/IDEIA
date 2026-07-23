@@ -1,0 +1,7 @@
+id: timeout-pattern
+title: "Timeout Pattern"
+category: resilience
+tags: ["timeout", "resilience", "fault-tolerance", "connect-timeout", "read-timeout"]
+summary: "Timeouts evitam que operacoes lentas consumam recursos indefinidamente, liberando threads e conexoes."
+content: |
+  Tipos: Connection Timeout (tempo para estabelecer conexao), Read Timeout (tempo para receber resposta), Write Timeout (tempo para enviar dados). Valores tipicos: conexao 5s, leitura 30s, escrita 30s. Separe timeouts por tipo de operacao (banco: 5s, API externa: 10s, cache: 2s).

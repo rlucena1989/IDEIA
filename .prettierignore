@@ -1,0 +1,10 @@
+node_modules
+dist
+lib
+coverage
+*.js
+*.mjs
+*.cjs
+*.d.ts
+*.tsbuildinfo
+package-lock.json

@@ -1,0 +1,7 @@
+id: interpreter
+title: "Interpreter Pattern"
+category: design
+tags: ["interpreter", "gof", "behavioral", "grammar", "ast"]
+summary: "Interpreter define uma representacao para a gramatica de uma linguagem e um interpretador para processar sentencas."
+content: |
+  Expressao: interface com interpret(context). Terminal: expressoes simples (literais, variaveis). Non-terminal: combinacoes de expressoes (soma, if, loop). Exemplo: calculadoras, DSLs simples, filtros de busca. Para linguagens complexas, prefira parser generators (ANTLR, PEG).

@@ -1,0 +1,7 @@
+id: ssr-csr
+title: "SSR vs CSR vs SSG vs ISR — Rendering Strategies"
+category: web
+tags: ["ssr", "csr", "ssg", "isr", "nextjs", "nuxt", "rendering"]
+summary: "Diferentes estrategias de renderizacao para aplicacoes web com tradeoffs de performance, SEO e dinamismo."
+content: |
+  CSR (Client-Side Rendering): React/Vue puro, carrega JS, renderiza no browser. SEO limitado, TTFB rapido, LCP lento. SSR (Server-Side Rendering): Next.js/Nuxt, renderiza no servidor a cada request. SEO otimo, LCP rapido, TTFB mais lento. SSG (Static Site Generation): gera HTML estatico no build. Super rapido, sem dinamismo. ISR (Incremental Static Regeneration): SSG com revalidacao periodica (Next.js). SSG + revalidate a cada X segundos. Streaming SSR: renderiza por partes (React 18).

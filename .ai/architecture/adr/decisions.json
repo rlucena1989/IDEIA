@@ -1,0 +1,25 @@
+[
+  {
+    "id": "0cb89b85-6736-4c53-8f66-792804bc7073",
+    "title": "ADR-1",
+    "status": "proposed",
+    "context": "ctx",
+    "decision": "dec",
+    "consequences": [],
+    "options": [
+      {
+        "name": "A",
+        "pros": [],
+        "cons": []
+      },
+      {
+        "name": "B",
+        "pros": [],
+        "cons": []
+      }
+    ],
+    "tags": [],
+    "createdAt": "2026-07-23T01:46:00.756Z",
+    "updatedAt": "2026-07-23T01:46:00.756Z"
+  }
+]

@@ -1,0 +1,7 @@
+id: anti-corruption-layer
+title: "Anti-Corruption Layer (ACL)"
+category: architecture
+tags: ["acl", "anti-corruption", "legacy", "boundary", "translation"]
+summary: "ACL isola o dominio moderno do legado, traduzindo conceitos e evitando contaminacao do codigo novo."
+content: |
+  ACL fica entre o novo sistema e o legado. Funcoes: traduz modelos de dados, adapta protocolos, esconde complexidade, protege o dominio. Implementacao: Gateway (traduz chamadas), Adapter (adapta interface), Facade (simplifica). Exemplo: novo sistema de pedidos se comunica com ERP legado via ACL que traduz XML arcaico para objetos modernos.

@@ -1,0 +1,946 @@
+openapi: "3.0.3"
+info:
+  title: "AI-Devkit IDE API"
+  version: "0.1.0"
+  description: "API REST da IDE do AI-Devkit — gerencia arquivos, terminal, sessões, aprovações, memória, tarefas, provedores LLM, git e sandbox."
+servers:
+  - url: "http://localhost:3001"
+    description: "IDE Server local"
+tags:
+  - name: "File System"
+    description: "Operações de leitura/escrita no workspace"
+  - name: "Terminal"
+    description: "Execução de comandos no terminal sandbox"
+  - name: "Commands"
+    description: "Listagem de comandos CLI disponíveis"
+  - name: "Preview"
+    description: "Preview de mudanças antes de aplicar"
+  - name: "Session"
+    description: "Gerenciamento de sessão da IDE"
+  - name: "Approval"
+    description: "Fluxo de aprovação de ações"
+  - name: "Memory"
+    description: "Memória histórica operacional"
+  - name: "IDE Status"
+    description: "Status e diagnóstico da IDE"
+  - name: "Audit"
+    description: "Trilha de auditoria"
+  - name: "Tasks"
+    description: "Gerenciamento de tarefas"
+  - name: "Settings"
+    description: "Configurações de provedores LLM"
+  - name: "Diagnostics"
+    description: "Diagnóstico do projeto"
+  - name: "Workspace"
+    description: "Configuração do workspace"
+  - name: "Git"
+    description: "Operações git"
+  - name: "Sandbox"
+    description: "Execução segura de código"
+  - name: "Health"
+    description: "Health check"
+
+paths:
+  # ---- File System ----
+  /api/fs/list:
+    get:
+      operationId: fsList
+      tags: ["File System"]
+      summary: "Lista diretório"
+      parameters:
+        - name: path
+          in: query
+          schema: { type: string }
+          description: "Caminho relativo (opcional, default: raiz)"
+      responses:
+        "200":
+          description: "Lista de entradas"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  entries:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FsEntry"
+
+  /api/fs/read:
+    get:
+      operationId: fsRead
+      tags: ["File System"]
+      summary: "Lê arquivo"
+      parameters:
+        - name: path
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: "Conteúdo do arquivo"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  content: { type: string }
+                  language: { type: string }
+
+  /api/fs/write:
+    post:
+      operationId: fsWrite
+      tags: ["File System"]
+      summary: "Escreve arquivo"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                path: { type: string }
+                content: { type: string }
+      responses:
+        "200":
+          description: "Arquivo escrito"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+        "403":
+          description: "Bloqueado por política"
+        "202":
+          description: "Aguardando aprovação"
+
+  /api/fs/create:
+    post:
+      operationId: fsCreate
+      tags: ["File System"]
+      summary: "Cria arquivo ou diretório"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                path: { type: string }
+                type: { type: string, enum: [file, dir] }
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+
+  /api/fs/rename:
+    patch:
+      operationId: fsRename
+      tags: ["File System"]
+      summary: "Renomeia arquivo ou diretório"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldPath: { type: string }
+                newPath: { type: string }
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+
+  /api/fs/delete:
+    delete:
+      operationId: fsDelete
+      tags: ["File System"]
+      summary: "Exclui arquivo ou diretório"
+      parameters:
+        - name: path
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+
+  /api/fs/search:
+    get:
+      operationId: fsSearch
+      tags: ["File System"]
+      summary: "Busca arquivos por padrão"
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema: { type: string }
+          description: "Padrão de busca (glob)"
+      responses:
+        "200":
+          description: "Resultados da busca"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  results: { type: array, items: { type: string } }
+
+  # ---- Terminal ----
+  /api/shell:
+    post:
+      operationId: shellExec
+      tags: ["Terminal"]
+      summary: "Executa comando no terminal"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                command: { type: string }
+                approved: { type: boolean }
+      responses:
+        "200":
+          description: "Resultado do comando"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TerminalResult"
+
+  # ---- Commands ----
+  /api/commands:
+    get:
+      operationId: listCommands
+      tags: ["Commands"]
+      summary: "Lista comandos CLI disponíveis"
+      responses:
+        "200":
+          description: "Lista de comandos"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  commands:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name: { type: string }
+                        description: { type: string }
+
+  # ---- Preview ----
+  /api/preview/report:
+    get:
+      operationId: previewReport
+      tags: ["Preview"]
+      summary: "Relatório de preview de mudanças"
+      responses:
+        "200":
+          description: "Relatório de preview"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  report:
+                    $ref: "#/components/schemas/PreviewReport"
+                  changes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PreviewChange"
+
+  /api/preview/file:
+    get:
+      operationId: previewFile
+      tags: ["Preview"]
+      summary: "Preview de arquivo específico"
+      parameters:
+        - name: path
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: "Diff do arquivo"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  file: { type: string }
+                  original: { type: string }
+                  modified: { type: string }
+                  risk: { type: string }
+                  quality: { type: integer }
+                  impact: { type: string }
+
+  /api/preview/approve:
+    post:
+      operationId: previewApprove
+      tags: ["Preview"]
+      summary: "Aprova mudança em preview"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file: { type: string }
+      responses:
+        "200":
+          $ref: "#/components/responses/ApprovalDecision"
+
+  /api/preview/reject:
+    post:
+      operationId: previewReject
+      tags: ["Preview"]
+      summary: "Rejeita mudança em preview"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file: { type: string }
+                reason: { type: string }
+      responses:
+        "200":
+          $ref: "#/components/responses/ApprovalDecision"
+
+  # ---- Session ----
+  /api/session:
+    post:
+      operationId: createSession
+      tags: ["Session"]
+      summary: "Cria nova sessão"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                root: { type: string }
+      responses:
+        "200":
+          description: "Sessão criada"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  session:
+                    $ref: "#/components/schemas/IdeSession"
+    get:
+      operationId: getSession
+      tags: ["Session"]
+      summary: "Obtém sessão ativa"
+      responses:
+        "200":
+          description: "Sessão ativa"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  session:
+                    $ref: "#/components/schemas/IdeSession"
+
+  # ---- Approval ----
+  /api/approval/request:
+    post:
+      operationId: approvalRequest
+      tags: ["Approval"]
+      summary: "Solicita aprovação para ação"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action: { type: string }
+                reason: { type: string }
+      responses:
+        "200":
+          description: "Requisição de aprovação criada"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  request:
+                    $ref: "#/components/schemas/ApprovalRequest"
+
+  /api/approval/respond:
+    post:
+      operationId: approvalRespond
+      tags: ["Approval"]
+      summary: "Responde a uma solicitação de aprovação"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action: { type: string }
+                approved: { type: boolean }
+                approver: { type: string }
+      responses:
+        "200":
+          description: "Resposta registrada"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  result:
+                    $ref: "#/components/schemas/ApprovalResult"
+
+  # ---- Memory ----
+  /api/memory:
+    get:
+      operationId: memoryList
+      tags: ["Memory"]
+      summary: "Lista registros de memória"
+      responses:
+        "200":
+          description: "Registros de memória"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  records:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MemoryRecord"
+    post:
+      operationId: memoryAppend
+      tags: ["Memory"]
+      summary: "Adiciona registro de memória"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category: { type: string }
+                summary: { type: string }
+                detail: { type: string }
+                tags: { type: array, items: { type: string } }
+                severity: { type: string, enum: [low, medium, high, critical] }
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+
+  # ---- IDE Status ----
+  /api/ide/status:
+    get:
+      operationId: ideStatus
+      tags: ["IDE Status"]
+      summary: "Status da IDE"
+      responses:
+        "200":
+          description: "Status"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  version: { type: string }
+                  session: { type: string, nullable: true }
+                  workspace: { type: string, nullable: true }
+                  policy: { type: string }
+                  memoryCount: { type: integer }
+                  terminalHistory: { type: integer }
+                  uptime: { type: number }
+
+  # ---- Audit ----
+  /api/audit:
+    get:
+      operationId: auditList
+      tags: ["Audit"]
+      summary: "Lista eventos de auditoria"
+      responses:
+        "200":
+          description: "Eventos de auditoria"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  count: { type: integer }
+                  events:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AuditEvent"
+
+  # ---- Tasks ----
+  /api/tasks:
+    get:
+      operationId: tasksList
+      tags: ["Tasks"]
+      summary: "Lista tarefas ativas"
+      responses:
+        "200":
+          description: "Tarefas"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  tasks:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TaskEntry"
+    post:
+      operationId: tasksCreate
+      tags: ["Tasks"]
+      summary: "Cria nova tarefa"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string }
+      responses:
+        "200":
+          description: "Tarefa criada"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  taskId: { type: string }
+
+  /api/tasks/{id}:
+    patch:
+      operationId: tasksUpdate
+      tags: ["Tasks"]
+      summary: "Atualiza tarefa"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id: { type: string }
+                status: { type: string }
+                progress: { type: integer }
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+
+  # ---- Provider Settings ----
+  /api/settings/providers:
+    get:
+      operationId: providersList
+      tags: ["Settings"]
+      summary: "Lista provedores LLM configurados"
+      responses:
+        "200":
+          description: "Provedores"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  priority:
+                    type: array
+                    items: { type: string }
+                  providers:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ProviderStatus"
+                  configs:
+                    type: object
+
+  /api/settings/providers/priority:
+    post:
+      operationId: providersSetPriority
+      tags: ["Settings"]
+      summary: "Define prioridade dos provedores"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                priority:
+                  type: array
+                  items: { type: string }
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+
+  /api/settings/providers/config:
+    post:
+      operationId: providersSetConfig
+      tags: ["Settings"]
+      summary: "Configura provedor específico"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                provider: { type: string }
+                config: { type: object }
+      responses:
+        "200":
+          $ref: "#/components/responses/OkResponse"
+
+  # ---- Diagnostics ----
+  /api/diagnostics:
+    get:
+      operationId: diagnosticsRun
+      tags: ["Diagnostics"]
+      summary: "Executa diagnóstico do projeto (TSC + ESLint)"
+      responses:
+        "200":
+          description: "Problemas encontrados"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  problems:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/DiagnosticProblem"
+                  count: { type: integer }
+                  errors: { type: integer }
+                  warnings: { type: integer }
+
+  # ---- Workspace Config ----
+  /api/workspace/config:
+    get:
+      operationId: workspaceConfigGet
+      tags: ["Workspace"]
+      summary: "Obtém configuração do workspace"
+      responses:
+        "200":
+          description: "Configuração"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  config: { type: object }
+    post:
+      operationId: workspaceConfigSave
+      tags: ["Workspace"]
+      summary: "Salva configuração do workspace"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: "Configuração salva"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  config: { type: object }
+
+  # ---- Git ----
+  /api/git/branch/compare:
+    get:
+      operationId: gitBranchCompare
+      tags: ["Git"]
+      summary: "Compara branch atual com outra"
+      parameters:
+        - name: branch
+          in: query
+          schema: { type: string, default: main }
+      responses:
+        "200":
+          description: "Comparação"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  branch: { type: string }
+                  commits: { type: array, items: { type: string } }
+                  diffStat: { type: string }
+                  commitCount: { type: integer }
+
+  /api/git/status:
+    get:
+      operationId: gitStatus
+      tags: ["Git"]
+      summary: "Status do repositório git"
+      responses:
+        "200":
+          description: "Status git"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GitStatus"
+
+  /api/git/diff:
+    get:
+      operationId: gitDiff
+      tags: ["Git"]
+      summary: "Diff git"
+      parameters:
+        - name: file
+          in: query
+          schema: { type: string }
+          description: "Arquivo específico (opcional)"
+      responses:
+        "200":
+          description: "Diff"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  diff: { type: string }
+
+  # ---- Sandbox ----
+  /api/sandbox/exec:
+    post:
+      operationId: sandboxExec
+      tags: ["Sandbox"]
+      summary: "Executa código em sandbox seguro"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code: { type: string }
+                language: { type: string, enum: [javascript, typescript, shell] }
+                timeout: { type: integer }
+      responses:
+        "200":
+          description: "Resultado da execução"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SandboxResult"
+
+  # ---- Health ----
+  /api/health:
+    get:
+      operationId: healthCheck
+      tags: ["Health"]
+      summary: "Health check"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string }
+                  timestamp: { type: string }
+
+components:
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        ok: { type: boolean }
+        error: { type: string }
+        decision: { type: string }
+
+    FsEntry:
+      type: object
+      properties:
+        name: { type: string }
+        path: { type: string }
+        type: { type: string, enum: [file, dir] }
+        size: { type: integer }
+        modifiedAt: { type: string }
+
+    TerminalResult:
+      type: object
+      properties:
+        ok: { type: boolean }
+        output: { type: string }
+        error: { type: string }
+        code: { type: integer, nullable: true }
+        durationMs: { type: integer }
+
+    PreviewReport:
+      type: object
+      properties:
+        diffs: { type: array, items: { type: object } }
+        totalFiles: { type: integer }
+        totalAdded: { type: integer }
+        totalRemoved: { type: integer }
+        summary: { type: string }
+        score: { type: integer }
+
+    PreviewChange:
+      type: object
+      properties:
+        file: { type: string }
+        risk: { type: string, enum: [low, medium, high] }
+        quality: { type: integer }
+        impact: { type: string }
+
+    IdeSession:
+      type: object
+      properties:
+        session_id: { type: string }
+        workspace_root: { type: string }
+        policy: { type: string }
+        active_tasks: { type: array, items: { type: string } }
+        created_at: { type: string }
+        updated_at: { type: string }
+
+    ApprovalRequest:
+      type: object
+      properties:
+        approvalId: { type: string }
+        action: { type: string }
+        requestedBy: { type: string }
+        requestedAt: { type: string }
+        reason: { type: string }
+        status: { type: string, enum: [pending, approved, rejected] }
+
+    ApprovalResult:
+      type: object
+      properties:
+        approved: { type: boolean }
+        approvedBy: { type: string }
+        decidedAt: { type: string }
+        note: { type: string }
+
+    MemoryRecord:
+      type: object
+      properties:
+        memoryId: { type: string }
+        category: { type: string }
+        source: { type: string }
+        summary: { type: string }
+        tags: { type: array, items: { type: string } }
+        createdAt: { type: string }
+        severity: { type: string, enum: [low, medium, high, critical] }
+
+    AuditEvent:
+      type: object
+      properties:
+        actor: { type: string }
+        eventType: { type: string }
+        target: { type: string }
+        decision: { type: string }
+        result: { type: string }
+        metadata: { type: object }
+        timestamp: { type: string }
+
+    TaskEntry:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        status: { type: string }
+        progress: { type: integer }
+
+    ProviderStatus:
+      type: object
+      properties:
+        name: { type: string }
+        model: { type: string }
+        latencyMs: { type: integer }
+        healthy: { type: boolean }
+
+    DiagnosticProblem:
+      type: object
+      properties:
+        file: { type: string }
+        line: { type: integer }
+        column: { type: integer }
+        message: { type: string }
+        severity: { type: string, enum: [error, warning] }
+
+    GitStatus:
+      type: object
+      properties:
+        ok: { type: boolean }
+        branch: { type: string, nullable: true }
+        ahead: { type: integer }
+        behind: { type: integer }
+        files:
+          type: array
+          items:
+            type: object
+            properties:
+              path: { type: string }
+              status: { type: string }
+              staged: { type: boolean }
+        isRepo: { type: boolean }
+
+    SandboxResult:
+      type: object
+      properties:
+        ok: { type: boolean }
+        output: { type: string }
+        error: { type: string }
+        durationMs: { type: integer }
+        memoryMb: { type: number }
+
+  responses:
+    OkResponse:
+      description: "Operação bem-sucedida"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok: { type: boolean, enum: [true] }
+
+    ApprovalDecision:
+      description: "Decisão registrada"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok: { type: boolean }
+              decision: { type: string }

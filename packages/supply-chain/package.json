@@ -1,0 +1,17 @@
+{
+  "name": "@ideia/supply-chain",
+  "description": "IDEIA Supply Chain Security Ã¢â‚¬â€ proveniÃƒÂªncia de artefatos, assinatura, integrity checks, dependÃƒÂªncias e build reproducibility",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

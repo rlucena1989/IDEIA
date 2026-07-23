@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optimizer Timeline</title>
+  <link rel="stylesheet" href="./dashboard.css" />
+  <style>
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #334155;
+    }
+    .event {
+      position: relative;
+      margin-bottom: 24px;
+      padding: 12px 16px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+    }
+    .event::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 16px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #3b82f6;
+    }
+    .event.approved::before { background: #22c55e; }
+    .event.rejected::before { background: #ef4444; }
+    .event.rollback::before { background: #f59e0b; }
+    .event-time { font-size: 0.8em; color: #94a3b8; }
+    .event-type { font-weight: bold; margin: 4px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div>
+        <h1>Execution Timeline</h1>
+        <p>Histórico de execuções do optimizer.</p>
+      </div>
+      <div class="actions">
+        <button id="backBtn" class="btn">Back to Dashboard</button>
+      </div>
+    </header>
+    <section id="timeline" class="timeline">
+      <p>Loading timeline...</p>
+    </section>
+  </div>
+  <script>
+    document.getElementById('backBtn').addEventListener('click', () => {
+      const vscodeApi = typeof acquireVsCodeApi === 'function' ? acquireVsCodeApi() : null;
+      if (vscodeApi) vscodeApi.postMessage({ type: 'openDashboard' });
+      else history.back();
+    });
+
+    async function loadTimeline() {
+      const container = document.getElementById('timeline');
+      try {
+        const history = await fetch('../runtime/latest-history.json')
+          .then(r => r.ok ? r.json() : null)
+          .catch(() => null);
+        if (history && history.events) {
+          container.innerHTML = history.events.map(ev => `
+            <div class="event ${ev.type}">
+              <div class="event-time">${new Date(ev.timestamp).toLocaleString()}</div>
+              <div class="event-type">${ev.type.toUpperCase()}</div>
+              <div>${ev.description || ev.reason || ''}</div>
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = '<p>No execution history found.</p>';
+        }
+      } catch {
+        container.innerHTML = '<p>Failed to load timeline.</p>';
+      }
+    }
+    loadTimeline();
+  </script>
+</body>
+</html>

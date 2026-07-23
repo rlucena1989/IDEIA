@@ -1,0 +1,17 @@
+{
+  "name": "@ideia/progressive-disclosure",
+  "description": "IDEIA Progressive Disclosure — revelação gradual de funcionalidades por nível de usuário com gamificação, onboarding progressivo e descoberta guiada",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

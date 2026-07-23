@@ -1,0 +1,7 @@
+id: value-object
+title: "Value Object Pattern"
+category: design
+tags: ["value-object", "ddd", "immutability", "equality", "identity"]
+summary: "Value Object e um objeto imutavel definido por seus atributos (nao por identidade), onde dois objetos sao iguais se todos os atributos sao iguais."
+content: |
+  Caracteristicas: imutavel (nenhum setter), equality por valor (equals/hashCode), auto-validacao na criacao. Exemplos: Money(amount, currency), Email(endereco), CPF, Endereco. Em DDD, prefira Value Objects a primitives para modelagem rica.

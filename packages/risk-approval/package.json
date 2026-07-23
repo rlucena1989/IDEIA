@@ -1,0 +1,17 @@
+{
+  "name": "@ideia/risk-approval",
+  "description": "IDEIA Risk & Approval Ã¢â‚¬â€ classificaÃƒÂ§ÃƒÂ£o de risco formal com matriz impactoÃƒâ€”probabilidade e fluxo de aprovaÃƒÂ§ÃƒÂ£o integrado",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

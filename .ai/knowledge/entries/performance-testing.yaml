@@ -1,0 +1,7 @@
+id: performance-testing
+title: "Performance Testing Types (Load, Stress, Spike, Soak)"
+category: testing
+tags: ["performance-testing", "load", "stress", "spike", "soak"]
+summary: "Diferentes tipos de teste de performance para diferentes objetivos: capacidade, resiliencia, endurance."
+content: |
+  Smoke: carga minima (1-2 usuarios) para validar baseline. Load: carga esperada (ex: 100 RPS) para medir latencia e throughput. Stress: carga alem do esperado (ex: 500 RPS) para identificar ponto de ruptura. Spike: aumento repentino (ex: 0 para 1000 RPS instantaneo) para testar auto-scaling. Soak: carga sustentada por horas para detectar memory leaks e degradacao. Metricas: latencia (p50, p95, p99), erros, throughput, CPU/memoria.

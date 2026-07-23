@@ -1,0 +1,7 @@
+id: template-method
+title: "Template Method Pattern"
+category: design
+tags: ["template-method", "gof", "behavioral", "algorithm", "skeleton"]
+summary: "Template Method define o esqueleto de um algoritmo em um metodo, adiando passos para subclasses."
+content: |
+  Metodo template: define ordem dos passos. Passos abstratos: subclasses implementam. Passos concretos: implementacao padrao. Hooks: metodos opcionais que subclasses podem sobrescrever. Exemplo: CI pipeline (checkout, build, test, deploy — cada passo pode ser personalizado por projeto).

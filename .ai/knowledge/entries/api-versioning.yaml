@@ -1,0 +1,7 @@
+id: api-versioning
+title: "API Versioning Strategies"
+category: api
+tags: ["api-versioning", "backward-compatibility", "url", "header", "content-negotiation"]
+summary: "Estrategias para versionar APIs mantendo compatibilidade com clientes existentes."
+content: |
+  URL: /v1/users, /v2/users (simples, visivel). Header: Accept: application/vnd.api+json;version=2 (limpo, RESTful). Query param: /users?version=2 (simples). Content Negotiation: diferentes representacoes do mesmo recurso. Deprecation: header Sunset + Warning. Migracao: comunicar com antecedencia, manter versoes antigas por periodo.

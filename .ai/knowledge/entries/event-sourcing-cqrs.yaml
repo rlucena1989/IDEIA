@@ -1,0 +1,7 @@
+id: event-sourcing-cqrs
+title: "CQRS + Event Sourcing Combined"
+category: architecture
+tags: ["cqrs", "event-sourcing", "combined", "projection", "read-model"]
+summary: "CQRS + Event Sourcing combinados: command side armazena eventos imutaveis, query side projeta read models otimizados."
+content: |
+  Fluxo: 1) Command → valida regras → gera evento(s). 2) Event store persiste evento. 3) Event bus publica evento. 4) Projections consomem evento e atualizam read models. 5) Query responde a partir de read models. Beneficios: audit trail completo, read models otimizados, time travel. Desafios: consistencia eventual, complexidade de projecoes, schema evolution de eventos.

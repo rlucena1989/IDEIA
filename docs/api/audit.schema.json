@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ai-devkit.local/schemas/audit.schema.json",
+  "title": "AuditEntry",
+  "description": "Schema for an audit trail entry",
+  "type": "object",
+  "properties": {
+    "audit_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique audit entry identifier"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Event timestamp"
+    },
+    "actor": {
+      "type": "string",
+      "enum": ["ai", "user", "system"],
+      "description": "Entity that performed the action"
+    },
+    "action": {
+      "type": "string",
+      "description": "Description of the action performed"
+    },
+    "target": {
+      "type": "string",
+      "description": "Target of the action (file, task, setting, etc.)"
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["auto", "ask", "block"],
+      "description": "Decision mode used for this action"
+    },
+    "result": {
+      "type": "string",
+      "enum": ["success", "failure", "blocked"],
+      "description": "Outcome of the action"
+    },
+    "metadata": {
+      "type": "object",
+      "default": {},
+      "description": "Additional contextual data"
+    }
+  },
+  "required": ["audit_id", "timestamp", "actor", "action", "decision", "result"]
+}

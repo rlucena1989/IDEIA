@@ -1,0 +1,7 @@
+id: fallback-pattern
+title: "Fallback Pattern (Graceful Degradation)"
+category: resilience
+tags: ["fallback", "graceful-degradation", "resilience", "degradation"]
+summary: "Fallback fornece uma resposta alternativa quando o servico principal falha, mantendo o sistema operacional."
+content: |
+  Estrategias: Default Value (retornar valor padrao), Cache Stale (usar dados antigos em cache), Simplified Response (versao simplificada), Alternative Service (chamar servico secundario), Local Processing (processar localmente quando remoto falha). Exemplo: recomendacoes → se servico de recomendacao falha, retornar mais vendidos. Importante: fallback deve ser visivelmente diferente para operadores saberem que fallback esta ativo.

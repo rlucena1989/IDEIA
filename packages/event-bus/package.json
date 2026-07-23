@@ -1,0 +1,53 @@
+{
+  "name": "@ideia/event-bus",
+  "description": "AI-Devkit Event Bus ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â pub-sub com 16 tipos de evento",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./integration": {
+      "types": "./dist/integration.d.ts",
+      "default": "./dist/integration.js"
+    },
+    "./nats": {
+      "types": "./dist/nats-event-bus.d.ts",
+      "default": "./dist/nats-event-bus.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/audit-trail": "*",
+    "@ideia/contracts": "*",
+    "@ideia/logger": "*",
+    "ws": "^8.16.0",
+    "nats": "^2.29.3"
+  },
+  "devDependencies": {
+    "@ideia/feedback-pipeline": "*",
+    "@ideia/memory-store": "*",
+    "@ideia/trace-registry": "*",
+    "@ideia/workflow-engine": "*",
+    "@ideia/delivery-orchestrator": "*",
+    "@ideia/observability-engine": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

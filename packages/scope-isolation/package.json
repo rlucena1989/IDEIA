@@ -1,0 +1,27 @@
+{
+  "name": "@ideia/scope-isolation",
+  "description": "Isolation between IDEIA Self-Space and Project Space Ã¢â‚¬â€ path resolution, policy enforcement, and cross-scope violation audit",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@ideia/violation-registry": "*"
+  },
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "publishConfig": {
+    "access": "public"
+  }
+}

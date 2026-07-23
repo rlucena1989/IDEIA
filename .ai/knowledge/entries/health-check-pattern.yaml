@@ -1,0 +1,7 @@
+id: health-check-pattern
+title: "Health Check API Pattern"
+category: resilience
+tags: ["health-check", "readiness", "liveness", "kubernetes", "monitoring"]
+summary: "Health checks permitem que orquestradores e load balancers verifiquem a saude da aplicacao."
+content: |
+  Endpoints: /healthz (liveness — processo vivo), /readyz (readiness — aceita trafego), /startupz (startup — inicializacao completa). Liveness: ping simples, se falha K8s reinicia pod. Readiness: verifica dependencias (banco, cache, API externa). Se falha, K8s remove de Service. Startup: similar a readiness mas so roda na inicializacao (evita restart loop). Agregar: /health → verifica tudo, retorna { status, dependencies: { db: "ok", redis: "ok" } }.

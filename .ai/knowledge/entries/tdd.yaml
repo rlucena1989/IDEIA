@@ -1,0 +1,7 @@
+id: tdd
+title: "Test-Driven Development (TDD)"
+category: testing
+tags: ["tdd", "testing", "red-green-refactor", "unittest"]
+summary: "TDD e um processo de desenvolvimento onde os testes sao escritos antes do codigo de producao."
+content: |
+  Ciclo Red-Green-Refactor: 1) Escreva um teste que falha (RED). 2) Escreva codigo minimo para passar (GREEN). 3) Refatore mantendo testes verdes. Beneficios: design emerge naturalmente, cobertura alta, regression safety, documentacao viva. TDD e sobre design, nao apenas sobre testing.

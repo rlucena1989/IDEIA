@@ -1,0 +1,7 @@
+id: embeddings
+title: "Embeddings & Semantic Representation"
+category: ai
+tags: ["embeddings", "vectors", "semantic", "openai", "text-embedding"]
+summary: "Embeddings convertem texto em vetores numericos que capturam significado semantico para similaridade e search."
+content: |
+  Modelos: OpenAI text-embedding-3-small/large, Cohere embed, sentence-transformers (open-source), Ollama nomic-embed-text (local). Dimensoes: 384 (small) a 3072 (large). Quanto menor a distancia cosine entre embeddings, mais similares semanticamente. Praticas: normalizar embeddings, batch processing, caching embeddings para evitar recomputar. Para codigo: code-specific embeddings (StarCoder, CodeBERT).

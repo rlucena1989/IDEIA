@@ -1,0 +1,7 @@
+id: visual-regression
+title: "Visual Regression Testing"
+category: testing
+tags: ["visual-regression", "screenshot", "percy", "chromatic", "ui"]
+summary: "Visual regression testing compara screenshots de interfaces para detectar mudancas visuais nao intencionais."
+content: |
+  Processo: 1) Tirar screenshot base (baseline). 2) Alterar codigo. 3) Tirar novo screenshot. 4) Comparar pixel a pixel. 5) Diferencas sao revisadas (aprovadas ou rejeitadas). Ferramentas: Percy (BrowserStack), Chromatic (Storybook), Playwright Visual Comparisons, Loki. Dicas: screenshots em resolucoes padrao, ignorar areas dinamicas (datas, animacoes), testar componentes isoladamente (Storybook) > paginas inteiras.

@@ -1,0 +1,7 @@
+id: pwa
+title: "Progressive Web App (PWA) Patterns"
+category: web
+tags: ["pwa", "service-worker", "offline", "manifest", "cache"]
+summary: "PWA transforma aplicacoes web em experiencias similares a apps nativos com suporte offline, push e instalacao."
+content: |
+  Requisitos: Service Worker (cache, offline, background sync), Web App Manifest (nome, icone, themecolor, display standalone), HTTPS. Cache Strategies: Network First (sempre buscar online, fallback cache), Cache First (servir cache, atualizar em background), Stale-While-Revalidate (cache imediato, atualizacao assincrona). Offline: pagina fallback, IndexedDB para dados. Push: Web Push API (notificacoes mesmo fechado).

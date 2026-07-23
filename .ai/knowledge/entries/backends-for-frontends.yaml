@@ -1,0 +1,7 @@
+id: backends-for-frontends
+title: "Backends for Frontends (BFF)"
+category: architecture
+tags: ["bff", "backend", "frontend", "gateway", "mobile", "web"]
+summary: "BFF cria um backend especifico para cada tipo de cliente (web, mobile, IoT), otimizando a API para cada um."
+content: |
+  Problema: backend unico tenta servir todos os clientes com o mesmo contrato, resultando em over/under fetching. Solucao: cada cliente tem seu proprio BFF que agrega dados e adapta respostas. Exemplo: Web BFF retorna HTML + dados, Mobile BFF retorna JSON otimizado com payloads menores, IoT BFF retorna binario compacto. Beneficios: performance, autonomia de times, evolucao independente.

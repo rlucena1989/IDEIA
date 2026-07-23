@@ -1,0 +1,17 @@
+{
+  "name": "@ideia/agent-router",
+  "description": "IDEIA Agent Router Ã¢â‚¬â€ classificaÃƒÂ§ÃƒÂ£o de complexidade, roteamento de pipeline, consenso multiagente e fusÃƒÂ£o de resultados",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

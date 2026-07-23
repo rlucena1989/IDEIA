@@ -1,0 +1,7 @@
+id: feature-toggles
+title: "Feature Toggles (Feature Flags)"
+category: devops
+tags: ["feature-toggles", "flags", "continuous-delivery", "canary", "a-b-testing"]
+summary: "Feature Toggles permitem ligar/desligar funcionalidades sem fazer deploy, habilitando entrega continua e canary releases."
+content: |
+  Tipos: Release Toggles (incompleto em producao), Experiment Toggles (A/B testing), Ops Toggles (controle operacional), Permission Toggles (acesso gradual). Boas praticas: toggles temporarios (remover apos uso), codigo morto por toggle = divida tecnica. Ferramentas: LaunchDarkly, Flagsmith, Unleash.

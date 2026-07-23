@@ -1,0 +1,93 @@
+{
+  "project-context": {
+    "value": "IDEIA é um projeto de IDE com Theia",
+    "timestamp": "2026-07-20T00:50:56.539Z"
+  },
+  "plan:1784515256408": {
+    "value": {
+      "input": "Analisar estrutura do projeto",
+      "steps": [
+        {
+          "step": 1,
+          "type": "analyze",
+          "description": "Analisar estrutura do projeto",
+          "status": "pending"
+        }
+      ],
+      "totalSteps": 1,
+      "createdAt": "2026-07-20T02:40:56.406Z"
+    },
+    "tags": ["plan"],
+    "timestamp": "2026-07-20T02:40:56.406Z"
+  },
+  "plan:1784570701282": {
+    "value": {
+      "input": "criar CRUD de usuarios com autenticacao JWT",
+      "steps": [
+        {
+          "step": 1,
+          "type": "create",
+          "description": "criar CRUD de usuarios com autenticacao JWT",
+          "status": "pending"
+        }
+      ],
+      "totalSteps": 1,
+      "createdAt": "2026-07-20T18:05:01.280Z"
+    },
+    "tags": ["plan"],
+    "timestamp": "2026-07-20T18:05:01.280Z"
+  },
+  "sessao": {
+    "value": "estudo-comparativo-devin-2026-07-20",
+    "tags": [],
+    "timestamp": "2026-07-20T18:05:07.016Z"
+  },
+  "plan:1784570707472": {
+    "value": {
+      "input": "diagnosticar estado atual da esteira ideia",
+      "steps": [
+        {
+          "step": 1,
+          "type": "execute",
+          "description": "diagnosticar estado atual da esteira ideia",
+          "status": "pending"
+        }
+      ],
+      "totalSteps": 1,
+      "createdAt": "2026-07-20T18:05:07.471Z"
+    },
+    "tags": ["plan"],
+    "timestamp": "2026-07-20T18:05:07.471Z"
+  },
+  "agent:1784570707476": {
+    "value": {
+      "task": "diagnosticar estado atual da esteira ideia",
+      "context": "[plan:1784570701282]: {\"input\":\"criar CRUD de usuarios com autenticacao JWT\",\"steps\":[{\"step\":1,\"type\":\"create\",\"description\":\"criar CRUD de usuarios com autenticacao JWT\",\n[sessao]: estudo-comparativo-devin-2026-07-20\n[plan:1784570707472]: {\"input\":\"diagnosticar estado atual da esteira ideia\",\"steps\":[{\"step\":1,\"type\":\"execute\",\"description\":\"diagnosticar estado atual da esteira ideia\",\"",
+      "status": "planned"
+    },
+    "tags": ["agent"],
+    "timestamp": "2026-07-20T18:05:07.476Z"
+  },
+  "plan:1784588022446": {
+    "value": {
+      "input": "implementar feature de busca semantica",
+      "steps": [
+        {
+          "step": 1,
+          "type": "create",
+          "description": "implementar feature de busca semantica",
+          "status": "pending"
+        }
+      ],
+      "totalSteps": 1,
+      "createdAt": "2026-07-20T22:53:42.445Z"
+    },
+    "tags": ["plan"],
+    "timestamp": "2026-07-20T22:53:42.445Z"
+  },
+  "test-key": {
+    "value": "test-value",
+    "tags": [],
+    "timestamp": "2026-07-20T22:53:42.952Z"
+  }
+}

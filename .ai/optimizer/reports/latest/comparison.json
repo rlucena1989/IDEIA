@@ -1,0 +1,44 @@
+{
+  "generated_at": "2026-07-21T14:27:30.182Z",
+  "previous": {
+    "generated_at": "2026-07-21T14:08:49.375Z",
+    "differences": {
+      "approval_state": {
+        "to": "rejected"
+      },
+      "risk_level": {
+        "to": "low"
+      }
+    }
+  },
+  "current": {
+    "task_type": "design_change",
+    "requires_ai": true,
+    "recommended_agents": [
+      "frontend",
+      "reviewer"
+    ],
+    "context_profile": "ui-change",
+    "execution_mode": "patch",
+    "risk_level": "low",
+    "risk_score": 10,
+    "estimated_scope": "small",
+    "memory_hits": {
+      "patterns": 1,
+      "decisions": 0,
+      "incidents": 0
+    },
+    "request_hash": "sha256:047e0feddbbac39803b8bd9ac4fa8cdc58351bdefd6e43d34ec706f5fc280b16",
+    "approval_state": "rejected",
+    "approved_at": "2026-07-21T14:27:29.780Z",
+    "rejected_at": "2026-07-21T14:27:29.850Z"
+  },
+  "differences": {
+    "approval_state": {
+      "to": "rejected"
+    },
+    "risk_level": {
+      "to": "low"
+    }
+  }
+}

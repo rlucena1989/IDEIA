@@ -1,0 +1,19 @@
+{
+  "name": "@ideia/markers-output",
+  "description": "MarkerManager, ProblemManager, ProblemWidget, OutputChannel, OutputWidget, MessageService, Dialog, Notification system",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": { "build": "tsc" },
+  "dependencies": {
+    "@ideia/core-contributions": "^0.0.0",
+    "@ideia/editor-core": "^0.0.0",
+    "@ideia/views-widgets": "^0.0.0",
+    "@ideia/shell-layout": "^0.0.0"
+  },
+  "files": ["dist"],
+  "publishConfig": { "access": "public" },
+  "repository": { "type": "git", "url": "https://github.com/anomalyco/ideia.git" },
+  "homepage": "https://ideia.dev",
+  "bugs": { "url": "https://github.com/anomalyco/ideia/issues" }
+}

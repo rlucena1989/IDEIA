@@ -1,0 +1,7 @@
+id: strangler-fig
+title: "Strangler Fig Pattern (Legacy Migration)"
+category: architecture
+tags: ["strangler-fig", "legacy", "migration", "refactoring"]
+summary: "Strangler Fig permite migrar sistemas legados gradualmente, substituindo funcionalidades uma a uma."
+content: |
+  Crie um novo sistema ao lado do legado. Roteie funcionalidades gradualmente para o novo. Remova funcionalidades do legado a medida que sao migradas. Eventualmente o legado inteiro e substituido. Risco baixo: cada peca pode ser testada isoladamente e rollback e simples.

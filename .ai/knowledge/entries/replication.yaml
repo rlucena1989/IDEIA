@@ -1,0 +1,7 @@
+id: replication
+title: "Database Replication (Primary-Replica, Multi-Master)"
+category: database
+tags: ["replication", "read-replica", "primary", "high-availability"]
+summary: "Replicacao copia dados de um banco para outro para alta disponibilidade, leitura escalavel e disaster recovery."
+content: |
+  Primary-Replica (Single-Master): escritas no primary, leituras nas replicas. Sincrona: replica confirma antes de commit (consistente, mais lento). Assincrona: primary nao espera replica (rapido, perda possivel em failover). Multi-Master: varios nos aceitam escritas (conflitos possiveis, resolucao de conflitos necessaria). Log Shipping vs Streaming Replication vs Trigger-based.

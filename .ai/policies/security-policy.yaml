@@ -1,0 +1,27 @@
+version: "1.0.0"
+status: active
+
+secrets:
+  forbid_hardcoded: [api_key, secret, token, password, private_key, credential, jwt_secret, db_password]
+  scan_patterns: true
+  auto_block_ci: true
+
+network:
+  default_allow: false
+  allowed_domains: []
+  require_https: true
+
+filesystem:
+  protected_paths: [".git/", ".env", ".env.*", ".ai/laws.yaml", ".ai/policies/", ".ai/security/"]
+  require_explicit_permission_for_write: true
+
+dependencies:
+  require_lockfile: true
+  forbid_latest_tag: true
+  forbid_unpinned_versions: true
+  max_vulnerability_severity: high
+
+code_review:
+  required_approvers: 1
+  require_security_review_for: [auth, payment, infrastructure, encryption]
+  block_on_critical: true

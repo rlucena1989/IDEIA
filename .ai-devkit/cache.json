@@ -1,0 +1,73 @@
+[
+  {
+    "key": "plan:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855:deep",
+    "value": [
+      {
+        "id": "job-1",
+        "name": "deep-audit-env",
+        "status": "failed",
+        "durationMs": 11,
+        "exitCode": 1,
+        "attempts": 1,
+        "error": "spawn npx ENOENT"
+      },
+      {
+        "id": "job-2",
+        "name": "deep-test-basic",
+        "status": "failed",
+        "durationMs": 1,
+        "exitCode": 1,
+        "attempts": 1,
+        "error": "spawn npx ENOENT"
+      },
+      {
+        "id": "job-3",
+        "name": "deep-lint-check",
+        "status": "failed",
+        "durationMs": 1,
+        "exitCode": 1,
+        "attempts": 1,
+        "error": "spawn npx ENOENT"
+      },
+      {
+        "id": "job-4",
+        "name": "deep-import-check",
+        "status": "failed",
+        "durationMs": 2,
+        "exitCode": 1,
+        "attempts": 1,
+        "error": "spawn npx ENOENT"
+      },
+      {
+        "id": "job-5",
+        "name": "deep-run-tests",
+        "status": "failed",
+        "durationMs": 1,
+        "exitCode": 1,
+        "attempts": 1,
+        "error": "spawn npx ENOENT"
+      },
+      {
+        "id": "job-6",
+        "name": "deep-duplicate-check",
+        "status": "failed",
+        "durationMs": 1,
+        "exitCode": 1,
+        "attempts": 1,
+        "error": "spawn npx ENOENT"
+      },
+      {
+        "id": "job-7",
+        "name": "deep-flow-check",
+        "status": "failed",
+        "durationMs": 1,
+        "exitCode": 1,
+        "attempts": 1,
+        "error": "spawn npx ENOENT"
+      }
+    ],
+    "createdAt": "2026-07-23T01:39:06.071Z",
+    "ttlMs": 1800000,
+    "accessOrder": 1
+  }
+]

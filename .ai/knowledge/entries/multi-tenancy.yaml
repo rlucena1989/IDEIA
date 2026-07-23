@@ -1,0 +1,7 @@
+id: multi-tenancy
+title: "Multi-Tenancy Database Strategies"
+category: database
+tags: ["multi-tenancy", "saas", "isolation", "shared-database"]
+summary: "Estrategias para isolar dados de diferentes clientes (tenants) em aplicacoes SaaS."
+content: |
+  Database per Tenant: isolamento maximo, backup individual, mais caro (muitos bancos). Schema per Tenant: mesmo banco, schemas separados, medio isolamento. Shared Table com tenant_id: mais barato, mais simples, risco de vazamento de dados (sempre filtrar WHERE tenant_id = ?). Hybrid: combina estrategias (ex: shared para pequenos tenants, dedicated para grandes). Linhas de defesa: sempre filtrar por tenant_id, RLS (Row Level Security), testes de isolamento.

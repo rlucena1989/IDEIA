@@ -1,0 +1,377 @@
+{
+  "timestamp": "2026-07-10T14:23:30.019Z",
+  "classifications": [
+    {
+      "file": "scripts/acceleration/engine.ts",
+      "complexity": {
+        "complexity": "extreme",
+        "domain": [
+          "arithmetic",
+          "calculus",
+          "devops",
+          "typescript"
+        ],
+        "confidence": 0.7
+      },
+      "estimation": {
+        "tokens": 700,
+        "timeMs": 10500,
+        "costUsd": 0.0009
+      }
+    },
+    {
+      "file": "scripts/evolve-all-metrics.ts",
+      "complexity": {
+        "complexity": "extreme",
+        "domain": [
+          "arithmetic",
+          "statistics",
+          "calculus",
+          "engineering"
+        ],
+        "confidence": 0.7
+      },
+      "estimation": {
+        "tokens": 700,
+        "timeMs": 10500,
+        "costUsd": 0.0009
+      }
+    },
+    {
+      "file": "scripts/acceleration/orchestrator.ts",
+      "complexity": {
+        "complexity": "hard",
+        "domain": [
+          "calculus",
+          "typescript"
+        ],
+        "confidence": 0.7
+      },
+      "estimation": {
+        "tokens": 147,
+        "timeMs": 1470,
+        "costUsd": 0.0001
+      }
+    },
+    {
+      "file": "scripts/acceleration/loop.ts",
+      "complexity": {
+        "complexity": "hard",
+        "domain": [
+          "calculus",
+          "typescript"
+        ],
+        "confidence": 0.8
+      },
+      "estimation": {
+        "tokens": 187,
+        "timeMs": 1870,
+        "costUsd": 0.0002
+      }
+    },
+    {
+      "file": "scripts/ai-co-pilot.ts",
+      "complexity": {
+        "complexity": "extreme",
+        "domain": [
+          "arithmetic",
+          "calculus",
+          "devops",
+          "typescript"
+        ],
+        "confidence": 0.7
+      },
+      "estimation": {
+        "tokens": 700,
+        "timeMs": 10500,
+        "costUsd": 0.0009
+      }
+    }
+  ],
+  "routes": [
+    {
+      "input": "calculate 2 + 2",
+      "mode": "fast",
+      "route": {
+        "target": "deterministic",
+        "provider": "mock",
+        "model": "local-engine",
+        "reason": "local deterministic calculation",
+        "estimatedCostUsd": 0,
+        "estimatedLatencyMs": 1,
+        "confidence": 1
+      }
+    },
+    {
+      "input": "calculate 2 + 2",
+      "mode": "balanced",
+      "route": {
+        "target": "deterministic",
+        "provider": "mock",
+        "model": "local-engine",
+        "reason": "local deterministic calculation",
+        "estimatedCostUsd": 0,
+        "estimatedLatencyMs": 1,
+        "confidence": 1
+      }
+    },
+    {
+      "input": "calculate 2 + 2",
+      "mode": "deep",
+      "route": {
+        "target": "deterministic",
+        "provider": "mock",
+        "model": "local-engine",
+        "reason": "local deterministic calculation",
+        "estimatedCostUsd": 0,
+        "estimatedLatencyMs": 1,
+        "confidence": 1
+      }
+    },
+    {
+      "input": "analyze this TypeScript code for security vul",
+      "mode": "fast",
+      "route": {
+        "target": "local",
+        "provider": "mock",
+        "model": "mock-v1",
+        "reason": "fallback to local mock (no API key)",
+        "estimatedCostUsd": 0,
+        "estimatedLatencyMs": 5,
+        "confidence": 0.5
+      }
+    },
+    {
+      "input": "analyze this TypeScript code for security vul",
+      "mode": "balanced",
+      "route": {
+        "target": "remote",
+        "provider": "anthropic",
+        "model": "claude-3-haiku",
+        "reason": "cost=0.97 latency=0.90 hardware=0.80",
+        "estimatedCostUsd": 0,
+        "estimatedLatencyMs": 3000,
+        "confidence": 0.82
+      }
+    },
+    {
+      "input": "analyze this TypeScript code for security vul",
+      "mode": "deep",
+      "route": {
+        "target": "remote",
+        "provider": "anthropic",
+        "model": "claude-3-haiku",
+        "reason": "cost=0.97 latency=0.90 hardware=0.80",
+        "estimatedCostUsd": 0,
+        "estimatedLatencyMs": 3000,
+        "confidence": 0.82
+      }
+    },
+    {
+      "input": "refactor the entire codebase to use Clean Arc",
+      "mode": "fast",
+      "route": {
+        "target": "deterministic",
+        "provider": "mock",
+        "model": "local-engine",
+        "reason": "local deterministic calculation",
+        "estimatedCostUsd": 0,
+        "estimatedLatencyMs": 1,
+        "confidence": 1
+      }
+    },
+    {
+      "input": "refactor the entire codebase to use Clean Arc",
+      "mode": "balanced",
+      "route": {
+        "target": "deterministic",
+        "provider": "mock",
+        "model": "local-engine",
+        "reason": "local deterministic calculation",
+        "estimatedCostUsd": 0,
+        "estimatedLatencyMs": 1,
+        "confidence": 1
+      }
+    },
+    {
+      "input": "refactor the entire codebase to use Clean Arc",
+      "mode": "deep",
+      "route": {
+        "target": "deterministic",
+        "provider": "mock",
+        "model": "local-engine",
+        "reason": "local deterministic calculation",
+        "estimatedCostUsd": 0,
+        "estimatedLatencyMs": 1,
+        "confidence": 1
+      }
+    }
+  ],
+  "calculations": [
+    {
+      "input": "2 + 3 * 4",
+      "solvable": true,
+      "result": 14
+    },
+    {
+      "input": "mean of [1,2,3,4,5]",
+      "solvable": true,
+      "result": 3
+    },
+    {
+      "input": "stddev of [1,2,3,4,5]",
+      "solvable": true,
+      "result": 1.4142135623730951
+    },
+    {
+      "input": "force of mass 10 accel 9.8",
+      "solvable": true,
+      "result": 98
+    },
+    {
+      "input": "bmi weight 70 height 1.75",
+      "solvable": true,
+      "result": 22.86
+    },
+    {
+      "input": "correlation of [1,2,3] and [2,4,6]",
+      "solvable": true,
+      "result": 1
+    }
+  ],
+  "guardrails": [
+    {
+      "input": "console.log(\"hello world\")",
+      "approved": true,
+      "violations": []
+    },
+    {
+      "input": "DROP TABLE users; SELECT * FROM passwords",
+      "approved": false,
+      "violations": [
+        "input contains SQL injection patterns"
+      ]
+    },
+    {
+      "input": "const apiKey = \"sk-abc123def456\"",
+      "approved": true,
+      "violations": []
+    },
+    {
+      "input": "eval(process.env.SECRET)",
+      "approved": false,
+      "violations": [
+        "input contains code injection patterns"
+      ]
+    },
+    {
+      "input": "const x = require(\"child_process\").exec",
+      "approved": false,
+      "violations": [
+        "input contains code injection patterns"
+      ]
+    }
+  ],
+  "compression": [
+    {
+      "file": "scripts/acceleration/engine.ts",
+      "originalChars": 11592,
+      "compressedChars": 1545,
+      "ratio": 0.1332815734989648,
+      "method": "remove-comments"
+    },
+    {
+      "file": "scripts/evolve-all-metrics.ts",
+      "originalChars": 20742,
+      "compressedChars": 2768,
+      "ratio": 0.13344904059396392,
+      "method": "remove-comments"
+    },
+    {
+      "file": "scripts/acceleration/orchestrator.ts",
+      "originalChars": 419,
+      "compressedChars": 394,
+      "ratio": 0.9403341288782816,
+      "method": "remove-whitespace"
+    },
+    {
+      "file": "scripts/acceleration/loop.ts",
+      "originalChars": 532,
+      "compressedChars": 481,
+      "ratio": 0.9041353383458647,
+      "method": "remove-whitespace"
+    },
+    {
+      "file": "scripts/ai-co-pilot.ts",
+      "originalChars": 6424,
+      "compressedChars": 5655,
+      "ratio": 0.8802926525529265,
+      "method": "remove-whitespace"
+    }
+  ],
+  "benchmarks": [
+    {
+      "provider": "mock",
+      "model": "default",
+      "avgLatencyMs": 15,
+      "costPerRun": 0.001,
+      "tokensUsed": 258,
+      "successRate": 1,
+      "score": 63.94
+    },
+    {
+      "provider": "local",
+      "model": "default",
+      "avgLatencyMs": 13,
+      "costPerRun": 0.001,
+      "tokensUsed": 258,
+      "successRate": 1,
+      "score": 63.95
+    }
+  ],
+  "consensus": {
+    "question": "TypeScript monorepo structure",
+    "decision": "[mock] received prompt (56 chars), tokens=500",
+    "confidence": 1,
+    "participants": 2,
+    "agreements": 2
+  },
+  "anomalies": {
+    "scoreHistory": [
+      95,
+      96,
+      96,
+      95,
+      96,
+      96,
+      95,
+      96,
+      96
+    ],
+    "scoreAnomalies": 0,
+    "scoreTrend": "stable",
+    "fileSizes": [
+      293,
+      396,
+      19,
+      25,
+      142
+    ],
+    "fileSizeAnomalies": 0,
+    "fileStats": {
+      "min": 19,
+      "max": 396,
+      "mean": 175,
+      "median": 142,
+      "stddev": 148.78844041120936,
+      "variance": 22138,
+      "count": 5
+    }
+  },
+  "optimization": {
+    "recommendedMode": "balanced",
+    "suggestions": [],
+    "featureFlagsActive": 8,
+    "featureFlagsTotal": 8
+  }
+}

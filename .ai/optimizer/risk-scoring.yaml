@@ -1,0 +1,40 @@
+version: "1.0.0"
+
+risk_scoring:
+  enabled: true
+
+  levels:
+    low:
+      min_score: 0
+      max_score: 29
+      action: "auto_review_allowed"
+
+    medium:
+      min_score: 30
+      max_score: 59
+      action: "human_review_required"
+
+    high:
+      min_score: 60
+      max_score: 84
+      action: "human_approval_required"
+
+    critical:
+      min_score: 85
+      max_score: 100
+      action: "blocked_until_manual_analysis"
+
+  signals:
+    - "touches_auth"
+    - "touches_payment"
+    - "touches_design_system"
+    - "touches_infrastructure"
+    - "touches_public_api"
+    - "removes_tests"
+    - "adds_dependency"
+    - "modifies_protected_path"
+    - "changes_many_files"
+    - "ambiguous_scope"
+
+  output:
+    manifest: ".ai/reports/latest/risk-score.json"

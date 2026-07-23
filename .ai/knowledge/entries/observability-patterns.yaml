@@ -1,0 +1,7 @@
+id: observability-patterns
+title: "Observability — Logging, Metrics, Tracing"
+category: devops
+tags: ["observability", "logging", "metrics", "tracing", "opentelemetry", "monitoring"]
+summary: "Os tres pilares da observabilidade: logging estruturado, metricas e tracing distribuido."
+content: |
+  Logging: estruturado (JSON), com correlation ID, niveis (debug, info, warn, error). Metrics: counters, gauges, histograms, rate (RED method: Rate, Errors, Duration). Tracing: spans com contexto, distributed traces (OpenTelemetry). Dashboards: mostram saude do sistema. Alerts: baseados em SLOs. (USE method: Utilization, Saturation, Errors para infraestrutura).

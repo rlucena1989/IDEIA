@@ -1,0 +1,7 @@
+id: saga-pattern
+title: "Saga Pattern (Distributed Transactions)"
+category: architecture
+tags: ["saga", "distributed-transactions", "microservices", "compensation", "orchestration"]
+summary: "Saga gerencia transacoes distribuidas em microservicos usando uma sequencia de transacoes locais com compensacao."
+content: |
+  Tipos: Choreography (cada servico publica evento e reage a eventos), Orchestration (orquestrador central coordena passos). Cada passo tem uma transacao compensatoria em caso de falha. Nao ha lock global, consistencia eventual.

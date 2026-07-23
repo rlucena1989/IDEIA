@@ -1,0 +1,26 @@
+{
+  "name": "@ideia/core",
+  "description": "[DEPRECATED - use @ideia/contracts] Core Engine - Universal Governance for AI assisted development",
+  "deprecated": true,
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "types": "src/index.ts"
+}

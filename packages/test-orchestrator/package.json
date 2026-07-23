@@ -1,0 +1,15 @@
+{
+  "name": "@ideia/test-orchestrator",
+  "private": true,
+  "description": "Test orchestrator Ã¢â‚¬â€ run, collect, score test suites",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@ideia/logger": "*",
+    "@ideia/contracts": "*"
+  }
+}

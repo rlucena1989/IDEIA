@@ -1,0 +1,7 @@
+id: database-patterns
+title: "Database Patterns — Repository, Unit of Work, Data Mapper"
+category: database
+tags: ["repository", "unit-of-work", "data-mapper", "active-record", "orm"]
+summary: "Padroes de acesso a dados que abstraem o banco de dados do codigo de aplicacao."
+content: |
+  Repository: abstrai colecoes de entidades como se estivessem em memoria. Unit of Work: mantem lista de objetos modificados e coordena escrita em transacao. Data Mapper: move dados entre objetos e banco mantendo independencia. Active Record: objeto que wrapa uma linha do banco (mais simples, menos flexivel).

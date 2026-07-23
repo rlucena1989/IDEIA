@@ -1,0 +1,7 @@
+id: oauth2
+title: "OAuth 2.0 & OpenID Connect"
+category: security
+tags: ["oauth2", "oidc", "auth", "authorization", "jwt", "token"]
+summary: "OAuth 2.0 e um framework de autorizacao que permite que aplicacoes obtenham acesso limitado a contas de usuario."
+content: |
+  Fluxos: Authorization Code (recomendado para web), PKCE (mobile/SPA), Client Credentials (servico a servico), Implicit (deprecated). Tokens: Access Token (curta duracao, chama API), Refresh Token (longa duracao, renova), ID Token (JWT com identidade do usuario via OIDC). Scopes: permissoes granulares.

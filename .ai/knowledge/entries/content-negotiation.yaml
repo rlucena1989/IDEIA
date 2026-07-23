@@ -1,0 +1,7 @@
+id: content-negotiation
+title: "Content Negotiation (Accept Header)"
+category: api
+tags: ["content-negotiation", "accept", "content-type", "serialization", "rest"]
+summary: "Content negotiation permite que clientes e servidores negociem o formato de representacao de recursos via headers HTTP."
+content: |
+  Accept: cliente especifica formato desejado (application/json, application/xml, text/csv). Content-Type: especifica formato do payload enviado. Weight: q=0.9 para preferencia. Exemplo: Accept: application/json;q=0.9, application/xml;q=0.5. Vary header: indica que resposta varia por Accept, Cache-Control deve respeitar.

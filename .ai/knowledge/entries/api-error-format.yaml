@@ -1,0 +1,7 @@
+id: api-error-format
+title: "API Error Response Format (RFC 7807)"
+category: api
+tags: ["api", "error", "rfc-7807", "problem-details", "standard"]
+summary: "Problem Details (RFC 7807) padroniza o formato de erros HTTP para APIs REST."
+content: |
+  Formato: type (URI do tipo do erro), title (curto, legivel), status (HTTP status), detail (explicacao detalhada), instance (URI que gerou o erro). Extensoes: validation_errors (campos especificos). Exemplo: { "type": "https://api.com/errors/validation", "title": "Validation Error", "status": 422, "detail": "O campo email e obrigatorio", "instance": "/users" }

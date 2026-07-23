@@ -1,0 +1,7 @@
+id: observer-pattern
+title: "Observer Pattern"
+category: design
+tags: ["observer", "gof", "behavioral", "events", "pub-sub"]
+summary: "Observer define uma dependencia um-para-muitos entre objetos para que quando um mude de estado, todos sejam notificados."
+content: |
+  Subject: mantem lista de observers, notifica mudancas. Observer: interface com metodo update. Exemplo: eventos de dominio, listeners, pub-sub.

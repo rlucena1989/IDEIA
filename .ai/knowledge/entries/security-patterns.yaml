@@ -1,0 +1,7 @@
+id: security-patterns
+title: "Security Patterns — Auth, Authorization, Secrets"
+category: security
+tags: ["security", "auth", "authorization", "rbac", "jwt", "secrets"]
+summary: "Padroes de seguranca para aplicacoes web incluindo autenticacao, autorizacao e gerenciamento de secrets."
+content: |
+  Authentication: JWT (stateless), Session (stateful), OAuth2/OpenID Connect (delegado). Authorization: RBAC (Role-Based), ABAC (Attribute-Based), Policy-based. Secrets: nunca no codigo, sempre em variaveis de ambiente ou vault. Input Validation: whitelist > blacklist. SQL Injection: parametrizacao obrigatoria. XSS: output encoding. CSRF: tokens anti-forgery. Rate Limiting: proteger endpoints de abuso.

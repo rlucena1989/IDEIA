@@ -1,0 +1,30 @@
+node_modules/
+dist/
+lib/
+*.tsbuildinfo
+coverage/
+.env
+.env.local
+*.log
+dist-installer/
+.ai/audit/
+.DS_Store
+Thumbs.db
+
+# Auto-generated caches
+.ai/context/cache/
+.ai/optimizer/runtime/
+.ai/reports/review-*.md
+
+# Secrets & credentials
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*.gpg
+secrets.json
+*.secret
+.ai/credentials/

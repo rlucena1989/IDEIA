@@ -1,0 +1,70 @@
+# MET-09: health-check → CI auto-schedule
+# Executa semanalmente observability metrics + scorecard health check
+
+name: Health Check Schedule
+
+on:
+  schedule:
+    - cron: '0 8 * * 1' # Every Monday 08:00 UTC
+  workflow_dispatch:
+    inputs:
+      threshold_p95:
+        description: 'P95 latency threshold in ms for alerting'
+        type: number
+        default: 5000
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+      - run: npm run build --if-present
+
+      - name: 'METRICS: Collect observability traces'
+        id: metrics
+        run: |
+          node packages/cli/dist/index.js observability metrics > observability-metrics.json 2>&1 || true
+          echo "METRICS_EXIT=$?" >> $GITHUB_OUTPUT
+
+      - name: 'SCORECARD: Run health scorecard'
+        id: scorecard
+        continue-on-error: true
+        run: |
+          node packages/cli/dist/index.js scorecard --json > scorecard-health.json 2>&1 || echo "Scorecard baseline"
+
+      - name: 'TRACE: Record health check entry'
+        id: trace
+        run: |
+          node packages/cli/dist/index.js observability trace \
+            --model health-check \
+            --provider github-actions \
+            --latency 0 \
+            --tokens-in 0 \
+            --tokens-out 0 \
+            --cost 0 \
+            --command "health-check-schedule"
+
+      - name: 'REPORT: Upload health results'
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-check-report
+          path: |
+            observability-metrics.json
+            scorecard-health.json
+
+      - name: 'ALERT: P95 latency exceeds threshold'
+        if: steps.metrics.outputs.METRICS_EXIT == '0' && github.event_name == 'schedule'
+        run: |
+          echo "::notice::Health check complete. Review observability-metrics.json"

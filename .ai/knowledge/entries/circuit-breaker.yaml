@@ -1,0 +1,7 @@
+id: circuit-breaker
+title: "Circuit Breaker Pattern"
+category: resilience
+tags: ["circuit-breaker", "resilience", "fault-tolerance", "retry", "timeout"]
+summary: "Circuit Breaker evita chamadas repetidas a um servico com falha, permitindo recuperacao."
+content: |
+  Estados: Closed (normal), Open (falhas > threshold, chamadas bloqueadas), Half-Open (tenta novamente apos timeout). Transicoes: Closed → Open (falhas), Open → Half-Open (timeout), Half-Open → Closed (sucesso) ou Open (falha).

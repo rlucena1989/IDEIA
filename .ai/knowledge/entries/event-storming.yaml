@@ -1,0 +1,7 @@
+id: event-storming
+title: "Event Storming — Modelagem Colaborativa"
+category: process
+tags: ["event-storming", "ddd", "workshop", "modeling", "collaboration"]
+summary: "Event Storming e um workshop colaborativo onde equipe de negocio e tecnica modelam o dominio atraves de eventos."
+content: |
+  Processo: 1) Big Picture (eventos caoticos,全景). 2) Process Modeling (sequencia temporal, comandos, atores). 3) Design (aggregates, bounded contexts). Elementos: Evento laranja (fato ocorrido), Comando azul (acao do usuario), Ator amarelo (quem executa), Aggregate roxo (consistencia), Policy roxo (regra automatica). Read Model verde (dados que a UI precisa). Facilitado por um domain expert. Duracao: 2-4 horas por sessao.

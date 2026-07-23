@@ -1,0 +1,7 @@
+id: di-pattern
+title: "Dependency Injection"
+category: design
+tags: ["di", "dependency-injection", "ioc", "inversion-of-control", "testing"]
+summary: "Dependency Injection fornece dependencias a um objeto em vez do objeto cria-las, promovendo baixo acoplamento."
+content: |
+  Tipos: Constructor Injection (recomendado), Setter Injection, Interface Injection. Containers: gerenciam ciclo de vida (DI containers). Beneficios: testabilidade, flexibilidade, separacao de concerns.

@@ -1,0 +1,7 @@
+id: prompt-engineering
+title: "Prompt Engineering Patterns"
+category: ai
+tags: ["prompt", "engineering", "llm", "few-shot", "cot", "instruction"]
+summary: "Tecnicas para projetar prompts eficazes para LLMs, incluindo few-shot, chain-of-thought e role prompting."
+content: |
+  Tecnicas: Zero-shot (instrucao direta), Few-shot (exemplos no prompt), Chain-of-Thought (raciocinio passo a passo), Tree-of-Thought (multiplas linhas de raciocinio), Role Prompting ("Voce e um engenheiro Senior..."), System Prompt (instrucao de sistema), Output Formatting (JSON, XML), Iterative Refinement (refinar resposta). Dicas: especifico > generico, exemplo > descricao, negativo ("nao faca X") vs positivo ("faca Y").

@@ -1,0 +1,1 @@
+Valide se a organização proposta para os documentos mantém coerência com o projeto IDEIA. Verifique se a estrutura preserva o chat como centro, o editor embutido, o terminal sandbox, a governança, a memória mínima e a trilha de auditoria. Aponte riscos de desorganização, ambiguidade ou expansão de escopo.

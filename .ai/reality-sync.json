@@ -1,0 +1,11 @@
+{
+  "level": "autonomous",
+  "riskThreshold": "medium",
+  "autoFixCategories": [
+    "package",
+    "legal",
+    "security",
+    "governance",
+    "quality"
+  ]
+}

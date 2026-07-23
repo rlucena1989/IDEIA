@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optimizer Compare</title>
+  <link rel="stylesheet" href="./dashboard.css" />
+  <style>
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .side {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .side h2 { margin-top: 0; }
+    .no-data { color: #64748b; font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div>
+        <h1>Compare Runs</h1>
+        <p>Comparação entre execuções do optimizer.</p>
+      </div>
+      <div class="actions">
+        <button id="backBtn" class="btn">Back to Dashboard</button>
+        <button id="refreshCompareBtn" class="btn">Refresh</button>
+      </div>
+    </header>
+    <section class="compare-grid">
+      <div class="side">
+        <h2>Previous Run</h2>
+        <pre id="previousRun" class="no-data">No previous run data.</pre>
+      </div>
+      <div class="side">
+        <h2>Current Run</h2>
+        <pre id="currentRun" class="no-data">No current run data.</pre>
+      </div>
+    </section>
+  </div>
+  <script>
+    document.getElementById('backBtn').addEventListener('click', () => {
+      const vscodeApi = typeof acquireVsCodeApi === 'function' ? acquireVsCodeApi() : null;
+      if (vscodeApi) vscodeApi.postMessage({ type: 'openDashboard' });
+      else history.back();
+    });
+
+    async function loadCompare() {
+      try {
+        const comparison = await fetch('../runtime/latest-comparison.json')
+          .then(r => r.ok ? r.json() : null)
+          .catch(() => null);
+        if (comparison) {
+          document.getElementById('previousRun').textContent = JSON.stringify(comparison.previous || {}, null, 2);
+          document.getElementById('currentRun').textContent = JSON.stringify(comparison.current || {}, null, 2);
+        }
+      } catch { /* keep defaults */ }
+    }
+
+    document.getElementById('refreshCompareBtn').addEventListener('click', loadCompare);
+    loadCompare();
+  </script>
+</body>
+</html>

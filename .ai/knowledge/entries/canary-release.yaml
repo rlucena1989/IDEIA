@@ -1,0 +1,7 @@
+id: canary-release
+title: "Canary Release Pattern"
+category: devops
+tags: ["canary", "deploy", "rollout", "gradual", "risk-mitigation"]
+summary: "Canary release rola uma nova versao para uma pequena porcentagem de usuarios antes de liberar para todos."
+content: |
+  Passos: 1) Deploy nova versao ao lado da atual. 2) Roteie X% do trafego para a nova. 3) Monitore metricas (erros, latencia). 4) Se saudavel, aumente gradualmente ate 100%. 5) Se problemas, rollback instantaneo. Ferramentas: Kubernetes (Istio, Flagger), AWS CodeDeploy, LaunchDarkly. Diferenca de Blue-Green: canary e gradual, blue-green e switch instantaneo.

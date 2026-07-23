@@ -1,0 +1,7 @@
+id: resource-hints
+title: "Resource Hints (preload, prefetch, preconnect)"
+category: web
+tags: ["preload", "prefetch", "preconnect", "performance", "resource-hints"]
+summary: "Resource hints informam o browser sobre recursos futuros para carregamento proativo."
+content: |
+  preload: carrega recurso critico com alta prioridade (fontes, hero images, CSS critico). <link rel="preload" href="font.woff2" as="font">. prefetch: carrega recurso para proxima navegacao (baixa prioridade). preconnect: estabelece conexao (DNS + TCP + TLS) com origem terceira antes de precisar. dns-prefetch: apenas DNS (mais leve que preconnect). modulepreload: preload de ES modules. Timing: preload agora, prefetch futuro proximo, preconnect para origens criticas.

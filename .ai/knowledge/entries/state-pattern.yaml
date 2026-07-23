@@ -1,0 +1,7 @@
+id: state-pattern
+title: "State Pattern"
+category: design
+tags: ["state", "gof", "behavioral", "fsm", "state-machine"]
+summary: "State permite que um objeto altere seu comportamento quando seu estado interno muda, parecendo ter mudado de classe."
+content: |
+  Context: mantem referencia ao estado atual. State: interface com comportamentos especificos. Estados concretos: implementam comportamentos para aquele estado. Transicoes: podem ser feitas pelos proprios estados. Exemplo: maquina de estados de pedido (novo, pago, enviado, entregue, cancelado) onde cada estado tem acoes permitidas.

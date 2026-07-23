@@ -1,0 +1,7 @@
+id: webhook
+title: "Webhook Pattern"
+category: api
+tags: ["webhook", "callback", "event", "notification", "push"]
+summary: "Webhook envia dados para uma URL configurada quando um evento ocorre, permitindo notificacoes em tempo real sem polling."
+content: |
+  Evento → servico publica → POST para URL configurada. Retry: em caso de falha, retry com backoff. Seguranca: assinar payload com HMAC (secret), verificar IP, usar HTTPS. Exemplos: pagamentos (Stripe webhook), CI/CD (GitHub webhook), mensageria (Slack webhook).

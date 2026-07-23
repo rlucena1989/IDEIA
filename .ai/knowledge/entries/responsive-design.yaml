@@ -1,0 +1,7 @@
+id: responsive-design
+title: "Responsive Design Patterns"
+category: web
+tags: ["responsive", "css", "mobile", "media-queries", "flexbox", "grid"]
+summary: "Responsive design adapta a interface para diferentes tamanhos de tela usando CSS Grid, Flexbox e media queries."
+content: |
+  Abordagens: Mobile-First (comece pelo menor layout, adicione com min-width), Desktop-First (comece pelo maior, remova com max-width). CSS Grid: layout 2D (linhas + colunas), ideal para paginas inteiras. Flexbox: layout 1D (linha ou coluna), ideal para componentes. Media Queries: breakpoints comuns (480px mobile, 768px tablet, 1024px desktop, 1280px+ wide). Unidades: rem (fontes), % (largura), vw/vh (viewport).

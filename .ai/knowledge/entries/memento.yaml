@@ -1,0 +1,7 @@
+id: memento
+title: "Memento Pattern"
+category: design
+tags: ["memento", "gof", "behavioral", "snapshot", "undo"]
+summary: "Memento captura e externaliza o estado interno de um objeto para restauracao posterior (snapshot)."
+content: |
+  Originator: objeto que tem estado. Memento: snapshot do estado (immutable). Caretaker: guarda mementos sem acessar conteudo. Exemplo: save/load em jogos, historico de estados em editores. Em JS: JSON.parse/stringify para snapshots simples.

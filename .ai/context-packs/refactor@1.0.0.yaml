@@ -1,0 +1,95 @@
+name: refactor
+version: 1.0.0
+displayName: "Refactoring Context"
+description: >
+  Contexto especializado para refatoracao de codigo. Inclui preservacao de
+  comportamento, deteccao de code smells, padroes-alvo e planos de validacao.
+author: IDEIA
+created: 2026-07-22T14:00:00Z
+updated: 2026-07-22T14:00:00Z
+tags: [refactoring, quality, clean-code]
+categories: [quality, development]
+level: advanced
+variables:
+  - name: refactor_target
+    type: string
+    description: "Alvo da refatoracao (arquivo/modulo/funcao)"
+    required: true
+  - name: refactor_goal
+    type: string
+    description: "Objetivo da refatoracao"
+    required: true
+  - name: target_pattern
+    type: string
+    description: "Padrao alvo (strategy, observer, factory, etc.)"
+    required: false
+  - name: preserve_api
+    type: boolean
+    description: "Preservar API publica"
+    default: true
+sections:
+  - id: refactor_context
+    title: "Contexto da Refatoracao"
+    format: markdown
+    priority: P0
+    content: |
+      ## Refatoracao: {{refactor_target}}
+      - **Objetivo:** {{refactor_goal}}
+      - **Padrao alvo:** {{target_pattern}}
+      - **Preservar API:** {{preserve_api}}
+  - id: behavior_preservation
+    title: "Preservacao de Comportamento"
+    format: markdown
+    priority: P0
+    content: |
+      ## Preservacao de Comportamento
+      - Toda refatoracao DEVE preservar o comportamento observavel
+      - Testes existentes DEVEM continuar passando
+      - Contratos publicos NAO DEVEM ser alterados
+      - Carregar tests existentes antes de comecar
+  - id: strategy_suggestions
+    title: "Sugestoes de Estrategia"
+    format: markdown
+    priority: P1
+    content: |
+      ## Estrategias de Refatoracao
+      - **Extract Method:** isolar logica em metodos menores
+      - **Rename:** nomes mais expressivos
+      - **Move Field/Method:** realocar para classe mais adequada
+      - **Replace Conditional with Polymorphism:** substituir if/switch por polimorfismo
+      - **Introduce Parameter Object:** agrupar parametros relacionados
+  - id: code_smell_checklist
+    title: "Checklist de Code Smells"
+    format: markdown
+    priority: P1
+    content: |
+      ## Code Smells a Detectar
+      - [ ] Metodos longos (>20 linhas)
+      - [ ] Classes grandes (>200 linhas)
+      - [ ] Parametros em excesso (>3)
+      - [ ] Duplicacao de codigo
+      - [ ] Complexidade ciclomatica alta (>10)
+      - [ ] Acoplamento excessivo
+      - [ ] Comentarios que explicam o que (nao o por que)
+  - id: validation_plan
+    title: "Plano de Validacao"
+    format: markdown
+    priority: P2
+    content: |
+      ## Plano de Validacao
+      1. Executar suite de testes antes da refatoracao
+      2. Refatorar em pequenos passos (commit a cada passo)
+      3. Executar testes apos cada passo
+      4. Comparar output antes/depois se possivel
+      5. Revisar com Reviewer Agent apos conclusao
+dependencies:
+  - pack: ideia-introduction
+    version: ^1.0.0
+    required: true
+slicing:
+  - maxTokens: 4096
+    strategy: priority
+    maxSections: 3
+  - maxTokens: 8192
+    strategy: priority
+    maxSections: 5

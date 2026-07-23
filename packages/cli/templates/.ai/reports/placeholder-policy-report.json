@@ -1,0 +1,85 @@
+{
+  "generatedAt": "2026-07-06T19:53:24.046Z",
+  "findings": [
+    {
+      "file": ".ai/deployment/production-readiness.md",
+      "fileClass": "documentation",
+      "patternId": "placeholder-token",
+      "severity": "high",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": ".ai/generators/repository.generator.js",
+      "fileClass": "executable",
+      "patternId": "scaffold-pending",
+      "severity": "warn",
+      "count": 5,
+      "action": "warn"
+    },
+    {
+      "file": ".ai/laws.yaml",
+      "fileClass": "configuration",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": ".ai/memory/ai-caused-incidents.md",
+      "fileClass": "documentation",
+      "patternId": "placeholder-token",
+      "severity": "high",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": ".ai/tasks/ai-devkit-remediation-plan.md",
+      "fileClass": "documentation",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": ".ai/tasks/ai-devkit-remediation-plan.md",
+      "fileClass": "documentation",
+      "patternId": "placeholder-token",
+      "severity": "high",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": ".ai/tasks/ai-devkit-remediation-plan.md",
+      "fileClass": "documentation",
+      "patternId": "stub-token",
+      "severity": "critical",
+      "count": 5,
+      "action": "warn"
+    },
+    {
+      "file": "packages/adapter-fastapi/README.md",
+      "fileClass": "documentation",
+      "patternId": "stub-token",
+      "severity": "critical",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "packages/adapter-go/README.md",
+      "fileClass": "documentation",
+      "patternId": "stub-token",
+      "severity": "critical",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "README-NPM.md",
+      "fileClass": "documentation",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 1,
+      "action": "warn"
+    }
+  ]
+}

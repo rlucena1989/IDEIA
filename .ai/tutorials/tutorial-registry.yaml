@@ -1,0 +1,94 @@
+# Tutorial Registry — IDEIA
+# Auto-generated from @ideia/tutorial-system
+
+tutorials:
+  - id: 01-primeiro-projeto
+    name: Meu Primeiro Projeto
+    description: Aprenda a criar seu primeiro projeto com a IDEIA do zero
+    difficulty: beginner
+    prerequisites: []
+    estimated_minutes: 10
+    tags: [iniciante, primeiros-passos, cli, projeto]
+    steps:
+      - init-project: Inicializar projeto com IDEIA
+      - explore-structure: Explorar a estrutura do projeto
+      - generate-component: Gerar um componente
+      - run-build: Executar o build
+      - celebrate: Celebrar!
+
+  - id: 02-crud-completo
+    name: CRUD Completo
+    description: Crie uma API REST completa com operações CRUD
+    difficulty: intermediate
+    prerequisites: [01-primeiro-projeto]
+    estimated_minutes: 20
+    tags: [crud, api, rest, backend, intermediario]
+    steps:
+      - scaffold-api: Scaffold do projeto API
+      - create-model: Criar modelo/schema
+      - implement-crud: Implementar endpoints CRUD
+      - add-validation: Adicionar validação
+      - test-with-curl: Testar com curl
+
+  - id: 03-api-externa
+    name: Integracao com API Externa
+    description: Aprenda a integrar sua aplicação com APIs externas
+    difficulty: intermediate
+    prerequisites: [02-crud-completo]
+    estimated_minutes: 20
+    tags: [api, integracao, http, cache, intermediario]
+    steps:
+      - setup-http-client: Configurar cliente HTTP
+      - consume-public-api: Consumir API pública
+      - handle-errors: Tratar erros de API
+      - cache-responses: Implementar cache de respostas
+      - test-integration: Testar integração completa
+
+  - id: 04-deploy-local
+    name: Deploy Local
+    description: Conteinerize e faça deploy local com Docker
+    difficulty: intermediate
+    prerequisites: [02-crud-completo]
+    estimated_minutes: 15
+    tags: [deploy, docker, devops, infra, intermediario]
+    steps:
+      - configure-docker: Configurar Dockerfile
+      - build-image: Construir imagem Docker
+      - docker-compose-up: Subir com Docker Compose
+      - health-check: Verificar health check
+      - stop-cleanup: Parar e limpar
+
+  - id: 05-novo-agente
+    name: Adicionando Novo Agente
+    description: Crie e registre um novo agente especializado
+    difficulty: advanced
+    prerequisites: [02-crud-completo, 03-api-externa]
+    estimated_minutes: 25
+    tags: [agente, extensao, runtime, tools, avancado]
+    steps:
+      - understand-agent-interface: Entender a interface de agente
+      - create-agent-class: Criar classe do agente
+      - register-tools: Registrar ferramentas do agente
+      - add-to-runtime: Adicionar agente ao runtime
+      - test-interaction: Testar interação com o agente
+
+  - id: 06-context-pack-custom
+    name: Criando Context Pack Customizado
+    description: Crie Context Packs para encapsular conhecimento especializado
+    difficulty: advanced
+    prerequisites: [05-novo-agente]
+    estimated_minutes: 25
+    tags: [context-pack, governanca, regras, dominio, avancado]
+    steps:
+      - understand-pack-format: Entender o formato de pack
+      - create-yaml-pack: Criar pack YAML
+      - add-variables: Adicionar variáveis de contexto
+      - register-in-registry: Registrar no registry
+      - test-injection: Testar injeção de contexto
+
+metadata:
+  total_tutorials: 6
+  total_steps: 30
+  average_time: 19
+  generated: "2026-07-22"
+  source: "@ideia/tutorial-system"

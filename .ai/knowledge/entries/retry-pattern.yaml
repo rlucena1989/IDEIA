@@ -1,0 +1,7 @@
+id: retry-pattern
+title: "Retry Pattern with Exponential Backoff"
+category: resilience
+tags: ["retry", "backoff", "jitter", "resilience", "transient-fault"]
+summary: "Retry tenta novamente uma operacao que falhou por erro transitório, com backoff exponencial e jitter."
+content: |
+  Formula: delay = baseDelay * 2^attempt + jitter. Jitter: random(0, delay) evita thundering herd. Max retries: 3-5 normalmente. Quais erros retentar: timeout, 503, 429 (rate limit). Quais nao retentar: 400, 401, 404, 500 (erros permanentes).

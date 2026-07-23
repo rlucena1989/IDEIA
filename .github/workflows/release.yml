@@ -1,0 +1,123 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      release_id: ${{ steps.create-release.outputs.id }}
+      version: ${{ steps.get-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Get version from tag
+        id: get-version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Lint & Test
+        run: |
+          npm run lint
+          npm test -- --verbose
+
+      - name: Generate release notes
+        id: release-notes
+        run: |
+          npx ideia release notes --from $(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "HEAD~10") --to HEAD --out RELEASE_NOTES.md
+          echo "notes<<EOF" >> "$GITHUB_OUTPUT"
+          cat RELEASE_NOTES.md >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        id: create-release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const notes = fs.readFileSync('RELEASE_NOTES.md', 'utf8');
+            const { data: release } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: context.ref.replace('refs/tags/', ''),
+              name: context.ref.replace('refs/tags/', ''),
+              body: notes,
+              draft: false,
+              prerelease: context.ref.includes('-')
+            });
+            return release.id;
+
+  npm-publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    needs: [release]
+    if: ${{ !contains(github.ref, '-') }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: npm run build
+      - name: Publish packages
+        run: |
+          npm publish --workspaces --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        continue-on-error: true
+
+  changelog:
+    name: Update Changelog
+    runs-on: ubuntu-latest
+    needs: [release]
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Generate CHANGELOG.md
+        run: npx ideia release changelog --out CHANGELOG.md
+      - name: Commit changelog
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const exec = require('child_process').execSync;
+            exec('git config user.name "github-actions[bot]"');
+            exec('git config user.email "github-actions[bot]@users.noreply.github.com"');
+            exec('git add CHANGELOG.md');
+            try {
+              exec('git diff --cached --exit-code');
+              console.log('No changelog changes');
+            } catch {
+              exec('git commit -m "docs: update CHANGELOG.md for ${{ github.ref_name }}"');
+              exec('git push');
+            }

@@ -1,0 +1,7 @@
+id: property-based-testing
+title: "Property-Based Testing"
+category: testing
+tags: ["property-based", "testing", "quickcheck", "hypothesis", "fast-check"]
+summary: "Property-based testing gera automaticamente centenas de entradas para testar propriedades invariantes do codigo."
+content: |
+  Propriedade: afirmacao que deve ser verdadeira para todas as entradas validas. Framework gera inputs aleatorios e verifica a propriedade. Exemplo: "reverse(reverse(x)) === x" para qualquer array. Ferramentas: fast-check (JS/TS), Hypothesis (Python), QuickCheck (Haskell). Beneficio: encontra casos limite que exemplos manuais nao cobrem.

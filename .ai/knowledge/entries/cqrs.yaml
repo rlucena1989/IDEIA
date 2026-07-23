@@ -1,0 +1,7 @@
+id: cqrs
+title: "CQRS — Command Query Responsibility Segregation"
+category: architecture
+tags: ["cqrs", "commands", "queries", "event-sourcing", "read-model"]
+summary: "CQRS separa operacoes de leitura (Queries) e escrita (Commands) em modelos diferentes."
+content: |
+  Commands: alteram estado, retornam void, validados pelo dominio. Queries: leem estado, retornam dados, otimizadas para exibicao. Models separados: write model (consistente) e read model (desnormalizado).

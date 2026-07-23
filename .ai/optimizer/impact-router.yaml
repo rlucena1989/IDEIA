@@ -1,0 +1,83 @@
+version: "1.0.0"
+
+impact_router:
+  enabled: true
+  default_mode: "standard"
+
+  task_types:
+    - bugfix
+    - feature
+    - refactor
+    - documentation
+    - design_change
+    - security_review
+    - test_only
+    - dependency_update
+    - cleanup
+    - incident_response
+
+  routing_rules:
+    bugfix:
+      context_profile: "bugfix"
+      execution_mode: "patch"
+      recommended_agents: ["tester", "reviewer"]
+      max_scope: "small"
+
+    feature:
+      context_profile: "feature"
+      execution_mode: "task_graph"
+      recommended_agents: ["architect", "frontend", "tester", "reviewer"]
+      max_scope: "medium"
+
+    refactor:
+      context_profile: "refactor"
+      execution_mode: "patch"
+      recommended_agents: ["architect", "reviewer"]
+      max_scope: "small"
+
+    documentation:
+      context_profile: "docs"
+      execution_mode: "patch"
+      recommended_agents: ["docs", "reviewer"]
+      max_scope: "small"
+
+    design_change:
+      context_profile: "ui-change"
+      execution_mode: "patch"
+      recommended_agents: ["frontend", "reviewer"]
+      max_scope: "small"
+
+    security_review:
+      context_profile: "security-review"
+      execution_mode: "audit"
+      recommended_agents: ["security", "reviewer"]
+      max_scope: "medium"
+
+    test_only:
+      context_profile: "bugfix"
+      execution_mode: "patch"
+      recommended_agents: ["tester"]
+      max_scope: "small"
+
+    dependency_update:
+      context_profile: "feature"
+      execution_mode: "controlled"
+      recommended_agents: ["tester", "security", "reviewer"]
+      max_scope: "small"
+
+    cleanup:
+      context_profile: "refactor"
+      execution_mode: "patch"
+      recommended_agents: ["reviewer"]
+      max_scope: "small"
+
+    incident_response:
+      context_profile: "forensic"
+      execution_mode: "task_graph"
+      recommended_agents: ["architect", "security", "tester", "reviewer"]
+      max_scope: "large"
+
+  thresholds:
+    requires_human_review_from: "medium"
+    blocks_auto_apply_from: "high"
+    blocks_execution_from: "critical"

@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "allowJs": true,
+    "composite": false,
+    "strict": true
+  },
+  "include": [
+    "index.js"
+  ],
+  "exclude": [
+    "**/__tests__"
+  ]
+}

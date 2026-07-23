@@ -1,0 +1,7 @@
+id: semantic-versioning
+title: "Semantic Versioning (SemVer)"
+category: devops
+tags: ["semver", "versioning", "release", "compatibility", "npm"]
+summary: "SemVer padroniza numeros de versao no formato MAJOR.MINOR.PATCH para comunicar compatibilidade de mudancas."
+content: |
+  Formato: MAJOR (incompativel — breaking change), MINOR (nova funcionalidade compativel), PATCH (bug fix compativel). Pre-release: 1.0.0-alpha.1, 1.0.0-beta.2. Build metadata: 1.0.0+build.123. Regras: 0.x e para desenvolvimento inicial (qualquer coisa pode mudar). Depois de 1.0.0, MAJOR = breaking, MINOR = feature, PATCH = bugfix. No Node.js: ^1.2.3 (compativel com 1.x.x), ~1.2.3 (compativel com 1.2.x).

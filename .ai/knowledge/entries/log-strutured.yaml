@@ -1,0 +1,7 @@
+id: log-strutured
+title: "Structured Logging Pattern"
+category: devops
+tags: ["logging", "structured", "json", "observability", "correlation-id"]
+summary: "Structured logging emite logs em formato estruturado (JSON) com campos consistentes para facilitar analise."
+content: |
+  Campos obrigatorios: timestamp, level, message, service, traceId, spanId. Campos opcionais: userId, requestId, duration, error. JSON como formato padrao. Correlation ID: propaga entre servicos. Niveis: debug (desenvolvimento), info (operacao), warn (potencial problema), error (falha), fatal (crash).

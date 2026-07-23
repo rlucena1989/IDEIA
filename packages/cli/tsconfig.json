@@ -1,0 +1,182 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "module": "commonjs",
+    "paths": {
+      "@ideia/diff-engine": [
+        "../diff-engine/src"
+      ],
+      "@ideia/diff-engine/*": [
+        "../diff-engine/src/*"
+      ],
+      "@ideia/event-bus/integration": [
+        "../event-bus/dist/integration"
+      ],
+      "@ideia/trace-registry/observability-integration": [
+        "../trace-registry/dist/observability-integration"
+      ],
+      "@ideia/control-tower": [
+        "../control-tower/src"
+      ],
+      "@ideia/autonomous-evolution-engine": [
+        "../autonomous-evolution-engine/src"
+      ],
+      "@ideia/technology-radar": [
+        "../technology-radar/src"
+      ],
+      "@ideia/notification-system": [
+        "../notification-system/src"
+      ],
+      "@ideia/onboarding-wizard": [
+        "../onboarding-wizard/src"
+      ],
+      "@ideia/profiles": [
+        "../profiles/src"
+      ],
+      "@ideia/config-engine": [
+        "../config-engine/src"
+      ],
+      "@ideia/safety-circuit": [
+        "../safety-circuit/src"
+      ],
+      "@ideia/scope-isolation": [
+        "../scope-isolation/src"
+      ],
+      "@ideia/bhp": [
+        "../bhp/src"
+      ],
+      "@ideia/continuity-engine": [
+        "../continuity-engine/src"
+      ],
+      "@ideia/auto-adr": [
+        "../auto-adr/src"
+      ],
+      "@ideia/metrics-store": [
+        "../metrics-store/src"
+      ],
+      "@ideia/slo-monitor": [
+        "../slo-monitor/src"
+      ],
+      "@ideia/self-optimization-panel": [
+        "../self-optimization-panel/src"
+      ],
+      "@ideia/reality-sync": [
+        "../reality-sync/src"
+      ],
+      "@ideia/prompt-security": [
+        "../prompt-security/src"
+      ],
+      "@ideia/trace-registry": [
+        "../trace-registry/src"
+      ],
+      "@ideia/observability-engine": [
+        "../observability-engine/src"
+      ],
+      "@ideia/workflow-engine": [
+        "../workflow-engine/src"
+      ],
+      "@ideia/delivery-orchestrator": [
+        "../delivery-orchestrator/src"
+      ],
+      "@ideia/feedback-pipeline": [
+        "../feedback-pipeline/src"
+      ]
+    },
+    "baseUrl": ".",
+    "strict": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../policy-engine"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../diff-engine"
+    },
+    {
+      "path": "../memory-store"
+    },
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../profiles"
+    },
+    {
+      "path": "../config-engine"
+    },
+    {
+      "path": "../control-tower"
+    },
+    {
+      "path": "../safety-circuit"
+    },
+    {
+      "path": "../scope-isolation"
+    },
+    {
+      "path": "../bhp"
+    },
+    {
+      "path": "../continuity-engine"
+    },
+    {
+      "path": "../autonomous-evolution-engine"
+    },
+    {
+      "path": "../technology-radar"
+    },
+    {
+      "path": "../auto-adr"
+    },
+    {
+      "path": "../notification-system"
+    },
+    {
+      "path": "../onboarding-wizard"
+    },
+    {
+      "path": "../self-optimization-panel"
+    },
+    {
+      "path": "../metrics-store"
+    },
+    {
+      "path": "../slo-monitor"
+    },
+    {
+      "path": "../reality-sync"
+    },
+    {
+      "path": "../prompt-security"
+    },
+    {
+      "path": "../trace-registry"
+    },
+    {
+      "path": "../observability-engine"
+    },
+    {
+      "path": "../workflow-engine"
+    },
+    {
+      "path": "../delivery-orchestrator"
+    },
+    {
+      "path": "../feedback-pipeline"
+    }
+  ]
+}

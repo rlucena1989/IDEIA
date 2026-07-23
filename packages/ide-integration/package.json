@@ -1,0 +1,30 @@
+{
+  "name": "@ideia/ide-integration",
+  "description": "IDE Integration ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â event-bus, trace-registry, feedback-pipeline, policy-gateway bridge",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/event-bus": "*",
+    "@ideia/trace-registry": "*",
+    "@ideia/feedback-pipeline": "*",
+    "@ideia/policy-gateway": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

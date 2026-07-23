@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PipelineReport",
+  "type": "object",
+  "required": ["timestamp", "mode", "taskType", "stages", "totalDurationMs", "passed", "failed", "skipped", "allPassed", "modeReason"],
+  "properties": {
+    "timestamp": { "type": "string", "format": "date-time" },
+    "mode": { "type": "string", "enum": ["short", "full", "forensic"] },
+    "taskType": { "type": "string" },
+    "stages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description", "required", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "required": { "type": "boolean" },
+          "durationMs": { "type": "integer", "minimum": 0 },
+          "status": { "type": "string", "enum": ["pending", "running", "passed", "skipped", "failed"] },
+          "output": { "type": "string" }
+        }
+      }
+    },
+    "totalDurationMs": { "type": "integer", "minimum": 0 },
+    "passed": { "type": "integer", "minimum": 0 },
+    "failed": { "type": "integer", "minimum": 0 },
+    "skipped": { "type": "integer", "minimum": 0 },
+    "allPassed": { "type": "boolean" },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "allowed": { "type": "integer" },
+        "consumed": { "type": "integer" },
+        "estimated": { "type": "integer" }
+      }
+    },
+    "modeReason": { "type": "string" }
+  }
+}

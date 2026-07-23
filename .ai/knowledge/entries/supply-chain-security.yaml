@@ -1,0 +1,7 @@
+id: supply-chain-security
+title: "Software Supply Chain Security (SLSA, SBOM)"
+category: security
+tags: ["supply-chain", "slsa", "sbom", "dependency", "npm-audit", "cve"]
+summary: "Protecao contra ataques a cadeia de suprimentos de software atraves de verificacao de dependencias e integridade."
+content: |
+  Ameacas: dependency confusion, typo-squatting, compromised package, malicious maintainer. Defesas: lockfile (package-lock.json), npm audit / pnpm audit, SCA (Snyk, Dependabot, Renovate), SBOM (CycloneDX, SPDX), assinatura de artefatos (Sigstore/cosign), SLSA (Supply-chain Levels for Software Artifacts), verified publish (2FA). Pratica: audite dependencias antes de atualizar, evite scripts de pos-instalacao.

@@ -1,0 +1,7 @@
+id: security-headers
+title: "Security Headers Checklist"
+category: security
+tags: ["security-headers", "headers", "owasp", "protection"]
+summary: "Lista completa de headers de seguranca HTTP para proteger aplicacoes web."
+content: |
+  Headers: Strict-Transport-Security (HSTS), Content-Security-Policy (CSP), X-Content-Type-Options: nosniff, X-Frame-Options: DENY/SAMEORIGIN, X-XSS-Protection: 0 (deprecated), Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy: geolocation=(), Cache-Control: no-store (dados sensiveis). Ferramentas: securityheaders.com, Mozilla Observatory.

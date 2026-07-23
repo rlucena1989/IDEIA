@@ -1,0 +1,7 @@
+id: service-mesh
+title: "Service Mesh (Istio, Linkerd)"
+category: architecture
+tags: ["service-mesh", "istio", "linkerd", "sidecar", "mTLS"]
+summary: "Service Mesh gerencia comunicacao entre microservicos com sidecar proxies, adicionando observabilidade, seguranca e controle de trafego."
+content: |
+  Sidecar: proxy (Envoy) junto a cada servico. Control Plane: gerencia configuracao dos proxies (Istiod). Funcionalidades: mTLS automatico, circuit breaking, canary/traffic splitting, tracing distribuido, metricas. Istio: mais recursos, mais complexo. Linkerd: mais leve, focado em simplicidade. Quando usar: muitos servicos (>20), necessidade de mTLS, observabilidade avancada.

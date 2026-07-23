@@ -1,0 +1,7 @@
+id: offline-first
+title: "Offline-First Architecture"
+category: web
+tags: ["offline", "sync", "pwa", "indexeddb", "local-first"]
+summary: "Offline-First projeta a aplicacao para funcionar sem conexao, sincronizando dados quando online."
+content: |
+  Principios: 1) Operacoes locais primeiro (CRUD em IndexedDB/localStorage). 2) Sincronizacao assincrona quando online. 3) Resolucao de conflitos (last-write-wins, CRDT, operational transform). 4) Feedback de estado (indicar online/offline/pending sync). Bibliotecas: RxDB (PouchDB + sync), Firebase Firestore (offline embutido), localForage, Workbox. Desafios: conflitos de edicao concorrente, consistencia, storage limitado.

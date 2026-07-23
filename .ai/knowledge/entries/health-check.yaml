@@ -1,0 +1,7 @@
+id: health-check
+title: "Health Check & Readiness Patterns"
+category: devops
+tags: ["health-check", "readiness", "liveness", "kubernetes", "monitoring"]
+summary: "Health checks permitem que orquestradores e load balancers saibam se a aplicacao esta saudavel e pronta para trafego."
+content: |
+  Liveness: aplicacao esta viva (ping simples). Readiness: aplicacao pronta para receber trafego (dependencias ok). Startup: verificacao inicial (aplicacao acabou de iniciar). Endpoints: /health, /ready, /startup. Em Kubernetes: livenessProbe, readinessProbe, startupProbe.

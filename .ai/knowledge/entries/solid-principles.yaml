@@ -1,0 +1,7 @@
+id: solid-principles
+title: "SOLID Principles"
+category: design
+tags: ["solid", "srp", "ocp", "lsp", "isp", "dip", "oop"]
+summary: "SOLID sao 5 principios de design orientado a objetos que tornam o codigo mais manutenivel e escalavel."
+content: |
+  S: Single Responsibility — uma classe, uma razao para mudar. O: Open/Closed — aberto para extensao, fechado para modificacao. L: Liskov Substitution — subtipos devem ser substituiveis por seus tipos base. I: Interface Segregation — muitas interfaces especificas > uma interface geral. D: Dependency Inversion — dependa de abstracoes, nao de concretas.

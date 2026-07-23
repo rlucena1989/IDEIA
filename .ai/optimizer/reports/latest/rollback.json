@@ -1,0 +1,6 @@
+{
+  "generated_at": "2026-07-21T14:27:29.625Z",
+  "action": "rollback",
+  "reason": "manual or validation failure",
+  "status": "prepared"
+}

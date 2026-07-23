@@ -1,0 +1,18 @@
+{
+  "sessionId": "fba094d9",
+  "taskId": "task-1",
+  "status": "created",
+  "phase": "planning",
+  "step": 0,
+  "totalSteps": 5,
+  "context": {},
+  "startedAt": "2026-07-20T18:48:33.665Z",
+  "updatedAt": "2026-07-20T18:48:33.665Z",
+  "checkpoint": {
+    "path": "",
+    "hash": "",
+    "timestamp": "",
+    "filesChanged": []
+  },
+  "history": []
+}

@@ -1,0 +1,24 @@
+{
+  "name": "@ideia/vector-store",
+  "description": "AI-Devkit Vector Store ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â embeddings, busca semÃƒÆ’Ã‚Â¢ntica, hybrid search, integraÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Â£o com MemoryStore",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

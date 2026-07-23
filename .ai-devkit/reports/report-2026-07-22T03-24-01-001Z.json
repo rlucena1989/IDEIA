@@ -1,0 +1,135 @@
+{
+  "startedAt": "2026-07-22T03:23:09.930Z",
+  "finishedAt": "2026-07-22T03:24:00.985Z",
+  "mode": "fast",
+  "forecast": {
+    "estimatedJobs": 1,
+    "estimatedDurationMs": 500,
+    "risk": "medium"
+  },
+  "precision": {
+    "confidence": 0.16,
+    "variance": 0.21,
+    "stable": false
+  },
+  "quality": {
+    "approved": false,
+    "score": 21,
+    "reasons": [
+      "ha falhas na execucao",
+      "precisao instavel",
+      "coverage critico"
+    ]
+  },
+  "scorecard": {
+    "score": 96,
+    "trend": "up",
+    "status": "good"
+  },
+  "coverage": {
+    "total": 0,
+    "lines": 0,
+    "branches": 0,
+    "functions": 0,
+    "status": "critical"
+  },
+  "gaps": [
+    {
+      "id": "fail-1",
+      "severity": "medium",
+      "description": "[Otimização Inteligente] Pipeline + optimize-request executam"
+    },
+    {
+      "id": "fail-2",
+      "severity": "medium",
+      "description": "[Pipeline Health] Todos os scripts do optimizer executam"
+    },
+    {
+      "id": "fail-3",
+      "severity": "medium",
+      "description": "[Pipeline Health] Testes passam"
+    },
+    {
+      "id": "gap-coverage",
+      "severity": "high",
+      "description": "Cobertura de testes nao gerada (rode npm run test:cov)"
+    }
+  ],
+  "maturity": {
+    "score": 60,
+    "level": "medium"
+  },
+  "history": {
+    "successRate": 0,
+    "averageQualityScore": 22,
+    "averageDurationMs": 19462.5,
+    "runs": 6
+  },
+  "results": [
+    {
+      "id": "job-1",
+      "name": "deep-audit-env",
+      "status": "failed",
+      "durationMs": 6,
+      "exitCode": 1,
+      "attempts": 1,
+      "error": "spawn npx ENOENT"
+    },
+    {
+      "id": "job-2",
+      "name": "deep-test-basic",
+      "status": "failed",
+      "durationMs": 3,
+      "exitCode": 1,
+      "attempts": 1,
+      "error": "spawn npx ENOENT"
+    },
+    {
+      "id": "job-3",
+      "name": "deep-lint-check",
+      "status": "failed",
+      "durationMs": 2,
+      "exitCode": 1,
+      "attempts": 1,
+      "error": "spawn npx ENOENT"
+    },
+    {
+      "id": "job-4",
+      "name": "deep-import-check",
+      "status": "failed",
+      "durationMs": 3,
+      "exitCode": 1,
+      "attempts": 1,
+      "error": "spawn npx ENOENT"
+    },
+    {
+      "id": "job-5",
+      "name": "deep-run-tests",
+      "status": "failed",
+      "durationMs": 2,
+      "exitCode": 1,
+      "attempts": 1,
+      "error": "spawn npx ENOENT"
+    },
+    {
+      "id": "job-6",
+      "name": "deep-duplicate-check",
+      "status": "failed",
+      "durationMs": 3,
+      "exitCode": 1,
+      "attempts": 1,
+      "error": "spawn npx ENOENT"
+    },
+    {
+      "id": "job-7",
+      "name": "deep-flow-check",
+      "status": "failed",
+      "durationMs": 2,
+      "exitCode": 1,
+      "attempts": 1,
+      "error": "spawn npx ENOENT"
+    }
+  ],
+  "totalDurationMs": 51055,
+  "success": false
+}

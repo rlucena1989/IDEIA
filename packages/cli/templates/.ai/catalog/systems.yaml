@@ -1,0 +1,4 @@
+# Sistemas que compoem o projeto
+systems:
+  - name: '[nome-do-projeto]'
+    description: 'Sistema principal gerado com ai-devkit'

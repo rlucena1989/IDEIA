@@ -1,0 +1,29 @@
+{
+  "sessionId": "7c21ddfe",
+  "taskId": "task-3",
+  "status": "created",
+  "phase": "execution",
+  "step": 1,
+  "totalSteps": 1,
+  "context": {},
+  "startedAt": "2026-07-22T11:26:06.259Z",
+  "updatedAt": "2026-07-22T11:26:06.273Z",
+  "checkpoint": {
+    "path": "",
+    "hash": "",
+    "timestamp": "",
+    "filesChanged": []
+  },
+  "history": [
+    {
+      "seq": 1,
+      "action": "analyze",
+      "tool": "scanner",
+      "input": "input",
+      "output": "output",
+      "status": "success",
+      "timestamp": "2026-07-22T11:26:06.273Z",
+      "durationMs": 150
+    }
+  ]
+}

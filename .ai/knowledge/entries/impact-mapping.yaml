@@ -1,0 +1,7 @@
+id: impact-mapping
+title: "Impact Mapping — Planejamento Estrategico"
+category: process
+tags: ["impact-mapping", "strategy", "product", "goals", "delivery"]
+summary: "Impact Mapping alinha entregas de tecnologia com objetivos de negocio atraves de mapas visuais de impacto."
+content: |
+  4 niveis: Goal (objetivo de negocio), Actor (quem pode ajudar/atrapalhar), Impact (mudanca de comportamento do actor), Deliverable (o que vamos construir). Processo: 1) Defina goal (por que?). 2) Identifique actors (quem?). 3) Mapeie impacts (como?). 4) Defina deliverables (o que?). Beneficio: evita construir features que nao impactam objetivos, priorizacao baseada em valor.

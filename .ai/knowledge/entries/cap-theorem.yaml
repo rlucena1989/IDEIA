@@ -1,0 +1,7 @@
+id: cap-theorem
+title: "CAP Theorem & PACELC"
+category: database
+tags: ["cap", "pacelc", "consistency", "availability", "partition-tolerance"]
+summary: "CAP Theorem afirma que um sistema distribuido so pode garantir 2 de 3: Consistency, Availability ou Partition Tolerance."
+content: |
+  C+A (CP): consistente e disponivel se sem particao (RDBMS tradicional). C+P (CP): consistente mesmo com particao, pode ficar indisponivel (HBase, MongoDB com write concern majority). A+P (AP): disponivel mesmo com particao, consistencia eventual (Cassandra, DynamoDB). PACELC estende: durante particao (P) escolha C ou A; sem particao (E) escolha C (latencia) ou A (disponibilidade).

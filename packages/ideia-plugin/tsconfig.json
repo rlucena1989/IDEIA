@@ -1,0 +1,55 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "jsx": "react-jsx",
+    "outDir": "lib",
+    "rootDir": "src",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "module": "commonjs",
+    "types": [
+      "node",
+      "react"
+    ],
+    "composite": true,
+    "strict": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib",
+    "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../agent-runtime"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../memory-store"
+    },
+    {
+      "path": "../mcp"
+    },
+    {
+      "path": "../llm-provider"
+    }
+  ]
+}

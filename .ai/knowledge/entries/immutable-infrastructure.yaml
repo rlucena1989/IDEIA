@@ -1,0 +1,7 @@
+id: immutable-infrastructure
+title: "Immutable Infrastructure Pattern"
+category: devops
+tags: ["immutable", "infrastructure", "golden-image", "ami", "container"]
+summary: "Immutable Infrastructure substitui servidores em vez de modifica-los apos deploy, garantindo consistencia."
+content: |
+  Principio: uma vez criado, um servidor nunca e modificado. Para atualizar: crie nova imagem com mudancas, substitua o servidor. Beneficios: ambiente consistente (sem drift), deploy deterministico, rollback simples (trocar imagem), debug facil (sabe exatamente o que rodava). Implementacao: golden images (AMI), containers (Docker + K8s), Packer (criar imagens).

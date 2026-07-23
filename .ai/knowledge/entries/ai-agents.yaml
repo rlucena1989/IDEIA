@@ -1,0 +1,7 @@
+id: ai-agents
+title: "AI Agent Architecture — Planning, Tools, Memory"
+category: ai
+tags: ["agents", "ai", "planning", "tools", "memory", "autonomous"]
+summary: "AI Agents sao sistemas autonomos que planejam, usam ferramentas e mantem memoria para resolver tarefas complexas."
+content: |
+  Componentes: Planner (define passos), Executor (executa acoes com tools), Memory (curto prazo = conversa, longo prazo = vector store), Reflection (avalia resultados e itera). Tool Use: LLM decide qual ferramenta chamar (search, code, API), executa e processa resultado. Multi-Agent: agentes especializados (planner, coder, reviewer) colaboram. Frameworks: LangChain Agents, CrewAI, AutoGen, OpenAI Assistants.

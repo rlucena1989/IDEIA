@@ -1,0 +1,18 @@
+{
+  "sessionId": "94f8361d",
+  "taskId": "task-a",
+  "status": "created",
+  "phase": "review",
+  "step": 0,
+  "totalSteps": 2,
+  "context": {},
+  "startedAt": "2026-07-20T19:04:08.570Z",
+  "updatedAt": "2026-07-20T19:04:08.582Z",
+  "checkpoint": {
+    "path": "",
+    "hash": "",
+    "timestamp": "",
+    "filesChanged": []
+  },
+  "history": []
+}

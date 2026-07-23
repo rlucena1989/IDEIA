@@ -1,0 +1,77 @@
+name: Weekly Audit Agent
+
+on:
+  schedule:
+    # Executa toda segunda-feira às 09:00 UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Permite execução manual
+
+jobs:
+  audit:
+    name: Run Audit Agent
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build CLI
+        run: npm run build
+
+      - name: Run audit agent
+        run: |
+          echo "=== Running Weekly Audit Agent ==="
+          node packages/cli/dist/index.js audit --json > audit-report.json
+          echo "=== Audit completed ==="
+        continue-on-error: true
+
+      - name: Upload audit report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: audit-report-${{ github.run_number }}
+          path: audit-report.json
+          retention-days: 30
+
+      - name: Observability trace
+        run: |
+          node packages/cli/dist/index.js observability trace \
+            --model "github-actions" \
+            --provider "github" \
+            --latency 0 \
+            --tokens-in 0 \
+            --tokens-out 0 \
+            --command "health-check" \
+            --status success
+
+      - name: Check for critical issues
+        run: |
+          if [ -f audit-report.json ]; then
+            CRITICAL=$(jq '.findings[] | select(.severity == "critical") | length' audit-report.json 2>/dev/null || echo "0")
+            if [ "$CRITICAL" -gt 0 ]; then
+              echo "::error::Audit found $CRITICAL critical issues"
+              exit 1
+            fi
+          fi
+
+      - name: Create issue if audit fails
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🔍 Weekly Audit: Issues detected (${new Date().toISOString().split('T')[0]})`,
+              body: `The weekly audit agent found issues that need attention.\n\n[View audit report](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})\n\nPlease review the audit report and address any critical issues.`,
+              labels: ['audit', 'automated']
+            })

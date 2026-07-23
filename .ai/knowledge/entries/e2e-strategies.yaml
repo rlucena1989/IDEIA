@@ -1,0 +1,7 @@
+id: e2e-strategies
+title: "End-to-End Testing Strategies"
+category: testing
+tags: ["e2e", "playwright", "cypress", "selenium", "ui-testing"]
+summary: "E2E testing testa fluxos completos do sistema do inicio ao fim, simulando o usuario real."
+content: |
+  Ferramentas: Playwright (recomendado, multi-browser), Cypress (dev-friendly), Selenium (legado). Boas praticas: Page Object Model (abstrair paginas), dados de teste gerenciados (API calls para setup), independentes (nao depender de ordem), resilientes (esperar elementos, nao usar sleep fixo). Menos e mais: poucos testes E2E que cobrem fluxos criticos.

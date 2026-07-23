@@ -1,0 +1,7 @@
+id: mfa-auth
+title: "Multi-Factor Authentication (MFA)"
+category: security
+tags: ["mfa", "2fa", "auth", "totp", "security", "authentication"]
+summary: "MFA adiciona uma camada extra de seguranca exigindo dois ou mais metodos de verificacao."
+content: |
+  Fatores: Algo que voce sabe (senha), algo que voce tem (TOTP, SMS), algo que voce e (biometria). TOTP: Time-based One-Time Password (Google Authenticator, Authy). SMS/Email: codigo enviado (menos seguro que TOTP). WebAuthn: autenticacao com chave hardware (YubiKey). Backup codes: para recuperacao.

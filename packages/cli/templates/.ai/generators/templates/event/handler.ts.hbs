@@ -1,0 +1,16 @@
+import { IEvent } from './{{eventFile}}';
+
+export interface IEventHandler<T = unknown> {
+  handle(event: IEvent<T>): void | Promise<void>;
+}
+
+export class {{Name}}Handler implements IEventHandler<{{Name}}Payload> {
+  async handle(event: IEvent<{{Name}}Payload>): Promise<void> {
+    // TODO: implement handler logic
+    console.log(`Handling event: ${event.eventName}`, event.payload);
+  }
+}
+
+export interface {{Name}}Payload {
+  // TODO: define payload fields
+}

@@ -1,0 +1,14 @@
+version: 1
+updated: 2026-07-22T14:00:00Z
+packs:
+  - name: ideia-introduction; version: 1.0.0; tags: [core, essential]; totalTokens: 2450
+  - name: fullstack-feature; version: 1.0.0; tags: [feature, development]; totalTokens: 5200
+  - name: bugfix; version: 1.0.0; tags: [debug, fix, quality, troubleshooting]; totalTokens: 3800
+  - name: refactor; version: 1.0.0; tags: [refactoring, quality, clean-code]; totalTokens: 3200
+  - name: documentation; version: 1.0.0; tags: [docs, writing, communication]; totalTokens: 2800
+  - name: performance; version: 1.0.0; tags: [perf, optimization, benchmarking]; totalTokens: 3500
+  - name: security-review; version: 1.0.0; tags: [security, audit, vulnerability]; totalTokens: 4500
+  - name: migration; version: 1.0.0; tags: [migration, upgrade, breaking-change]; totalTokens: 3000
+  - name: testing; version: 1.0.0; tags: [testing, quality, coverage]; totalTokens: 3600
+  - name: deployment; version: 1.0.0; tags: [deploy, devops, ci-cd, release]; totalTokens: 3200
+  - name: onboarding; version: 1.0.0; tags: [onboarding, learning, tutorial]; totalTokens: 4000

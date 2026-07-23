@@ -1,0 +1,1 @@
+Revise o código ou documentação gerados para o projeto IDEIA. Verifique aderência aos princípios do produto, clareza, segurança, controle de escopo e consistência com a arquitetura definida. Aponte problemas, sugira correções e classifique a gravidade de cada issue encontrada. Não expanda escopo além do que já foi definido.

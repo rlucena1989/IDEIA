@@ -1,0 +1,19 @@
+{
+  "name": "@ideia/metrics-store",
+  "private": true,
+  "description": "Persistent metrics storage for evolution data",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "jest --passWithNoTests"
+  },
+  "dependencies": {
+    "@ideia/event-bus": "*",
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

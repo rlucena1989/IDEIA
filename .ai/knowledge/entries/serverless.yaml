@@ -1,0 +1,7 @@
+id: serverless
+title: "Serverless Architecture (Lambda, Functions)"
+category: architecture
+tags: ["serverless", "lambda", "faas", "aws", "azure", "cloud"]
+summary: "Serverless executa codigo sem gerenciar servidores, escalando automaticamente e cobrando por execucao."
+content: |
+  FaaS: Functions as a Service (AWS Lambda, Azure Functions, Cloud Functions). Event Sources: HTTP (API Gateway), fila (SQS), stream (Kinesis), timer (EventBridge). Beneficios: zero administracao, escalabilidade automatica, pagamento por uso. Limitacoes: cold start, timeout (15 min Lambda), stateless, complexidade de debug local. Frameworks: Serverless Framework, AWS SAM, SST.

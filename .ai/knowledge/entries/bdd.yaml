@@ -1,0 +1,7 @@
+id: bdd
+title: "Behavior-Driven Development (BDD)"
+category: testing
+tags: ["bdd", "testing", "cucumber", "gherkin", "acceptance"]
+summary: "BDD estende TDD com linguagem natural (Gherkin) para descrever comportamento esperado em formato Given-When-Then."
+content: |
+  Formato: Given (contexto), When (acao), Then (resultado esperado). Ferramentas: Cucumber, SpecFlow, Jest-Cucumber. Beneficios: legivel por nao-tecnicos, documentacao viva, alinhamento entre stakeholders. Exemplo: Dado que o usuario esta logado, Quando adiciona item ao carrinho, Entao o total deve ser atualizado.

@@ -1,0 +1,62 @@
+version: "1.0.0"
+
+decisions:
+  - id: "decision-clean-architecture"
+    title: "Clean Architecture como padrão arquitetural"
+    summary: "Decisão de adotar Clean Architecture para todo novo módulo com camadas domain, application, infrastructure, interface."
+    rationale: "Garantir testabilidade, inversão de dependências e independência de frameworks."
+    tags: ["architecture", "clean-arch"]
+
+  - id: "decision-contract-first"
+    title: "Contract-first para APIs"
+    summary: "Toda API deve ser definida por contrato (OpenAPI/AsyncAPI) antes da implementação."
+    rationale: "Evitar incompatibilidades, gerar documentação automática e permitir validação de contratos em CI."
+    tags: ["api", "contract", "design"]
+
+  - id: "decision-monorepo-workspaces"
+    title: "Monorepo com npm workspaces"
+    summary: "Todo o projeto em monorepo com npm workspaces para compartilhamento de código e CI/CD unificado."
+    rationale: "Facilita refactoring cross-package, dependências sincronizadas e build coordenado."
+    tags: ["monorepo", "workspaces", "build"]
+
+  - id: "decision-typescript-strict"
+    title: "TypeScript strict mode obrigatório"
+    summary: "TypeScript em strict mode para todo o projeto, sem any sem justificativa documentada."
+    rationale: "Garantir type safety, reduzir bugs de runtime e melhorar DX com autocomplete."
+    tags: ["typescript", "strict", "type-safety"]
+
+  - id: "decision-commander-cli"
+    title: "Commander.js como framework CLI"
+    summary: "Uso de Commander.js para toda interface CLI, com subcomandos hierárquicos e help automático."
+    rationale: "Framework maduro, bem tipado, suporte nativo a subcomandos e options."
+    tags: ["cli", "commander", "framework"]
+
+  - id: "decision-local-ai-first"
+    title: "AI Local como modo primário (offline-first)"
+    summary: "Motor de IA opera localmente (TF-IDF, Ollama) com fallback automático. Providers remotos são cache layer."
+    rationale: "Privacidade de código, sem dependência de rede, custo zero para operações básicas."
+    tags: ["ai", "local", "privacy", "offline"]
+
+  - id: "decision-pipeline-as-code"
+    title: "Pipeline de quality gates como código"
+    summary: "Quality gates definidos em YAML (laws.yaml) compilados para 13+ formatos de ferramentas de IA."
+    rationale: "Governança versionada, revisível via PR, compilada para todas as ferramentas consumirem."
+    tags: ["pipeline", "governance", "compile"]
+
+  - id: "decision-adapter-pattern"
+    title: "Adapters para suporte multi-linguagem"
+    summary: "Adapters (NestJS, FastAPI, Go) implementam interface comum com detecção automática e comandos padronizados."
+    rationale: "Mesma experiência de desenvolvimento independente da linguagem stack."
+    tags: ["adapter", "multi-language", "abstraction"]
+
+  - id: "decision-plugin-discovery"
+    title: "Plugin discovery via sistema de arquivos"
+    summary: "Plugins descobertos por varredura de .ai/plugins/ e node_modules/@ai-devkit-plugin-* com manifest YAML/JSON."
+    rationale: "Simplicidade, sem necessidade de registro central, facilita instalação local."
+    tags: ["plugin", "discovery", "filesystem"]
+
+  - id: "decision-webview-vs-standalone"
+    title: "Webview VSCode como interface primária + HTTP server standalone"
+    summary: "Dashboards (optimizer, workflow) são webviews VSCode com capacidade de servirem como standalone HTTP."
+    rationale: "Funciona dentro e fora do VSCode, mesma UI, sem duplicação de código."
+    tags: ["ui", "vscode", "webview", "architecture"]

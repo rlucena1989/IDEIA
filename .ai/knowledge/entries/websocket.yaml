@@ -1,0 +1,7 @@
+id: websocket
+title: "WebSocket Pattern"
+category: api
+tags: ["websocket", "realtime", "bidirectional", "socket", "event"]
+summary: "WebSocket fornece canal de comunicacao full-duplex sobre TCP para aplicacoes em tempo real."
+content: |
+  Handshake: HTTP upgrade request → 101 Switching Protocols. Mensagens: texto ou binario, full-duplex. Eventos: onopen, onmessage, onclose, onerror. Fallback: polling, SSE (unidirectional). Exemplos: chat, notificacoes, colaboracao em tempo real, jogos multiplayer.

@@ -1,0 +1,7 @@
+id: brotli-compression
+title: "Compression (gzip, Brotli, Zstandard)"
+category: performance
+tags: ["compression", "gzip", "brotli", "zstd", "performance"]
+summary: "Compressao reduz o tamanho das respostas HTTP, melhorando velocidade de carregamento, especialmente em redes lentas."
+content: |
+  gzip: padrao universal, suportado por todos. Brotli: melhor compressao que gzip (20-30% menor), suportado por todos browsers modernos. Zstandard (zstd): alta velocidade de compressao/decompressao. Configuracao: nginx (brotli_static on, gzip_proxied), CDNs ativam automaticamente. Niveis: brotli level 4-6 e bom custo-beneficio entre compressao e CPU.

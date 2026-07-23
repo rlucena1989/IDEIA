@@ -1,0 +1,7 @@
+id: bridge
+title: "Bridge Pattern"
+category: design
+tags: ["bridge", "gof", "structural", "abstraction", "implementation"]
+summary: "Bridge desacopla uma abstracao de sua implementacao para que ambas possam variar independentemente."
+content: |
+  Abstracao: interface de alto nivel. Implementador: interface de implementacao. Implementacoes concretas: variacoes. Exemplo: dispositivos (TV, Radio) e controles remotos. Beneficio: evita explosao de classes (se cada abstracao tivesse cada implementacao).

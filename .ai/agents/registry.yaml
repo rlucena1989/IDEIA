@@ -1,0 +1,73 @@
+version: 1.0.0
+agents:
+  planner:
+    name: planner
+    description: Planeja arquitetura, não altera código diretamente
+    can_write: false
+    context_profile: feature
+    read_paths:
+      - '**/*'
+    write_paths: []
+    forbidden_paths:
+      - '**/*'
+  engineer:
+    name: engineer
+    description: Implementa código seguindo governança
+    can_write: true
+    context_profile: feature
+    read_paths:
+      - src/**/*
+      - packages/**/*
+    write_paths:
+      - src/**/*
+      - packages/**/*
+    forbidden_paths:
+      - .ai/**/*
+      - .env
+      - '*.lock'
+  qa:
+    name: qa
+    description: Gate de verificação (read-only + executa checks)
+    can_write: false
+    context_profile: bugfix
+    read_paths:
+      - '**/*'
+    write_paths: []
+    forbidden_paths:
+      - '**/*'
+  reviewer:
+    name: reviewer
+    description: Revisão adversarial (read-only)
+    can_write: false
+    context_profile: refactor
+    read_paths:
+      - '**/*'
+    write_paths: []
+    forbidden_paths:
+      - '**/*'
+  security:
+    name: security
+    description: Auditoria de segurança e compliance (read-only)
+    can_write: false
+    context_profile: security-review
+    read_paths:
+      - '**/*'
+    write_paths: []
+    forbidden_paths:
+      - '**/*'
+  docs:
+    name: docs
+    description: Documentação (escrita limitada a docs/)
+    can_write: true
+    context_profile: docs
+    read_paths:
+      - '**/*.md'
+      - .ai/**/*
+    write_paths:
+      - docs/**/*
+      - README.md
+      - CHANGELOG.md
+    forbidden_paths:
+      - src/**/*
+      - .env
+      - '*.lock'

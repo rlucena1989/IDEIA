@@ -1,0 +1,72 @@
+version: "1.0.0"
+
+incidents:
+  - id: "incident-auth-test-gap"
+    title: "Mudança em auth sem cobertura de teste"
+    summary: "Alteração em autenticação foi entregue sem testes adequados, causando regressão em produção."
+    root_cause: "Pressa na entrega + ausência de quality gate obrigatório para auth."
+    resolution: "Implementado security barrier checking: mudanças em auth disparam gate obrigatório com testes."
+    tags: ["auth", "security", "test-gap"]
+
+  - id: "incident-unreviewed-refactor"
+    title: "Refactor amplo sem revisão"
+    summary: "Refactor em múltiplos arquivos causou regressão por falta de revisão de pares."
+    root_cause: "Alteração foi considerada 'simples' e pulou revisão."
+    resolution: "Adicionado adversarial review automático (anti-slop, regressão) e pre-commit hook."
+    tags: ["refactor", "regression", "review"]
+
+  - id: "incident-windows-path-separator"
+    title: "Path separator quebrou scripts no Windows"
+    summary: "Scripts usavam path.join com barra invertida no Windows, quebrando comandos inline."
+    root_cause: "Testes apenas em Unix. Falta de matrix CI com Windows."
+    resolution: "Adicionado normalizePath() utility, CI matrix com Windows + ubuntu, shell: true em spawn."
+    tags: ["windows", "path", "ci", "compatibility"]
+
+  - id: "incident-recursive-template-loop"
+    title: "Template consistency check entrou em loop infinito"
+    summary: "check-template-consistency.js recursão infinita ao encontrar template que referenciava a si mesmo."
+    root_cause: "Falta de visited set no grafo de dependências de templates."
+    resolution: "Adicionado Set de visited nodes e limite de profundidade máxima."
+    tags: ["template", "recursion", "bug"]
+
+  - id: "incident-false-positive-prove"
+    title: "Falso positivo no comando prove"
+    summary: "prove acusava ph-value-policy.yaml como MOCK mesmo quando o arquivo tinha conteúdo real."
+    root_cause: "Heurística de detecção de MOCK muito agressiva (baseada apenas em tamanho do arquivo)."
+    resolution: "Nova heurística: verifica presença de palavras-chave de placeholder + razão conteúdo/estrutura."
+    tags: ["prove", "false-positive", "heuristic"]
+
+  - id: "incident-settings-overwrite"
+    title: "Settings sobrescritas sem merge de defaults"
+    summary: "save_settings sobrescrevia settings.json inteiro, perdendo campos adicionados em novas versões."
+    root_cause: "Falta de merge recursivo entre DEFAULT_SETTINGS e user settings."
+    resolution: "Implementado _mergeDefaults() recursivo para dicts, preservando campos do usuário."
+    tags: ["settings", "merge", "data-loss", "bug"]
+
+  - id: "incident-llm-mode-silent-fail"
+    title: "LLM mode silenciava erros críticos"
+    summary: "Com --ai-llm-mode, comandos falhavam silenciosamente sem output visível ao usuário."
+    root_cause: "LLM mode suprimia console.log e mensagens de erro para output estruturado."
+    resolution: "LLM mode ainda emite erros via stderr e exit codes não-zero."
+    tags: ["llm", "logging", "error-handling", "ux"]
+
+  - id: "incident-audit-early-exit"
+    title: "Audit abortava no primeiro erro"
+    summary: "Comando audit parava no primeiro check que falhava, sem reportar problemas restantes."
+    root_cause: "Early exit pattern sem coleta de falhas parciais."
+    resolution: "Audit agora coleta todas as falhas sem early exit, reportando sumário completo ao final."
+    tags: ["audit", "error-handling", "diagnostic"]
+
+  - id: "incident-dashboard-file-mismatch"
+    title: "Dashboard esperava arquivos em runtime/ que pipeline não produzia"
+    summary: "dashboard.js esperava latest-quality.json e latest-risk.json em runtime/, mas scripts escreviam em .ai/reports/latest/."
+    root_cause: "Pipeline evoluiu sem atualizar paths do frontend. Falta de contrato entre backend e frontend."
+    resolution: "Score scripts agora escrevem em ambos diretórios. Post-pipeline script sincroniza runtime/."
+    tags: ["dashboard", "pipeline", "contract", "integration"]
+
+  - id: "incident-git-crlf-corruption"
+    title: "Git CRLF corrompeu arquivos .sh no Windows"
+    summary: "Scripts shell (.sh) tiveram CRLF adicionados pelo Git no Windows, quebrando execução."
+    root_cause: ".gitattributes ausente para arquivos .sh. Git core.autocrlf true no Windows."
+    resolution: "Adicionado .gitattributes com * text=auto e *.sh eol=lf. Adicionado verify no CI."
+    tags: ["git", "windows", "line-endings", "crlf"]

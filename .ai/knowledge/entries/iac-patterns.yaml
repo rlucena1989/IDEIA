@@ -1,0 +1,7 @@
+id: iac-patterns
+title: "Infrastructure as Code (Terraform, Pulumi, CloudFormation)"
+category: devops
+tags: ["iac", "terraform", "pulumi", "cloudformation", "infrastructure"]
+summary: "IaC gerencia infraestrutura (rede, servidores, banco) atraves de codigo versionado, em vez de configuracao manual."
+content: |
+  Ferramentas: Terraform/HCL (provider-agnostic, estado em arquivo), Pulumi (TS/JS/Python/Go, estado gerenciado), CloudFormation (AWS-only, YAML/JSON). Praticas: estado remoto (S3 + DynamoDB locking para Terraform), modulos reutilizaveis, plan/review antes de apply, terragrunt para DRY. Dica: evite drift com CI/CD que aplica automaticamente.

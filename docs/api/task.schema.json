@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ai-devkit.local/schemas/task.schema.json",
+  "title": "Task",
+  "description": "Schema for a project task",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique task identifier"
+    },
+    "title": {
+      "type": "string",
+      "description": "Task title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed task description"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "in_progress", "completed", "cancelled", "blocked"],
+      "default": "pending",
+      "description": "Current task status"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"],
+      "default": "medium",
+      "description": "Task priority level"
+    },
+    "requires_approval": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this task needs human approval"
+    },
+    "affected_files": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": [],
+      "description": "Files affected by this task"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Task creation timestamp"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Task last update timestamp"
+    }
+  },
+  "required": ["task_id", "title", "status", "created_at"]
+}

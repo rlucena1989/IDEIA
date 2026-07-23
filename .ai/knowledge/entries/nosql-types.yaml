@@ -1,0 +1,7 @@
+id: nosql-types
+title: "NoSQL Database Types & Use Cases"
+category: database
+tags: ["nosql", "document", "key-value", "column", "graph"]
+summary: "NoSQL abrange 4 tipos principais de banco, cada um otimizado para cargas de trabalho diferentes."
+content: |
+  Document (MongoDB, Couchbase): dados JSON flexiveis, schema-less. Key-Value (Redis, DynamoDB): simples, ultra-rapido, caching/sessoes. Column (Cassandra, Bigtable): agregacoes em colunas, time-series, grandes volumes. Graph (Neo4j, ArangoDB): relacoes complexas, recomendacao, grafos sociais. Nao existe melhor NoSQL — escolha pelo padrao de acesso aos dados.

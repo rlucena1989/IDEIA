@@ -1,0 +1,17 @@
+{
+  "name": "@ideia/memory-hierarchy",
+  "description": "IDEIA Memory Hierarchy Ã¢â‚¬â€ working/project/institutional/global memory com retenÃƒÂ§ÃƒÂ£o, promoÃƒÂ§ÃƒÂ£o e esquecimento controlado",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

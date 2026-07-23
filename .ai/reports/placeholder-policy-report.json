@@ -1,0 +1,229 @@
+{
+  "generatedAt": "2026-07-15T17:19:45.942Z",
+  "findings": [
+    {
+      "file": ".github/FUNDING.yml",
+      "fileClass": "configuration",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 4,
+      "action": "warn"
+    },
+    {
+      "file": "AGENTS.md",
+      "fileClass": "documentation",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "docs/ESTUDOS/99-Z-REQUISITOS-TODOS-ESTUDOS.md",
+      "fileClass": "documentation",
+      "patternId": "stub-token",
+      "severity": "critical",
+      "count": 2,
+      "action": "warn"
+    },
+    {
+      "file": "docs/governance/AUDITORIA-ACHADOS-2026-07-15.md",
+      "fileClass": "documentation",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 5,
+      "action": "warn"
+    },
+    {
+      "file": "docs/governance/AUDITORIA-ACHADOS-2026-07-15.md",
+      "fileClass": "documentation",
+      "patternId": "scaffold-pending",
+      "severity": "warn",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "docs/governance/AUDITORIA-COMPLETA-2026-07-15.md",
+      "fileClass": "documentation",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "docs/governance/AUDITORIA-COMPLETA-2026-07-15.md",
+      "fileClass": "documentation",
+      "patternId": "stub-token",
+      "severity": "critical",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "docs/governance/AUDITORIA-FLUXO-INTEGRACAO-2026-07-15.md",
+      "fileClass": "documentation",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 2,
+      "action": "warn"
+    },
+    {
+      "file": "docs/governance/AUDITORIA-TECNICA-REAL-2026-07-13.md",
+      "fileClass": "documentation",
+      "patternId": "stub-token",
+      "severity": "critical",
+      "count": 11,
+      "action": "warn"
+    },
+    {
+      "file": "docs/governance/CONFRONTACAO-DOCS-CODIGO.md",
+      "fileClass": "documentation",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 8,
+      "action": "warn"
+    },
+    {
+      "file": "docs/governance/CONFRONTACAO-DOCS-CODIGO.md",
+      "fileClass": "documentation",
+      "patternId": "placeholder-token",
+      "severity": "high",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "docs/governance/CONFRONTACAO-DOCS-CODIGO.md",
+      "fileClass": "documentation",
+      "patternId": "stub-token",
+      "severity": "critical",
+      "count": 10,
+      "action": "warn"
+    },
+    {
+      "file": "packages/cli/src/quality/test-validator.ts",
+      "fileClass": "executable",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "packages/cli/src/quality/__tests__/test-validator.test.ts",
+      "fileClass": "executable",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 2,
+      "action": "warn"
+    },
+    {
+      "file": "packages/cli/src/__tests__/review.test.ts",
+      "fileClass": "executable",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 10,
+      "action": "warn"
+    },
+    {
+      "file": "packages/correction-oracle/src/correction-oracle.ts",
+      "fileClass": "executable",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 3,
+      "action": "warn"
+    },
+    {
+      "file": "packages/correction-oracle/__tests__/correction-oracle.test.ts",
+      "fileClass": "executable",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 4,
+      "action": "warn"
+    },
+    {
+      "file": "packages/spec-generator/src/test-stub-generator.ts",
+      "fileClass": "executable",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "plans/AUDITORIA-CONSISTENCIA-DOCUMENTAL.md",
+      "fileClass": "documentation",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "plans/FUNCIONALIDADES_ANALISE_COMPLETA.md",
+      "fileClass": "documentation",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 3,
+      "action": "warn"
+    },
+    {
+      "file": "plans/FUNCIONALIDADES_ANALISE_COMPLETA.md",
+      "fileClass": "documentation",
+      "patternId": "placeholder-token",
+      "severity": "high",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "plans/FUNCIONALIDADES_ANALISE_COMPLETA.md",
+      "fileClass": "documentation",
+      "patternId": "stub-token",
+      "severity": "critical",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "plans/FUNCIONALIDADES_ANALISE_COMPLETA.md",
+      "fileClass": "documentation",
+      "patternId": "lorem-ipsum",
+      "severity": "high",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "plans/FUNCIONALIDADES_V2_FRONTMATTER.md",
+      "fileClass": "documentation",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 2,
+      "action": "warn"
+    },
+    {
+      "file": "plans/FUNCIONALIDADES_V2_FRONTMATTER.md",
+      "fileClass": "documentation",
+      "patternId": "placeholder-token",
+      "severity": "high",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "plans/FUNCIONALIDADES_V2_FRONTMATTER.md",
+      "fileClass": "documentation",
+      "patternId": "stub-token",
+      "severity": "critical",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "plans/FUNCIONALIDADES_V2_FRONTMATTER.md",
+      "fileClass": "documentation",
+      "patternId": "lorem-ipsum",
+      "severity": "high",
+      "count": 1,
+      "action": "warn"
+    },
+    {
+      "file": "plans/future/future-plans.md",
+      "fileClass": "documentation",
+      "patternId": "todo-token",
+      "severity": "medium",
+      "count": 20,
+      "action": "warn"
+    }
+  ]
+}

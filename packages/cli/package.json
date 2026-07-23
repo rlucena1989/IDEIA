@@ -1,0 +1,81 @@
+{
+  "name": "@ideia/cli",
+  "description": "IDEIA CLI",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "ideia": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc --build --force && node scripts/copy-templates.js",
+    "start": "node dist/index.js",
+    "ai:verify": "ideia verify",
+    "ai:status": "ideia status",
+    "ai:doctor": "ideia doctor",
+    "ai:sync": "ideia sync",
+    "ai:audit": "ideia audit",
+    "ai:context": "ideia context",
+    "ai:feature": "ideia feature",
+    "ai:quality:gate": "ideia verify",
+    "ai:system:blueprint": "ideia status",
+    "templates:sync": "if exist scripts\\sync-templates.js (node scripts/sync-templates.js) else (echo WARNING: sync-templates.js not found)",
+    "ai:check:audit": "ideia audit",
+    "ai:check:verify": "ideia verify",
+    "ai:check:all": "npm run ai:check:audit && npm run ai:check:verify"
+  },
+  "dependencies": {
+    "@ideia/agent-runtime": "*",
+    "@ideia/audit-trail": "*",
+    "@ideia/contracts": "*",
+    "@ideia/logger": "*",
+    "@ideia/delivery-orchestrator": "*",
+    "@ideia/event-bus": "*",
+    "@ideia/feedback-pipeline": "*",
+    "@ideia/memory-store": "*",
+    "@ideia/observability-engine": "*",
+    "@ideia/policy-engine": "*",
+    "@ideia/profiles": "*",
+    "@ideia/config-engine": "*",
+    "@ideia/control-tower": "*",
+    "@ideia/safety-circuit": "*",
+    "@ideia/scope-isolation": "*",
+    "@ideia/bhp": "*",
+    "@ideia/continuity-engine": "*",
+    "@ideia/autonomous-evolution-engine": "*",
+    "@ideia/technology-radar": "*",
+    "@ideia/auto-adr": "*",
+    "@ideia/notification-system": "*",
+    "@ideia/onboarding-wizard": "*",
+    "@ideia/self-optimization-panel": "*",
+    "@ideia/metrics-store": "*",
+    "@ideia/slo-monitor": "*",
+    "@ideia/trace-registry": "*",
+    "@ideia/workflow-engine": "*",
+    "chalk": "^4.1.2",
+    "commander": "^10.0.0",
+    "node-pty": "^1.0.0",
+    "ws": "^8.16.0",
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.0.0",
+    "@types/ws": "^8.5.10",
+    "typescript": "^5.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

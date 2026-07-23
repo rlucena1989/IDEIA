@@ -1,0 +1,7 @@
+id: hateoas
+title: "HATEOAS — Hypermedia as the Engine of Application State"
+category: api
+tags: ["hateoas", "rest", "hypermedia", "links", "discoverability"]
+summary: "HATEOAS adiciona links navegaveis nas respostas da API, permitindo que clientes descubram acoes disponiveis dinamicamente."
+content: |
+  Respostas incluem array "links" com rel (relacao), href (URL), method (HTTP method). Exemplo: /orders/123 retorna links para cancel, pay, track. Beneficio: cliente nao precisa saber URLs de antemao, API auto-descritiva. Desafio: complexidade extra, pouco adotado em APIs modernas.

@@ -1,0 +1,15 @@
+{
+  "experimental": true,
+  "id": "adapter-zig",
+  "name": "adapter-zig",
+  "language": "zig",
+  "version": "1.0.0",
+  "commands": [
+    { "id": "init", "label": "Init", "description": "Initialize project structure" },
+    { "id": "lint", "label": "Lint", "description": "Run linter" },
+    { "id": "test", "label": "Test", "description": "Run tests" },
+    { "id": "build", "label": "Build", "description": "Build project" },
+    { "id": "quality-gate", "label": "Quality Gate", "description": "Run quality checks" },
+    { "id": "detect", "label": "Detect", "description": "Detect project type" }
+  ]
+}

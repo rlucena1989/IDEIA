@@ -1,0 +1,7 @@
+id: proxy
+title: "Proxy Pattern"
+category: design
+tags: ["proxy", "gof", "structural", "lazy", "virtual", "protection"]
+summary: "Proxy fornece um substituto ou placeholder para controlar acesso a outro objeto."
+content: |
+  Tipos: Virtual Proxy (lazy loading — cria objeto real apenas quando necessario), Protection Proxy (controla acesso), Remote Proxy (representa objeto remoto), Logging Proxy (loga chamadas), Cache Proxy. Same interface as real subject.

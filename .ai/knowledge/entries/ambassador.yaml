@@ -1,0 +1,7 @@
+id: ambassador
+title: "Ambassador / Proxy Pattern"
+category: architecture
+tags: ["ambassador", "proxy", "sidecar", "external", "broker"]
+summary: "Ambassador atua como intermediario entre a aplicacao e servicos externos, centralizando concerns de comunicacao."
+content: |
+  Diferenca de Sidecar: ambassador foca em comunicacao externa, sidecar em funcionalidades auxiliares. Funcionalidades: circuit breaking, retry, timeout, caching, autenticacao, rate limiting. Exemplo: Redis Sentinel como ambassador para cluster Redis. Implementacao: Envoy, HAProxy, Nginx como ambassadors.

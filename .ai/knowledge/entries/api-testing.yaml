@@ -1,0 +1,7 @@
+id: api-testing
+title: "API Testing Strategies"
+category: testing
+tags: ["api-testing", "rest", "contract", "supertest", "postman"]
+summary: "Estrategias para testar APIs: functional, contract, performance, security."
+content: |
+  Functional: Supertest (JS/TS), REST Assured (Java), requests (Python). Verificar: status codes, body, headers, schemas. Contract: Pact (consumer-driven), OpenAPI validator. Performance: k6, autocannon, ab. Security: rate limit testing, auth bypass, injection, fuzzing. E2E: Postman/Newman collections, Hoppscotch. Dica: organize tests por recurso, use factories para dados de teste, teste cenarios de erro e edge cases.

@@ -1,0 +1,7 @@
+id: retry-vs-circuit-breaker
+title: "Retry vs Circuit Breaker vs Timeout — When to Use"
+category: resilience
+tags: ["retry", "circuit-breaker", "timeout", "resilience", "choice"]
+summary: "Cada padrao de resiliencia tem proposito especifico: Retry para falhas transitorias, Circuit Breaker para evitar cascata, Timeout para libertar recursos."
+content: |
+  Timeout: sempre (libera recursos, evita operacoes infinitas). Retry: falhas transitorias (timeout de rede, 503). Nao retentar: 400, 401, 404 (erros permanentes). Circuit Breaker: quando retry nao e suficiente (sistema falhando), evita sobrecarga. Bulkhead: isolar recursos por dependencia. Cache de falha: retornar ultima resposta bem-sucedida durante falha (fallback).

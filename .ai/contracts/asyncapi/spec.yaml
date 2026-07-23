@@ -1,0 +1,287 @@
+asyncapi: 2.6.0
+info:
+  title: "AI-Devkit IDE Events"
+  version: "0.1.0"
+  description: "Eventos WebSocket em tempo real da IDE do AI-Devkit"
+servers:
+  dev:
+    url: "ws://localhost:3001/ws"
+    protocol: wss
+    description: "IDE Server local"
+
+defaultContentType: application/json
+
+channels:
+  file/change:
+    description: "Notificações de alterações no sistema de arquivos"
+    publish:
+      summary: "Arquivo criado, modificado ou excluído"
+      message:
+        name: FileChangeEvent
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [create, modify, delete]
+            path:
+              type: string
+            timestamp:
+              type: string
+              format: date-time
+      examples:
+        - payload:
+            type: modify
+            path: "src/index.ts"
+            timestamp: "2026-07-15T10:00:00.000Z"
+
+  terminal/execution:
+    description: "Resultados de execução de comandos no terminal"
+    publish:
+      summary: "Comando executado no terminal"
+      message:
+        name: TerminalExecutionEvent
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            command:
+              type: string
+            result:
+              type: object
+              properties:
+                ok:
+                  type: boolean
+                output:
+                  type: string
+                error:
+                  type: string
+                code:
+                  type: integer
+                  nullable: true
+                durationMs:
+                  type: integer
+            classification:
+              type: string
+              enum: [safe, high-risk, blocked]
+      examples:
+        - payload:
+            command: "npm run build"
+            result:
+              ok: true
+              output: "Build complete"
+              error: ""
+              code: 0
+              durationMs: 1500
+            classification: "safe"
+
+  approval/request:
+    description: "Solicitação de aprovação para ação do agente"
+    publish:
+      summary: "Nova solicitação de aprovação"
+      message:
+        name: ApprovalRequestEvent
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            action:
+              type: string
+            approvalId:
+              type: string
+            reason:
+              type: string
+      examples:
+        - payload:
+            action: "file.write"
+            approvalId: "action_1234_abc"
+            reason: "Writing to sensitive file"
+
+  approval/respond:
+    description: "Resposta a uma solicitação de aprovação"
+    publish:
+      summary: "Aprovação concedida ou negada"
+      message:
+        name: ApprovalRespondEvent
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            action:
+              type: string
+            approved:
+              type: boolean
+            approver:
+              type: string
+      examples:
+        - payload:
+            action: "file.write"
+            approved: true
+            approver: "admin"
+
+  preview/approve:
+    description: "Preview de mudança aprovado"
+    publish:
+      summary: "Alteração em preview foi aprovada"
+      message:
+        name: PreviewApproveEvent
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            file:
+              type: string
+            approved:
+              type: boolean
+      examples:
+        - payload:
+            file: "src/app.ts"
+            approved: true
+
+  preview/reject:
+    description: "Preview de mudança rejeitado"
+    publish:
+      summary: "Alteração em preview foi rejeitada"
+      message:
+        name: PreviewRejectEvent
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            file:
+              type: string
+            reason:
+              type: string
+      examples:
+        - payload:
+            file: "src/app.ts"
+            reason: "Breaking change not reviewed"
+
+  memory/update:
+    description: "Novo registro de memória operacional"
+    publish:
+      summary: "Registro adicionado à memória"
+      message:
+        name: MemoryUpdateEvent
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            category:
+              type: string
+            summary:
+              type: string
+            severity:
+              type: string
+              enum: [low, medium, high, critical]
+      examples:
+        - payload:
+            category: "failure"
+            summary: "Consistency check failed"
+            severity: "high"
+
+  task/update:
+    description: "Atualização de tarefa ativa"
+    publish:
+      summary: "Tarefa criada ou atualizada"
+      message:
+        name: TaskUpdateEvent
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            task:
+              type: object
+              properties:
+                id:
+                  type: string
+                title:
+                  type: string
+                status:
+                  type: string
+                  enum: [pending, running, completed, failed]
+                progress:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+      examples:
+        - payload:
+            task:
+              id: "task_1234"
+              title: "Implement login"
+              status: "running"
+              progress: 50
+
+  session/change:
+    description: "Mudanças no estado da sessão da IDE"
+    publish:
+      summary: "Sessão criada, atualizada ou destruída"
+      message:
+        name: SessionChangeEvent
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            sessionId:
+              type: string
+            action:
+              type: string
+              enum: [created, updated, destroyed]
+      examples:
+        - payload:
+            sessionId: "session_abc123"
+            action: "created"
+
+  diagnostics/update:
+    description: "Resultados de diagnóstico do projeto"
+    publish:
+      summary: "Novos resultados de diagnóstico"
+      message:
+        name: DiagnosticsUpdateEvent
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            count:
+              type: integer
+            errors:
+              type: integer
+            warnings:
+              type: integer
+            timestamp:
+              type: string
+              format: date-time
+      examples:
+        - payload:
+            count: 5
+            errors: 2
+            warnings: 3
+            timestamp: "2026-07-15T10:00:00.000Z"
+
+  connected:
+    description: "Confirmação de conexão WebSocket"
+    publish:
+      summary: "Handshake inicial do WebSocket"
+      message:
+        name: ConnectedEvent
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [connected]
+            data:
+              type: object
+              properties:
+                sessionId:
+                  type: string
+                workspace:
+                  type: string
+                policy:
+                  type: string
+                events:
+                  type: array
+                  items:
+                    type: string

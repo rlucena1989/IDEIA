@@ -1,0 +1,7 @@
+id: event-sourcing
+title: "Event Sourcing"
+category: architecture
+tags: ["event-sourcing", "events", "immutability", "audit", "replay"]
+summary: "Event Sourcing armazena o estado como uma sequencia imutavel de eventos, em vez de apenas o estado atual."
+content: |
+  Cada alteracao no estado gera um evento imutavel. O estado atual e obtido fazendo replay dos eventos. Beneficios: audit trail completo, time travel, debugging, CQRS natural.

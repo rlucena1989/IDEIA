@@ -1,0 +1,19 @@
+{
+  "name": "@ideia/context-builder",
+  "description": "IDEIA Context Builder Ã¢â‚¬â€ compositor unificado de contexto multi-fonte com scoring, dedup, proveniÃƒÂªncia e serializaÃƒÂ§ÃƒÂ£o token-eficiente",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

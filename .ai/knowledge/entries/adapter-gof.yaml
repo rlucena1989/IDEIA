@@ -1,0 +1,7 @@
+id: adapter-gof
+title: "Adapter Pattern (Wrapper)"
+category: design
+tags: ["adapter", "gof", "structural", "wrapper", "compatibility"]
+summary: "Adapter permite que classes com interfaces incompativeis trabalhem juntas, convertendo a interface de uma classe em outra."
+content: |
+  Adapter de classe: usa heranca multipla (ou implements) para adaptar. Adapter de objeto: usa composicao, delega para o adaptee. Exemplo: adaptar API de terceiros para interface esperada, conector de banco.

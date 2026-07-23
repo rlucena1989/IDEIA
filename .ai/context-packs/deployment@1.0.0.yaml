@@ -1,0 +1,90 @@
+name: deployment
+version: 1.0.0
+displayName: "Deployment Context"
+description: >
+  Contexto especializado para deploy de aplicacoes. Suporta ambientes,
+  estrategias de deploy, health checks e rollback procedures.
+author: IDEIA
+created: 2026-07-22T14:00:00Z
+updated: 2026-07-22T14:00:00Z
+tags: [deploy, devops, ci-cd, release]
+categories: [devops, deployment]
+level: advanced
+variables:
+  - name: deploy_target
+    type: enum
+    description: "Ambiente de deploy"
+    required: true
+    enum: [development, staging, production, docker, kubernetes, serverless]
+  - name: deploy_strategy
+    type: enum
+    description: "Estrategia de deploy"
+    default: rolling
+    enum: [rolling, blue-green, canary, recreate, immutable]
+sections:
+  - id: deployment_context
+    title: "Contexto de Deploy"
+    format: markdown
+    priority: P0
+    content: |
+      ## Deploy: {{deploy_target}}
+      - **Estrategia:** {{deploy_strategy}}
+  - id: pipeline_steps
+    title: "Passos do Pipeline"
+    format: markdown
+    priority: P1
+    content: |
+      ## Pipeline de Deploy
+      1. Build: `npm run build` ou `docker build`
+      2. Test: executar suite de testes
+      3. Lint: verificar qualidade de codigo
+      4. Scan: security scan dependencies
+      5. Package: gerar artefato (Docker image, tarball, zip)
+      6. Deploy: aplicar no ambiente alvo
+      7. Smoke: health check apos deploy
+      8. Monitor: observar metrics por periodo
+  - id: environment_vars
+    title: "Variaveis de Ambiente"
+    format: code
+    priority: P1
+    content: |
+      # Variaveis de ambiente para {{deploy_target}}
+      NODE_ENV={{deploy_target}}
+      LOG_LEVEL=info
+      PORT=3000
+      DATABASE_URL=postgres://user:pass@host:5432/db
+      REDIS_URL=redis://host:6379
+  - id: health_check_criteria
+    title: "Criterios de Health Check"
+    format: markdown
+    priority: P2
+    content: |
+      ## Health Check Criteria
+      - HTTP 200 em /health
+      - Database conectada
+      - Redis/PubSub conectado
+      - Latencia < 500ms
+      - Memoria < 80%
+      - CPU < 70%
+  - id: rollback_procedure
+    title: "Procedimento de Rollback"
+    format: markdown
+    priority: P2
+    content: |
+      ## Rollback Procedure
+      1. Identificar falha (monitoring alert, user report)
+      2. Reverter para versao anterior estavel
+      3. Verificar health check
+      4. Notificar equipe
+      5. Post-mortem: documentar causa e prevencao
+dependencies:
+  - pack: ideia-introduction
+    version: ^1.0.0
+    required: true
+slicing:
+  - maxTokens: 4096
+    strategy: priority
+    maxSections: 3
+  - maxTokens: 8192
+    strategy: priority
+    maxSections: 5

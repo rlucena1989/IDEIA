@@ -1,0 +1,7 @@
+id: load-testing
+title: "Load & Stress Testing (k6, Artillery)"
+category: testing
+tags: ["load-testing", "stress", "performance", "k6", "artillery"]
+summary: "Load testing simula trafego para medir performance, escalabilidade e confiabilidade do sistema sob carga."
+content: |
+  Tipos: Smoke (carga minima para validar baseline), Load (carga esperada), Stress (carga alem do esperado), Spike (pico repentino), Soak (carga sustentada por horas). Metricas: RPS (requests/sec), latencia (p50, p95, p99), erros (%), throughput. Ferramentas: k6 (JS, Grafana), Artillery (YAML+JS), Locust (Python).

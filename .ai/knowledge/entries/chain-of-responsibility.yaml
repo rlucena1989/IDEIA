@@ -1,0 +1,7 @@
+id: chain-of-responsibility
+title: "Chain of Responsibility"
+category: design
+tags: ["chain-of-responsibility", "gof", "behavioral", "middleware", "pipeline"]
+summary: "Chain of Responsibility passa uma requisicao por uma cadeia de handlers, onde cada um decide processar ou passar adiante."
+content: |
+  Handler: define interface com metodo handle() e referencia ao proximo handler. Cada handler decide se processa e/ou passa. Exemplo: middleware HTTP (Express, Koa), pipeline de validacao, filtros de logging. Diferenca de Decorator: chain passa adiante, decorator envolve.

@@ -1,0 +1,72 @@
+version: "1.0.0"
+budget:
+  enabled: true
+  defaults:
+    max_tokens: 24000
+    max_files_modified: 5
+    max_agents: 3
+    max_runtime_seconds: 120
+    max_context_size: "standard"
+  per_task_type:
+    bugfix:
+      max_tokens: 8000
+      max_files_modified: 3
+      max_agents: 1
+      max_runtime_seconds: 60
+      max_context_size: "minimal"
+    feature:
+      max_tokens: 32000
+      max_files_modified: 10
+      max_agents: 4
+      max_runtime_seconds: 180
+      max_context_size: "expanded"
+    refactor:
+      max_tokens: 16000
+      max_files_modified: 8
+      max_agents: 2
+      max_runtime_seconds: 120
+      max_context_size: "standard"
+    documentation:
+      max_tokens: 4000
+      max_files_modified: 2
+      max_agents: 1
+      max_runtime_seconds: 30
+      max_context_size: "minimal"
+    design_change:
+      max_tokens: 8000
+      max_files_modified: 3
+      max_agents: 1
+      max_runtime_seconds: 45
+      max_context_size: "minimal"
+    security_review:
+      max_tokens: 16000
+      max_files_modified: 5
+      max_agents: 2
+      max_runtime_seconds: 90
+      max_context_size: "forensic"
+    test_only:
+      max_tokens: 6000
+      max_files_modified: 3
+      max_agents: 1
+      max_runtime_seconds: 60
+      max_context_size: "minimal"
+    dependency_update:
+      max_tokens: 4000
+      max_files_modified: 2
+      max_agents: 1
+      max_runtime_seconds: 30
+      max_context_size: "minimal"
+    cleanup:
+      max_tokens: 4000
+      max_files_modified: 5
+      max_agents: 1
+      max_runtime_seconds: 30
+      max_context_size: "minimal"
+    incident_response:
+      max_tokens: 24000
+      max_files_modified: 10
+      max_agents: 3
+      max_runtime_seconds: 300
+      max_context_size: "forensic"
+  output:
+    manifest: ".ai/reports/latest/budget-report.json"

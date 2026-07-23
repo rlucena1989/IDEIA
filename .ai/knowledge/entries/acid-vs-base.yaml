@@ -1,0 +1,7 @@
+id: acid-vs-base
+title: "ACID vs BASE Consistency Models"
+category: database
+tags: ["acid", "base", "consistency", "transaction", "nosql"]
+summary: "ACID (relacional) garante transacoes rigidas. BASE (NoSQL) sacrifica consistencia imediata por disponibilidade."
+content: |
+  ACID: Atomicity (tudo ou nada), Consistency (estado valido), Isolation (concorrencia segura), Durability (persistente). Ex: PostgreSQL, MySQL, SQL Server. BASE: Basically Available (sistema responde sempre), Soft state (estado pode mudar sem input), Eventual consistency (dados convergem eventualmente). Ex: Cassandra, DynamoDB, CouchDB. Escolha: ACID para dados financeiros/pedidos, BASE para dados onde consistencia eventual e aceitavel.

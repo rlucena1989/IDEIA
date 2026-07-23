@@ -1,0 +1,7 @@
+id: async-performance
+title: "Async Performance — Event Loop, Promise, Worker Threads"
+category: performance
+tags: ["async", "event-loop", "worker-threads", "promise", "non-blocking"]
+summary: "Maximizar performance em Node.js usando I/O assincrono, event loop eficiente e CPU-bound em worker threads."
+content: |
+  Event Loop: fase unico (timers, I/O callbacks, idle/prepare, poll, check, close). Nao bloquear: tarefas CPU-intensivas bloqueiam event loop. Solucoes: Worker Threads (paralelismo real para CPU), setImmediate() para liberar loop, partitioning (dividir tarefas grandes em chunks com setImmediate). Promises: mais eficientes que callbacks, mas cuidado com Promise.all() que falha rapido (usar Promise.allSettled()).

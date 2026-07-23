@@ -1,0 +1,37 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "strict": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../trace-registry"
+    },
+    {
+      "path": "../feedback-pipeline"
+    },
+    {
+      "path": "../policy-gateway"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../logger"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+id: builder
+title: "Builder Pattern"
+category: design
+tags: ["builder", "gof", "creational", "fluent-api"]
+summary: "Builder separa a construcao de um objeto complexo de sua representacao, permitindo diferentes representacoes."
+content: |
+  Construtor: fornece metodos para configurar partes do objeto. Produto: o objeto final construido. Fluent API: metodos retornam this para encadeamento. Exemplo: StringBuilder, QueryBuilder, HTTP Request Builder.

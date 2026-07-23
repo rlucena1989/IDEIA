@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDEIA Audit Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; padding: 2rem; }
+  h1 { color: #58a6ff; margin-bottom: 0.5rem; }
+  h2 { color: #8b949e; font-size: 1rem; font-weight: 400; margin-bottom: 2rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1.25rem; }
+  .card h3 { color: #8b949e; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+  .card .value { font-size: 2rem; font-weight: 600; color: #f0f6fc; }
+  .card .status { font-size: 0.8rem; margin-top: 0.25rem; }
+  .green { color: #3fb950; } .red { color: #f85149; } .yellow { color: #d29922; }
+  .report { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1.25rem; font-family: 'Courier New', monospace; font-size: 0.85rem; white-space: pre-wrap; line-height: 1.5; }
+  canvas { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1rem; margin-bottom: 2rem; width: 100%; height: 300px; }
+</style>
+</head>
+<body>
+<h1>🔍 IDEIA Audit Dashboard</h1>
+<h2>Last updated: 2026-07-18T23:25:56.599Z</h2>
+
+<div class="grid">
+  <div class="card"><h3>Tests</h3><div class="value">271</div><div class="status green">31 suites</div></div>
+  <div class="card"><h3>TSC Errors</h3><div class="value green">0</div><div class="status">0 = clean</div></div>
+  <div class="card"><h3>Bundle Size</h3><div class="value">4047</div><div class="status">KB</div></div>
+  <div class="card"><h3>execSync</h3><div class="value red">2</div><div class="status">0 = clean</div></div>
+  <div class="card"><h3>Packages</h3><div class="value">66</div><div class="status">total</div></div>
+</div>
+
+<canvas id="chart"></canvas>
+
+<div class="report"># Adversarial Review Report
+Date: 2026-07-18T14:02:17.154Z
+Checks: anti-slop, regression, security, performance
+
+## Summary
+| Severity | Count |
+|----------|-------|
+| critical | 117 |
+| high | 47 |
+| medium | 20383 |
+| low | 2819 |
+
+## Findings (23366)
+- [LOW] [anti-slop] apps\api\src\index.ts:46 — console.log em codigo de producao
+  Suggestion: Substitua por logger estruturado
+- [LOW] [anti-slop] apps\api\src\index.ts:47 — console.log em codigo de producao
+  Suggestion: Substitua por logger estruturado
+- [MEDIUM] [anti-slop] apps\api\src\routes\approve.ts:51 — Linha duplicada
+  Suggestion: Extraia para funcao ou variavel
+- [MEDIUM] [anti-slop] apps\api\src\routes\approve.ts:53 — Linha duplicada
+  Suggestion: Extraia para funcao ou variavel
+- [MEDIUM] [anti-slop] apps\api\src\routes\approve.ts:54 — Linha duplicada
+  Suggestion: Extraia para funcao ou variavel
+- [MEDIUM] [anti-slop] apps\api\src\routes\approve.ts:57 — Linha duplicada
+  Suggestion: Extraia para funcao ou variavel
+- [MED</div>
+
+<script>
+const data = [{"timestamp":"2026-07-18T23:23:16.106Z","testCount":271,"testSuites":31,"tscErrors":0,"packageCount":66,"lintErrors":0,"bundleSizeKb":4047,"execSyncCount":5,"durationMs":4510},{"timestamp":"2026-07-18T23:25:56.599Z","testCount":271,"testSuites":31,"tscErrors":0,"packageCount":66,"lintErrors":0,"bundleSizeKb":4047,"execSyncCount":2,"durationMs":480}];
+if (data.length > 1) {
+  const ctx = document.getElementById('chart').getContext('2d');
+  const labels = data.map(d => d.timestamp.slice(0, 10));
+  const tests = data.map(d => d.testCount);
+  const errors = data.map(d => d.tscErrors);
+  const bundles = data.map(d => d.bundleSizeKb || 0);
+
+  const w = ctx.canvas.width;
+  const h = ctx.canvas.height;
+  const pad = { top: 20, right: 20, bottom: 40, left: 50 };
+  const plotW = w - pad.left - pad.right;
+  const plotH = h - pad.top - pad.bottom;
+
+  function drawLine(data, color) {
+    const max = Math.max(...data, 1);
+    const min = Math.min(...data, 0);
+    const range = max - min || 1;
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    for (let i = 0; i < data.length; i++) {
+      const x = pad.left + (i / (data.length - 1)) * plotW;
+      const y = pad.top + plotH - ((data[i] - min) / range) * plotH;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  ctx.clearRect(0, 0, w, h);
+  ctx.strokeStyle = '#30363d'; ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.top + (i / 4) * plotH;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
+  }
+  drawLine(tests, '#3fb950');
+  drawLine(errors, '#f85149');
+  drawLine(bundles, '#d29922');
+
+  ctx.fillStyle = '#8b949e'; ctx.font = '11px sans-serif';
+  ctx.fillText('Tests (green)', w - 120, 20);
+  ctx.fillText('Errors (red)', w - 120, 35);
+  ctx.fillText('Bundle (yellow)', w - 120, 50);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+id: database-indexing
+title: "Database Indexing Strategies"
+category: database
+tags: ["indexing", "database", "b-tree", "performance", "query"]
+summary: "Indexacao de banco de dados para acelerar consultas, entendendo tradeoffs entre read e write performance."
+content: |
+  Tipos: B-Tree (default, bom para range/equality), Hash (equality apenas), GiST (full-text search), GIN (arrays/jsonb). Indexes compostos: ordem importa (coluna mais seletiva primeiro). Partial index: WHERE condition (indexa apenas linhas relevantes). Covering index: inclui colunas no index (evita table lookup). Cuidados: indexes desaceleram INSERT/UPDATE/DELETE, monitore unused indexes.

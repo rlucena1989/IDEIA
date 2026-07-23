@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": { "rootDir": "src", "outDir": "dist", "strict": true },
+  "include": ["src"],
+  "exclude": ["**/__tests__"],
+  "references": [
+    { "path": "../core-contributions" },
+    { "path": "../theia-ai" }
+  ]
+}

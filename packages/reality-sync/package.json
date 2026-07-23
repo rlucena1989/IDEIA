@@ -1,0 +1,26 @@
+{
+  "name": "@ideia/reality-sync",
+  "description": "Reality Sync Engine ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â watcher contÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­nuo que mantÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©m cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³digo, docs e manifests alinhados em tempo real",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  }
+}

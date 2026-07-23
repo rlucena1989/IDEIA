@@ -1,0 +1,7 @@
+id: n-plus-one
+title: "N+1 Query Problem"
+category: database
+tags: ["n-plus-one", "performance", "orm", "eager-loading", "lazy-loading"]
+summary: "N+1 ocorre quando uma consulta carrega N registros e depois faz N consultas adicionais para cada registro."
+content: |
+  Problema: 1 query para lista de usuarios + N queries para pedidos de cada usuario = N+1 queries. Solucoes: Eager Loading (JOIN na query principal, ex: .with("orders") no Prisma/TypeORM), Batch Loading (DataLoader), Select N+1 detection (ferramentas: bullet, n+1 detector). Em GraphQL: DataLoader e essencial para evitar N+1 em resolvers.

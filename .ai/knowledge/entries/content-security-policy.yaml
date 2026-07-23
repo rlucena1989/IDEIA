@@ -1,0 +1,7 @@
+id: content-security-policy
+title: "Content Security Policy (CSP)"
+category: security
+tags: ["csp", "security", "xss", "headers", "browser"]
+summary: "CSP previne XSS e outros ataques de injecao controlando quais recursos o browser pode carregar."
+content: |
+  Header: Content-Security-Policy: default-src 'self'. Diretivas: default-src (fallback), script-src (JS), style-src (CSS), img-src (imagens), connect-src (fetch/XHR), frame-src (iframes), font-src (fonts). Valores: 'self', 'none', 'unsafe-inline', 'unsafe-eval', domain.com, nonce-{random}, hash-{sha256}. Report-Only: Content-Security-Policy-Report-Only (nao bloqueia, apenas reporta violacoes).

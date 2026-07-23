@@ -1,0 +1,47 @@
+version: 1
+name: placeholder-policy
+description: "Policy that defines which placeholder-like patterns are forbidden or allowed in AI-DevKit projects."
+defaults:
+  severity: high
+  failOnExecutableCode: true
+  failOnGeneratedArtifacts: true
+  warnOnDocumentation: true
+patterns:
+  - id: todo-token
+    pattern: "\\bTODO\\b"
+    severity: medium
+  - id: placeholder-token
+    pattern: "\\bPLACEHOLDER\\b"
+    severity: high
+  - id: stub-token
+    pattern: "\\bSTUB\\b|\\bstub\\b|IMPLEMENT_ME|NOT_IMPLEMENTED"
+    severity: critical
+  - id: lorem-ipsum
+    pattern: "Lorem ipsum"
+    severity: high
+  - id: fake-not-implemented
+    pattern: "method\\s+not\\s+implemented|not[\\s_-]?supported"
+    severity: critical
+  - id: scaffold-pending
+    pattern: "@scaffold-pending"
+    severity: warn
+fileClasses:
+  executable:
+    globs: ["**/*.js", "**/*.ts", "**/*.tsx", "**/*.sh", "**/*.ps1", "**/*.bat"]
+    action: fail
+  configuration:
+    globs: ["**/*.json", "**/*.yaml", "**/*.yml"]
+    action: fail
+  documentation:
+    globs: ["**/*.md"]
+    action: warn
+allowlist:
+  - file: ".ai/rules/placeholder-policy.yaml"
+    allowedPatternIds: ["todo-token", "placeholder-token", "stub-token", "lorem-ipsum", "fake-not-implemented", "scaffold-pending"]
+  - file: ".ai/bin/check-generated-code-risk.js"
+    allowedPatternIds: ["todo-token", "placeholder-token", "stub-token"]
+  - file: ".ai/prompts/25-prompt-template.md"
+    allowedPatternIds: ["placeholder-token"]
+reporting:
+  output: ".ai/reports/placeholder-policy-report.json"
+  includeWarnings: true

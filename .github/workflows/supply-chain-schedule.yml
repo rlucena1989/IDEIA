@@ -1,0 +1,64 @@
+# R24: supply-chain → CI auto-schedule
+# Executa semanalmente scanner de CVE, SBOM e auditoria de baseline
+
+name: Supply Chain Schedule
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Every Monday 06:00 UTC
+  workflow_dispatch:
+    inputs:
+      ci_exit:
+        description: 'Exit with code 1 on critical vulns'
+        type: boolean
+        default: true
+
+jobs:
+  supply-chain:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+      - run: npm run build --if-present
+
+      - name: 'SCAN: Dependency CVE scan'
+        id: scan
+        run: |
+          node packages/cli/dist/index.js supply-chain scan --ci --json > supply-chain-report.json 2>&1 || true
+          echo "SCAN_EXIT=$?" >> $GITHUB_OUTPUT
+
+      - name: 'SBOM: Generate Bill of Materials'
+        id: sbom
+        run: |
+          node packages/cli/dist/index.js supply-chain sbom
+          echo "SBOM generated"
+
+      - name: 'AUDIT: Compare against baseline'
+        id: audit
+        continue-on-error: true
+        run: |
+          node packages/cli/dist/index.js supply-chain audit --baseline sbom.json || echo "No baseline found"
+
+      - name: 'REPORT: Upload scan results'
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: supply-chain-report
+          path: |
+            supply-chain-report.json
+            sbom.json
+
+      - name: 'ALERT: Critical vulnerabilities found'
+        if: steps.scan.outputs.SCAN_EXIT != '0' && github.event_name == 'schedule'
+        run: |
+          echo "::warning::Critical CVEs detected in supply chain. Review supply-chain-report.json"

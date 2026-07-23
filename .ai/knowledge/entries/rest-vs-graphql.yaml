@@ -1,0 +1,7 @@
+id: rest-vs-graphql
+title: "REST vs GraphQL vs gRPC — When to Use What"
+category: api
+tags: ["rest", "graphql", "grpc", "comparison", "api-design"]
+summary: "Comparacao entre REST, GraphQL e gRPC com criterios de escolha baseados no caso de uso."
+content: |
+  REST: simplicidade, caching HTTP, maturidade. Melhor para APIs publicas, CRUD, integracoes simples. GraphQL: flexibilidade, dados exatos, schema forte. Melhor para multiplos clientes, dados relacionais complexos, mobile. gRPC: performance, streaming, tipado. Melhor para comunicacao interna, microservicos, alta throughput.

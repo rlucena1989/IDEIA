@@ -1,0 +1,7 @@
+id: cache-strategies
+title: "Cache Strategies — CDN, Redis, In-Memory"
+category: performance
+tags: ["cache", "redis", "cdn", "performance", "caching", "ttl"]
+summary: "Estrategias de cache para melhorar performance: CDN para conteudo estatico, Redis para dados frequentes, in-memory para dados de calculo."
+content: |
+  Estrategias: Cache Aside (aplicacao carrega no cache), Read Through (cache carrega do banco), Write Through (cache escreve no banco), Write Behind (cache acumula e escreve em batch). TTL: tempo de vida do cache. Invalidação: manual, TTL, evento. CDN: CloudFront, Cloudflare para assets estaticos. Redis: estrutura de dados em memoria com persistencia opcional.

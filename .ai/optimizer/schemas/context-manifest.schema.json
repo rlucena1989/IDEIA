@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ContextManifest",
+  "type": "object",
+  "required": ["profile", "generated_at", "files_included", "files_excluded", "total_chars", "hash"],
+  "properties": {
+    "profile": { "type": "string" },
+    "generated_at": { "type": "string" },
+    "files_included": { "type": "array", "items": { "type": "string" } },
+    "files_excluded": { "type": "array", "items": { "type": "string" } },
+    "total_chars": { "type": "integer", "minimum": 0 },
+    "hash": { "type": "string" },
+    "policy_version": { "type": "string" }
+  },
+  "additionalProperties": true
+}

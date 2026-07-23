@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PatchManifest",
+  "type": "object",
+  "required": ["strategy", "generated_at", "files_changed", "diff_format", "hash"],
+  "properties": {
+    "strategy": { "type": "string", "enum": ["minimal", "scoped", "replace_file"] },
+    "generated_at": { "type": "string" },
+    "files_changed": { "type": "array", "items": { "type": "string" } },
+    "diff_format": { "type": "string", "enum": ["unified", "json"] },
+    "hash": { "type": "string" }
+  },
+  "additionalProperties": true
+}

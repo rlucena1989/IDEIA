@@ -1,0 +1,7 @@
+id: clean-architecture
+title: "Clean Architecture (Robert C. Martin)"
+category: architecture
+tags: ["clean-architecture", "layers", "dependency-inversion", "solid"]
+summary: "Clean Architecture organiza o codigo em camadas concêntricas onde dependencias apontam para dentro."
+content: |
+  Camadas: Entities → Use Cases → Interface Adapters → Frameworks & Drivers. A Regra de Dependencia: dependencias de codigo-fonte so podem apontar para dentro. Nada em um circulo interno pode saber sobre algo em um circulo externo.

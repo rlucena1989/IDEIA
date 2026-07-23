@@ -1,0 +1,7 @@
+id: ddd-aggregate
+title: "DDD Aggregate Design"
+category: architecture
+tags: ["ddd", "aggregate", "consistency", "transaction", "boundary"]
+summary: "Aggregate e um cluster de objects tratados como uma unidade para mudancas de estado, com consistencia transacional."
+content: |
+  Regras: 1) Escolha um Aggregate Root (entidade que orquestra). 2) Referencie outros aggregates apenas por ID, nao por objeto. 3) Use Eventual Consistency entre aggregates. 4) Uma transacao = um aggregate. 5) Aggregates pequenos para escalabilidade. 6) Limite: o aggregate deve ser pequeno o suficiente para ser carregado em memoria.

@@ -1,0 +1,1 @@
+Converta a documentação consolidada da IDE local em código e configurações funcionais. Produza módulos, componentes e arquivos seguindo a arquitetura definida nos documentos base. Mantenha o foco no MVP e na ordem de implementação das fases do roadmap. Priorize clareza, testabilidade e aderência aos princípios do produto.

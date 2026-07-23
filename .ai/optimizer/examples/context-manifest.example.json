@@ -1,0 +1,12 @@
+{
+  "profile": "ui-change",
+  "generated_at": "2026-07-08T07:10:00-03:00",
+  "files_included": [
+    "src/components/UserCard/UserCard.tsx",
+    ".ai/design-system/contract.yaml",
+    ".ai/policies/project-policy.yaml"
+  ],
+  "files_excluded": [".env", "node_modules/"],
+  "total_chars": 18421,
+  "hash": "sha256:example"
+}

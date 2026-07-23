@@ -1,0 +1,7 @@
+id: encryption-at-rest
+title: "Encryption at Rest & in Transit"
+category: security
+tags: ["encryption", "tls", "aes", "at-rest", "in-transit", "crypto"]
+summary: "Protecao de dados sensiveis com criptografia em repouso (banco, disco) e em transito (TLS)."
+content: |
+  Em Transito: TLS 1.2+ para todas as comunicacoes de rede. Certificados gerenciados por Let's Encrypt ou CA interna. HSTS para forcar HTTPS. Mutual TLS (mTLS) para comunicacao entre servicos. Em Repouso: AES-256 para dados em disco, criptografia de banco (TDE), criptografia de arquivos. Chaves gerenciadas por KMS (AWS KMS, Azure Key Vault, HashiCorp Vault).

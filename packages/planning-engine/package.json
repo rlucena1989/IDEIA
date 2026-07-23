@@ -1,0 +1,19 @@
+{
+  "name": "@ideia/planning-engine",
+  "description": "IDEIA Planning Engine Ã¢â‚¬â€ decomposiÃƒÂ§ÃƒÂ£o adaptativa, anÃƒÂ¡lise de dependÃƒÂªncias, risco, custo e replanejamento dinÃƒÂ¢mico",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

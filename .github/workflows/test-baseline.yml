@@ -1,0 +1,119 @@
+name: Quality Baseline
+
+on:
+  push:
+    branches: [main, master]
+    paths-ignore:
+      - '**.md'
+      - '.ai/**'
+  pull_request:
+    branches: [main, master]
+    paths-ignore:
+      - '**.md'
+      - '.ai/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke-test:
+    name: Smoke Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Run Smoke Test
+        run: node smoke-test.mjs
+      - name: Run Contract Tests
+        run: node contract-tests.mjs
+
+  performance-baseline:
+    name: Performance Baseline
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Run Performance Baseline
+        run: node performance-baseline.mjs
+      - name: Upload Baseline Metrics
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-baseline
+          path: .metrics/performance-baseline.json
+          retention-days: 90
+
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Run Security Audit
+        run: node security-audit.mjs
+      - name: Run npm Audit
+        run: npm audit --audit-level=high || echo "npm audit warnings (non-blocking)"
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        package:
+          - policy-engine
+          - memory-store
+          - event-bus
+          - agent-runtime
+          - autonomous-editor
+          - workflow-engine
+          - delivery-orchestrator
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Test ${{ matrix.package }}
+        run: npx jest packages/${{ matrix.package }} --config packages/${{ matrix.package }}/jest.config.js --verbose
+      - name: Coverage ${{ matrix.package }}
+        run: npx jest packages/${{ matrix.package }} --config packages/${{ matrix.package }}/jest.config.js --coverage
+        continue-on-error: true
+
+  quality-report:
+    name: Quality Report
+    runs-on: ubuntu-latest
+    needs: [smoke-test, performance-baseline, security-audit, unit-tests]
+    timeout-minutes: 5
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo "## Quality Baseline Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Smoke Test | ${{ needs.smoke-test.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Performance Baseline | ${{ needs.performance-baseline.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security Audit | ${{ needs.security-audit.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Unit Tests (Policy Engine) | ${{ needs.unit-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "_Baseline gerada em $(date -u)_" >> $GITHUB_STEP_SUMMARY

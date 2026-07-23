@@ -1,0 +1,7 @@
+id: error-handling
+title: "Error Handling Patterns"
+category: design
+tags: ["error-handling", "exceptions", "result-type", "either", "resilience"]
+summary: "Padroes para tratamento de erros: Result Type, Either, Exceptions, Circuit Breaker, Retry."
+content: |
+  Result Type: retorna sucesso ou falha como tipo, sem excecoes (Rust, Go). Either: Left (erro) ou Right (sucesso) (Scala, Kotlin). Exceptions: throw/catch (Java, C#, JS). Circuit Breaker: para de chamar servico com falha, retry apos timeout. Retry: tenta novamente com backoff exponencial. Bulkhead: isola recursos por servico.

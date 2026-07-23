@@ -1,0 +1,18 @@
+{
+  "sessionId": "5335afdd",
+  "taskId": "task-b",
+  "status": "created",
+  "phase": "testing",
+  "step": 0,
+  "totalSteps": 3,
+  "context": {},
+  "startedAt": "2026-07-22T11:26:05.883Z",
+  "updatedAt": "2026-07-22T11:26:06.250Z",
+  "checkpoint": {
+    "path": "",
+    "hash": "",
+    "timestamp": "",
+    "filesChanged": []
+  },
+  "history": []
+}

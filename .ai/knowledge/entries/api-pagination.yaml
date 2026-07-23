@@ -1,0 +1,7 @@
+id: api-pagination
+title: "API Pagination Strategies"
+category: api
+tags: ["pagination", "api", "cursor", "offset", "performance"]
+summary: "Estrategias de paginacao para APIs que retornam grandes colecoes de dados."
+content: |
+  Offset/Limit: page=2&size=20 (simples, inconsistente se dados mudam). Cursor-based: cursor=abc123&size=20 (consistente, melhor para dados em tempo real). Keyset: after_id=123&size=20 (eficiente em banco, requer chave unica ordenada). Headers de paginacao: X-Total-Count, Link rel=next/prev.

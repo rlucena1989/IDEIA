@@ -1,0 +1,7 @@
+id: monorepo-pattern
+title: "Monorepo Management Patterns"
+category: devops
+tags: ["monorepo", "nx", "turborepo", "workspaces", "build", "dependencies"]
+summary: "Monorepo mantem multiplos projetos em um unico repositorio com build e dependencias compartilhadas."
+content: |
+  Tools: Nx, Turborepo, Lerna, npm/yarn/pnpm workspaces. Beneficios: shared code, refactoring atomicos, CI/CD unificado, dependencias sincronizadas. Desafios: build time, git history grande, gate unificado. Solucoes: build cache (Nx, Turborepo), CI estrategico (mudancas afetam apenas projetos relevantes), CODEOWNERS para permissoes.

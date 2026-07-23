@@ -1,0 +1,7 @@
+id: secure-coding
+title: "Secure Coding Practices Checklist"
+category: security
+tags: ["secure-coding", "best-practices", "input-validation", "output-encoding"]
+summary: "Checklist de praticas de codificacao segura para prevenir vulnerabilidades comuns."
+content: |
+  Input: nunca confie em entrada do usuario, valide tipo/tamanho/formato, whitelist > blacklist. Output: encode para contexto (HTML entity, URL encode, JS encode). Authentication: hash de senhas (bcrypt/argon2), MFA, rate limit login. Session: httpOnly + Secure + SameSite cookies, regenerate session ID apos login. File upload: validate type, scan, armazene fora do webroot. Logging: nunca logue secrets/PII. Error handling: nao exponha detalhes internos ao usuario.

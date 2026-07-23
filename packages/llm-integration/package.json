@@ -1,0 +1,17 @@
+{
+  "name": "@ideia/llm-integration",
+  "description": "Unified LLM provider system: router, fallback, cache, rate limiting, security, observability, multi-tenancy",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": { "build": "tsc" },
+  "dependencies": {
+    "@ideia/core-contributions": "^0.0.0",
+    "@ideia/theia-ai": "^0.0.0"
+  },
+  "files": ["dist"],
+  "publishConfig": { "access": "public" },
+  "repository": { "type": "git", "url": "https://github.com/anomalyco/ideia.git" },
+  "homepage": "https://ideia.dev",
+  "bugs": { "url": "https://github.com/anomalyco/ideia/issues" }
+}

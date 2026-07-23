@@ -1,0 +1,7 @@
+id: web-performance
+title: "Web Performance Metrics (Core Web Vitals)"
+category: performance
+tags: ["web-vitals", "lcp", "fid", "cls", "performance", "seo"]
+summary: "Core Web Vitals sao metricas de performance e experiencia do usuario monitoradas pelo Google para ranking SEO."
+content: |
+  LCP (Largest Contentful Paint): <2.5s — mede carregamento do maior elemento visivel. FID (First Input Delay): <100ms — mede responsividade a interacao do usuario (substituido por INP). INP (Interaction to Next Paint): <200ms. CLS (Cumulative Layout Shift): <0.1 — mede estabilidade visual (evitar layout shift sem aviso). TTFB (Time to First Byte): <800ms. Ferramentas: Lighthouse, PageSpeed Insights, Web Vitals Extension, RUM (Real User Monitoring).

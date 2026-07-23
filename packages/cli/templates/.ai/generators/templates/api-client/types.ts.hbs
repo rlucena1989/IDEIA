@@ -1,0 +1,8 @@
+{{#each schemas}}
+export interface {{this.name}} {
+{{#each this.properties}}
+  {{this.name}}{{#unless this.required}}?{{/unless}}: {{this.type}};
+{{/each}}
+}
+
+{{/each}}

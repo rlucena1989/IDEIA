@@ -1,0 +1,7 @@
+id: idempotency
+title: "Idempotency Pattern"
+category: api
+tags: ["idempotency", "retry", "api", "safety", "post"]
+summary: "Idempotencia garante que multiplas requisicoes identicas tenham o mesmo efeito que uma unica requisicao."
+content: |
+  Metodos seguros: GET, HEAD, OPTIONS, TRACE (sempre idempotentes). PUT, DELETE: idempotentes por definicao. POST: NAO idempotente — usar Idempotency-Key header para garantir. Implementacao: cliente gera UUID, servidor armazena em cache, retorna resultado original se mesma key.

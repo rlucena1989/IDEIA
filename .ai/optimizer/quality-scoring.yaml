@@ -1,0 +1,28 @@
+version: "1.0.0"
+
+quality_scoring:
+  enabled: true
+  min_score: 80
+
+  dimensions:
+    consistency:
+      weight: 25
+    readability:
+      weight: 20
+    maintainability:
+      weight: 20
+    testability:
+      weight: 15
+    design_compliance:
+      weight: 20
+
+  penalties:
+    - "duplicated_logic"
+    - "unnecessary_abstraction"
+    - "large_diff"
+    - "inconsistent_naming"
+    - "missing_tests"
+    - "design_violation"
+
+  output:
+    manifest: ".ai/reports/latest/quality-score.json"

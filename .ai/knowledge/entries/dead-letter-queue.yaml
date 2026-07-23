@@ -1,0 +1,7 @@
+id: dead-letter-queue
+title: "Dead Letter Queue (DLQ) Pattern"
+category: resilience
+tags: ["dlq", "dead-letter", "message-queue", "error-handling", "async"]
+summary: "DLQ armazena mensagens que nao puderam ser processadas apos multiplas tentativas, para analise e reprocessamento."
+content: |
+  Funcionamento: consumidor tenta processar mensagem; se falha, retorna para fila com retry count; apos max retries, move para DLQ. DLQ: fila separada onde mensagens falhas sao armazenadas para debug, reprocessamento manual ou automatico. Praticas: alerta quando DLQ recebe mensagem, analise periodica de DLQ, TTL na DLQ (mensagens expiram). Ferramentas: SQS DLQ, RabbitMQ DLX, Kafka DLQ.

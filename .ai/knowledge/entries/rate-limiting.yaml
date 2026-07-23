@@ -1,0 +1,7 @@
+id: rate-limiting
+title: "Rate Limiting Patterns"
+category: api
+tags: ["rate-limiting", "throttling", "api", "token-bucket", "leaky-bucket"]
+summary: "Rate limiting protege APIs contra abuso limitando o numero de requisicoes em um intervalo de tempo."
+content: |
+  Algoritmos: Token Bucket (tokens acumulam, burst permitido), Leaky Bucket (fila processa em taxa constante), Fixed Window (contagem reseta a cada X segundos), Sliding Window (janela deslizante mais precisa). Headers: X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset. Resposta: 429 Too Many Requests + Retry-After.

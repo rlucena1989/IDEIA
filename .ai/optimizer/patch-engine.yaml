@@ -1,0 +1,30 @@
+version: "1.0.0"
+
+patch_engine:
+  enabled: true
+  default_strategy: "minimal"
+
+  strategies:
+    minimal:
+      description: "Alteração mínima local."
+      overwrite_allowed: false
+
+    scoped:
+      description: "Alteração em bloco pequeno relacionado."
+      overwrite_allowed: false
+
+    replace_file:
+      description: "Substituição total apenas quando necessário."
+      overwrite_allowed: true
+
+  rules:
+    - "Preferir diff pequeno."
+    - "Preservar estilo do arquivo original."
+    - "Evitar reescrever arquivos inteiros quando patch basta."
+    - "Validar patch antes de aplicar."
+    - "Gerar manifesto de alterações."
+    - "Bloquear patch fora de paths permitidos."
+
+  output:
+    manifest: ".ai/reports/latest/patch-manifest.json"
+    diff_format: "unified"

@@ -1,0 +1,28 @@
+{
+  "name": "@ideia/policy-gateway",
+  "description": "Policy Gateway ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â middleware de avaliaÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Â£o de polÃƒÆ’Ã‚Â­ticas",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/contracts": "*",
+    "@ideia/policy-engine": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

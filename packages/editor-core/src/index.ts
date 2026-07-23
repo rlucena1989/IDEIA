@@ -1,0 +1,12 @@
+export * from './types';
+export { BaseEditorWidget, CodeEditorWidget } from './editor-widget';
+export { DefaultEditorManager } from './editor-manager';
+export { DefaultEditorRegistry } from './editor-registry';
+export { DefaultNavigationService } from './navigation';
+export { DefaultDiffEditorWidget } from './diff-editor';
+export { OpenHandlerChain } from './open-handler';
+export type { IOpenHandler } from './open-handler';
+export { DefaultTextModel, TextModelService } from './text-model';
+export { DefaultEditorPreferences } from './editor-preferences';
+export { EditorSessionManager, EditorSession } from './editor-contributions';
+export type { IEditorContribution } from './editor-contributions';

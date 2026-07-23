@@ -1,0 +1,74 @@
+appId: com.ideia.app
+productName: IDEIA
+copyright: Copyright © 2026 Anomalyco
+
+directories:
+  output: dist-installer
+  buildResources: assets
+
+files:
+  - dist/**/*
+  - package.json
+
+extraResources:
+  - from: ../apps/ideia-app/lib
+    to: theia-backend/lib
+  - from: ../apps/ideia-app/package.json
+    to: theia-backend/package.json
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: assets/icon.ico
+  signAndEditExecutable: true
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: IDEIA
+  installerIcon: assets/icon.ico
+  uninstallerIcon: assets/icon.ico
+  license: LICENSE
+  language: 1033
+  runAfterFinish: true
+
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+  category: public.app-category.developer-tools
+  icon: assets/icon.icns
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: assets/entitlements.mac.plist
+  entitlementsInherit: assets/entitlements.mac.plist
+
+linux:
+  target:
+    - target: AppImage
+      arch:
+        - x64
+    - target: deb
+      arch:
+        - x64
+  category: Development
+  icon: assets/icon.png
+  maintainer: dev@ideia.dev
+  synopsis: IDEIA — IDE que transforma ideias em sistemas completos
+  description: IDEIA is a professional IDE based on Eclipse Theia with integrated AI assistance.
+
+publish:
+  - provider: github
+    owner: anomalyco
+    repo: ideia
+    releaseType: draft
+  - provider: generic
+    url: https://releases.ideia.dev
+    channel: latest

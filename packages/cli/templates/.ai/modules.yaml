@@ -1,0 +1,9 @@
+# Declaracao de modulos e dependencias permitidas entre eles.
+# Preencha conforme os modulos forem criados em src/modules/.
+modules: []
+# Exemplo:
+# modules:
+#   - name: users
+#     dependsOn: []
+#   - name: orders
+#     dependsOn: [users]

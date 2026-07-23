@@ -1,0 +1,48 @@
+# Project Policy
+# Define regras de estrutura, nomenclatura e organizacao do projeto
+
+version: 1.0
+status: active
+
+## Naming Conventions
+files:
+  pattern: kebab-case
+  extensions:
+    typescript: ".ts"
+    typescript_react: ".tsx"
+    css_modules: ".module.css"
+    config: ".yaml"
+    markdown: ".md"
+
+directories:
+  src: "Codigo fonte da aplicacao"
+  src_domain: "Entidades e regras de negocio"
+  src_application: "Casos de uso e servicos"
+  src_infra: "Implementacoes de infraestrutura"
+  src_api: "Controllers, rotas e DTOs"
+  ".ai": "Governanca para IA"
+  docs: "Documentacao do projeto"
+
+requirements:
+  - "Todo projeto DEVE ter diretorio `src/` com Clean Architecture"
+  - "Todo projeto DEVE ter `.ai/` com governanca inicializada"
+  - "Modulos DEVEM ser autocontidos (domain, application, infra, api)"
+
+code_standards:
+  - "TypeScript estrito (`strict: true` em tsconfig.json)"
+  - "Clean Architecture: dependencias apontam para dentro"
+  - "Testes unitarios ao lado do codigo-fonte em `__tests__/`"
+  - "Cobertura minima: 20% (real: ~20%)"
+
+documentation_requirements:
+  - "README.md na raiz com instrucoes de setup"
+  - "CHANGELOG.md atualizado"
+  - "CONTRIBUTING.md com guia para novos contribuidores"
+  - "ADRs para decisoes arquiteturais significativas"
+
+governance:
+  - "`.ai/laws.yaml` e a fonte da verdade para regras de IA"
+  - "`.ai/policies/` contem politicas especificas (secrets, rede, valores sensiveis)"
+  - "`.ai/security/` contem politicas de seguranca"
+  - "`.ai/design-system/` contem contrato de design"
+  - "`.ai/testing/` contem estrategia de testes e matrizes"

@@ -1,0 +1,26 @@
+{
+  "name": "@ideia/environment-snapshot",
+  "private": true,
+  "description": "Environment Snapshot Ã¢â‚¬â€ project state capture, reproducible environments, snapshot diff/verify",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@ideia/quality-gates",
+  "description": "IDEIA Quality Gates Ã¢â‚¬â€ barreiras formais de qualidade, confidence scoring, verificaÃƒÂ§ÃƒÂ£o multicamada e anÃƒÂ¡lise de regressÃƒÂ£o",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

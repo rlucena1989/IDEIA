@@ -1,0 +1,94 @@
+name: documentation
+version: 1.0.0
+displayName: "Documentation Context"
+description: >
+  Contexto especializado para geracao de documentacao tecnica. Suporta
+  multiplos tipos de documento com templates e diretrizes de escrita.
+author: IDEIA
+created: 2026-07-22T14:00:00Z
+updated: 2026-07-22T14:00:00Z
+tags: [docs, writing, communication]
+categories: [documentation, quality]
+level: beginner
+variables:
+  - name: doc_type
+    type: enum
+    description: "Tipo de documentacao"
+    required: true
+    enum: [api, readme, architecture, user-guide, technical, changelog]
+  - name: doc_title
+    type: string
+    description: "Titulo do documento"
+    required: true
+  - name: target_audience
+    type: string
+    description: "Publico alvo"
+    default: developers
+sections:
+  - id: doc_context
+    title: "Contexto da Documentacao"
+    format: markdown
+    priority: P0
+    content: |
+      ## Documentacao: {{doc_title}}
+      - **Tipo:** {{doc_type}}
+      - **Publico:** {{target_audience}}
+  - id: writing_guidelines
+    title: "Diretrizes de Escrita"
+    format: markdown
+    priority: P1
+    content: |
+      ## Diretrizes de Escrita
+      - Tom tecnico mas acessivel ao publico alvo
+      - Exemplos concretos com code snippets
+      - Estrutura consistente (Introducao, Guia, Referencia, FAQ)
+      - Screenshots/diagramas quando relevante
+      - Glossario para termos especificos
+  - id: template_by_type
+    title: "Template por Tipo"
+    format: markdown
+    priority: P1
+    content: |
+      ## Templates por Tipo
+      ### README
+      - Titulo + Badges
+      - Descricao (2-3 frases)
+      - Instalacao
+      - Uso rapido
+      - API (se biblioteca)
+      - Contribuicao
+      - Licenca
+      ### API Reference
+      - Endpoint / Funcao
+      - Parametros
+      - Request/Response exemplos
+      - Error codes
+      - Rate limits
+      ### Architecture
+      - Visao geral (diagrama C4 nivel 1)
+      - Decisoes (ADRs)
+      - Contratos entre modulos
+      - Fluxos principais
+  - id: review_checklist
+    title: "Checklist de Revisao"
+    format: markdown
+    priority: P2
+    content: |
+      ## Checklist de Revisao
+      - [ ] Ortografia e gramatica revisadas
+      - [ | Code snippets testados
+      - [ ] Links funcionam
+      - [ ] Tom consistente
+      - [ ] Cobertura de casos de uso principais
+      - [ ] Versao e data no cabecalho
+dependencies:
+  - pack: ideia-introduction
+    version: ^1.0.0
+    required: true
+slicing:
+  - maxTokens: 4096
+    strategy: priority
+    maxSections: 3
+  - maxTokens: 8192
+    strategy: priority
+    maxSections: 5

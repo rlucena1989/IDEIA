@@ -1,0 +1,11 @@
+entity:
+  name: '[Nome]'
+  module: '[modulo]'
+  description: '[O que representa]'
+  fields:
+    - { name: id, type: uuid, required: true, unique: true }
+    - { name: createdAt, type: datetime, required: true, default: now() }
+    - { name: updatedAt, type: datetime, required: true }
+    - { name: deletedAt, type: datetime, required: false }
+  invariants:
+    - { rule: '[Regra]', error: '[Codigo do erro]' }

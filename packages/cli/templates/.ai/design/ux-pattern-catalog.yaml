@@ -1,0 +1,123 @@
+version: '1.0'
+
+patterns:
+  user_registration_screen:
+    aliases:
+      - tela de cadastro de usuário
+      - signup
+      - registro de usuário
+      - criar conta
+    layout:
+      recommended:
+        - centered_card_for_simple_signup
+        - split_layout_for_marketing_signup
+        - multi_step_for_complex_registration
+    required_sections:
+      - title
+      - short_explanation
+      - form
+      - primary_action
+      - login_link
+      - privacy_terms_hint
+    fields:
+      - name
+      - email
+      - password
+      - password_confirmation
+    states:
+      - initial
+      - validating
+      - submitting
+      - success
+      - field_error
+      - global_error
+    ux_rules:
+      - keep_form_short
+      - show_password_requirements_progressively
+      - prevent_double_submit
+      - preserve_input_on_error
+      - use_clear_success_feedback
+      - explain_next_step_after_success
+    accessibility:
+      - labels
+      - focus_visible
+      - keyboard_navigation
+      - error_association
+    tests:
+      - e2e_successful_registration
+      - e2e_validation_error
+      - accessibility_check
+
+  crud_list_screen:
+    aliases:
+      - listagem
+      - tela de gerenciamento
+      - tabela
+      - painel administrativo
+    required_sections:
+      - header
+      - primary_action
+      - search
+      - filters
+      - table_or_cards
+      - pagination
+      - empty_state
+    states:
+      - loading
+      - empty
+      - error
+      - populated
+      - filtered_empty
+    ux_rules:
+      - primary_action_visible
+      - preserve_filters
+      - make_row_actions_clear
+      - avoid_overcrowding
+      - support_keyboard_navigation
+      - show_result_count
+
+  dashboard_screen:
+    aliases:
+      - dashboard
+      - painel
+      - métricas
+      - analytics
+    required_sections:
+      - page_title
+      - period_filter
+      - key_metrics
+      - charts
+      - insights
+      - last_updated
+    states:
+      - loading_skeleton
+      - empty_data
+      - partial_data
+      - error
+    ux_rules:
+      - prioritize_top_3_metrics
+      - avoid_chart_overload
+      - explain_metric_meaning
+      - show_data_freshness
+      - provide_drill_down
+
+  settings_screen:
+    aliases:
+      - configurações
+      - preferências
+      - settings
+    required_sections:
+      - page_title
+      - category_navigation
+      - grouped_settings
+      - save_feedback
+    states:
+      - saved
+      - unsaved_changes
+      - saving
+      - error
+    ux_rules:
+      - group_by_mental_model
+      - warn_before_discarding_changes
+      - explain_dangerous_options
+      - avoid_overwhelming_user

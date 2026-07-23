@@ -1,0 +1,84 @@
+{
+  "timestamp": "2026-07-10T01:48:42.505Z",
+  "score": 96,
+  "level": "A",
+  "categories": [
+    {
+      "name": "Segurança",
+      "score": 100
+    },
+    {
+      "name": "Qualidade",
+      "score": 78
+    },
+    {
+      "name": "Arquitetura",
+      "score": 100
+    },
+    {
+      "name": "Documentação",
+      "score": 100
+    },
+    {
+      "name": "Otimização Inteligente",
+      "score": 100
+    },
+    {
+      "name": "Agentes e Runtime",
+      "score": 100
+    },
+    {
+      "name": "Saúde do Ecossistema",
+      "score": 100
+    },
+    {
+      "name": "Extensibilidade e Integração",
+      "score": 100
+    },
+    {
+      "name": "Execução do Roadmap",
+      "score": 100
+    },
+    {
+      "name": "Git e Colaboração",
+      "score": 88
+    },
+    {
+      "name": "Package Health",
+      "score": 100
+    },
+    {
+      "name": "Estrutura do Projeto",
+      "score": 100
+    },
+    {
+      "name": "Qualidade de Código",
+      "score": 100
+    },
+    {
+      "name": "CI/CD e Automação",
+      "score": 100
+    },
+    {
+      "name": "Dependências",
+      "score": 100
+    },
+    {
+      "name": "Documentação de Código",
+      "score": 100
+    },
+    {
+      "name": "Integridade do Projeto",
+      "score": 100
+    },
+    {
+      "name": "Pipeline Health",
+      "score": 67
+    }
+  ],
+  "git": {
+    "branch": "no-git",
+    "commit": "0000000",
+    "message": "not a git repository"
+  }
+}

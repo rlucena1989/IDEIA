@@ -1,0 +1,7 @@
+id: sharding
+title: "Database Sharding"
+category: database
+tags: ["sharding", "scalability", "horizontal", "partition"]
+summary: "Sharding divide dados em fragmentos distribuidos em multiplos servidores para escalabilidade horizontal."
+content: |
+  Estrategias: Range-based (por ID range, ex: usuarios 1-10000 no shard A), Hash-based (hash da chave → shard), Directory-based (tabela de lookup). Desafios: queries cross-shard (caras), distribuir dados uniformemente, rebalancear shards, joins sao dificeis. Sharding key: escolha criteriosa (ex: user_id para dados de usuario). Alternativa: partition dentro do mesmo banco (menos complexo).

@@ -1,0 +1,112 @@
+version: '3.8'
+
+name: ideia
+
+services:
+  # ─── NATS JetStream ───────────────────────────────────────
+  nats:
+    image: nats:2.10-alpine
+    container_name: ideia-nats
+    ports:
+      - '4222:4222'
+      - '8222:8222'
+    command: -js -m 8222 --store_dir /data
+    volumes:
+      - nats-data:/data
+    healthcheck:
+      test: ['CMD', 'wget', '--quiet', '--tries=1', '--spider', 'http://localhost:8222/varz']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - ideia-network
+    restart: unless-stopped
+
+  nats-exporter:
+    image: natsio/prometheus-nats-exporter:latest
+    container_name: ideia-nats-exporter
+    ports:
+      - '7778:7778'
+    command: -connz -routez -subz -varz -http http://nats:8222
+    depends_on: [nats]
+    networks:
+      - ideia-network
+    restart: unless-stopped
+
+  # ─── PostgreSQL + pgvector ────────────────────────────────
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: ideia-postgres
+    environment:
+      POSTGRES_DB: ideia
+      POSTGRES_USER: ideia
+      POSTGRES_PASSWORD: ideia
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ideia"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks:
+      - ideia-network
+    restart: unless-stopped
+
+  # ─── Monitoring ───────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: ideia-prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+    restart: unless-stopped
+    networks:
+      - ideia-network
+
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: ideia-grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=ideia_admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+    restart: unless-stopped
+    depends_on: [prometheus]
+    networks:
+      - ideia-network
+
+  alertmanager:
+    image: prom/alertmanager:v0.26.0
+    container_name: ideia-alertmanager
+    ports:
+      - "9093:9093"
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    restart: unless-stopped
+    networks:
+      - ideia-network
+
+volumes:
+  nats-data:
+  pgdata:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  ideia-network:
+    driver: bridge

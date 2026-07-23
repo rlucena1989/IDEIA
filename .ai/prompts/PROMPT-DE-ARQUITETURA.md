@@ -1,0 +1,1 @@
+Proponha uma estrutura de pastas e arquivos para a documentação da IDE local com chat central. A estrutura deve refletir os blocos: fundamentos, arquitetura, roadmap, operação, IAs, execução e consolidação. Preserve nomes reais de arquivos, sugira relações entre documentos e indique a ordem de leitura ideal.

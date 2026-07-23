@@ -1,0 +1,84 @@
+{
+  "timestamp": "2026-07-10T17:04:06.125Z",
+  "score": 96,
+  "level": "A",
+  "categories": [
+    {
+      "name": "Segurança",
+      "score": 100
+    },
+    {
+      "name": "Qualidade",
+      "score": 100
+    },
+    {
+      "name": "Arquitetura",
+      "score": 100
+    },
+    {
+      "name": "Documentação",
+      "score": 100
+    },
+    {
+      "name": "Otimização Inteligente",
+      "score": 80
+    },
+    {
+      "name": "Agentes e Runtime",
+      "score": 100
+    },
+    {
+      "name": "Saúde do Ecossistema",
+      "score": 100
+    },
+    {
+      "name": "Extensibilidade e Integração",
+      "score": 100
+    },
+    {
+      "name": "Execução do Roadmap",
+      "score": 100
+    },
+    {
+      "name": "Git e Colaboração",
+      "score": 100
+    },
+    {
+      "name": "Package Health",
+      "score": 100
+    },
+    {
+      "name": "Estrutura do Projeto",
+      "score": 100
+    },
+    {
+      "name": "Qualidade de Código",
+      "score": 100
+    },
+    {
+      "name": "CI/CD e Automação",
+      "score": 100
+    },
+    {
+      "name": "Dependências",
+      "score": 100
+    },
+    {
+      "name": "Documentação de Código",
+      "score": 100
+    },
+    {
+      "name": "Integridade do Projeto",
+      "score": 100
+    },
+    {
+      "name": "Pipeline Health",
+      "score": 0
+    }
+  ],
+  "git": {
+    "branch": "master",
+    "commit": "7903205",
+    "message": "feat: initial commit — ai-devkit v2 consolidated"
+  }
+}

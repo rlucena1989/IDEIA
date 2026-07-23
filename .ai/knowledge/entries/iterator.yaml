@@ -1,0 +1,7 @@
+id: iterator
+title: "Iterator Pattern"
+category: design
+tags: ["iterator", "gof", "behavioral", "collection", "traversal"]
+summary: "Iterator fornece acesso sequencial aos elementos de uma colecao sem expor sua estrutura interna."
+content: |
+  Iterator: interface com next(), hasNext(), opcional current(). Iterable: interface que cria iterator. Em JS/TS: Symbol.iterator, generators (function*), for...of. Arrays, Maps, Sets sao iteraveis nativamente.

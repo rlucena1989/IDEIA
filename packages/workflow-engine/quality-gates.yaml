@@ -1,0 +1,102 @@
+commit:
+  - name: lint-staged
+    command: npx
+    args: [lint-staged]
+    required: true
+    timeout: 30000
+  - name: commitlint
+    command: npx
+    args: [commitlint, --edit]
+    required: true
+    timeout: 10000
+  - name: tsc
+    command: npx
+    args: [tsc, --noEmit]
+    required: true
+    timeout: 60000
+  - name: jest
+    command: npx
+    args: [jest, --changedSince, HEAD~1]
+    required: true
+    timeout: 120000
+  - name: talisman
+    command: npx
+    args: [talisman, --pattern]
+    required: false
+    timeout: 30000
+
+pr:
+  - name: eslint
+    command: npx
+    args: [eslint, ., --max-warnings=0]
+    required: true
+    timeout: 60000
+  - name: typecheck
+    command: npx
+    args: [tsc, --noEmit]
+    required: true
+    timeout: 60000
+  - name: coverage
+    command: npx
+    args: [jest, --coverage]
+    required: true
+    timeout: 120000
+  - name: boundaries
+    command: npx
+    args: [dependency-cruise, .]
+    required: false
+    timeout: 30000
+  - name: security-scan
+    command: npx
+    args: [snyk, test]
+    required: false
+    timeout: 120000
+  - name: contract-check
+    command: npx
+    args: [pact, verify]
+    required: false
+    timeout: 60000
+
+release:
+  - name: e2e
+    command: npx
+    args: [playwright, test]
+    required: true
+    timeout: 300000
+  - name: performance
+    command: npx
+    args: [k6, run]
+    required: true
+    timeout: 120000
+  - name: security
+    command: npx
+    args: [snyk, test, --all-projects]
+    required: true
+    timeout: 120000
+  - name: audit
+    command: npx
+    args: [audit-ci, --moderate]
+    required: true
+    timeout: 60000
+  - name: sbom
+    command: npx
+    args: [sbom-utility]
+    required: false
+    timeout: 30000
+
+sprint:
+  - name: coverage-check
+    command: npx
+    args: [jest, --coverage]
+    required: true
+    timeout: 10000
+  - name: tech-debt
+    command: npx
+    args: [grep, -r, TODO\\|FIXME, --include=*.ts, .]
+    required: false
+    timeout: 10000
+  - name: test-flakiness
+    command: npx
+    args: [jest, --repeat, 3]
+    required: false
+    timeout: 180000

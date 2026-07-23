@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ClassificationResult",
+  "type": "object",
+  "required": ["taskType", "confidence", "factors", "secondaryTypes", "requiresManualReview"],
+  "properties": {
+    "taskType": {
+      "type": "string",
+      "enum": ["bugfix", "feature", "refactor", "documentation", "design_change", "security_review", "test_only", "dependency_update", "cleanup", "incident_response"]
+    },
+    "confidence": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "factors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["keyword", "weight", "source"],
+        "properties": {
+          "keyword": { "type": "string" },
+          "weight": { "type": "number", "minimum": 0 },
+          "source": { "type": "string", "enum": ["description", "files"] }
+        }
+      }
+    },
+    "secondaryTypes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["taskType", "confidence"],
+        "properties": {
+          "taskType": { "type": "string", "enum": ["bugfix", "feature", "refactor", "documentation", "design_change", "security_review", "test_only", "dependency_update", "cleanup", "incident_response"] },
+          "confidence": { "type": "integer", "minimum": 0, "maximum": 100 }
+        }
+      }
+    },
+    "requiresManualReview": { "type": "boolean" }
+  }
+}

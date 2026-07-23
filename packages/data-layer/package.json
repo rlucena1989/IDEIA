@@ -1,0 +1,29 @@
+{
+  "name": "@ideia/data-layer",
+  "description": "IDEIA Data Layer ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â PostgreSQL+pgvector with SQLite fallback for local dev",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "optionalDependencies": {
+    "pg": "^8.13.0",
+    "better-sqlite3": "^11.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

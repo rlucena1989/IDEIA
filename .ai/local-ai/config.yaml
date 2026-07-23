@@ -1,0 +1,7 @@
+provider: ollama
+default_model: qwen2:0.5b
+ollama:
+  base_url: http://localhost:11434
+offline: false
+allow_write: false
+timeout_secs: 30

@@ -1,0 +1,7 @@
+id: domain-driven-design
+title: "Domain-Driven Design (Eric Evans)"
+category: architecture
+tags: ["ddd", "domain", "ubiquitous-language", "bounded-context", "aggregate"]
+summary: "DDD foca em modelar o dominio do negocio com uma linguagem ubiqua compartilhada entre devs e especialistas."
+content: |
+  Building Blocks: Entity (identidade), Value Object (atributos), Aggregate (transacoes), Repository (persistencia), Domain Event (efeitos colaterais), Service (operacoes sem estado), Factory (criacao).

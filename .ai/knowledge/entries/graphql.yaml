@@ -1,0 +1,7 @@
+id: graphql
+title: "GraphQL Architecture"
+category: api
+tags: ["graphql", "api", "query-language", "schema", "resolver"]
+summary: "GraphQL e uma linguagem de consulta para APIs que permite aos clientes solicitar exatamente os dados necessarios."
+content: |
+  Schema: define tipos e operacoes (Query, Mutation, Subscription). Resolvers: funcoes que buscam dados para cada campo. Vantagens: dados exatos, sem over/under fetching, schema fortemente tipado, introspection. Desvantagens: caching complexo, N+1 problem (DataLoader), queries pesadas. Ferramentas: Apollo, GraphQL Yoga, Relay.

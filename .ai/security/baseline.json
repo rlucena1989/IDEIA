@@ -1,0 +1,84 @@
+[
+  {
+    "file": ".ai/laws.yaml",
+    "rules": [
+      {
+        "text": "Todo DTO deve ser validado com Contract.pre()",
+        "severity": "medium"
+      },
+      {
+        "text": "Erros de negocio devem usar AppError",
+        "severity": "low"
+      },
+      {
+        "text": "Proibido uso de any sem justificativa documentada",
+        "severity": "high"
+      },
+      {
+        "text": "Cobertura de testes minima: 20% (real: ~20%)",
+        "severity": "medium"
+      },
+      {
+        "text": "Toda funcao publica deve ter JSDoc",
+        "severity": "low"
+      },
+      {
+        "text": "Camada de dominio nao pode importar infraestrutura",
+        "severity": "low"
+      },
+      {
+        "text": "Use cases devem ser testaveis isoladamente",
+        "severity": "medium"
+      },
+      {
+        "text": "Nao colocar regra de negocio em controllers",
+        "severity": "low"
+      },
+      {
+        "text": "Nao alterar arquivos fora do escopo da tarefa",
+        "severity": "low"
+      }
+    ]
+  },
+  {
+    "file": ".ai/policies/command-policy.md",
+    "rules": [
+      {
+        "text": "npm install",
+        "severity": "low"
+      },
+      {
+        "text": "npm run build",
+        "severity": "low"
+      },
+      {
+        "text": "npm test",
+        "severity": "medium"
+      },
+      {
+        "text": "npm run ai:verify",
+        "severity": "low"
+      },
+      {
+        "text": "npm run ai:prevention",
+        "severity": "low"
+      },
+      {
+        "text": "node .ai/bin/*.js",
+        "severity": "low"
+      },
+      {
+        "text": "rm -rf",
+        "severity": "low"
+      },
+      {
+        "text": "git reset --hard",
+        "severity": "low"
+      },
+      {
+        "text": "git push --force",
+        "severity": "low"
+      }
+    ]
+  }
+]

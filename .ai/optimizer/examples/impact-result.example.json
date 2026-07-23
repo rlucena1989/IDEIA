@@ -1,0 +1,9 @@
+{
+  "task_type": "design_change",
+  "requires_ai": true,
+  "recommended_agents": ["frontend", "reviewer"],
+  "context_profile": "ui-change",
+  "execution_mode": "patch",
+  "risk_level": "low",
+  "estimated_scope": "small"
+}

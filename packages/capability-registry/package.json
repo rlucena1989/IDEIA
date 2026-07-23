@@ -1,0 +1,19 @@
+{
+  "name": "@ideia/capability-registry",
+  "description": "IDEIA Capability Registry — catálogo programático centralizado de capacidades com versionamento, dependências e descoberta",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

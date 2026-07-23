@@ -1,0 +1,85 @@
+{
+  "version": "1.0.0",
+  "slos": [
+    {
+      "id": "SLO-001",
+      "name": "Event Bus Latency",
+      "description": "Latência de publicação/consumo de eventos no barramento",
+      "target_ms": 100,
+      "window": "p99_last_1h",
+      "measure": "event-bus"
+    },
+    {
+      "id": "SLO-002",
+      "name": "Delivery Pipeline Rate",
+      "description": "Taxa de sucesso do delivery orchestrator",
+      "target_percent": 99.5,
+      "window": "weekly",
+      "measure": "delivery-orchestrator"
+    },
+    {
+      "id": "SLO-003",
+      "name": "Memory Query Latency",
+      "description": "Latência de consulta à memória persistente",
+      "target_ms": 200,
+      "window": "p95_last_24h",
+      "measure": "memory-store"
+    },
+    {
+      "id": "SLO-004",
+      "name": "Agent Response Time",
+      "description": "Tempo de resposta do agent-runtime",
+      "target_ms": 5000,
+      "window": "p95_last_24h",
+      "measure": "agent-runtime"
+    },
+    {
+      "id": "SLO-005",
+      "name": "Policy Evaluation Latency",
+      "description": "Tempo de avaliação de políticas",
+      "target_ms": 50,
+      "window": "p99_last_1h",
+      "measure": "policy-engine"
+    },
+    {
+      "id": "SLO-006",
+      "name": "Delivery Throughput",
+      "description": "Entregas por hora do delivery orchestrator",
+      "target_count": 100,
+      "window": "hourly",
+      "measure": "delivery-orchestrator"
+    },
+    {
+      "id": "SLO-007",
+      "name": "Audit Write Latency",
+      "description": "Latência de escrita no audit trail",
+      "target_ms": 50,
+      "window": "p99_last_1h",
+      "measure": "audit-trail"
+    },
+    {
+      "id": "SLO-008",
+      "name": "Observability Export",
+      "description": "Taxa de exportação de métricas",
+      "target_percent": 99,
+      "window": "hourly",
+      "measure": "observability-engine"
+    },
+    {
+      "id": "SLO-009",
+      "name": "IDE Startup Time",
+      "description": "Tempo de inicialização da IDE Theia",
+      "target_ms": 10000,
+      "window": "p95_last_24h",
+      "measure": "ide-integration"
+    },
+    {
+      "id": "SLO-010",
+      "name": "LSP Response Time",
+      "description": "Tempo de resposta do LSP",
+      "target_ms": 500,
+      "window": "p99_last_1h",
+      "measure": "ide-integration"
+    }
+  ]
+}

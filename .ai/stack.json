@@ -1,0 +1,23 @@
+{
+  "detectedAt": "2026-07-21T23:00:00.000Z",
+  "project": "IDEIA",
+  "languages": [
+    "typescript",
+    "javascript",
+    "nodejs"
+  ],
+  "frameworks": [
+    "theia",
+    "react",
+    "express"
+  ],
+  "packageManager": "npm",
+  "ciProviders": [
+    "github-actions"
+  ],
+  "buildTool": "typescript (tsc -b)",
+  "testFramework": "jest (ts-jest)",
+  "messaging": "nats-jetstream",
+  "ai": "langgraph, langchain, ollama",
+  "database": "postgresql (pgvector), sqlite"
+}

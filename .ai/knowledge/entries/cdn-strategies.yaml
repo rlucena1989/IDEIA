@@ -1,0 +1,7 @@
+id: cdn-strategies
+title: "CDN Strategies (CloudFront, Cloudflare, Fastly)"
+category: performance
+tags: ["cdn", "caching", "edge", "cloudfront", "cloudflare"]
+summary: "CDN distribui conteudo estatico em servidores geograficamente distribuidos para reduzir latencia."
+content: |
+  Cache: assets estaticos (JS, CSS, imagens) com TTL longo e versionamento (hash no filename). Dynamic: API responses podem ser cacheadas com Cache-Control headers e TTL curto. Edge Computing: CloudFront Functions, Cloudflare Workers (codigo na borda). Invalidação: versionamento > invalidacao por path. Pull vs Push: pull (CDN busca na origem, mais comum), push (envia para CDN).

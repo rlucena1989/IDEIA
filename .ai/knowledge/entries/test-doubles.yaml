@@ -1,0 +1,7 @@
+id: test-doubles
+title: "Test Doubles — Mocks, Stubs, Fakes, Spies, Dummies"
+category: testing
+tags: ["test-doubles", "mock", "stub", "fake", "spy", "dummy"]
+summary: "Test Doubles sao objetos que substituem dependencias reais durante testes, cada um com proposito especifico."
+content: |
+  Dummy: passado mas nunca usado (apenas para preencher parametros). Fake: implementacao simplificada funcional (banco em memoria). Stub: retorna respostas prontas para chamadas especificas. Spy: registra chamadas para verificacao posterior. Mock: objeto pre-programado com expectativas de chamadas (verifica comportamento). Ferramentas: Jest.fn(), Sinon.js, Testify (Go), Mockito (Java).

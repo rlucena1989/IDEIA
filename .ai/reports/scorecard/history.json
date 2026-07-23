@@ -1,0 +1,3656 @@
+[
+  {
+    "timestamp": "2026-07-10T01:41:40.548Z",
+    "overallScore": 95,
+    "maturityLevel": "A",
+    "categories": [
+      {
+        "name": "Segurança",
+        "weight": 16,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "SEC-001",
+            "description": "Política de segurança de agentes",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "SEC-002",
+            "description": "Política de valores sensíveis",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-003",
+            "description": "Política de rede",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-004",
+            "description": "Política de secrets",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-005",
+            "description": "Zero vulnerabilidades críticas",
+            "passed": true,
+            "weight": 3,
+            "value": 0,
+            "hint": "0 críticas, 0 altas"
+          },
+          {
+            "id": "SEC-006",
+            "description": "<5 vulnerabilidades altas",
+            "passed": true,
+            "weight": 2,
+            "value": 0,
+            "hint": "0 altas"
+          },
+          {
+            "id": "SEC-007",
+            "description": "Rollback-last executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "SEC-008",
+            "description": "Mark-approved e rejected executam",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "SEC-009",
+            "description": "Ledger com dados de execução",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-010",
+            "description": "Risk-scoring YAML com níveis",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Qualidade",
+        "weight": 16,
+        "score": 77.77777777777779,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "QLT-001",
+            "description": "Definition of Done com conteúdo",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "QLT-002",
+            "description": "Quality gates configurados",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "QLT-003",
+            "description": "Score-quality executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-004",
+            "description": "Score-risk executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-005",
+            "description": "Generate-patch executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-006",
+            "description": "Validate-optimizer-config executa OK",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-007",
+            "description": "Compare-runs executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-008",
+            "description": "Cobertura de linhas >= 93%",
+            "passed": false,
+            "weight": 2,
+            "value": "N/A"
+          },
+          {
+            "id": "QLT-009",
+            "description": "Cobertura de branches >= 76%",
+            "passed": false,
+            "weight": 2
+          },
+          {
+            "id": "QLT-011",
+            "description": "Testes integrados do scorecard",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "QLT-010",
+            "description": "Test-loop comando existe",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Arquitetura",
+        "weight": 14,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "ARCH-001",
+            "description": "Contrato de adapters",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ARCH-002",
+            "description": "Governança definida",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ARCH-003",
+            "description": "Design system contract",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-004",
+            "description": "ADRs registrados (5/3+)",
+            "passed": true,
+            "weight": 3,
+            "value": 5
+          },
+          {
+            "id": "ARCH-005",
+            "description": "Schema de impacto (JSON Schema)",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ARCH-006",
+            "description": "Schema de patch",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-007",
+            "description": "Schema de score",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-008",
+            "description": "Schema de aprovação",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-009",
+            "description": "Flake8 válido (Python adapter)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Documentação",
+        "weight": 10,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "DOC-001",
+            "description": "README com conteúdo relevante",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOC-002",
+            "description": "AI Usage Guide",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "DOC-003",
+            "description": "CHANGELOG com entradas reais",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOC-004",
+            "description": "Protocolo de comunicação",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "DOC-005",
+            "description": "Handoff de IA atualizado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOC-006",
+            "description": "README + Architecture do optimizer",
+            "passed": true,
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "Otimização Inteligente",
+        "weight": 15,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "OPT-001",
+            "description": "3 YAMLs de otimização configurados",
+            "passed": true,
+            "weight": 3
+          },
+          {
+            "id": "OPT-002",
+            "description": "Optimizer YAML principal",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "OPT-003",
+            "description": "Pipeline + optimize-request executam",
+            "passed": true,
+            "weight": 3
+          },
+          {
+            "id": "OPT-004",
+            "description": "Budget YAML configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "OPT-005",
+            "description": "Classificador de tarefa existe",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "OPT-006",
+            "description": "Exemplos de request/scores",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "OPT-007",
+            "description": "Analyze-impact executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "OPT-008",
+            "description": "Minimize-context executa sem erro",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Agentes e Runtime",
+        "weight": 14,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "AGT-001",
+            "description": "Checkpoints de agente (826/3+)",
+            "passed": true,
+            "weight": 3,
+            "value": 826
+          },
+          {
+            "id": "AGT-002",
+            "description": "Ledger com dados reais",
+            "passed": true,
+            "weight": 2,
+            "value": "31.2KB"
+          },
+          {
+            "id": "AGT-003",
+            "description": "Task-run CLI existe",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-004",
+            "description": "Render-report executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-005",
+            "description": "Knowledge Base populada",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-006",
+            "description": "Memória do repositório ativa",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-007",
+            "description": "Summary-impact executa sem erro",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Saúde do Ecossistema",
+        "weight": 10,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "ECO-001",
+            "description": "npm audit sem críticas",
+            "passed": true,
+            "weight": 3,
+            "value": 0
+          },
+          {
+            "id": "ECO-002",
+            "description": "npm audit: <5 altas + <10 moderadas",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ECO-003",
+            "description": "Dependências atualizadas (major 2+)",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ECO-004",
+            "description": "Golangci-lint OK (Go adapter)",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ECO-005",
+            "description": "Flake8 OK (Python adapter)",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ECO-006",
+            "description": "SBOM / supply-chain comando existe",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Extensibilidade e Integração",
+        "weight": 10,
+        "score": 80,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "EXT-001",
+            "description": "Extensão VSCode compilável",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "EXT-002",
+            "description": "3+ adapters (NestJS, FastAPI, Go)",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "EXT-003",
+            "description": "Plugin CLI existe",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "EXT-004",
+            "description": "Dashboard webview funcional",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EXT-005",
+            "description": "Scorecard no dashboard (latest.json)",
+            "passed": false,
+            "weight": 1
+          },
+          {
+            "id": "EXT-006",
+            "description": "MCP server configurado",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EXT-007",
+            "description": "Badge SVG gerado (README)",
+            "passed": false,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Execução do Roadmap",
+        "weight": 5,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "RDM-001",
+            "description": "Tarefas de evolução concluídas",
+            "passed": true,
+            "weight": 3,
+            "value": "10/19 (53%)"
+          },
+          {
+            "id": "RDM-002",
+            "description": "Backlog.md atualizado com EV tasks",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "RDM-003",
+            "description": "Master-plan.md com épico 9-11",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Git e Colaboração",
+        "weight": 8,
+        "score": 87.5,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "GIT-001",
+            "description": "commitlint.config.js configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "GIT-002",
+            "description": ".gitignore com conteúdo relevante",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "GIT-003",
+            "description": "Workflows GitHub (3+)",
+            "passed": true,
+            "weight": 2,
+            "value": 6
+          },
+          {
+            "id": "GIT-004",
+            "description": "Repositório git inicializado",
+            "passed": false,
+            "weight": 1
+          },
+          {
+            "id": "GIT-005",
+            "description": "CONTRIBUTING.md existe",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Package Health",
+        "weight": 4,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "PKG-001",
+            "description": "Todos os adapters tem src/index.ts",
+            "passed": true,
+            "weight": 2,
+            "value": "13/13"
+          },
+          {
+            "id": "PKG-002",
+            "description": "Package.json em cada adapter",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "PKG-003",
+            "description": "Nenhum adapter vazio (0 arquivos)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Estrutura do Projeto",
+        "weight": 3,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "EST-001",
+            "description": "tsconfig.json hierarquico",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EST-002",
+            "description": "ESLint + Commitlint config",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EST-003",
+            "description": ".gitignore com conteudo",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Qualidade de Código",
+        "weight": 8,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "COD-001",
+            "description": "Menos de 100 usos de `: any`",
+            "passed": true,
+            "weight": 3,
+            "value": 47,
+            "hint": "47 usos de :any encontrados"
+          },
+          {
+            "id": "COD-002",
+            "description": "Menos de 3 arquivos > 100KB",
+            "passed": true,
+            "weight": 2,
+            "value": 1,
+            "hint": "1 arquivos grandes"
+          },
+          {
+            "id": "COD-003",
+            "description": "ESLint configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "COD-004",
+            "description": "TypeScript strict mode",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "CI/CD e Automação",
+        "weight": 4,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "CICD-001",
+            "description": "CI workflow configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "CICD-002",
+            "description": "Release workflow configurado",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "CICD-003",
+            "description": "CodeQL ou security scan",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Dependências",
+        "weight": 6,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "DEP-001",
+            "description": "Número saudável de dependências (< 100)",
+            "passed": true,
+            "weight": 2,
+            "value": 16
+          },
+          {
+            "id": "DEP-002",
+            "description": "Sem dependências faltando (npm ls)",
+            "passed": true,
+            "weight": 2,
+            "value": 0
+          },
+          {
+            "id": "DEP-003",
+            "description": "package-lock.json versionado",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "DEP-004",
+            "description": "Sem dependências duplicadas (npm dedupe)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Documentação de Código",
+        "weight": 6,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "DOCCOD-001",
+            "description": "JSDoc em pelo menos 5% das exportações",
+            "passed": true,
+            "weight": 3,
+            "value": "6%"
+          },
+          {
+            "id": "DOCCOD-002",
+            "description": "README.md em cada package/",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOCCOD-003",
+            "description": "CHANGELOG.md por package",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Integridade do Projeto",
+        "weight": 5,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "INT-001",
+            "description": "Arquivos criticos existem",
+            "passed": true,
+            "weight": 2,
+            "value": "0 missing"
+          },
+          {
+            "id": "INT-002",
+            "description": "TypeScript compila sem erros",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "INT-003",
+            "description": "Governanca basica",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Pipeline Health",
+        "weight": 3,
+        "score": 66.66666666666666,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "PPL-001",
+            "description": "Todos os scripts do optimizer executam",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "PPL-002",
+            "description": "Testes passam",
+            "passed": false,
+            "weight": 1
+          }
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "text": "[Qualidade] Cobertura de linhas >= 93% (atual: N/A)"
+      },
+      {
+        "text": "[Qualidade] Cobertura de branches >= 76%"
+      },
+      {
+        "text": "[Extensibilidade e Integração] Scorecard no dashboard (latest.json)"
+      },
+      {
+        "text": "[Extensibilidade e Integração] Badge SVG gerado (README)"
+      },
+      {
+        "text": "[Git e Colaboração] Repositório git inicializado"
+      },
+      {
+        "text": "[Pipeline Health] Testes passam"
+      }
+    ],
+    "evolution": {
+      "version": "18.0",
+      "categories": 18,
+      "items": 97
+    },
+    "trends": [],
+    "alerts": [],
+    "correlationAlerts": [],
+    "forecast": {
+      "forecast": 0,
+      "confidence": "low",
+      "trend": "stable",
+      "history": []
+    },
+    "git": {
+      "branch": "no-git",
+      "commit": "0000000",
+      "message": "not a git repository"
+    },
+    "meta": {
+      "durationMs": 198375,
+      "scorecardVersion": "18.0"
+    }
+  },
+  {
+    "timestamp": "2026-07-10T01:48:42.505Z",
+    "overallScore": 96,
+    "maturityLevel": "A",
+    "categories": [
+      {
+        "name": "Segurança",
+        "weight": 16,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "SEC-001",
+            "description": "Política de segurança de agentes",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "SEC-002",
+            "description": "Política de valores sensíveis",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-003",
+            "description": "Política de rede",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-004",
+            "description": "Política de secrets",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-005",
+            "description": "Zero vulnerabilidades críticas",
+            "passed": true,
+            "weight": 3,
+            "value": 0,
+            "hint": "0 críticas, 0 altas"
+          },
+          {
+            "id": "SEC-006",
+            "description": "<5 vulnerabilidades altas",
+            "passed": true,
+            "weight": 2,
+            "value": 0,
+            "hint": "0 altas"
+          },
+          {
+            "id": "SEC-007",
+            "description": "Rollback-last executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "SEC-008",
+            "description": "Mark-approved e rejected executam",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "SEC-009",
+            "description": "Ledger com dados de execução",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-010",
+            "description": "Risk-scoring YAML com níveis",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Qualidade",
+        "weight": 16,
+        "score": 77.77777777777779,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "QLT-001",
+            "description": "Definition of Done com conteúdo",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "QLT-002",
+            "description": "Quality gates configurados",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "QLT-003",
+            "description": "Score-quality executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-004",
+            "description": "Score-risk executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-005",
+            "description": "Generate-patch executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-006",
+            "description": "Validate-optimizer-config executa OK",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-007",
+            "description": "Compare-runs executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-008",
+            "description": "Cobertura de linhas >= 93%",
+            "passed": false,
+            "weight": 2,
+            "value": "N/A"
+          },
+          {
+            "id": "QLT-009",
+            "description": "Cobertura de branches >= 76%",
+            "passed": false,
+            "weight": 2
+          },
+          {
+            "id": "QLT-011",
+            "description": "Testes integrados do scorecard",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "QLT-010",
+            "description": "Test-loop comando existe",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Arquitetura",
+        "weight": 14,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "ARCH-001",
+            "description": "Contrato de adapters",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ARCH-002",
+            "description": "Governança definida",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ARCH-003",
+            "description": "Design system contract",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-004",
+            "description": "ADRs registrados (5/3+)",
+            "passed": true,
+            "weight": 3,
+            "value": 5
+          },
+          {
+            "id": "ARCH-005",
+            "description": "Schema de impacto (JSON Schema)",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ARCH-006",
+            "description": "Schema de patch",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-007",
+            "description": "Schema de score",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-008",
+            "description": "Schema de aprovação",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-009",
+            "description": "Flake8 válido (Python adapter)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Documentação",
+        "weight": 10,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "DOC-001",
+            "description": "README com conteúdo relevante",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOC-002",
+            "description": "AI Usage Guide",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "DOC-003",
+            "description": "CHANGELOG com entradas reais",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOC-004",
+            "description": "Protocolo de comunicação",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "DOC-005",
+            "description": "Handoff de IA atualizado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOC-006",
+            "description": "README + Architecture do optimizer",
+            "passed": true,
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "Otimização Inteligente",
+        "weight": 15,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "OPT-001",
+            "description": "3 YAMLs de otimização configurados",
+            "passed": true,
+            "weight": 3
+          },
+          {
+            "id": "OPT-002",
+            "description": "Optimizer YAML principal",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "OPT-003",
+            "description": "Pipeline + optimize-request executam",
+            "passed": true,
+            "weight": 3
+          },
+          {
+            "id": "OPT-004",
+            "description": "Budget YAML configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "OPT-005",
+            "description": "Classificador de tarefa existe",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "OPT-006",
+            "description": "Exemplos de request/scores",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "OPT-007",
+            "description": "Analyze-impact executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "OPT-008",
+            "description": "Minimize-context executa sem erro",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Agentes e Runtime",
+        "weight": 14,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "AGT-001",
+            "description": "Checkpoints de agente (831/3+)",
+            "passed": true,
+            "weight": 3,
+            "value": 831
+          },
+          {
+            "id": "AGT-002",
+            "description": "Ledger com dados reais",
+            "passed": true,
+            "weight": 2,
+            "value": "31.4KB"
+          },
+          {
+            "id": "AGT-003",
+            "description": "Task-run CLI existe",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-004",
+            "description": "Render-report executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-005",
+            "description": "Knowledge Base populada",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-006",
+            "description": "Memória do repositório ativa",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-007",
+            "description": "Summary-impact executa sem erro",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Saúde do Ecossistema",
+        "weight": 10,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "ECO-001",
+            "description": "npm audit sem críticas",
+            "passed": true,
+            "weight": 3,
+            "value": 0
+          },
+          {
+            "id": "ECO-002",
+            "description": "npm audit: <5 altas + <10 moderadas",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ECO-003",
+            "description": "Dependências atualizadas (major 2+)",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ECO-004",
+            "description": "Golangci-lint OK (Go adapter)",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ECO-005",
+            "description": "Flake8 OK (Python adapter)",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ECO-006",
+            "description": "SBOM / supply-chain comando existe",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Extensibilidade e Integração",
+        "weight": 10,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "EXT-001",
+            "description": "Extensão VSCode compilável",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "EXT-002",
+            "description": "3+ adapters (NestJS, FastAPI, Go)",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "EXT-003",
+            "description": "Plugin CLI existe",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "EXT-004",
+            "description": "Dashboard webview funcional",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EXT-005",
+            "description": "Scorecard no dashboard (latest.json)",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EXT-006",
+            "description": "MCP server configurado",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EXT-007",
+            "description": "Badge SVG gerado (README)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Execução do Roadmap",
+        "weight": 5,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "RDM-001",
+            "description": "Tarefas de evolução concluídas",
+            "passed": true,
+            "weight": 3,
+            "value": "10/19 (53%)"
+          },
+          {
+            "id": "RDM-002",
+            "description": "Backlog.md atualizado com EV tasks",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "RDM-003",
+            "description": "Master-plan.md com épico 9-11",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Git e Colaboração",
+        "weight": 8,
+        "score": 87.5,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "GIT-001",
+            "description": "commitlint.config.js configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "GIT-002",
+            "description": ".gitignore com conteúdo relevante",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "GIT-003",
+            "description": "Workflows GitHub (3+)",
+            "passed": true,
+            "weight": 2,
+            "value": 6
+          },
+          {
+            "id": "GIT-004",
+            "description": "Repositório git inicializado",
+            "passed": false,
+            "weight": 1
+          },
+          {
+            "id": "GIT-005",
+            "description": "CONTRIBUTING.md existe",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Package Health",
+        "weight": 4,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "PKG-001",
+            "description": "Todos os adapters tem src/index.ts",
+            "passed": true,
+            "weight": 2,
+            "value": "13/13"
+          },
+          {
+            "id": "PKG-002",
+            "description": "Package.json em cada adapter",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "PKG-003",
+            "description": "Nenhum adapter vazio (0 arquivos)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Estrutura do Projeto",
+        "weight": 3,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "EST-001",
+            "description": "tsconfig.json hierarquico",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EST-002",
+            "description": "ESLint + Commitlint config",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EST-003",
+            "description": ".gitignore com conteudo",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Qualidade de Código",
+        "weight": 8,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "COD-001",
+            "description": "Menos de 100 usos de `: any`",
+            "passed": true,
+            "weight": 3,
+            "value": 47,
+            "hint": "47 usos de :any encontrados"
+          },
+          {
+            "id": "COD-002",
+            "description": "Menos de 3 arquivos > 100KB",
+            "passed": true,
+            "weight": 2,
+            "value": 1,
+            "hint": "1 arquivos grandes"
+          },
+          {
+            "id": "COD-003",
+            "description": "ESLint configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "COD-004",
+            "description": "TypeScript strict mode",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "CI/CD e Automação",
+        "weight": 4,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "CICD-001",
+            "description": "CI workflow configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "CICD-002",
+            "description": "Release workflow configurado",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "CICD-003",
+            "description": "CodeQL ou security scan",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Dependências",
+        "weight": 6,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "DEP-001",
+            "description": "Número saudável de dependências (< 100)",
+            "passed": true,
+            "weight": 2,
+            "value": 16
+          },
+          {
+            "id": "DEP-002",
+            "description": "Sem dependências faltando (npm ls)",
+            "passed": true,
+            "weight": 2,
+            "value": 0
+          },
+          {
+            "id": "DEP-003",
+            "description": "package-lock.json versionado",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "DEP-004",
+            "description": "Sem dependências duplicadas (npm dedupe)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Documentação de Código",
+        "weight": 6,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "DOCCOD-001",
+            "description": "JSDoc em pelo menos 5% das exportações",
+            "passed": true,
+            "weight": 3,
+            "value": "6%"
+          },
+          {
+            "id": "DOCCOD-002",
+            "description": "README.md em cada package/",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOCCOD-003",
+            "description": "CHANGELOG.md por package",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Integridade do Projeto",
+        "weight": 5,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "INT-001",
+            "description": "Arquivos criticos existem",
+            "passed": true,
+            "weight": 2,
+            "value": "0 missing"
+          },
+          {
+            "id": "INT-002",
+            "description": "TypeScript compila sem erros",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "INT-003",
+            "description": "Governanca basica",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Pipeline Health",
+        "weight": 3,
+        "score": 66.66666666666666,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "PPL-001",
+            "description": "Todos os scripts do optimizer executam",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "PPL-002",
+            "description": "Testes passam",
+            "passed": false,
+            "weight": 1
+          }
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "text": "[Qualidade] Cobertura de linhas >= 93% (atual: N/A)"
+      },
+      {
+        "text": "[Qualidade] Cobertura de branches >= 76%"
+      },
+      {
+        "text": "[Git e Colaboração] Repositório git inicializado"
+      },
+      {
+        "text": "[Pipeline Health] Testes passam"
+      }
+    ],
+    "evolution": {
+      "version": "18.0",
+      "categories": 18,
+      "items": 97
+    },
+    "trends": [
+      {
+        "timestamp": "2026-07-10T01:41:40.548Z",
+        "overallScore": 95,
+        "categories": [
+          {
+            "name": "Segurança",
+            "score": 100
+          },
+          {
+            "name": "Qualidade",
+            "score": 78
+          },
+          {
+            "name": "Arquitetura",
+            "score": 100
+          },
+          {
+            "name": "Documentação",
+            "score": 100
+          },
+          {
+            "name": "Otimização Inteligente",
+            "score": 100
+          },
+          {
+            "name": "Agentes e Runtime",
+            "score": 100
+          },
+          {
+            "name": "Saúde do Ecossistema",
+            "score": 100
+          },
+          {
+            "name": "Extensibilidade e Integração",
+            "score": 80
+          },
+          {
+            "name": "Execução do Roadmap",
+            "score": 100
+          },
+          {
+            "name": "Git e Colaboração",
+            "score": 88
+          },
+          {
+            "name": "Package Health",
+            "score": 100
+          },
+          {
+            "name": "Estrutura do Projeto",
+            "score": 100
+          },
+          {
+            "name": "Qualidade de Código",
+            "score": 100
+          },
+          {
+            "name": "CI/CD e Automação",
+            "score": 100
+          },
+          {
+            "name": "Dependências",
+            "score": 100
+          },
+          {
+            "name": "Documentação de Código",
+            "score": 100
+          },
+          {
+            "name": "Integridade do Projeto",
+            "score": 100
+          },
+          {
+            "name": "Pipeline Health",
+            "score": 67
+          }
+        ]
+      }
+    ],
+    "alerts": [],
+    "correlationAlerts": [],
+    "forecast": {
+      "forecast": 0,
+      "confidence": "low",
+      "trend": "stable",
+      "history": []
+    },
+    "git": {
+      "branch": "no-git",
+      "commit": "0000000",
+      "message": "not a git repository"
+    },
+    "meta": {
+      "durationMs": 213306,
+      "scorecardVersion": "18.0"
+    }
+  },
+  {
+    "timestamp": "2026-07-10T02:02:05.520Z",
+    "overallScore": 96,
+    "maturityLevel": "A",
+    "categories": [
+      {
+        "name": "Segurança",
+        "weight": 16,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "SEC-001",
+            "description": "Política de segurança de agentes",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "SEC-002",
+            "description": "Política de valores sensíveis",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-003",
+            "description": "Política de rede",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-004",
+            "description": "Política de secrets",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-005",
+            "description": "Zero vulnerabilidades críticas",
+            "passed": true,
+            "weight": 3,
+            "value": 0,
+            "hint": "0 críticas, 0 altas"
+          },
+          {
+            "id": "SEC-006",
+            "description": "<5 vulnerabilidades altas",
+            "passed": true,
+            "weight": 2,
+            "value": 0,
+            "hint": "0 altas"
+          },
+          {
+            "id": "SEC-007",
+            "description": "Rollback-last executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "SEC-008",
+            "description": "Mark-approved e rejected executam",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "SEC-009",
+            "description": "Ledger com dados de execução",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-010",
+            "description": "Risk-scoring YAML com níveis",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Qualidade",
+        "weight": 16,
+        "score": 77.77777777777779,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "QLT-001",
+            "description": "Definition of Done com conteúdo",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "QLT-002",
+            "description": "Quality gates configurados",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "QLT-003",
+            "description": "Score-quality executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-004",
+            "description": "Score-risk executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-005",
+            "description": "Generate-patch executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-006",
+            "description": "Validate-optimizer-config executa OK",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-007",
+            "description": "Compare-runs executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-008",
+            "description": "Cobertura de linhas >= 93%",
+            "passed": false,
+            "weight": 2,
+            "value": "N/A"
+          },
+          {
+            "id": "QLT-009",
+            "description": "Cobertura de branches >= 76%",
+            "passed": false,
+            "weight": 2
+          },
+          {
+            "id": "QLT-011",
+            "description": "Testes integrados do scorecard",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "QLT-010",
+            "description": "Test-loop comando existe",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Arquitetura",
+        "weight": 14,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "ARCH-001",
+            "description": "Contrato de adapters",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ARCH-002",
+            "description": "Governança definida",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ARCH-003",
+            "description": "Design system contract",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-004",
+            "description": "ADRs registrados (5/3+)",
+            "passed": true,
+            "weight": 3,
+            "value": 5
+          },
+          {
+            "id": "ARCH-005",
+            "description": "Schema de impacto (JSON Schema)",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ARCH-006",
+            "description": "Schema de patch",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-007",
+            "description": "Schema de score",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-008",
+            "description": "Schema de aprovação",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-009",
+            "description": "Flake8 válido (Python adapter)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Documentação",
+        "weight": 10,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "DOC-001",
+            "description": "README com conteúdo relevante",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOC-002",
+            "description": "AI Usage Guide",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "DOC-003",
+            "description": "CHANGELOG com entradas reais",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOC-004",
+            "description": "Protocolo de comunicação",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "DOC-005",
+            "description": "Handoff de IA atualizado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOC-006",
+            "description": "README + Architecture do optimizer",
+            "passed": true,
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "Otimização Inteligente",
+        "weight": 15,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "OPT-001",
+            "description": "3 YAMLs de otimização configurados",
+            "passed": true,
+            "weight": 3
+          },
+          {
+            "id": "OPT-002",
+            "description": "Optimizer YAML principal",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "OPT-003",
+            "description": "Pipeline + optimize-request executam",
+            "passed": true,
+            "weight": 3
+          },
+          {
+            "id": "OPT-004",
+            "description": "Budget YAML configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "OPT-005",
+            "description": "Classificador de tarefa existe",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "OPT-006",
+            "description": "Exemplos de request/scores",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "OPT-007",
+            "description": "Analyze-impact executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "OPT-008",
+            "description": "Minimize-context executa sem erro",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Agentes e Runtime",
+        "weight": 14,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "AGT-001",
+            "description": "Checkpoints de agente (836/3+)",
+            "passed": true,
+            "weight": 3,
+            "value": 836
+          },
+          {
+            "id": "AGT-002",
+            "description": "Ledger com dados reais",
+            "passed": true,
+            "weight": 2,
+            "value": "31.6KB"
+          },
+          {
+            "id": "AGT-003",
+            "description": "Task-run CLI existe",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-004",
+            "description": "Render-report executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-005",
+            "description": "Knowledge Base populada",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-006",
+            "description": "Memória do repositório ativa",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-007",
+            "description": "Summary-impact executa sem erro",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Saúde do Ecossistema",
+        "weight": 10,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "ECO-001",
+            "description": "npm audit sem críticas",
+            "passed": true,
+            "weight": 3,
+            "value": 0
+          },
+          {
+            "id": "ECO-002",
+            "description": "npm audit: <5 altas + <10 moderadas",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ECO-003",
+            "description": "Dependências atualizadas (major 2+)",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ECO-004",
+            "description": "Golangci-lint OK (Go adapter)",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ECO-005",
+            "description": "Flake8 OK (Python adapter)",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ECO-006",
+            "description": "SBOM / supply-chain comando existe",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Extensibilidade e Integração",
+        "weight": 10,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "EXT-001",
+            "description": "Extensão VSCode compilável",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "EXT-002",
+            "description": "3+ adapters (NestJS, FastAPI, Go)",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "EXT-003",
+            "description": "Plugin CLI existe",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "EXT-004",
+            "description": "Dashboard webview funcional",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EXT-005",
+            "description": "Scorecard no dashboard (latest.json)",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EXT-006",
+            "description": "MCP server configurado",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EXT-007",
+            "description": "Badge SVG gerado (README)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Execução do Roadmap",
+        "weight": 5,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "RDM-001",
+            "description": "Tarefas de evolução concluídas",
+            "passed": true,
+            "weight": 3,
+            "value": "10/19 (53%)"
+          },
+          {
+            "id": "RDM-002",
+            "description": "Backlog.md atualizado com EV tasks",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "RDM-003",
+            "description": "Master-plan.md com épico 9-11",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Git e Colaboração",
+        "weight": 8,
+        "score": 87.5,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "GIT-001",
+            "description": "commitlint.config.js configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "GIT-002",
+            "description": ".gitignore com conteúdo relevante",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "GIT-003",
+            "description": "Workflows GitHub (3+)",
+            "passed": true,
+            "weight": 2,
+            "value": 6
+          },
+          {
+            "id": "GIT-004",
+            "description": "Repositório git inicializado",
+            "passed": false,
+            "weight": 1
+          },
+          {
+            "id": "GIT-005",
+            "description": "CONTRIBUTING.md existe",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Package Health",
+        "weight": 4,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "PKG-001",
+            "description": "Todos os adapters tem src/index.ts",
+            "passed": true,
+            "weight": 2,
+            "value": "13/13"
+          },
+          {
+            "id": "PKG-002",
+            "description": "Package.json em cada adapter",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "PKG-003",
+            "description": "Nenhum adapter vazio (0 arquivos)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Estrutura do Projeto",
+        "weight": 3,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "EST-001",
+            "description": "tsconfig.json hierarquico",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EST-002",
+            "description": "ESLint + Commitlint config",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EST-003",
+            "description": ".gitignore com conteudo",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Qualidade de Código",
+        "weight": 8,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "COD-001",
+            "description": "Menos de 100 usos de `: any`",
+            "passed": true,
+            "weight": 3,
+            "value": 47,
+            "hint": "47 usos de :any encontrados"
+          },
+          {
+            "id": "COD-002",
+            "description": "Menos de 3 arquivos > 100KB",
+            "passed": true,
+            "weight": 2,
+            "value": 1,
+            "hint": "1 arquivos grandes"
+          },
+          {
+            "id": "COD-003",
+            "description": "ESLint configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "COD-004",
+            "description": "TypeScript strict mode",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "CI/CD e Automação",
+        "weight": 4,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "CICD-001",
+            "description": "CI workflow configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "CICD-002",
+            "description": "Release workflow configurado",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "CICD-003",
+            "description": "CodeQL ou security scan",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Dependências",
+        "weight": 6,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "DEP-001",
+            "description": "Número saudável de dependências (< 100)",
+            "passed": true,
+            "weight": 2,
+            "value": 16
+          },
+          {
+            "id": "DEP-002",
+            "description": "Sem dependências faltando (npm ls)",
+            "passed": true,
+            "weight": 2,
+            "value": 0
+          },
+          {
+            "id": "DEP-003",
+            "description": "package-lock.json versionado",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "DEP-004",
+            "description": "Sem dependências duplicadas (npm dedupe)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Documentação de Código",
+        "weight": 6,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "DOCCOD-001",
+            "description": "JSDoc em pelo menos 5% das exportações",
+            "passed": true,
+            "weight": 3,
+            "value": "6%"
+          },
+          {
+            "id": "DOCCOD-002",
+            "description": "README.md em cada package/",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOCCOD-003",
+            "description": "CHANGELOG.md por package",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Integridade do Projeto",
+        "weight": 5,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "INT-001",
+            "description": "Arquivos criticos existem",
+            "passed": true,
+            "weight": 2,
+            "value": "0 missing"
+          },
+          {
+            "id": "INT-002",
+            "description": "TypeScript compila sem erros",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "INT-003",
+            "description": "Governanca basica",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Pipeline Health",
+        "weight": 3,
+        "score": 66.66666666666666,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "PPL-001",
+            "description": "Todos os scripts do optimizer executam",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "PPL-002",
+            "description": "Testes passam",
+            "passed": false,
+            "weight": 1
+          }
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "text": "[Qualidade] Cobertura de linhas >= 93% (atual: N/A)"
+      },
+      {
+        "text": "[Qualidade] Cobertura de branches >= 76%"
+      },
+      {
+        "text": "[Git e Colaboração] Repositório git inicializado"
+      },
+      {
+        "text": "[Pipeline Health] Testes passam"
+      }
+    ],
+    "evolution": {
+      "version": "18.0",
+      "categories": 18,
+      "items": 97
+    },
+    "trends": [
+      {
+        "timestamp": "2026-07-10T01:41:40.548Z",
+        "overallScore": 95,
+        "categories": [
+          {
+            "name": "Segurança",
+            "score": 100
+          },
+          {
+            "name": "Qualidade",
+            "score": 78
+          },
+          {
+            "name": "Arquitetura",
+            "score": 100
+          },
+          {
+            "name": "Documentação",
+            "score": 100
+          },
+          {
+            "name": "Otimização Inteligente",
+            "score": 100
+          },
+          {
+            "name": "Agentes e Runtime",
+            "score": 100
+          },
+          {
+            "name": "Saúde do Ecossistema",
+            "score": 100
+          },
+          {
+            "name": "Extensibilidade e Integração",
+            "score": 80
+          },
+          {
+            "name": "Execução do Roadmap",
+            "score": 100
+          },
+          {
+            "name": "Git e Colaboração",
+            "score": 88
+          },
+          {
+            "name": "Package Health",
+            "score": 100
+          },
+          {
+            "name": "Estrutura do Projeto",
+            "score": 100
+          },
+          {
+            "name": "Qualidade de Código",
+            "score": 100
+          },
+          {
+            "name": "CI/CD e Automação",
+            "score": 100
+          },
+          {
+            "name": "Dependências",
+            "score": 100
+          },
+          {
+            "name": "Documentação de Código",
+            "score": 100
+          },
+          {
+            "name": "Integridade do Projeto",
+            "score": 100
+          },
+          {
+            "name": "Pipeline Health",
+            "score": 67
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-07-10T01:48:42.505Z",
+        "overallScore": 96,
+        "categories": [
+          {
+            "name": "Segurança",
+            "score": 100
+          },
+          {
+            "name": "Qualidade",
+            "score": 78
+          },
+          {
+            "name": "Arquitetura",
+            "score": 100
+          },
+          {
+            "name": "Documentação",
+            "score": 100
+          },
+          {
+            "name": "Otimização Inteligente",
+            "score": 100
+          },
+          {
+            "name": "Agentes e Runtime",
+            "score": 100
+          },
+          {
+            "name": "Saúde do Ecossistema",
+            "score": 100
+          },
+          {
+            "name": "Extensibilidade e Integração",
+            "score": 100
+          },
+          {
+            "name": "Execução do Roadmap",
+            "score": 100
+          },
+          {
+            "name": "Git e Colaboração",
+            "score": 88
+          },
+          {
+            "name": "Package Health",
+            "score": 100
+          },
+          {
+            "name": "Estrutura do Projeto",
+            "score": 100
+          },
+          {
+            "name": "Qualidade de Código",
+            "score": 100
+          },
+          {
+            "name": "CI/CD e Automação",
+            "score": 100
+          },
+          {
+            "name": "Dependências",
+            "score": 100
+          },
+          {
+            "name": "Documentação de Código",
+            "score": 100
+          },
+          {
+            "name": "Integridade do Projeto",
+            "score": 100
+          },
+          {
+            "name": "Pipeline Health",
+            "score": 67
+          }
+        ]
+      }
+    ],
+    "alerts": [],
+    "correlationAlerts": [],
+    "forecast": {
+      "forecast": 0,
+      "confidence": "low",
+      "trend": "stable",
+      "history": []
+    },
+    "git": {
+      "branch": "no-git",
+      "commit": "0000000",
+      "message": "not a git repository"
+    },
+    "meta": {
+      "durationMs": 372899,
+      "scorecardVersion": "18.0"
+    }
+  },
+  {
+    "timestamp": "2026-07-10T17:04:06.125Z",
+    "overallScore": 96,
+    "maturityLevel": "A",
+    "categories": [
+      {
+        "name": "Segurança",
+        "weight": 16,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "SEC-001",
+            "description": "Política de segurança de agentes",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "SEC-002",
+            "description": "Política de valores sensíveis",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-003",
+            "description": "Política de rede",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-004",
+            "description": "Política de secrets",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-005",
+            "description": "Zero vulnerabilidades críticas",
+            "passed": true,
+            "weight": 3,
+            "value": 0,
+            "hint": "0 críticas, 0 altas"
+          },
+          {
+            "id": "SEC-006",
+            "description": "<5 vulnerabilidades altas",
+            "passed": true,
+            "weight": 2,
+            "value": 0,
+            "hint": "0 altas"
+          },
+          {
+            "id": "SEC-007",
+            "description": "Rollback-last executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "SEC-008",
+            "description": "Mark-approved e rejected executam",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "SEC-009",
+            "description": "Ledger com dados de execução",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "SEC-010",
+            "description": "Risk-scoring YAML com níveis",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Qualidade",
+        "weight": 16,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "QLT-001",
+            "description": "Definition of Done com conteúdo",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "QLT-002",
+            "description": "Quality gates configurados",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "QLT-003",
+            "description": "Score-quality executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-004",
+            "description": "Score-risk executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-005",
+            "description": "Generate-patch executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-006",
+            "description": "Validate-optimizer-config executa OK",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-007",
+            "description": "Compare-runs executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-008",
+            "description": "Cobertura de linhas >= 93%",
+            "passed": true,
+            "weight": 2,
+            "value": "94%"
+          },
+          {
+            "id": "QLT-009",
+            "description": "Cobertura de branches >= 76%",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "QLT-011",
+            "description": "Testes integrados do scorecard",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "QLT-010",
+            "description": "Test-loop comando existe",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Arquitetura",
+        "weight": 14,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "ARCH-001",
+            "description": "Contrato de adapters",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ARCH-002",
+            "description": "Governança definida",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ARCH-003",
+            "description": "Design system contract",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-004",
+            "description": "ADRs registrados (5/3+)",
+            "passed": true,
+            "weight": 3,
+            "value": 5
+          },
+          {
+            "id": "ARCH-005",
+            "description": "Schema de impacto (JSON Schema)",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ARCH-006",
+            "description": "Schema de patch",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-007",
+            "description": "Schema de score",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-008",
+            "description": "Schema de aprovação",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ARCH-009",
+            "description": "Flake8 válido (Python adapter)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Documentação",
+        "weight": 10,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "DOC-001",
+            "description": "README com conteúdo relevante",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOC-002",
+            "description": "AI Usage Guide",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "DOC-003",
+            "description": "CHANGELOG com entradas reais",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOC-004",
+            "description": "Protocolo de comunicação",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "DOC-005",
+            "description": "Handoff de IA atualizado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOC-006",
+            "description": "README + Architecture do optimizer",
+            "passed": true,
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "name": "Otimização Inteligente",
+        "weight": 15,
+        "score": 80,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "OPT-001",
+            "description": "3 YAMLs de otimização configurados",
+            "passed": true,
+            "weight": 3
+          },
+          {
+            "id": "OPT-002",
+            "description": "Optimizer YAML principal",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "OPT-003",
+            "description": "Pipeline + optimize-request executam",
+            "passed": false,
+            "weight": 3
+          },
+          {
+            "id": "OPT-004",
+            "description": "Budget YAML configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "OPT-005",
+            "description": "Classificador de tarefa existe",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "OPT-006",
+            "description": "Exemplos de request/scores",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "OPT-007",
+            "description": "Analyze-impact executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "OPT-008",
+            "description": "Minimize-context executa sem erro",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Agentes e Runtime",
+        "weight": 14,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "AGT-001",
+            "description": "Checkpoints de agente (1296/3+)",
+            "passed": true,
+            "weight": 3,
+            "value": 1296
+          },
+          {
+            "id": "AGT-002",
+            "description": "Ledger com dados reais",
+            "passed": true,
+            "weight": 2,
+            "value": "47.0KB"
+          },
+          {
+            "id": "AGT-003",
+            "description": "Task-run CLI existe",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-004",
+            "description": "Render-report executa sem erro",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-005",
+            "description": "Knowledge Base populada",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-006",
+            "description": "Memória do repositório ativa",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "AGT-007",
+            "description": "Summary-impact executa sem erro",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Saúde do Ecossistema",
+        "weight": 10,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "ECO-001",
+            "description": "npm audit sem críticas",
+            "passed": true,
+            "weight": 3,
+            "value": 0
+          },
+          {
+            "id": "ECO-002",
+            "description": "npm audit: <5 altas + <10 moderadas",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ECO-003",
+            "description": "Dependências atualizadas (major 2+)",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "ECO-004",
+            "description": "Golangci-lint OK (Go adapter)",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ECO-005",
+            "description": "Flake8 OK (Python adapter)",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "ECO-006",
+            "description": "SBOM / supply-chain comando existe",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Extensibilidade e Integração",
+        "weight": 10,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "EXT-001",
+            "description": "Extensão VSCode compilável",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "EXT-002",
+            "description": "3+ adapters (NestJS, FastAPI, Go)",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "EXT-003",
+            "description": "Plugin CLI existe",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "EXT-004",
+            "description": "Dashboard webview funcional",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EXT-005",
+            "description": "Scorecard no dashboard (latest.json)",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EXT-006",
+            "description": "MCP server configurado",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EXT-007",
+            "description": "Badge SVG gerado (README)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Execução do Roadmap",
+        "weight": 5,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "RDM-001",
+            "description": "Tarefas de evolução concluídas",
+            "passed": true,
+            "weight": 3,
+            "value": "10/19 (53%)"
+          },
+          {
+            "id": "RDM-002",
+            "description": "Backlog.md atualizado com EV tasks",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "RDM-003",
+            "description": "Master-plan.md com épico 9-11",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Git e Colaboração",
+        "weight": 8,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "GIT-001",
+            "description": "commitlint.config.js configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "GIT-002",
+            "description": ".gitignore com conteúdo relevante",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "GIT-003",
+            "description": "Workflows GitHub (3+)",
+            "passed": true,
+            "weight": 2,
+            "value": 6
+          },
+          {
+            "id": "GIT-004",
+            "description": "Repositório git inicializado",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "GIT-005",
+            "description": "CONTRIBUTING.md existe",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Package Health",
+        "weight": 4,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "PKG-001",
+            "description": "Todos os adapters tem src/index.ts",
+            "passed": true,
+            "weight": 2,
+            "value": "13/13"
+          },
+          {
+            "id": "PKG-002",
+            "description": "Package.json em cada adapter",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "PKG-003",
+            "description": "Nenhum adapter vazio (0 arquivos)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Estrutura do Projeto",
+        "weight": 3,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "EST-001",
+            "description": "tsconfig.json hierarquico",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EST-002",
+            "description": "ESLint + Commitlint config",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "EST-003",
+            "description": ".gitignore com conteudo",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Qualidade de Código",
+        "weight": 8,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "COD-001",
+            "description": "Menos de 100 usos de `: any`",
+            "passed": true,
+            "weight": 3,
+            "value": 14,
+            "hint": "14 usos de :any encontrados"
+          },
+          {
+            "id": "COD-002",
+            "description": "Menos de 3 arquivos > 100KB",
+            "passed": true,
+            "weight": 2,
+            "value": 1,
+            "hint": "1 arquivos grandes"
+          },
+          {
+            "id": "COD-003",
+            "description": "ESLint configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "COD-004",
+            "description": "TypeScript strict mode",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "CI/CD e Automação",
+        "weight": 4,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "CICD-001",
+            "description": "CI workflow configurado",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "CICD-002",
+            "description": "Release workflow configurado",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "CICD-003",
+            "description": "CodeQL ou security scan",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Dependências",
+        "weight": 6,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "DEP-001",
+            "description": "Número saudável de dependências (< 100)",
+            "passed": true,
+            "weight": 2,
+            "value": 16
+          },
+          {
+            "id": "DEP-002",
+            "description": "Sem dependências faltando (npm ls)",
+            "passed": true,
+            "weight": 2,
+            "value": 0
+          },
+          {
+            "id": "DEP-003",
+            "description": "package-lock.json versionado",
+            "passed": true,
+            "weight": 1
+          },
+          {
+            "id": "DEP-004",
+            "description": "Sem dependências duplicadas (npm dedupe)",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Documentação de Código",
+        "weight": 6,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "DOCCOD-001",
+            "description": "JSDoc em pelo menos 5% das exportações",
+            "passed": true,
+            "weight": 3,
+            "value": "8%"
+          },
+          {
+            "id": "DOCCOD-002",
+            "description": "README.md em cada package/",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "DOCCOD-003",
+            "description": "CHANGELOG.md por package",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Integridade do Projeto",
+        "weight": 5,
+        "score": 100,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "INT-001",
+            "description": "Arquivos criticos existem",
+            "passed": true,
+            "weight": 2,
+            "value": "0 missing"
+          },
+          {
+            "id": "INT-002",
+            "description": "TypeScript compila sem erros",
+            "passed": true,
+            "weight": 2
+          },
+          {
+            "id": "INT-003",
+            "description": "Governanca basica",
+            "passed": true,
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "Pipeline Health",
+        "weight": 3,
+        "score": 0,
+        "maxScore": 100,
+        "items": [
+          {
+            "id": "PPL-001",
+            "description": "Todos os scripts do optimizer executam",
+            "passed": false,
+            "weight": 2
+          },
+          {
+            "id": "PPL-002",
+            "description": "Testes passam",
+            "passed": false,
+            "weight": 1
+          }
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "text": "[Otimização Inteligente] Pipeline + optimize-request executam"
+      },
+      {
+        "text": "[Pipeline Health] Todos os scripts do optimizer executam"
+      },
+      {
+        "text": "[Pipeline Health] Testes passam"
+      }
+    ],
+    "evolution": {
+      "version": "18.0",
+      "categories": 18,
+      "items": 97
+    },
+    "trends": [
+      {
+        "timestamp": "2026-07-10T01:41:40.548Z",
+        "overallScore": 95,
+        "categories": [
+          {
+            "name": "Segurança",
+            "score": 100
+          },
+          {
+            "name": "Qualidade",
+            "score": 78
+          },
+          {
+            "name": "Arquitetura",
+            "score": 100
+          },
+          {
+            "name": "Documentação",
+            "score": 100
+          },
+          {
+            "name": "Otimização Inteligente",
+            "score": 100
+          },
+          {
+            "name": "Agentes e Runtime",
+            "score": 100
+          },
+          {
+            "name": "Saúde do Ecossistema",
+            "score": 100
+          },
+          {
+            "name": "Extensibilidade e Integração",
+            "score": 80
+          },
+          {
+            "name": "Execução do Roadmap",
+            "score": 100
+          },
+          {
+            "name": "Git e Colaboração",
+            "score": 88
+          },
+          {
+            "name": "Package Health",
+            "score": 100
+          },
+          {
+            "name": "Estrutura do Projeto",
+            "score": 100
+          },
+          {
+            "name": "Qualidade de Código",
+            "score": 100
+          },
+          {
+            "name": "CI/CD e Automação",
+            "score": 100
+          },
+          {
+            "name": "Dependências",
+            "score": 100
+          },
+          {
+            "name": "Documentação de Código",
+            "score": 100
+          },
+          {
+            "name": "Integridade do Projeto",
+            "score": 100
+          },
+          {
+            "name": "Pipeline Health",
+            "score": 67
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-07-10T01:48:42.505Z",
+        "overallScore": 96,
+        "categories": [
+          {
+            "name": "Segurança",
+            "score": 100
+          },
+          {
+            "name": "Qualidade",
+            "score": 78
+          },
+          {
+            "name": "Arquitetura",
+            "score": 100
+          },
+          {
+            "name": "Documentação",
+            "score": 100
+          },
+          {
+            "name": "Otimização Inteligente",
+            "score": 100
+          },
+          {
+            "name": "Agentes e Runtime",
+            "score": 100
+          },
+          {
+            "name": "Saúde do Ecossistema",
+            "score": 100
+          },
+          {
+            "name": "Extensibilidade e Integração",
+            "score": 100
+          },
+          {
+            "name": "Execução do Roadmap",
+            "score": 100
+          },
+          {
+            "name": "Git e Colaboração",
+            "score": 88
+          },
+          {
+            "name": "Package Health",
+            "score": 100
+          },
+          {
+            "name": "Estrutura do Projeto",
+            "score": 100
+          },
+          {
+            "name": "Qualidade de Código",
+            "score": 100
+          },
+          {
+            "name": "CI/CD e Automação",
+            "score": 100
+          },
+          {
+            "name": "Dependências",
+            "score": 100
+          },
+          {
+            "name": "Documentação de Código",
+            "score": 100
+          },
+          {
+            "name": "Integridade do Projeto",
+            "score": 100
+          },
+          {
+            "name": "Pipeline Health",
+            "score": 67
+          }
+        ]
+      },
+      {
+        "timestamp": "2026-07-10T02:02:05.520Z",
+        "overallScore": 96,
+        "categories": [
+          {
+            "name": "Segurança",
+            "score": 100
+          },
+          {
+            "name": "Qualidade",
+            "score": 78
+          },
+          {
+            "name": "Arquitetura",
+            "score": 100
+          },
+          {
+            "name": "Documentação",
+            "score": 100
+          },
+          {
+            "name": "Otimização Inteligente",
+            "score": 100
+          },
+          {
+            "name": "Agentes e Runtime",
+            "score": 100
+          },
+          {
+            "name": "Saúde do Ecossistema",
+            "score": 100
+          },
+          {
+            "name": "Extensibilidade e Integração",
+            "score": 100
+          },
+          {
+            "name": "Execução do Roadmap",
+            "score": 100
+          },
+          {
+            "name": "Git e Colaboração",
+            "score": 88
+          },
+          {
+            "name": "Package Health",
+            "score": 100
+          },
+          {
+            "name": "Estrutura do Projeto",
+            "score": 100
+          },
+          {
+            "name": "Qualidade de Código",
+            "score": 100
+          },
+          {
+            "name": "CI/CD e Automação",
+            "score": 100
+          },
+          {
+            "name": "Dependências",
+            "score": 100
+          },
+          {
+            "name": "Documentação de Código",
+            "score": 100
+          },
+          {
+            "name": "Integridade do Projeto",
+            "score": 100
+          },
+          {
+            "name": "Pipeline Health",
+            "score": 67
+          }
+        ]
+      }
+    ],
+    "alerts": [
+      {
+        "category": "Otimização Inteligente",
+        "item": "OPT-003",
+        "severity": "error",
+        "message": "Pipeline + optimize-request executam"
+      }
+    ],
+    "correlationAlerts": [
+      {
+        "severity": "info",
+        "message": "Segurança e Qualidade em nível alto — projeto maduro",
+        "categories": [
+          "Segurança",
+          "Qualidade"
+        ]
+      }
+    ],
+    "forecast": {
+      "forecast": 100,
+      "confidence": "high",
+      "trend": "up",
+      "history": [
+        95,
+        96,
+        96
+      ]
+    },
+    "git": {
+      "branch": "master",
+      "commit": "7903205",
+      "message": "feat: initial commit — ai-devkit v2 consolidated"
+    },
+    "meta": {
+      "durationMs": 28748,
+      "scorecardVersion": "18.0"
+    }
+  }
+]

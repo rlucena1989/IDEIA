@@ -1,0 +1,7 @@
+id: visitor
+title: "Visitor Pattern"
+category: design
+tags: ["visitor", "gof", "behavioral", "double-dispatch", "operation"]
+summary: "Visitor separa um algoritmo da estrutura de objetos na qual ele opera, permitindo adicionar novas operacoes sem modificar as classes."
+content: |
+  Visitor: interface com metodos visit() para cada tipo concreto. Element: interface com accept(visitor). Elementos concretos: implementam accept chamando visitor.visit(this). Exemplo: AST traversal (parser), operacoes em hierarquia de documentos (export para JSON, XML, YAML).

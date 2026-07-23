@@ -1,0 +1,39 @@
+{
+  "name": "@ideia/feedback-pipeline",
+  "description": "Feedback Pipeline ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â feedback ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ recomendaÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Âµes ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ memÃƒÆ’Ã‚Â³ria",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./memory-integration": {
+      "types": "./dist/memory-integration.d.ts",
+      "default": "./dist/memory-integration.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/memory-store": "*",
+    "@ideia/event-bus": "*",
+    "@ideia/audit-trail": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

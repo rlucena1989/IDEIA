@@ -1,0 +1,17 @@
+{
+  "name": "@ideia/checkpoint-engine",
+  "description": "IDEIA Checkpoint Engine Ã¢â‚¬â€ snapshots de execuÃƒÂ§ÃƒÂ£o com diffs, retomada e gerenciamento de estado",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

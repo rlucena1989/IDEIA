@@ -1,0 +1,20 @@
+export interface IEvent<T = unknown> {
+  readonly eventName: string;
+  readonly payload: T;
+  readonly timestamp: Date;
+  readonly eventId: string;
+}
+
+export class {{Name}}Event implements IEvent<{{Name}}Payload> {
+  static readonly eventName = '{{name}}';
+
+  readonly eventName = {{Name}}Event.eventName;
+  readonly timestamp = new Date();
+  readonly eventId = crypto.randomUUID();
+
+  constructor(public readonly payload: {{Name}}Payload) {}
+}
+
+export interface {{Name}}Payload {
+  // TODO: define payload fields
+}

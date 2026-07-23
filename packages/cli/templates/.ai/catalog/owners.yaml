@@ -1,0 +1,6 @@
+# Donos (owners) de modulos e sistemas
+owners: []
+# Exemplo:
+# owners:
+#   - name: team-core
+#     contact: team-core@example.com

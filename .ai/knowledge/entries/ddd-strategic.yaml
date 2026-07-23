@@ -1,0 +1,7 @@
+id: ddd-strategic
+title: "DDD Strategic Design — Bounded Context, Context Map"
+category: process
+tags: ["ddd", "strategic", "bounded-context", "context-map", "ubiquitous-language"]
+summary: "Strategic DDD mapeia o dominio em bounded contexts e define relacoes entre eles via Context Map."
+content: |
+  Bounded Context: limite explicito onde um modelo de dominio e valido. Ex: contexto de Vendas e contexto de Estoque tem modelos diferentes de Produto. Context Map: relacionamentos entre contexts (Partnership, Shared Kernel, Customer-Supplier, Conformist, Anti-Corruption Layer, Open-Host Service, Published Language, Separate Ways). Core Domain: diferencial competitivo (faça voce mesmo). Supporting Domain: necessario, mas nao core (considere comprar). Generic Domain: commodity (compre pronto).

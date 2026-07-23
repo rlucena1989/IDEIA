@@ -1,0 +1,39 @@
+{
+  "name": "@ideia/memory-store",
+  "description": "AI-Devkit Memory Store ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â persistÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªncia de sessÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£o, contexto, decisÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âµes e records unificados",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./chat-integration": {
+      "types": "./dist/chat-integration.d.ts",
+      "default": "./dist/chat-integration.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/contracts": "*",
+    "@ideia/logger": "*",
+    "@ideia/event-bus": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

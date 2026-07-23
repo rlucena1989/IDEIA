@@ -1,0 +1,3 @@
+# Cenarios de mock de API
+# Cada cenario descreve uma resposta simulada para uso em desenvolvimento/testes.
+scenarios: []

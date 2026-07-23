@@ -1,0 +1,17 @@
+import React from 'react';
+import styles from './{{name}}.module.css';
+
+interface {{Name}}Props {
+  children?: React.ReactNode;
+  className?: string;
+}
+
+export const {{Name}}: React.FC<{{Name}}Props> = ({ children, className = '' }) => {
+  return (
+    <div className={\`\${styles.container} \${className}\`}>
+      {children}
+    </div>
+  );
+};
+
+export default {{Name}};

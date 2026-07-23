@@ -1,0 +1,4 @@
+# Schema GraphQL inicial
+type Query {
+  _health: String
+}

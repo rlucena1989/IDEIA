@@ -1,0 +1,19 @@
+# Politica de permissoes para agentes de IA
+allowed:
+  - "npm run lint"
+  - "npm run typecheck"
+  - "npm test"
+  - "npm run build"
+  - "git status"
+  - "git diff"
+  - "git log"
+restricted:
+  - "git commit"      # requer confirmacao humana explicita
+  - "git push"        # requer confirmacao humana explicita
+  - "npm install"     # requer revisao de dependencias
+  - "npm publish"     # requer aprovacao humana
+forbidden:
+  - "git push --force"
+  - "rm -rf"
+  - "DROP TABLE"
+  - "credenciais ou secrets em texto plano"

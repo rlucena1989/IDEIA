@@ -1,0 +1,7 @@
+id: null-object
+title: "Null Object Pattern"
+category: design
+tags: ["null-object", "behavioral", "null-safety", "noop"]
+summary: "Null Object fornece um objeto substituto que implementa a interface mas nao faz nada, evitando null checks."
+content: |
+  Implementacao: classe que implementa a interface com metodos vazios ou valores default. Exemplo: logger null (nao loga nada), EmptyIterator, NullCommand. Beneficio: elimina if (x != null) checks, codigo mais limpo. Em TS/JS: optional chaining (?.) e nullish coalescing (??) sao alternativas.

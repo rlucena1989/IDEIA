@@ -1,0 +1,19 @@
+{
+  "name": "@ideia/core-contributions",
+  "description": "ContributionProvider base, types, interfaces for Theia-style dependency injection contributions",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.2.2",
+    "inversify": "^6.0.3"
+  },
+  "files": ["dist"],
+  "publishConfig": { "access": "public" },
+  "repository": { "type": "git", "url": "https://github.com/anomalyco/ideia.git" },
+  "homepage": "https://ideia.dev",
+  "bugs": { "url": "https://github.com/anomalyco/ideia/issues" }
+}

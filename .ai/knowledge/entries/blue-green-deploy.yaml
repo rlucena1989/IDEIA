@@ -1,0 +1,7 @@
+id: blue-green-deploy
+title: "Blue-Green Deployment"
+category: devops
+tags: ["blue-green", "deploy", "zero-downtime", "rollback"]
+summary: "Blue-Green mantem dois ambientes identicos (blue e green) e alterna o trafego entre eles para deploy zero-downtime."
+content: |
+  Blue: ambiente atual recebendo trafego. Green: novo ambiente com nova versao. Switch: roteador/load balancer muda trafego de blue para green. Rollback: simples — volta trafego para blue. Beneficios: zero downtime, rollback instantaneo. Desafio: custo de manter dois ambientes.

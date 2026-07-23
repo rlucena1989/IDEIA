@@ -1,0 +1,25 @@
+{
+  "session": {
+    "session_id": "",
+    "started_at": "",
+    "last_active_at": ""
+  },
+  "workspace": {
+    "workspace_id": "",
+    "root_path": "",
+    "active_file": null
+  },
+  "policy": "ask",
+  "active_tasks": [],
+  "context": {
+    "last_decisions": [],
+    "project_context": {},
+    "recent_files": [],
+    "user_preferences": {}
+  },
+  "transient": {
+    "current_action": null,
+    "pending_approvals": [],
+    "last_error": null
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "task_type": "feature",
+  "title": "Implement budget-driven execution",
+  "description": "Add budget enforcement to optimizer pipeline",
+  "estimated_tokens": 45000,
+  "estimated_files": 8,
+  "estimated_context_size": 524288,
+  "priority": "high",
+  "budget": {
+    "max_runtime_seconds": 900
+  }
+}

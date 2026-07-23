@@ -1,0 +1,7 @@
+id: singleton
+title: "Singleton Pattern"
+category: design
+tags: ["singleton", "gof", "creational", "global-state"]
+summary: "Singleton garante que uma classe tenha apenas uma instancia e fornece um ponto global de acesso a ela."
+content: |
+  Implementacao: construtor privado, metodo estatico getInstance(), lazy initialization. Cuidados: nao e thread-safe por padrao (usar double-checked locking ou enum). Em Node.js: modules sao naturalmente singletons devido ao caching do require/import.

@@ -1,0 +1,7 @@
+id: domain-storytelling
+title: "Domain Storytelling"
+category: process
+tags: ["domain-storytelling", "workshop", "modeling", "communication"]
+summary: "Domain Storytelling usa historias contadas por especialistas do dominio para modelar processos de negocio."
+content: |
+  Elementos: Actor (pessoa/sistema que age), Work Object (documento/dado manipulado), Activity (acao realizada), Sequence (ordem das atividades), Arrows (fluxo de trabalho). Processo: especialista conta historia enquanto facilitador desenha. Beneficios: linguagem natural, sem tecnicidade, alinhamento rapido. Ferramentas: Domain Storytelling Modeler (gratuito, web), caneta e papel.

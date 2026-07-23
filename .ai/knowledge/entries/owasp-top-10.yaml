@@ -1,0 +1,7 @@
+id: owasp-top-10
+title: "OWASP Top 10 — Principais Vulnerabilidades Web"
+category: security
+tags: ["owasp", "top-10", "vulnerabilities", "web-security"]
+summary: "OWASP Top 10 lista as vulnerabilidades mais criticas em aplicacoes web, atualizada periodicamente."
+content: |
+  2021: A01 Broken Access Control, A02 Cryptographic Failures, A03 Injection, A04 Insecure Design, A05 Security Misconfiguration, A06 Vulnerable Components, A07 Identification & Auth Failures, A08 Software/Data Integrity, A09 Logging & Monitoring, A10 SSRF. Mitigacao: autenticacao forte, validacao de input, HTTPS, CSP, dependencias atualizadas, logging, rate limiting, principio do menor privilegio.

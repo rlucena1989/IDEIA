@@ -1,0 +1,7 @@
+id: lazy-loading
+title: "Lazy Loading Pattern"
+category: performance
+tags: ["lazy-loading", "performance", "initialization", "deferred"]
+summary: "Lazy loading adia a inicializacao de um objeto ate que ele seja realmente necessario, economizando recursos."
+content: |
+  Aplicacoes: imagens (loading="lazy"), modulos JS (dynamic import()), rotas (React.lazy), dados (infinite scroll), objetos pesados (Lazy Initialization). Em JS/TS: const Component = React.lazy(() => import("./HeavyComponent")). Beneficios: reduz tempo de carregamento inicial, economia de memoria, melhora percepcao de performance.

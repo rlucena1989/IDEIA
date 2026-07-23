@@ -1,0 +1,7 @@
+id: microservices
+title: "Microservices Architecture"
+category: architecture
+tags: ["microservices", "distributed-systems", "decentralized", "bounded-context"]
+summary: "Microservices sao servicos pequenos, independentes e focados em um unico bounded context."
+content: |
+  Cada servico tem seu proprio banco, deploy independente, e se comunica via APIs (REST, gRPC, eventos). Governanca descentralizada, escalabilidade independente, equipes autonomas.

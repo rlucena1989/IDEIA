@@ -1,0 +1,30 @@
+{
+  "name": "@ideia/config-engine",
+  "description": "Config Engine Ã¢â‚¬â€ gerenciamento de configuraÃƒÂ§ÃƒÂ£o global e por projeto com merge, versionamento e contexto",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/profiles": "*",
+    "@ideia/event-bus": "*",
+    "@ideia/audit-trail": "*",
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

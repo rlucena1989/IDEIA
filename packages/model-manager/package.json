@@ -1,0 +1,26 @@
+{
+  "name": "@ideia/model-manager",
+  "private": true,
+  "description": "Model Manager Ã¢â‚¬â€ model registration, evaluation, benchmark integration, model selection",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

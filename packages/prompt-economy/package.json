@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/prompt-economy",
+  "description": "IDEIA Prompt Pipeline Economy Ã¢â‚¬â€ compressor, budget tracking, complexity router, early exit e cache de LLM",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@ideia/agent-runtime": "*",
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

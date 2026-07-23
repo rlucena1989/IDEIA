@@ -1,0 +1,7 @@
+id: openapi
+title: "API Documentation with OpenAPI/Swagger"
+category: api
+tags: ["openapi", "swagger", "documentation", "specification", "api-docs"]
+summary: "OpenAPI Specification descreve APIs REST de forma padronizada, permitindo gerar documentacao, clientes e testes."
+content: |
+  Estrutura: openapi (versao), info (titulo, versao), paths (endpoints), components (schemas reutilizaveis), security. Ferramentas: Swagger UI (documentacao), Swagger Codegen (clientes), Redoc, Stoplight. Beneficios: documentacao automatica, clientes gerados reduzem erros, validacao de contratos.

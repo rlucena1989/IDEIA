@@ -1,0 +1,7 @@
+id: coverage-tradeoffs
+title: "Code Coverage — Beyond the Percentage"
+category: testing
+tags: ["coverage", "metrics", "quality", "tradeoffs"]
+summary: "Code coverage mede quanto do codigo e executado pelos testes, mas cobertura alta nao garante qualidade."
+content: |
+  Tipos: Line/Statement, Branch (cada if/else), Function, Condition (sub-expressoes). 80% e meta comum, mas: 100% coverage nao significa 0 bugs; coverage alta pode dar falsa seguranca; mutation testing e metricas mais significativas. Pragmatismo: foque cobertura em camada de dominio (regras de negocio), seja menos rigido em UI/BOILERPLATE.

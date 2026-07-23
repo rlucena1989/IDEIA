@@ -1,0 +1,14 @@
+{
+  "quality": {
+    "score": 92,
+    "level": "pass",
+    "generated_at": "2026-07-08T07:10:00-03:00",
+    "reasons": ["Diff pequeno", "Aderente ao design system", "Sem duplicação relevante"]
+  },
+  "risk": {
+    "score": 18,
+    "level": "low",
+    "generated_at": "2026-07-08T07:10:00-03:00",
+    "reasons": ["Apenas um arquivo alterado", "Sem paths protegidos", "Sem API pública afetada"]
+  }
+}

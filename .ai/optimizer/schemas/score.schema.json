@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ScoreManifest",
+  "type": "object",
+  "required": ["score", "level", "generated_at", "reasons"],
+  "properties": {
+    "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "level": { "type": "string" },
+    "generated_at": { "type": "string" },
+    "reasons": { "type": "array", "items": { "type": "string" } },
+    "details": { "type": "object" }
+  },
+  "additionalProperties": true
+}

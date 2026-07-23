@@ -1,0 +1,58 @@
+{
+  "name": "ideia-theia-app",
+  "version": "0.1.0",
+  "description": "IDEIA — Theia-based AI-powered IDE",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node lib/backend/main.js",
+    "start:theia": "theia start --port=3030 --root-workspace=$WORKSPACE",
+    "start:backend": "echo Backend embutido no Electron",
+    "build": "theia build",
+    "build:plugin": "cd ../packages/ideia-plugin && npx tsc",
+    "package": "theia package",
+    "verify": "powershell -File scripts/test-plugin.ps1",
+    "clean": "rimraf lib dist node_modules",
+    "start:direct": "node lib/backend/main.js"
+  },
+  "dependencies": {
+    "@ideia/plugin": "../../packages/ideia-plugin",
+    "@theia/ai-chat": "^1.73.0",
+    "@theia/ai-chat-ui": "^1.73.1",
+    "@theia/ai-core": "^1.73.0",
+    "@theia/ai-mcp": "^1.73.1",
+    "@theia/ai-ollama": "^1.73.1",
+    "@theia/ai-openai": "^1.73.1",
+    "@theia/ai-terminal": "^1.73.1",
+    "@theia/cli": "^1.73.1",
+    "@theia/core": "^1.73.0",
+    "@theia/editor": "^1.73.0",
+    "@theia/electron": "^1.73.1",
+    "@theia/filesystem": "^1.73.0",
+    "@theia/messages": "^1.73.0",
+    "@theia/monaco": "^1.73.0",
+    "@theia/navigator": "^1.73.0",
+    "@theia/preferences": "^1.73.0",
+    "@theia/terminal": "^1.73.1",
+    "@theia/workspace": "^1.73.0"
+  },
+  "devDependencies": {
+    "electron": "39.8.7",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.5.0"
+  },
+  "theia": {
+    "frontend": {
+      "config": {
+        "applicationName": "IDEIA",
+        "defaultTheme": "ideia-dark",
+        "welcomePage": "./src/welcome.html"
+      }
+    },
+    "backend": {
+      "config": {
+        "port": 3030
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "sessionId": "bad5122b",
+  "taskId": "task-a",
+  "status": "created",
+  "phase": "review",
+  "step": 0,
+  "totalSteps": 2,
+  "context": {},
+  "startedAt": "2026-07-20T18:48:33.698Z",
+  "updatedAt": "2026-07-20T18:48:33.710Z",
+  "checkpoint": {
+    "path": "",
+    "hash": "",
+    "timestamp": "",
+    "filesChanged": []
+  },
+  "history": []
+}

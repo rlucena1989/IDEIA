@@ -1,0 +1,63 @@
+import { Tutorial } from '../types';
+
+export const primeiroProjetoTutorial: Tutorial = {
+  id: '01-primeiro-projeto',
+  name: 'Meu Primeiro Projeto',
+  description: 'Aprenda a criar seu primeiro projeto com a IDEIA do zero. Inicialize, explore a estrutura, gere componentes e execute o build.',
+  difficulty: 'beginner',
+  prerequisites: [],
+  estimatedMinutes: 10,
+  tags: ['iniciante', 'primeiros-passos', 'cli', 'projeto'],
+  steps: [
+    {
+      id: 'init-project',
+      title: 'Inicializar projeto com IDEIA',
+      description: 'Use o comando IDEIA init para criar um novo projeto. Digite: IDEIA init meu-primeiro-projeto',
+      command: 'IDEIA init meu-primeiro-projeto',
+      expectedOutput: 'Project created',
+      validationFn: (input: string) => input.includes('IDEIA init'),
+      hint: 'Digite exatamente: IDEIA init meu-primeiro-projeto e pressione Enter',
+      type: 'shell'
+    },
+    {
+      id: 'explore-structure',
+      title: 'Explorar a estrutura do projeto',
+      description: 'Navegue até o diretório criado e liste os arquivos para entender a estrutura padrão da IDEIA.',
+      command: 'cd meu-primeiro-projeto && ls -la',
+      expectedOutput: 'package.json',
+      validationFn: (input: string) => input.includes('package.json') || input.includes('src'),
+      hint: 'Use o comando ls (Linux/macOS) ou dir (Windows) para listar arquivos',
+      type: 'shell'
+    },
+    {
+      id: 'generate-component',
+      title: 'Gerar um componente',
+      description: 'Use o comando de geração para criar um componente hello-world.',
+      command: 'IDEIA generate component hello-world',
+      expectedOutput: 'Generated',
+      validationFn: (input: string) => input.includes('generate') || input.includes('Generated'),
+      hint: 'Tente: IDEIA generate component hello-world --type react',
+      type: 'shell'
+    },
+    {
+      id: 'run-build',
+      title: 'Executar o build',
+      description: 'Compile o projeto para verificar se tudo está correto.',
+      command: 'npm run build',
+      expectedOutput: 'Build successful',
+      validationFn: (input: string) => input.includes('success') || input.includes('compiled'),
+      hint: 'Execute npm run build ou IDEIA build para compilar',
+      type: 'shell'
+    },
+    {
+      id: 'celebrate',
+      title: 'Celebrar!',
+      description: 'Parabéns! Você criou seu primeiro projeto com a IDEIA. Execute IDEIA --version para ver sua ferramenta em ação.',
+      command: 'IDEIA --version',
+      expectedOutput: '',
+      validationFn: () => true,
+      hint: 'Parabéns! Você completou o primeiro tutorial!',
+      type: 'ask'
+    }
+  ]
+};

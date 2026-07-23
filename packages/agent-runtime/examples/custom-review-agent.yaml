@@ -1,0 +1,50 @@
+name: "Custom Review Agent"
+description: "Specialized code review pipeline with parallel reviewer and tester"
+version: "1.0.0"
+entryPoint: analyst
+maxIterations: 8
+nodeTimeout: 30000
+maxRetries: 3
+
+nodes:
+  - role: analyst
+    label: "Code Analyst"
+    prompt: "Analyze the codebase structure and identify key areas for review"
+    tools: [search, read]
+    artifacts:
+      type: "analysis_report"
+
+  - role: reviewer
+    label: "Security Reviewer"
+    prompt: "Review code for security vulnerabilities, OWASP Top 10, and common pitfalls"
+    tools: [read, analyze]
+    artifacts:
+      type: "security_review"
+
+  - role: tester
+    label: "Test Generator"
+    prompt: "Generate comprehensive test cases for the reviewed code"
+    tools: [generate, write]
+    artifacts:
+      type: "test_suite"
+
+  - role: supervisor
+    label: "Review Supervisor"
+    prompt: "Compile all review findings and generate final report"
+    tools: [report]
+    artifacts:
+      type: "final_report"
+
+edges:
+  - from: analyst
+    to: [reviewer, tester]
+  - from: reviewer
+    to: supervisor
+  - from: tester
+    to: supervisor
+  - from: supervisor
+    to:
+      condition: "quality_check"
+      routes:
+        error: analyst
+        next: __end__

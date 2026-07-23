@@ -1,0 +1,7 @@
+id: graceful-shutdown
+title: "Graceful Shutdown Pattern"
+category: resilience
+tags: ["graceful-shutdown", "sigterm", "drain", "kubernetes", "health-check"]
+summary: "Graceful Shutdown permite que a aplicacao termine conexoes pendentes antes de desligar ao receber SIGTERM."
+content: |
+  Passos: 1) Remover de load balancer (health check FAIL). 2) Parar de aceitar novas requisicoes. 3) Processar requisicoes em andamento (com timeout). 4) Fechar conexoes (banco, fila, cache). 5) Sair com exit code 0. Em Kubernetes: preStop hook + terminationGracePeriodSeconds.

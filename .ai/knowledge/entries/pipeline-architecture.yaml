@@ -1,0 +1,7 @@
+id: pipeline-architecture
+title: "Pipeline Architecture"
+category: architecture
+tags: ["pipeline", "batch", "etl", "stream", "processing"]
+summary: "Pipeline architecture processa dados em estagios encadeados, onde cada estagio transforma e passa adiante."
+content: |
+  Estagios: Source → Filter → Transform → Enrich → Store → Notify. Cada estagio pode ser paralelizado ou escalado independentemente. Tipos: Batch (processa lotes em intervalos, ex: ETL diario), Stream (processa em tempo real, ex: Kafka Streams, Flink). Fila entre estagios: desacopla e permite backpressure. Exemplos: pipeline de dados, pipeline CI/CD, pipeline de processamento de imagens.

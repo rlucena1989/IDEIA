@@ -1,0 +1,47 @@
+# PR Labeler Configuration
+# Labels are applied based on changed file paths
+
+'cli':
+  - 'packages/cli/src/**/*'
+
+'theia-plugin':
+  - 'packages/ideia-plugin/**/*'
+
+'vscode-extension':
+  - 'vscode-extension/**/*'
+
+'core':
+  - 'packages/core/**/*'
+
+'documentation':
+  - '**/*.md'
+  - '.ai/**/*.md'
+
+'ci/cd':
+  - '.github/**/*'
+  - '.gitlab-ci.yml'
+
+'dependencies':
+  - 'package.json'
+  - 'packages/*/package.json'
+  - 'package-lock.json'
+
+'build':
+  - 'tsconfig*.json'
+  - 'packages/*/tsconfig.json'
+  - 'packages/*/scripts/**'
+
+'tests':
+  - '**/*.test.ts'
+  - '**/*.spec.ts'
+  - 'jest.config*.js'
+
+'governance':
+  - '.ai/**'
+  - 'AGENTS.md'
+  - 'CLA*.md'
+  - 'CODE_OF_CONDUCT.md'
+
+'security':
+  - '.github/workflows/codeql*'
+  - '.github/dependabot.yml'

@@ -1,0 +1,41 @@
+# PH Value Policy — Sensitive Value Protection
+# Protege valores sensiveis contra exposicao em codigo, logs e outputs
+
+version: 1
+severity: critical
+
+patterns:
+  - pattern: "(?:api[_-]?key|apikey|secret|password|token|credential)\\s*[:=]\\s*['\"][^'\"]+['\"]"
+    description: "Possivel segredo hardcoded no codigo"
+    action: block
+    recommendation: "Use variaveis de ambiente (.env) + gerenciamento de secrets"
+
+  - pattern: "(?:-----BEGIN\\s+(?:RSA\\s+)?PRIVATE\\s+KEY-----)"
+    description: "Chave privada detectada no codigo"
+    action: block
+    recommendation: "Remova e use gerenciamento de secrets (HashiCorp Vault, AWS KMS)"
+
+  - pattern: "process\\.env\\.(?:NODE_ENV|PORT|HOST)\\s*=\\s*['\"][^'\"]+['\"]"
+    description: "Variavel de ambiente sendo sobrescrita no codigo"
+    action: warn
+    recommendation: "Defina em .env, nao no codigo"
+
+  - pattern: "\\b(?:senha|password|passwd)\\b"
+    description: "Termo 'senha'/'password' em logs ou mensagens"
+    action: warn
+    recommendation: "Nunca logue valores sensiveis — use [REDACTED]"
+
+exceptions:
+  - file: "**/__tests__/**"
+    reason: "Test files may contain mock values"
+    review_required: false
+
+  - file: "**/*.test.ts"
+    reason: "Unit tests with fake credentials"
+    review_required: false
+
+enforcement:
+  scan_on_commit: true
+  scan_on_pr: true
+  auto_block_ci: true
+  report_path: ".ai/reports/ph-value-violations.json"

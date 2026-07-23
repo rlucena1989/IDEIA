@@ -1,0 +1,7 @@
+id: graceful-shutdown-extended
+title: "Graceful Shutdown & Drain Pattern"
+category: resilience
+tags: ["graceful-shutdown", "drain", "sigterm", "kubernetes", "prestop"]
+summary: "Graceful Shutdown permite que a aplicacao termine requisicoes em andamento antes de desligar."
+content: |
+  Sinais: SIGTERM (K8s envia antes de SIGKILL), SIGINT (Ctrl+C). Passos ao receber: 1) Remover de service endpoints (readiness FAIL, K8s preStop hook). 2) Parar de aceitar novas requisicoes (server.close()). 3) Aguardar requisicoes em andamento (com timeout maximo). 4) Fechar conexoes (banco, fila, cache). 5) Exit code 0. K8s: terminationGracePeriodSeconds (padrao 30s). Implementacao: http.Server.close() + promise + timeout.

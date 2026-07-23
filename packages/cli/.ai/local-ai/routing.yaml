@@ -1,0 +1,22 @@
+classify_task:
+  model: local-small
+  allow_write: false
+  timeout_secs: 30
+summarize_file:
+  model: local-small
+  allow_write: false
+  timeout_secs: 30
+generate_code:
+  enabled: false
+explain_violation:
+  model: local-small
+  allow_write: false
+  timeout_secs: 30
+suggest_context:
+  model: local-small
+  allow_write: false
+  timeout_secs: 30
+extract_entities:
+  model: local-small
+  allow_write: false
+  timeout_secs: 30

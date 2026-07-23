@@ -1,0 +1,18 @@
+{
+  "name": "@ideia/preferences",
+  "description": "PreferenceService, PreferenceSchema, providers chain, proxy pattern, settings UI, migration",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": { "build": "tsc" },
+  "dependencies": {
+    "@ideia/core-contributions": "^0.0.0",
+    "@ideia/editor-core": "^0.0.0",
+    "@ideia/workspace-resources": "^0.0.0"
+  },
+  "files": ["dist"],
+  "publishConfig": { "access": "public" },
+  "repository": { "type": "git", "url": "https://github.com/anomalyco/ideia.git" },
+  "homepage": "https://ideia.dev",
+  "bugs": { "url": "https://github.com/anomalyco/ideia/issues" }
+}

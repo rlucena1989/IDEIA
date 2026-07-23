@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "strict": true
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../logger"
+    }
+  ]
+}

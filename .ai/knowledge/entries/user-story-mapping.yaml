@@ -1,0 +1,7 @@
+id: user-story-mapping
+title: "User Story Mapping"
+category: process
+tags: ["story-mapping", "agile", "backlog", "user-stories", "product"]
+summary: "User Story Mapping organiza historias de usuario em um mapa visual que mostra o fluxo completo do produto."
+content: |
+  Estrutura: eixo horizontal (atividades do fluxo, da esquerda para direita), eixo vertical (complexidade/detalhe, de cima para baixo). Primeira linha: backbone (atividades principais). Segunda linha: walking skeleton (fluxo minimo viavel). Abaixo: detalhes, variantes, excecoes. Beneficios: visao do todo, priorizacao contextual, identificacao de MVP, comunicacao visual. Use Miro, Mural, ou post-its na parede.

@@ -1,0 +1,7 @@
+id: sidecar
+title: "Sidecar Pattern"
+category: architecture
+tags: ["sidecar", "microservices", "proxy", "container", "deployment"]
+summary: "Sidecar e um container auxiliar que acompanha o container principal, adicionando funcionalidades sem modifica-lo."
+content: |
+  Sidecar compartilha o mesmo pod/maquina que o container principal. Exemplos: Envoy proxy (service mesh), log aggregator (Filebeat), config reloader, metrics exporter. Beneficios: separacao de concerns, reutilizacao (mesmo sidecar para diferentes aplicacoes), independente de linguagem. Custo: recurso extra, complexidade de deploy.

@@ -1,0 +1,7 @@
+id: event-driven
+title: "Event-Driven Architecture"
+category: architecture
+tags: ["event-driven", "events", "pub-sub", "message-broker", "kafka", "rabbitmq"]
+summary: "Arquitetura orientada a eventos onde servicos se comunicam atraves de eventos assincronos."
+content: |
+  Produtores emitem eventos sem saber quem consome. Consumidores reagem a eventos de forma independente. Message Broker (Kafka, RabbitMQ) gerencia entrega. Beneficios: baixo acoplamento, escalabilidade, resiliencia. Desafios: consistencia eventual, debug complexo, idempotencia.

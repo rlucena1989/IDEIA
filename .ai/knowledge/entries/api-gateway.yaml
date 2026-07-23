@@ -1,0 +1,7 @@
+id: api-gateway
+title: "API Gateway Pattern"
+category: architecture
+tags: ["api-gateway", "microservices", "routing", "authentication", "rate-limiting"]
+summary: "API Gateway e um ponto unico de entrada para microservicos, gerenciando roteamento, auth e limitacao."
+content: |
+  Funcoes: roteamento para servicos internos, autenticacao/authorization, rate limiting, caching, logging, transformacao de protocolos. Tipos: Gateway simples (roteamento), BFF (Backend for Frontend — gateway por tipo de cliente).

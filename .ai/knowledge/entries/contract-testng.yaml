@@ -1,0 +1,7 @@
+id: contract-testng
+title: "Consumer-Driven Contract Testing"
+category: testing
+tags: ["contract-testing", "pact", "microservices", "consumer-driven", "integration"]
+summary: "Contract testing verifica que servicos se comunicam conforme o contrato esperado, sem testes E2E pesados."
+content: |
+  Consumer: define contrato (Pact) com expectativas de request/response. Provider: verifica contrato com provider verification. Beneficios: detecta quebras de compatibilidade cedo, sem ambiente E2E. Ferramentas: Pact, Spring Cloud Contract. Diferenca de E2E: testa integracao isolada, nao o sistema todo.

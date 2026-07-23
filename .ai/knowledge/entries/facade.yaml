@@ -1,0 +1,7 @@
+id: facade
+title: "Facade Pattern"
+category: design
+tags: ["facade", "gof", "structural", "simplification"]
+summary: "Facade fornece uma interface simplificada para um subsistema complexo, reduzindo dependencias e acoplamento."
+content: |
+  Facade: classe que encapsula interacoes com multiplos componentes. Clientes usam apenas a Facade. Exemplo: API de biblioteca que esconde complexidade interna (ex: ffmpeg wrapper, SDK de AWS simplificado).

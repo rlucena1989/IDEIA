@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ai-devkit.local/schemas/workspace.schema.json",
+  "title": "Workspace",
+  "description": "Schema for an active workspace",
+  "type": "object",
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique workspace identifier"
+    },
+    "root_path": {
+      "type": "string",
+      "description": "Absolute path to the project root"
+    },
+    "active_file": {
+      "type": ["string", "null"],
+      "default": null,
+      "description": "Currently open file path"
+    },
+    "files": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": [],
+      "description": "List of tracked file paths"
+    },
+    "context": {
+      "type": "object",
+      "default": {},
+      "description": "Workspace-level context data"
+    },
+    "policy": {
+      "type": "string",
+      "enum": ["auto", "ask", "block"],
+      "default": "ask",
+      "description": "Workspace autonomy policy"
+    }
+  },
+  "required": ["workspace_id", "root_path"]
+}

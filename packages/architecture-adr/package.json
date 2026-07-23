@@ -1,0 +1,24 @@
+{
+  "name": "@ideia/architecture-adr",
+  "description": "ADR e decisÃƒÆ’Ã‚Âµes de arquitetura ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â trade-offs, registros, linhagem",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "publishConfig": {
+    "access": "public"
+  }
+}

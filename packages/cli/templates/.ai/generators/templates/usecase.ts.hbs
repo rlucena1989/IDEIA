@@ -1,0 +1,19 @@
+import { AppError } from '../../../shared/errors/AppError'
+
+export interface {{PascalName}}Input {
+  // PENDING_ACTION: definir campos de entrada
+}
+
+export interface {{PascalName}}Output {
+  // PENDING_ACTION: definir campos de saida
+}
+
+export class {{PascalName}}UseCase {
+  async execute(input: {{PascalName}}Input): Promise<{{PascalName}}Output> {
+    if (!input) {
+      throw AppError.badRequest('Entrada invalida para {{PascalName}}UseCase')
+    }
+    // PENDING_ACTION: implementar regra de negocio
+    throw AppError.internal('{{PascalName}}UseCase ainda nao implementado')
+  }
+}

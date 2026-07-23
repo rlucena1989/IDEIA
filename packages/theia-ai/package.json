@@ -1,0 +1,23 @@
+{
+  "name": "@ideia/theia-ai",
+  "description": "AIProvider, AIManager, Chat system, Code Actions, Inline Completions, AgentPanel, Security, Audit",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": { "build": "tsc" },
+  "dependencies": {
+    "@ideia/core-contributions": "^0.0.0",
+    "@ideia/command-system": "^0.0.0",
+    "@ideia/editor-core": "^0.0.0",
+    "@ideia/editor-intelligence": "^0.0.0",
+    "@ideia/shell-layout": "^0.0.0",
+    "@ideia/markers-output": "^0.0.0",
+    "@ideia/filesystem": "^0.0.0",
+    "@ideia/search-scm-task": "^0.0.0"
+  },
+  "files": ["dist"],
+  "publishConfig": { "access": "public" },
+  "repository": { "type": "git", "url": "https://github.com/anomalyco/ideia.git" },
+  "homepage": "https://ideia.dev",
+  "bugs": { "url": "https://github.com/anomalyco/ideia/issues" }
+}

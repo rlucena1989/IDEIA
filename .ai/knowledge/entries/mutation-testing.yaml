@@ -1,0 +1,7 @@
+id: mutation-testing
+title: "Mutation Testing"
+category: testing
+tags: ["mutation-testing", "coverage", "quality", "stryker"]
+summary: "Mutation testing introduz pequenas modificacoes (mutantes) no codigo para verificar se os testes existentes os detectam."
+content: |
+  Mutacoes: mudar > para >=, true para false, remover chamada de metodo. Se teste passa com mutante = teste nao detectou a mudanca (mutante sobreviveu). Cobertura de mutacao = mutantes mortos / total. Ferramentas: Stryker (JS/TS), PIT (Java). Complementa cobertura de linha: 80% coverage pode ter 40% mutation score.

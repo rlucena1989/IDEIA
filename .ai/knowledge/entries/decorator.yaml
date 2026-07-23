@@ -1,0 +1,7 @@
+id: decorator
+title: "Decorator Pattern"
+category: design
+tags: ["decorator", "gof", "structural", "wrapper", "aop"]
+summary: "Decorator adiciona responsabilidades a um objeto dinamicamente, sem alterar sua classe."
+content: |
+  Decorator: wrapa um objeto com mesma interface, adicionando comportamento antes/depois de delegar. Exemplo: adicionar logging, caching, compression a uma operacao sem modificar a operacao. Diferenca de Adapter: decorator mantem a mesma interface, adapter muda.

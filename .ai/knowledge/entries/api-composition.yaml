@@ -1,0 +1,7 @@
+id: api-composition
+title: "API Composition Pattern"
+category: api
+tags: ["api-composition", "aggregation", "microservices", "gateway", "bff"]
+summary: "API Composition agrega dados de multiplos servicos em uma resposta unificada para evitar multiplas chamadas do cliente."
+content: |
+  Aggregator: servico que chama multiplos servicos internos e combina resultados. BFF: Backend for Frontend, composicao especifica por cliente. GraphQL: composicao natural via resolvers. Cuidados: performance (chamadas paralelas vs seriais), falhas (partial results vs fail fast), caching.

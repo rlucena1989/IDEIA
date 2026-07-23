@@ -1,0 +1,7 @@
+id: composite
+title: "Composite Pattern"
+category: design
+tags: ["composite", "gof", "structural", "tree", "hierarchy"]
+summary: "Composite compoe objetos em estruturas de arvore para representar hierarquias parte-todo, tratando objetos individuais e composicoes uniformemente."
+content: |
+  Component: interface comum. Leaf: objeto simples (folha). Composite: objeto que contem filhos (tambem Components). Exemplo: sistema de arquivos (arquivo/pasta), hierarquia de componentes de UI, estrutura organizacional.

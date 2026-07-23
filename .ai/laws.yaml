@@ -1,0 +1,15 @@
+# Leis Arquiteturais (ai-devkit v12.1)
+architecture: "Clean Architecture"
+defensive_programming: true
+contract_first: true
+
+rules:
+  - "Todo DTO deve ser validado com Contract.pre()"
+  - "Erros de negocio devem usar AppError"
+  - "Proibido uso de any sem justificativa documentada"
+  - "Cobertura de testes minima: 20% (real: ~20%)"
+  - "Toda funcao publica deve ter JSDoc"
+  - "Camada de dominio nao pode importar infraestrutura"
+  - "Use cases devem ser testaveis isoladamente"
+  - "Nao colocar regra de negocio em controllers"
+  - "Nao alterar arquivos fora do escopo da tarefa"

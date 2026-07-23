@@ -1,0 +1,7 @@
+id: kubernetes-patterns
+title: "Kubernetes Patterns (Pod, Service, Ingress, ConfigMap)"
+category: devops
+tags: ["kubernetes", "k8s", "pod", "service", "ingress", "configmap"]
+summary: "Padroes fundamentais do Kubernetes para implantar e gerenciar aplicacoes conteinerizadas."
+content: |
+  Pod: menor unidade (1+ containers). Deployment: gerencia replicas e rolling updates. Service: IP estavel e DNS para pods (ClusterIP, NodePort, LoadBalancer). Ingress: entrada HTTP/HTTPS com regras de roteamento. ConfigMap/Secret: configuracao separada do container. PersistentVolume: armazenamento persistente. Probes: liveness, readiness, startup.

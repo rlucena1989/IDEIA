@@ -1,0 +1,7 @@
+id: ci-pipeline-design
+title: "CI/CD Pipeline Design Patterns"
+category: devops
+tags: ["ci-cd", "pipeline", "github-actions", "gitlab-ci", "automation"]
+summary: "Padroes para projetar pipelines de CI/CD eficientes, rapidos e confiaveis."
+content: |
+  Estrategias: Pipeline as Code (YAML versionado), Fast Feedback (testes rapidos primeiro), Matrix Build (multi-versao/OS), Cache Inteligente (node_modules, Docker layers), Parallel Stages (jobs independentes em paralelo), Gate Progressivo (lint → test → security → build → deploy), Artifact Promotion (mesmo artefato em todos ambientes), Fail Fast (cancelar pipeline em falha).

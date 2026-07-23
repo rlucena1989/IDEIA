@@ -1,0 +1,7 @@
+id: polyglot-persistence
+title: "Polyglot Persistence"
+category: database
+tags: ["polyglot", "database", "multi-model", "mixed"]
+summary: "Polyglot Persistence usa diferentes tipos de bancos para diferentes necessidades dentro do mesmo sistema."
+content: |
+  Exemplo: PostgreSQL (dados relacionais, transacoes), Redis (cache, sessao), Elasticsearch (busca full-text), MongoDB (logs, dados semi-estruturados), Neo4j (grafos sociais). Beneficio: cada banco otimizado para seu caso de uso. Custo: complexidade operacional, multiplas linguagens de query, consistencia entre bancos. So adicione quando necessario (comece com um banco relacional).

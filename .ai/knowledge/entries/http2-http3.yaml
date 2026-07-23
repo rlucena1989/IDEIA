@@ -1,0 +1,7 @@
+id: http2-http3
+title: "HTTP/2 and HTTP/3 Performance"
+category: performance
+tags: ["http2", "http3", "performance", "multiplexing", "quic"]
+summary: "HTTP/2 e HTTP/3 trazem melhorias significativas de performance sobre HTTP/1.1."
+content: |
+  HTTP/2: multiplexing (multiplas requisicoes em unica conexao TCP), header compression (HPACK), server push, binary protocol. HTTP/3: usa QUIC (UDP em vez de TCP), elimina head-of-line blocking do TCP, conexao 0-RTT, melhor em redes moveis. Adocao: HTTP/2 ja padrao, HTTP/3 suportado por Cloudflare, Google, Facebook. Para APIs: beneficios maiores com multiplos recursos paralelos.

@@ -1,0 +1,45 @@
+{
+  "version": "1.0",
+  "policies": [
+    {
+      "id": "ds-001",
+      "description": "Forbid reading secrets files",
+      "effect": "forbid",
+      "action": { "type": "file.read" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "matches", "value": "\\.(env|key|pem|secret|cred)$" }],
+      "priority": 100
+    },
+    {
+      "id": "ds-002",
+      "description": "Forbid writing secrets in output",
+      "effect": "forbid",
+      "action": { "type": "output.write" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "matches", "value": "sk-[A-Za-z0-9]|ghp_|-----BEGIN|AKIA[A-Z0-9]{16}" }],
+      "priority": 100
+    },
+    {
+      "id": "ds-003",
+      "description": "Forbid policy changes without approval",
+      "effect": "forbid",
+      "action": { "type": "policy.change" },
+      "conditions": [],
+      "priority": 50
+    },
+    {
+      "id": "ds-004",
+      "description": "Permit audit log reads",
+      "effect": "permit",
+      "action": { "type": "file.read" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "matches", "value": "\\.(log|audit|audit-trail)" }],
+      "priority": 10
+    },
+    {
+      "id": "ds-005",
+      "description": "Block high-risk network operations",
+      "effect": "forbid",
+      "action": { "type": "network.exec" },
+      "conditions": [{ "clause": "if", "match": "riskLevel", "operator": "eq", "value": "high" }],
+      "priority": 100
+    }
+  ]
+}

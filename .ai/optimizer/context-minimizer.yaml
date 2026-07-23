@@ -1,0 +1,52 @@
+version: "1.0.0"
+
+context_minimizer:
+  enabled: true
+  default_profile: "standard"
+
+  modes:
+    minimal:
+      description: "Somente o mínimo para resolver a tarefa."
+      max_files: 8
+      max_chars: 30000
+
+    standard:
+      description: "Equilíbrio entre precisão e cobertura."
+      max_files: 20
+      max_chars: 80000
+
+    expanded:
+      description: "Para tarefas ambíguas ou com alto impacto."
+      max_files: 40
+      max_chars: 160000
+
+    forensic:
+      description: "Para incidentes, auditoria e análise profunda."
+      max_files: 80
+      max_chars: 250000
+
+  include_sources:
+    - "diff"
+    - "import_graph"
+    - "semantic_similarity"
+    - "test_proximity"
+    - "design_system"
+    - "policies"
+    - "adr"
+    - "incident_history"
+
+  exclude_patterns:
+    - ".env"
+    - ".env.*"
+    - "node_modules/**"
+    - ".git/**"
+    - "dist/**"
+    - "build/**"
+    - "coverage/**"
+    - "*.pem"
+    - "*.key"
+
+  output:
+    manifest: ".ai/optimizer/runtime/latest-context.json"
+    context_file: ".ai/optimizer/runtime/latest-context.md"
+    hash_algorithm: "sha256"

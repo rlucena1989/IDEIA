@@ -1,0 +1,27 @@
+{
+  "name": "@ideia/terminal-sandbox",
+  "description": "ExecuÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Â£o segura de comandos ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â sandbox, allowlist, timeout",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "publishConfig": {
+    "access": "public"
+  }
+}

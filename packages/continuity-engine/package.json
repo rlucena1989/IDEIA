@@ -1,0 +1,30 @@
+{
+  "name": "@ideia/continuity-engine",
+  "description": "IDEIA Decision Continuity Engine Ã¢â‚¬â€ timeline-based escalation, auto-decide with profile matching, and multi-level scheduling",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/event-bus": "*",
+    "@ideia/audit-trail": "*",
+    "@ideia/profiles": "*",
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

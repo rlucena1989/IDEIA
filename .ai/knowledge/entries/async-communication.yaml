@@ -1,0 +1,7 @@
+id: async-communication
+title: "Async Communication — Message Queue, Pub/Sub, Event Bus"
+category: architecture
+tags: ["async", "message-queue", "pub-sub", "event-bus", "kafka", "rabbitmq"]
+summary: "Comunicacao assincrona entre servicos usando filas de mensagem, publish/subscribe ou event bus."
+content: |
+  Message Queue: produtor envia, consumidor recebe (ponto a ponto). Pub/Sub: produtor publica, varios consumidores recebem. Event Bus: barramento central que roteia eventos. Garantias: at-most-once (perda possivel), at-least-once (duplicata possivel), exactly-once (ideal, dificil). Mensagens mortas: DLQ (Dead Letter Queue).

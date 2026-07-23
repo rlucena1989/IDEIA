@@ -1,0 +1,59 @@
+{
+  "generated_at": "2026-07-10T10:57:48.530Z",
+  "metrics": {
+    "total_calls": 2,
+    "avg_latency_ms": 2095,
+    "p95_latency_ms": 2340,
+    "total_tokens": 4800,
+    "total_cost_usd": 0.083,
+    "success_rate": 100,
+    "by_model": {
+      "claude-3-opus": {
+        "calls": 1,
+        "avg_latency": 2340,
+        "cost": 0.045
+      },
+      "gpt-4o": {
+        "calls": 1,
+        "avg_latency": 1850,
+        "cost": 0.038
+      }
+    },
+    "by_provider": {
+      "anthropic": {
+        "calls": 1,
+        "avg_latency": 2340,
+        "cost": 0.045
+      },
+      "openai": {
+        "calls": 1,
+        "avg_latency": 1850,
+        "cost": 0.038
+      }
+    }
+  },
+  "recent_traces": [
+    {
+      "timestamp": "2026-07-10T10:57:40.821Z",
+      "model": "gpt-4o",
+      "provider": "openai",
+      "latency_ms": 1850,
+      "tokens_in": 2200,
+      "tokens_out": 680,
+      "cost_usd": 0.038,
+      "command": "generate",
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-07-10T10:57:39.360Z",
+      "model": "claude-3-opus",
+      "provider": "anthropic",
+      "latency_ms": 2340,
+      "tokens_in": 1500,
+      "tokens_out": 420,
+      "cost_usd": 0.045,
+      "command": "ai:metrics:evolve",
+      "status": "success"
+    }
+  ]
+}

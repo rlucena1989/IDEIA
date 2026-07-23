@@ -1,0 +1,12 @@
+{
+  "name": "@ideia/benchmarks",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "IDEIA Benchmark Suite — TTFT, TPS, memory profiling",
+  "scripts": {
+    "bench": "node run-benchmarks.js",
+    "bench:compare": "node run-benchmarks.js --compare",
+    "bench:json": "node run-benchmarks.js --json"
+  }
+}

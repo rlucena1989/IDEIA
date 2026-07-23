@@ -1,0 +1,7 @@
+id: dependency-scanning
+title: "Dependency Vulnerability Scanning"
+category: security
+tags: ["dependency", "scanning", "cve", "npm-audit", "snyk", "dependabot"]
+summary: "Varredura automatica de dependencias para detectar CVEs conhecidas e manter o projeto seguro."
+content: |
+  Ferramentas: npm audit / pnpm audit (built-in), Dependabot (GitHub, PRs automaticos), Renovate (configuravel, multi-plataforma), Snyk (SAAS, mais completo), Trivy (scanner local), OWASP Dependency-Check (CI/CD). Praticas: escanear em CI (falhar em CVEs criticas/altas), revisar PRs de atualizacao, manter lockfile atualizado, evitar dependencias com pouca manutencao.

@@ -1,0 +1,194 @@
+{
+  "timestamp": "2026-07-10T13:36:32.018Z",
+  "elapsedMs": 445,
+  "hardware": {
+    "cpuCores": 16,
+    "cpuUsage": 0,
+    "ramTotalGb": 23.9,
+    "ramFreeGb": 11.1,
+    "diskFreeGb": 0,
+    "nodeVersion": "v24.16.0",
+    "platform": "win32",
+    "tier": "medium"
+  },
+  "classification": {
+    "complexity": "hard",
+    "domain": [
+      "physics",
+      "security"
+    ],
+    "confidence": 0.7,
+    "depth": 5,
+    "budget": {
+      "tokensMax": 10000,
+      "costMaxUsd": 0,
+      "latencyMaxMs": 120000,
+      "depthMax": 5
+    }
+  },
+  "sourceCode": {
+    "tsFiles": 639,
+    "tsLines": 47104,
+    "scriptFiles": 108,
+    "scriptLines": 9327,
+    "testFiles": 102,
+    "testRatio": 14,
+    "totalSrcFiles": 747,
+    "totalSrcLines": 56431,
+    "dirCount": 7
+  },
+  "coverage": {
+    "total": 84.28,
+    "lines": 84.28,
+    "branches": 70.96,
+    "functions": 83.12
+  },
+  "scorecard": {
+    "score": 96,
+    "failures": 0,
+    "failureDetails": []
+  },
+  "health": {
+    "score": 100,
+    "flags": {
+      "nodeModulesExist": true,
+      "hasConfig": true,
+      "hasCi": true,
+      "hasDocs": true,
+      "hasReadme": true,
+      "hasChangelog": true,
+      "hasAgents": true
+    },
+    "anomalies": 0
+  },
+  "optimization": {
+    "recommendedMode": "balanced",
+    "suggestions": [],
+    "featureFlags": [
+      {
+        "key": "co-pilot.enabled",
+        "enabled": true
+      },
+      {
+        "key": "co-pilot.local-calc",
+        "enabled": true
+      },
+      {
+        "key": "co-pilot.routing",
+        "enabled": true
+      },
+      {
+        "key": "co-pilot.benchmark",
+        "enabled": false
+      },
+      {
+        "key": "co-pilot.consensus",
+        "enabled": false
+      },
+      {
+        "key": "co-pilot.context-compression",
+        "enabled": true
+      },
+      {
+        "key": "co-pilot.guardrails",
+        "enabled": true
+      },
+      {
+        "key": "co-pilot.audit",
+        "enabled": true
+      }
+    ]
+  },
+  "auditLog": [
+    {
+      "action": "hardware-profile",
+      "provider": "local",
+      "tokens": 0,
+      "costUsd": 0,
+      "latencyMs": 0,
+      "success": true,
+      "details": "{\"cpuCores\":16,\"cpuUsage\":0,\"ramTotalGb\":23.9,\"ramFreeGb\":11.1,\"diskFreeGb\":0,\"nodeVersion\":\"v24.16.0\",\"platform\":\"win32\"}",
+      "timestamp": "2026-07-10T13:36:31.594Z"
+    },
+    {
+      "action": "classify-project",
+      "provider": "local",
+      "tokens": 35,
+      "costUsd": 0,
+      "latencyMs": 100,
+      "success": true,
+      "details": "{\"complexity\":\"hard\",\"domain\":[\"physics\",\"security\"],\"confidence\":0.7}",
+      "timestamp": "2026-07-10T13:36:31.595Z"
+    },
+    {
+      "action": "source-metrics",
+      "provider": "local",
+      "tokens": 0,
+      "costUsd": 0,
+      "latencyMs": 50,
+      "success": true,
+      "details": "{\"tsFiles\":639,\"tsLines\":47104,\"testFiles\":102}",
+      "timestamp": "2026-07-10T13:36:31.937Z"
+    },
+    {
+      "action": "coverage-analysis",
+      "provider": "local",
+      "tokens": 0,
+      "costUsd": 0,
+      "latencyMs": 200,
+      "success": true,
+      "details": "{\"total\":84.28,\"lines\":84.28,\"branches\":70.96,\"functions\":83.12}",
+      "timestamp": "2026-07-10T13:36:31.961Z"
+    },
+    {
+      "action": "scorecard-anomalies",
+      "provider": "local",
+      "tokens": 0,
+      "costUsd": 0,
+      "latencyMs": 100,
+      "success": true,
+      "details": "{\"anomalies\":[],\"trend\":\"stable\"}",
+      "timestamp": "2026-07-10T13:36:31.962Z"
+    },
+    {
+      "action": "scorecard-read",
+      "provider": "local",
+      "tokens": 0,
+      "costUsd": 0,
+      "latencyMs": 50,
+      "success": true,
+      "details": "score=96",
+      "timestamp": "2026-07-10T13:36:31.962Z"
+    },
+    {
+      "action": "project-health",
+      "provider": "local",
+      "tokens": 0,
+      "costUsd": 0,
+      "latencyMs": 30,
+      "success": true,
+      "details": "{\"totalDeps\":16,\"totalScripts\":111,\"healthScore\":100,\"healthFlags\":{\"nodeModulesExist\":true,\"hasConfig\":true,\"hasCi\":true,\"hasDocs\":true,\"hasReadme\":true,\"hasChangelog\":true,\"hasAgents\":true}}",
+      "timestamp": "2026-07-10T13:36:32.002Z"
+    },
+    {
+      "action": "optimization",
+      "provider": "local",
+      "tokens": 0,
+      "costUsd": 0,
+      "latencyMs": 10,
+      "success": true,
+      "details": "{\"optMode\":\"balanced\",\"suggestions\":[]}",
+      "timestamp": "2026-07-10T13:36:32.018Z"
+    }
+  ],
+  "summary": {
+    "lines": "~56.431 linhas TS",
+    "files": "747 arquivos TS",
+    "tests": "102 testes (ratio: 14%)",
+    "coverage": "84.28% statements",
+    "scorecard": "96/100",
+    "complexity": "hard",
+    "health": "100%",
+    "tier": "medium"
+  }
+}

@@ -1,0 +1,7 @@
+id: testability
+title: "Design for Testability"
+category: testing
+tags: ["testability", "design", "di", "seams", "testing"]
+summary: "Projetar codigo para ser testavel: injecao de dependencia, seams, interfaces, pure functions."
+content: |
+  Principios: Injecao de Dependencia (passar dependencias, nao criar), Pure Functions (mesmo input → mesmo output, sem side effects), Seams (lugares onde se pode alterar comportamento sem modificar codigo, ex: interfaces), Avoid Static/Global (dificil de mockar), Single Responsibility (classes pequenas sao faceis de testar), Command-Query Separation (metodos ou alteram estado ou retornam dados). Beneficio: codigo testavel e bem projetado.

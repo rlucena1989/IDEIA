@@ -1,0 +1,7 @@
+id: migration-database
+title: "Database Migration Patterns"
+category: database
+tags: ["migration", "flyway", "liquibase", "schema-change", "expand-migrate-contract"]
+summary: "Padroes para migrar schemas de banco com zero downtime usando Expand-Migrate-Contract."
+content: |
+  Fases: 1) Expand (adicionar nova coluna/tabela, codigo antigo ainda funciona). 2) Migrate (codigo comeca a usar nova estrutura, dados migrados em background). 3) Contract (remove coluna/tabela antiga). Tools: Flyway, Liquibase, Prisma Migrate. Principios: migrations sao versionadas, imutaveis (nao editar), testadas em staging.

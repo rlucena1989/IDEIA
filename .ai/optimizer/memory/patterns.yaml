@@ -1,0 +1,102 @@
+version: "1.0.0"
+
+patterns:
+  - id: "component-card-pattern"
+    description: "Componentes de card devem usar container, header, content e actions."
+    tags: ["ui", "card", "layout"]
+
+  - id: "form-pattern"
+    description: "Formulários devem ter label, erro, descrição e estado de submit."
+    tags: ["form", "input", "validation"]
+
+  - id: "api-route-pattern"
+    description: "Rotas de API devem validar entrada, tratar erro e padronizar resposta."
+    tags: ["api", "validation", "error-handling"]
+
+  - id: "service-pattern"
+    description: "Serviços devem encapsular lógica de negócio e serem testáveis isoladamente."
+    tags: ["service", "business-logic", "testing"]
+
+  - id: "generator-pattern"
+    description: "Geradores de código devem seguir template + substituição com validação de saída."
+    tags: ["generator", "template", "code-gen"]
+
+  - id: "quality-gate-pipeline"
+    description: "Quality gates em estágios progressivos: lint → test → security → build → architecture → deploy."
+    tags: ["quality", "pipeline", "ci-cd"]
+
+  - id: "plugin-manifest-pattern"
+    description: "Plugins devem declarar manifest com name, version, author, capabilities para carregamento automático."
+    tags: ["plugin", "manifest", "discovery"]
+
+  - id: "compiler-target-pattern"
+    description: "Compilador multi-formato transforma regras de fonte (.ai/laws.yaml) para formato destino com template por target."
+    tags: ["compiler", "multi-format", "transform"]
+
+  - id: "agent-role-pattern"
+    description: "Cada agente tem papel específico (planner, engineer, reviewer, auditor) com permissões e escopo definidos."
+    tags: ["agent", "role", "permission"]
+
+  - id: "adapter-interface-pattern"
+    description: "Adapters implementam interface comum com detecção automática de stack e validação multiplataforma."
+    tags: ["adapter", "interface", "polymorphism"]
+
+  - id: "snapshot-pattern"
+    description: "Snapshots de estado do projeto devem ser JSON completos, gerados em <1s sem LLM."
+    tags: ["snapshot", "state", "diagnostic"]
+
+  - id: "observability-trace-pattern"
+    description: "Tracing de chamadas de IA deve registrar latência, modelo, tokens e custo para dashboard."
+    tags: ["observability", "tracing", "metrics"]
+
+  - id: "knowledge-entry-pattern"
+    description: "Entradas da knowledge base devem ter id, categoria, tags, summary, content e seções when_to_use/when_not_to_use."
+    tags: ["knowledge", "entry", "structure"]
+
+  - id: "compliance-framework-pattern"
+    description: "Mapeamento regulatório deve seguir estrutura: framework → controle → evidência → status."
+    tags: ["compliance", "regulation", "audit"]
+
+  - id: "review-pipeline-pattern"
+    description: "Review adversarial em 4 passos paralelos: anti-slop, regressão, segurança, performance."
+    tags: ["review", "adversarial", "quality"]
+
+  - id: "workflow-node-pattern"
+    description: "Workflow nodes têm categoria (trigger, gate, generator, agent, action), entradas/saídas tipadas e configuração por painel."
+    tags: ["workflow", "node", "pipeline"]
+
+  - id: "drift-detection-pattern"
+    description: "Drift detection compara estado atual com baseline, reporta diferenças em formato legível e sugere correção."
+    tags: ["drift", "baseline", "comparison"]
+
+  - id: "hermes-loop-pattern"
+    description: "Hermes Loop captura aprendizado entre sessões: observação → reflexão → armazenamento → aplicação futura."
+    tags: ["hermes", "learning", "memory", "feedback"]
+
+  - id: "attestation-chain-pattern"
+    description: "Atestações criptográficas encadeiam verificações com HMAC-SHA256: cada atestação assina a anterior + novo resultado."
+    tags: ["attestation", "cryptographic", "chain", "hmac"]
+
+  - id: "contract-validation-pattern"
+    description: "Contratos (OpenAPI, AsyncAPI, GraphQL) são validados com schema check, diff entre versões e lint de boas práticas."
+    tags: ["contract", "validation", "openapi", "graphql"]
+
+  - id: "supply-chain-scan-pattern"
+    description: "Supply chain scanning roda npm audit, gera SBOM CycloneDX, compara com baseline e verifica integridade."
+    tags: ["supply-chain", "cve", "sbom", "security"]
+
+  - id: "prompt-version-pattern"
+    description: "Prompts são versionados como código em .ai/prompts/versions/ com diff e rollback entre versões."
+    tags: ["prompt", "versioning", "management"]
+
+  - id: "stream-architecture-pattern"
+    description: "Streaming de IA usa SSE para eventos server-sent e WebSocket para comunicação bidirecional contínua."
+    tags: ["stream", "sse", "websocket", "realtime"]
+
+  - id: "rag-pipeline-pattern"
+    description: "RAG pipeline: ingestão → chunking → embedding → vector store → retrieval → prompt augmentation → generation."
+    tags: ["rag", "pipeline", "embedding", "retrieval"]
+
+  - id: "optimizer-decision-pattern"
+    description: "Optimizer analisa impacto: task_type → agents → risk_score → execution_mode → context_profile → patch."
+    tags: ["optimizer", "decision", "impact", "risk"]

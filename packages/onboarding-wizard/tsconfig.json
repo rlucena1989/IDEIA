@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "strict": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../profiles"
+    },
+    {
+      "path": "../config-engine"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../logger"
+    }
+  ]
+}

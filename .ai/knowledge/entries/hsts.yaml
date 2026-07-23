@@ -1,0 +1,7 @@
+id: hsts
+title: "HTTP Strict Transport Security (HSTS)"
+category: security
+tags: ["hsts", "tls", "https", "ssl", "security-headers"]
+summary: "HSTS forca o navegador a usar HTTPS para todas as conexoes com o dominio, prevenindo downgrade attacks."
+content: |
+  Header: Strict-Transport-Security: max-age=31536000; includeSubDomains; preload. max-age: tempo (segundos) que o browser deve forcar HTTPS. includeSubDomains: aplica a todos subdominios. preload: inclusao em lista HSTS de browsers (envie seu dominio para hstspreload.org). Cuidado: uma vez ativado, dificil reverter (browser nao aceita HTTP mesmo que servidor mude). Teste com max-age pequeno primeiro.

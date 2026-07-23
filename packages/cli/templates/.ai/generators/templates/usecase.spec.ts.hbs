@@ -1,0 +1,8 @@
+import { {{PascalName}}UseCase } from './{{PascalName}}UseCase'
+
+describe('{{PascalName}}UseCase', () => {
+  it('deve lancar erro quando entrada for invalida', async () => {
+    const useCase = new {{PascalName}}UseCase()
+    await expect(useCase.execute(undefined as never)).rejects.toThrow()
+  })
+})

@@ -1,0 +1,23 @@
+{
+  "name": "@ideia/autonomous-evolution-engine",
+  "private": true,
+  "description": "Core evolution engine Ã¢â‚¬â€ Scanner Pool + Analyzer + Planner + Executor + Verify cycle (S23)",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "jest --passWithNoTests"
+  },
+  "dependencies": {
+    "@ideia/event-bus": "*",
+    "@ideia/audit-trail": "*",
+    "@ideia/scope-isolation": "*",
+    "@ideia/auto-adr": "*",
+    "@ideia/logger": "*",
+    "@ideia/metrics-store": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

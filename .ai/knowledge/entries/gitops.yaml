@@ -1,0 +1,7 @@
+id: gitops
+title: "GitOps — Git as Single Source of Truth"
+category: devops
+tags: ["gitops", "git", "argocd", "flux", "kubernetes", "iac"]
+summary: "GitOps usa o repositorio Git como a unica fonte da verdade para infraestrutura e configuracao, com deploy automatico."
+content: |
+  Principios: 1) Estado desejado declarado em Git. 2) Operador (ArgoCD, Flux) sincroniza automaticamente. 3) Push vs Pull: operador faz pull do Git para o cluster, sem acesso de CI ao cluster. 4) Toda mudanca e via PR (auditavel, revisivel). Beneficios: rollback com git revert, historico completo, revisao via PR.

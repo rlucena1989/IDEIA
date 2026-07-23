@@ -1,0 +1,7 @@
+id: factory-pattern
+title: "Factory Method & Abstract Factory"
+category: design
+tags: ["factory", "gof", "creational", "object-creation"]
+summary: "Factory Method define uma interface para criar objetos, permitindo que subclasses decidam qual classe instanciar."
+content: |
+  Factory Method: metodo que cria objetos, subclasses decidem o tipo. Abstract Factory: fabrica de fabricas, cria familias de objetos relacionados.

@@ -1,0 +1,7 @@
+id: grpc
+title: "gRPC Pattern"
+category: api
+tags: ["grpc", "api", "protobuf", "http2", "streaming", "rpc"]
+summary: "gRPC e um framework RPC de alto desempenho usando Protocol Buffers e HTTP/2 para comunicacao entre servicos."
+content: |
+  Proto: define servicos e mensagens em .proto files. Tipos: Unary (request-response), Server Streaming, Client Streaming, Bidirectional Streaming. Vantagens: tipado, performatico (binary), streaming nativo, code generation. Ferramentas: protoc, grpc-web, connect-es.

@@ -1,0 +1,7 @@
+id: mediator
+title: "Mediator Pattern"
+category: design
+tags: ["mediator", "gof", "behavioral", "orchestration", "centralized"]
+summary: "Mediator centraliza comunicacao entre objetos, reduzindo dependencias muitos-para-muitos para um-para-muitos."
+content: |
+  Mediator: objeto central que coordena interacao. Colleagues: objetos que se comunicam apenas via Mediator. Exemplo: controlador de trafego aereo (torre), chat room, orquestrador de microservicos. Diferenca de Observer: mediator e centralizado, observer e distribuido.

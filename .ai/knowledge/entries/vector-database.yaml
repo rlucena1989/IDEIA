@@ -1,0 +1,7 @@
+id: vector-database
+title: "Vector Databases (ChromaDB, Pinecone, Qdrant, Weaviate)"
+category: ai
+tags: ["vector-db", "embeddings", "similarity", "rag", "semantic-search"]
+summary: "Vector databases armazenam e consultam embeddings por similaridade semantica, essenciais para RAG e semantic search."
+content: |
+  Indexing: HNSW (Hierarchical Navigable Small World — mais rapido), IVF (Inverted File Index — menos memoria). Distance: cosine, euclidean, dot product. Ferramentas open-source: ChromaDB (embarcado, simples), Qdrant (Rust, performatico), Weaviate (Go, schema rico), Milvus (escalavel). Cloud: Pinecone, Weaviate Cloud. Híbrido: PostgreSQL + pgvector (se ja usa Postgres).

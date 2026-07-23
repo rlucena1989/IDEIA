@@ -1,0 +1,99 @@
+version: "1.0"
+metadata:
+  name: security
+  description: "Políticas de segurança para execução de comandos e acesso a recursos"
+  updatedAt: "2026-07-18"
+
+rules:
+  # Destructive filesystem — Linux/Unix
+  - id: "SEC-001"
+    description: "Destructive root operation (rm -rf /)"
+    pattern: "rm\\s+(-[a-z]*r[a-z]*\\s+)?(-[a-z]*f[a-z]*\\s+)?\\s*\\/[\\/\\*]?"
+    action: "block"
+    severity: "critical"
+
+  - id: "SEC-002"
+    description: "Filesystem format blocked"
+    pattern: "^format\\s+"
+    action: "block"
+    severity: "critical"
+
+  - id: "SEC-003"
+    description: "Low-level disk write (dd)"
+    pattern: "^dd\\s+"
+    action: "block"
+    severity: "critical"
+
+  - id: "SEC-004"
+    description: "Fork bomb"
+    pattern: ":\\(\\)\\s*\\{"
+    action: "block"
+    severity: "critical"
+
+  - id: "SEC-005"
+    description: "System shutdown"
+    pattern: "^shutdown\\s"
+    action: "block"
+    severity: "high"
+
+  - id: "SEC-006"
+    description: "System reboot"
+    pattern: "^reboot\\s"
+    action: "block"
+    severity: "high"
+
+  # Destructive — Windows
+  - id: "SEC-007"
+    description: "Force directory deletion (Windows)"
+    pattern: "^rmdir\\s+\\/s(\\s+\\/q)?"
+    action: "block"
+    severity: "high"
+
+  - id: "SEC-008"
+    description: "Force file deletion (Windows)"
+    pattern: "^del\\s+\\/f(\\s+\\/s)?"
+    action: "block"
+    severity: "high"
+
+  - id: "SEC-009"
+    description: "Registry key deletion (Windows)"
+    pattern: "^reg\\s+delete"
+    action: "block"
+    severity: "high"
+
+  - id: "SEC-010"
+    description: "PowerShell destructive operations"
+    pattern: "Remove-Item\\s+-Recurse|Remove-Item\\s+-Force"
+    action: "block"
+    severity: "high"
+
+  - id: "SEC-011"
+    description: "PowerShell hidden process execution"
+    pattern: "Start-Process\\s+-WindowStyle\\s+Hidden"
+    action: "block"
+    severity: "critical"
+
+  # High-risk actions
+  - id: "SEC-012"
+    description: "File deletion requires approval"
+    actionPattern: "file.delete"
+    action: "ask"
+    severity: "medium"
+
+  - id: "SEC-013"
+    description: "Shell execution requires approval"
+    actionPattern: "shell.exec"
+    action: "ask"
+    severity: "medium"
+
+  - id: "SEC-014"
+    description: "Policy changes require approval"
+    actionPattern: "policy.change"
+    action: "ask"
+    severity: "high"
+
+  - id: "SEC-015"
+    description: "High risk actions blocked by default"
+    riskLevel: "high"
+    action: "block"
+    severity: "high"

@@ -1,0 +1,32 @@
+{
+  "total_calls": 2,
+  "avg_latency_ms": 2095,
+  "p95_latency_ms": 2340,
+  "total_tokens": 4800,
+  "total_cost_usd": 0.083,
+  "success_rate": 100,
+  "by_model": {
+    "claude-3-opus": {
+      "calls": 1,
+      "avg_latency": 2340,
+      "cost": 0.045
+    },
+    "gpt-4o": {
+      "calls": 1,
+      "avg_latency": 1850,
+      "cost": 0.038
+    }
+  },
+  "by_provider": {
+    "anthropic": {
+      "calls": 1,
+      "avg_latency": 2340,
+      "cost": 0.045
+    },
+    "openai": {
+      "calls": 1,
+      "avg_latency": 1850,
+      "cost": 0.038
+    }
+  }
+}

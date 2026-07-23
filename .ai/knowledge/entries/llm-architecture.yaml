@@ -1,0 +1,7 @@
+id: llm-architecture
+title: "LLM Application Architecture Patterns"
+category: ai
+tags: ["llm", "ai", "architecture", "prompt", "rag", "agent"]
+summary: "Padroes arquiteturais para construir aplicacoes com Large Language Models (LLMs)."
+content: |
+  Padroes: Simple Prompt (entrada → LLM → saida), RAG (Retrieval-Augmented Generation — busca contexto antes do prompt), Agent (LLM decide acoes, usa ferramentas, itera), Chain (sequencia de prompts encadeados), Router (LLM decide qual caminho seguir), Multi-Agent (agentes especializados colaboram). Em producao: caching de respostas, rate limiting, fallback para modelos menores, observabilidade (tokens, latencia, custo).

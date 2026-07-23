@@ -1,0 +1,1 @@
+Analise o pacote documental completo da IDE local com chat central. Identifique inconsistências, lacunas, repetições, trechos muito genéricos e pontos que precisam ser reorganizados. Diga como separar os arquivos em pastas, quais documentos devem ser considerados base, quais devem ser considerados apoio e quais podem ser consolidados. Não expanda escopo além do MVP.

@@ -1,0 +1,7 @@
+id: onion-architecture
+title: "Onion Architecture"
+category: architecture
+tags: ["onion", "hexagonal", "clean", "dependency-inversion"]
+summary: "Onion Architecture coloca o dominio no centro, com camadas concêntricas dependendo para dentro, similar a Clean Architecture."
+content: |
+  Camadas de dentro para fora: Domain Model (entities, value objects), Domain Services (regras de negocio), Application Services (use cases), Infrastructure (banco, API, UI). Dependencia: circulos externos dependem dos internos, nunca o contrario. Interface Adapters: camada que converte dados entre formatos. Similar a Hexagonal e Clean, com enfase em dominios ricos.

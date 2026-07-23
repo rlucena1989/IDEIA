@@ -1,0 +1,7 @@
+id: golden-file-testing
+title: "Golden File / Approval Testing"
+category: testing
+tags: ["golden-file", "approval-testing", "snapshot", "visual-regression"]
+summary: "Approval testing compara a saida de uma funcao com um golden file aprovado previamente, ideal para output complexo."
+content: |
+  Processo: 1) Executar codigo com input de teste. 2) Comparar saida com arquivo .approved. 3) Se diferente (arquivo .received), falha. 4) Revisor humano aprova movendo .received → .approved. Diferenca de Snapshot: approval testing tem fluxo explicito de aprovacao. Exemplo: testar geracao de codigo, documentos, relatorios.

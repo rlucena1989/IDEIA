@@ -1,0 +1,7 @@
+id: helm
+title: "Helm Charts — Kubernetes Package Manager"
+category: devops
+tags: ["helm", "kubernetes", "charts", "templates", "package-manager"]
+summary: "Helm empacota configuracao Kubernetes em Charts reutilizaveis com templates e values parametrizaveis."
+content: |
+  Chart: estrutura de diretorio com Chart.yaml, values.yaml, templates/. Template: Go templates que geram YAML Kubernetes. Values: valores default que podem ser sobrescritos (--set, values files). Dependencias: charts podem depender de outros charts. Repositorios: ArtifactHUB, charts.helm.sh. Releases: cada install gera uma release gerenciada.

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ApprovalManifest",
+  "type": "object",
+  "required": ["decision", "approved", "approved_by", "approved_at"],
+  "properties": {
+    "decision": { "type": "string", "enum": ["approved", "rejected", "pending"] },
+    "approved": { "type": "boolean" },
+    "approved_by": { "type": "string" },
+    "approved_at": { "type": "string" },
+    "reasons": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

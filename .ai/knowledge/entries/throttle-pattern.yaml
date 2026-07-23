@@ -1,0 +1,7 @@
+id: throttle-pattern
+title: "Backpressure & Throttling"
+category: resilience
+tags: ["backpressure", "throttle", "flow-control", "reactive", "resilience"]
+summary: "Backpressure permite que um componente lento sinalize ao produtor para reduzir a taxa de envio, evitando sobrecarga."
+content: |
+  Estrategias: 1) Buffer (armazena requisicoes em fila, risco de memoria). 2) Drop (descarta requisicoes excessivas, melhor que crash). 3) Throttle (limita taxa de processamento). 4) Backpressure reativa (Reactive Streams, RxJS). Em microservicos: limite de conexoes, pool de threads, circuit breaker.

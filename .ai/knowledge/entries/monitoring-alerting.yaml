@@ -1,0 +1,7 @@
+id: monitoring-alerting
+title: "Monitoring & Alerting (Prometheus, Grafana)"
+category: devops
+tags: ["monitoring", "prometheus", "grafana", "alerting", "observability"]
+summary: "Monitoramento proativo com metricas, dashboards e alertas para manter a saude do sistema."
+content: |
+  Prometheus: coleta metricas via pull (scrape), query (PromQL), storage time-series. Grafana: dashboards com visualizacoes. Alertas: definir regras (ex: error_rate > 5% por 5 minutos) → notificacao (Slack, PagerDuty, email). RED method: Rate, Errors, Duration (para servicos). USE method: Utilization, Saturation, Errors (para recursos). SLOs/SLIs: targets de confiabilidade.

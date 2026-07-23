@@ -1,0 +1,7 @@
+id: prototype
+title: "Prototype Pattern"
+category: design
+tags: ["prototype", "gof", "creational", "clone"]
+summary: "Prototype cria novos objetos copiando um prototipo existente, em vez de instanciar diretamente."
+content: |
+  Implementacao: metodo clone() que cria copia do objeto. Clone shallow vs deep. Em JS/TS: Object.create(), spread operator, structuredClone(). Exemplo: celulas em jogos, configuracao de ambientes.

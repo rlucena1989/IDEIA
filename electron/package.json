@@ -1,0 +1,61 @@
+{
+  "name": "ideia-desktop",
+  "version": "1.0.0-beta.1",
+  "description": "IDEIA — IDE que transforma ideias em sistemas completos",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "electron .",
+    "build:win": "tsc && electron-builder --win --x64",
+    "build:mac": "tsc && electron-builder --mac",
+    "build:linux": "tsc && electron-builder --linux"
+  },
+  "build": {
+    "appId": "com.ideia.app",
+    "productName": "IDEIA",
+    "directories": {
+      "output": "dist-installer"
+    },
+    "extraResources": [
+      {
+        "from": "../apps/ideia-app/lib",
+        "to": "theia-backend/lib"
+      },
+      {
+        "from": "../apps/ideia-app/package.json",
+        "to": "theia-backend/package.json"
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "IDEIA"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.developer-tools"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Development"
+    }
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^26.15.3",
+    "typescript": "^5.5.0"
+  }
+}

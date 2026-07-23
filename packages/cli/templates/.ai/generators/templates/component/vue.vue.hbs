@@ -1,0 +1,17 @@
+<template>
+  <div :class="['{{name}}-component', $attrs.class]">
+    <slot />
+  </div>
+</template>
+
+<script setup lang="ts">
+defineProps<{
+  msg?: string;
+}>();
+</script>
+
+<style scoped>
+.{{name}}-component {
+  /* styles */
+}
+</style>

@@ -1,0 +1,7 @@
+id: command-pattern
+title: "Command Pattern"
+category: design
+tags: ["command", "gof", "behavioral", "undo", "queue", "transaction"]
+summary: "Command encapsula uma requisicao como um objeto, permitindo parametrizar, enfileirar e desfazer operacoes."
+content: |
+  Command: objeto com metodo execute() e opcional undo(). Invoker: chama command. Receiver: executa acao real. Exemplo: acoes de editor (undo/redo), fila de tarefas, transacoes de banco. Command vs Strategy: command representa acao, strategy representa algoritmo.

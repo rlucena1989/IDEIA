@@ -1,0 +1,17 @@
+{
+  "name": "@ideia/capability-matcher",
+  "description": "IDEIA Capability Matching Engine — motor que mapeia necessidades do projeto vs capacidades IDEIA com scoring e recomendação",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

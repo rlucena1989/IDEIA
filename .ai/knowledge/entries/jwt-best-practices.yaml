@@ -1,0 +1,7 @@
+id: jwt-best-practices
+title: "JWT Best Practices & Security"
+category: security
+tags: ["jwt", "token", "auth", "best-practices", "security"]
+summary: "Boas praticas para usar JWT com seguranca: short expiration, refresh rotation, signature verification."
+content: |
+  Seguranca: access token curto (15 min), refresh token longo (7 dias) com rotation (novo refresh a cada uso), armazenar em httpOnly cookie (nao localStorage), assinar com RS256/ES256 (nao HS256 em multiplos servicos), validar signature, exp (expiration), iss (issuer), aud (audience). Nao colocar dados sensiveis no payload (apenas base64, nao criptografado). Revogacao: blocklist no banco ou short TTL.

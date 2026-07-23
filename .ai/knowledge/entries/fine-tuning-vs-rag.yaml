@@ -1,0 +1,7 @@
+id: fine-tuning-vs-rag
+title: "Fine-Tuning vs RAG — When to Use What"
+category: ai
+tags: ["fine-tuning", "rag", "llm", "training", "retrieval"]
+summary: "Comparacao entre Fine-Tuning (treinar modelo com dados proprios) e RAG (buscar contexto externo) para LLMs."
+content: |
+  Fine-Tuning: altera pesos do modelo com dados especificos. Melhor para: estilo/tom consistente, aprender formato especifico (SQL, JSON), conhecimento profundo de dominio fechado. RAG: nao altera modelo, busca contexto externo. Melhor para: conhecimento atualizado, documentos grandes, dados que mudam frequentemente, evitar alucinacoes. Ambos sao complementares: Fine-Tuning para comportamento, RAG para conhecimento.

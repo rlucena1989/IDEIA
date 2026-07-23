@@ -1,0 +1,84 @@
+{
+  "timestamp": "2026-07-21T11:53:18.790Z",
+  "score": 43,
+  "level": "D",
+  "categories": [
+    {
+      "name": "SeguranÃ§a",
+      "score": 38
+    },
+    {
+      "name": "Qualidade",
+      "score": 11
+    },
+    {
+      "name": "Arquitetura",
+      "score": 0
+    },
+    {
+      "name": "DocumentaÃ§Ã£o",
+      "score": 40
+    },
+    {
+      "name": "OtimizaÃ§Ã£o Inteligente",
+      "score": 0
+    },
+    {
+      "name": "Agentes e Runtime",
+      "score": 50
+    },
+    {
+      "name": "SaÃºde do Ecossistema",
+      "score": 90
+    },
+    {
+      "name": "Extensibilidade e IntegraÃ§Ã£o",
+      "score": 70
+    },
+    {
+      "name": "ExecuÃ§Ã£o do Roadmap",
+      "score": 0
+    },
+    {
+      "name": "Git e ColaboraÃ§Ã£o",
+      "score": 75
+    },
+    {
+      "name": "Package Health",
+      "score": 100
+    },
+    {
+      "name": "Estrutura do Projeto",
+      "score": 67
+    },
+    {
+      "name": "Qualidade de CÃ³digo",
+      "score": 63
+    },
+    {
+      "name": "CI/CD e AutomaÃ§Ã£o",
+      "score": 100
+    },
+    {
+      "name": "DependÃªncias",
+      "score": 67
+    },
+    {
+      "name": "DocumentaÃ§Ã£o de CÃ³digo",
+      "score": 100
+    },
+    {
+      "name": "Integridade do Projeto",
+      "score": 40
+    },
+    {
+      "name": "Pipeline Health",
+      "score": 0
+    }
+  ],
+  "git": {
+    "branch": "no-git",
+    "commit": "0000000",
+    "message": "not a git repository"
+  }
+}

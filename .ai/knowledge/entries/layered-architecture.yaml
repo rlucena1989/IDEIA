@@ -1,0 +1,7 @@
+id: layered-architecture
+title: "Layered Architecture (N-Tier)"
+category: architecture
+tags: ["layered", "n-tier", "presentation", "business", "data"]
+summary: "Layered architecture organiza o codigo em camadas horizontais (apresentacao, negocio, dados) onde cada camada so depende da imediatamente inferior."
+content: |
+  Camadas tipicas: Presentation (controllers, views), Application (use cases, DTOs), Domain (entities, rules), Infrastructure (database, external APIs). Regras: dependencia apenas para baixo, cada camada tem responsabilidade distinta. Vantagens: simplicidade, separacao de concerns. Desvantagens: tendencia a vazamento de camadas (skip layers), terminologia varia entre projetos.

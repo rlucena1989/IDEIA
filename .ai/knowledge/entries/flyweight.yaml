@@ -1,0 +1,7 @@
+id: flyweight
+title: "Flyweight Pattern"
+category: design
+tags: ["flyweight", "gof", "structural", "memory", "sharing"]
+summary: "Flyweight usa compartilhamento para suportar grandes quantidades de objetos de granularidade fina eficientemente."
+content: |
+  Estado intrinseco: compartilhado entre objetos (immutable). Estado extrinseco: especifico do contexto, passado como parametro. Exemplo: caracteres em editor de texto (glyphs compartilhados, posicoes sao extrinsecas), particles em jogos.

@@ -1,0 +1,24 @@
+{
+  "name": "@ideia/trusted-context",
+  "description": "Contexto confiÃƒÆ’Ã‚Â¡vel ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â validaÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Â£o, frescor, integridade",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "publishConfig": {
+    "access": "public"
+  }
+}

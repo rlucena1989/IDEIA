@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>IDEIA v2 — AI-Native IDE</title>
+<style>
+:root {
+  --bg: #0d0d0d;
+  --bg-surface: #141414;
+  --bg-raised: #1a1a1a;
+  --bg-glass: rgba(20,20,20,0.82);
+  --border: rgba(255,255,255,0.04);
+  --border-hover: rgba(255,255,255,0.08);
+  --text: #e0e0e0;
+  --text-dim: #999;
+  --text-muted: #666;
+  --accent-cyan: #2dd4bf;
+  --accent-purple: #8b5cf6;
+  --accent-green: #16a34a;
+  --accent-orange: #ea580c;
+  --accent-red: #dc2626;
+  --accent-blue: #3b82f6;
+  --gradient-accent: #2dd4bf;
+  --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-code: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html,body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font-ui); font-size: 13px; -webkit-font-smoothing: antialiased; }
+
+#app { display: flex; flex-direction: column; height: 100vh; }
+
+/* ── Title Bar ── */
+.titlebar {
+  display: flex; align-items: center; height: 36px;
+  background: var(--bg); flex-shrink: 0;
+  padding: 0 10px; user-select: none;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.titlebar-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13px; color: #e0e0e0; letter-spacing: -0.3px; flex-shrink: 0; }
+.titlebar-logo .icon { width: 18px; height: 18px; border-radius: 5px; background: var(--gradient-accent); display: flex; align-items: center; justify-content: center; font-size: 10px; color: #0d0d0d; font-weight: 800; }
+.titlebar-menu { display: flex; align-items: center; gap: 0; margin-left: 12px; flex-shrink: 0; min-width: 0; }
+.titlebar-menu .item { padding: 2px 7px; font-size: 11.5px; color: #888; cursor: pointer; border-radius: 4px; transition: background 0.08s, color 0.08s; }
+.titlebar-menu .item:hover { background: rgba(255,255,255,0.06); color: #ddd; }
+.titlebar-menu .item.highlight { background: rgba(45,212,191,0.12); color: var(--accent-cyan); }
+.titlebar-project {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11.5px;
+  color: #777;
+  cursor: pointer;
+  padding: 2px 12px;
+  border-radius: 4px;
+  transition: background 0.1s, color 0.1s;
+  user-select: none;
+  white-space: nowrap;
+}
+.titlebar-project:hover { background: rgba(255,255,255,0.04); color: #aaa; }
+.titlebar-project::before {
+  content: '';
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  background: var(--gradient-accent);
+  margin-right: 7px;
+  vertical-align: middle;
+}
+
+/* Floating search overlay */
+.search-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 100;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 80px;
+}
+.search-overlay.open { display: flex; }
+.search-overlay .backdrop {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+}
+.search-box {
+  position: relative;
+  width: 520px;
+  background: var(--bg-surface);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+  overflow: hidden;
+  z-index: 1;
+  animation: fadeIn 0.15s ease-out;
+}
+.search-box input {
+  display: block;
+  width: 100%;
+  height: 44px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding: 0 16px;
+  font-size: 14px;
+  color: #ddd;
+  font-family: var(--font-ui);
+  outline: none;
+}
+.search-box input::placeholder { color: #555; }
+.search-box input:focus { color: #fff; }
+.search-results { padding: 8px 0; max-height: 300px; overflow-y: auto; }
+.search-result { display: flex; align-items: center; gap: 6px; padding: 6px 16px; cursor: pointer; font-size: 12.5px; color: #999; transition: background 0.06s; }
+.search-result:hover { background: rgba(255,255,255,0.03); color: #ccc; }
+.search-result .sr-icon { font-size: 12px; width: 20px; text-align: center; flex-shrink: 0; }
+.search-result .sr-name { flex: 1; }
+.search-result .sr-path { font-size: 10px; color: #555; margin-left: auto; }
+
+.titlebar-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; margin-left: auto; }
+.titlebar-actions button { background: none; border: none; color: #666; width: 30px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 11px; border-radius: 4px; transition: background 0.08s, color 0.08s; }
+.titlebar-actions button:hover { background: rgba(255,255,255,0.06); color: #ccc; }
+.titlebar-actions .close:hover { background: #e81123; color: #fff; }
+
+/* ── Shell ── */
+.shell { display: flex; flex: 1; min-height: 0; position: relative; }
+
+/* ── Activity Bar ── */
+.activity-bar {
+  display: flex; flex-direction: column; width: 44px;
+  background: var(--bg); border-right: var(--border);
+  flex-shrink: 0; align-items: center; padding-top: 4px;
+  z-index: 10;
+}
+.activity-bar .icon {
+  width: 44px; height: 40px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: #555; position: relative; transition: color 0.12s;
+}
+.activity-bar .icon svg { opacity: 0.6; transition: opacity 0.12s; }
+.activity-bar .icon:hover svg { opacity: 1; }
+.activity-bar .icon:hover { color: #999; }
+.activity-bar .icon.active { color: #ddd; }
+.activity-bar .icon.active svg { opacity: 1; }
+.activity-bar .icon.active::before {
+  content: ''; position: absolute; left: 0; top: 6px; bottom: 6px;
+  width: 2px; border-radius: 0 2px 2px 0;
+  background: var(--gradient-accent);
+}
+.separator { width: 24px; height: 1px; background: var(--border); margin: 4px 0; }
+.activity-bar .spacer { flex: 1; }
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 240px; min-width: 160px; max-width: 400px;
+  background: var(--bg-surface); border-right: var(--border);
+  display: flex; flex-direction: column; flex-shrink: 0;
+  resize: horizontal; overflow: hidden; position: relative;
+}
+.sidebar::-webkit-resizer { display: none; }
+.sidebar::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 3px; cursor: col-resize; background: transparent; transition: background 0.15s; }
+.sidebar:hover::after { background: rgba(45,212,191,0.08); }
+.sidebar-header {
+  display: flex; align-items: center; height: 32px;
+  padding: 0 10px; font-size: 10.5px; font-weight: 600;
+  color: #888; flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-header span { flex: 1; }
+.sidebar-header button { background: none; border: none; color: #666; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer; font-size: 13px; transition: background 0.08s; }
+.sidebar-header button:hover { background: rgba(255,255,255,0.06); color: #aaa; }
+
+/* File Tree */
+.file-tree { flex: 1; overflow-y: auto; padding: 4px 0; font-family: var(--font-code); font-size: 12px; line-height: 22px; }
+.tree-item { display: flex; align-items: center; padding: 0 8px 0 0; cursor: pointer; color: inherit; transition: background 0.05s; white-space: nowrap; }
+.tree-item:hover { background: rgba(255,255,255,0.03); }
+.tree-item.selected { background: rgba(45,212,191,0.08); }
+.tree-item .indent { display: inline-block; min-width: 16px; flex-shrink: 0; }
+.tree-item .indent-guide { display: inline-block; width: 16px; flex-shrink: 0; height: 22px; border-left: 1px solid rgba(255,255,255,0.04); }
+.tree-item .toggle { width: 14px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; color: #555; transition: transform 0.12s; }
+.tree-item .toggle.expanded { transform: rotate(90deg); }
+.tree-item .icon { width: 16px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; margin-right: 6px; }
+.tree-item .icon svg { display: block; }
+.tree-item .name { flex: 1; overflow: hidden; text-overflow: ellipsis; color: #aaa; }
+.tree-item .git-status { font-size: 10px; font-weight: 700; margin-left: 4px; flex-shrink: 0; }
+.git-M { color: var(--accent-orange); }
+.git-A { color: var(--accent-green); }
+
+/* ── Main Area ── */
+.main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; background: var(--bg); position: relative; }
+
+/* Editor Tabs */
+.editor-tabs { display: flex; align-items: center; height: 32px; background: var(--bg); border-bottom: var(--border); flex-shrink: 0; overflow-x: auto; }
+.editor-tabs::-webkit-scrollbar { height: 0; }
+.editor-tab { display: flex; align-items: center; padding: 0 12px; height: 32px; font-size: 11.5px; color: #777; cursor: pointer; transition: color 0.1s; white-space: nowrap; flex-shrink: 0; position: relative; }
+.editor-tab:hover { color: #bbb; }
+.editor-tab.active { color: #ddd; }
+.editor-tab.active::after { content: ''; position: absolute; bottom: 0; left: 8px; right: 8px; height: 1.5px; border-radius: 1px; background: var(--gradient-accent); }
+.editor-tab .icon { margin-right: 6px; font-size: 12px; }
+.editor-tab .close { margin-left: 8px; font-size: 9px; opacity: 0; transition: opacity 0.08s; color: #666; width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; border-radius: 3px; }
+.editor-tab:hover .close { opacity: 1; }
+.editor-tab .close:hover { background: rgba(255,255,255,0.08); color: #aaa; }
+.editor-actions { display: flex; align-items: center; margin-left: auto; padding: 0 6px; gap: 2px; flex-shrink: 0; }
+.editor-actions button { background: none; border: none; color: #666; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer; font-size: 12px; transition: background 0.08s; }
+.editor-actions button:hover { background: rgba(255,255,255,0.06); color: #999; }
+.mode-badge { font-size: 10px; padding: 2px 8px; border-radius: 4px; background: rgba(45,212,191,0.1); color: var(--accent-cyan); font-weight: 500; cursor: pointer; transition: background 0.12s; }
+.mode-badge:hover { background: rgba(45,212,191,0.18); }
+
+/* Editor View */
+.editor-view { flex: 1; display: flex; overflow: hidden; position: relative; }
+.editor-content { flex: 1; display: flex; overflow: auto; font-family: var(--font-code); font-size: 13px; line-height: 1.6; padding: 8px 0; }
+.editor-content .line-numbers { text-align: right; padding: 0 10px 0 2px; color: #444; user-select: none; min-width: 44px; flex-shrink: 0; border-right: 1px solid rgba(255,255,255,0.03); margin-right: 8px; }
+.editor-content .line-numbers .ln { display: flex; align-items: center; height: 20.8px; }
+.editor-content .line-numbers .ln span { display: block; font-size: 12px; color: #555; }
+.editor-content .line-numbers .ln .active { color: #999; background: rgba(45,212,191,0.06); }
+.fold-arrow { display: inline-block; width: 10px; font-size: 7px; color: #555; cursor: pointer; vertical-align: middle; margin-right: 2px; }
+.fold-arrow:hover { color: #999; }
+.fold-space { display: inline-block; width: 10px; margin-right: 2px; }
+.code-lines { flex: 1; white-space: pre; min-width: 0; position: relative; }
+.code-lines .line { display: block; height: 20.8px; white-space: pre; color: #ffffff; padding-left: 0; }
+.code-lines .line.active { background: rgba(255,255,255,0.02); }
+.code-lines .ig {
+  position: absolute; top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(255,255,255,0.06);
+  pointer-events: none;
+}
+
+/* Syntax tokens — vivid */
+.tk-kw { color: #ff7bd0; }
+.tk-str { color: #ffa657; }
+.tk-num { color: #7ee87e; }
+.tk-cm { color: #8bba7f; font-style: italic; }
+.tk-type { color: #5ee0c0; }
+.tk-fn { color: #ffe568; }
+.tk-op { color: #ffffff; }
+
+/* ── Bottom Panel ── */
+.bottom-panel {
+  height: 160px; min-height: 60px; max-height: 350px;
+  background: rgba(20,20,20,0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  isolation: isolate;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  margin: 0 6px 6px 6px;
+  display: flex; flex-direction: column; flex-shrink: 0;
+  overflow: hidden; position: relative; user-select: none;
+}
+.bottom-panel .resize-handle { position: absolute; top: -5px; left: 0; right: 0; height: 8px; cursor: ns-resize; z-index: 2; display: flex; align-items: center; justify-content: center; }
+.bottom-panel .resize-handle::after { content: ''; width: 56px; height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; transition: background 0.15s, width 0.2s; }
+.bottom-panel:hover .resize-handle::after { background: rgba(45,212,191,0.18); width: 72px; }
+.bottom-collapsed .bottom-panel { display: none; }
+.term-toggle { padding: 0 2px; }
+.bottom-collapsed .term-toggle { opacity: 0.4; }
+.bottom-tabs { display: flex; align-items: center; height: 26px; background: transparent; border-bottom: 1px solid rgba(255,255,255,0.03); flex-shrink: 0; padding: 0 4px; }
+.bottom-tab { padding: 0 10px; height: 26px; display: flex; align-items: center; font-size: 10.5px; color: #777; cursor: pointer; transition: color 0.1s; position: relative; }
+.bottom-tab:hover { color: #aaa; }
+.bottom-tab.active { color: #ccc; }
+.bottom-tab.active::after { content: ''; position: absolute; bottom: 0; left: 6px; right: 6px; height: 1.5px; border-radius: 1px; background: var(--gradient-accent); }
+.bottom-tab .badge { font-size: 9px; font-weight: 600; background: var(--accent-orange); color: #0d0d0d; padding: 0 4px; border-radius: 6px; margin-left: 5px; line-height: 14px; }
+.bottom-content { flex: 1; overflow: auto; padding: 6px 10px; font-family: var(--font-code); font-size: 11.5px; line-height: 1.5; }
+.term-line { display: block; white-space: pre; }
+.term-prompt { color: var(--accent-green); font-weight: 600; }
+.term-ts { color: #666; }
+.term-err { color: var(--accent-red); }
+.term-agent { color: var(--accent-purple); }
+.term-cursor { display: inline-block; width: 6px; height: 13px; background: var(--accent-cyan); animation: blink 1s step-end infinite; vertical-align: text-bottom; }
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* ── Right Panel Container ── */
+.right-panel-container {
+  display: flex;
+  flex-shrink: 0;
+  padding: 6px 6px 6px 0;
+}
+.right-panel-container .right-panel {
+  pointer-events: auto;
+}
+.right-panel {
+  width: 340px; min-width: 240px; max-width: 500px;
+  min-height: 200px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  display: flex; flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  overflow: hidden;
+  animation: fadeIn 0.2s ease-out;
+  position: relative;
+}
+.right-panel .resize-left {
+  position: absolute; left: -5px; top: 0; bottom: 0;
+  width: 10px; cursor: col-resize; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+}
+.right-panel .resize-left::after {
+  content: '';
+  width: 3px; height: 48px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 2px;
+  transition: background 0.15s, height 0.2s;
+}
+.right-panel:hover .resize-left::after { background: rgba(45,212,191,0.18); height: 64px; }
+
+.right-content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+
+/* Agent chat messages */
+.msg { display: flex; gap: 8px; font-size: 11.5px; line-height: 1.5; padding: 0 12px; }
+.msg-avatar { width: 20px; height: 20px; border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; margin-left: -4px; }
+.msg.user .msg-avatar { background: rgba(45,212,191,0.15); color: var(--accent-cyan); }
+.msg.agent .msg-avatar { background: rgba(139,92,246,0.15); color: var(--accent-purple); }
+.msg.sys .msg-avatar { background: rgba(255,255,255,0.04); color: #666; }
+.msg-bubble { flex: 1; padding: 5px 8px; border-radius: 5px; font-size: 11.5px; margin-right: 4px; }
+.msg.user .msg-bubble { background: rgba(255,255,255,0.03); }
+.msg.agent .msg-bubble { border: 1px solid rgba(139,92,246,0.08); }
+.msg.sys .msg-bubble { color: #888; font-style: italic; font-size: 10.5px; }
+.msg-agent { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--accent-purple); margin-bottom: 2px; }
+.msg-tool { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--accent-cyan); font-family: var(--font-code); padding: 1px 0; }
+.msg-code { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.03); border-radius: 4px; padding: 5px 7px; margin: 3px 0; font-family: var(--font-code); font-size: 10px; line-height: 1.4; overflow-x: auto; }
+.msg code { background: rgba(255,255,255,0.04); padding: 0 4px; border-radius: 3px; font-family: var(--font-code); font-size: 10px; color: var(--accent-cyan); }
+
+.hidden { display: none !important; }
+
+/* ── Right Activity Bar ── */
+.right-activity-bar {
+  display: flex; flex-direction: column; width: 44px;
+  background: var(--bg); border-left: var(--border);
+  flex-shrink: 0; align-items: center; padding-top: 4px;
+  z-index: 10;
+}
+.right-activity-bar .icon {
+  width: 44px; height: 40px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: #555; position: relative; transition: color 0.12s;
+}
+.right-activity-bar .icon svg { opacity: 0.6; transition: opacity 0.12s; }
+.right-activity-bar .icon:hover svg { opacity: 1; }
+.right-activity-bar .icon:hover { color: #999; }
+.right-activity-bar .icon.active { color: #ddd; }
+.right-activity-bar .icon.active svg { opacity: 1; }
+.right-activity-bar .icon.active::before {
+  content: ''; position: absolute; right: 0; top: 6px; bottom: 6px;
+  width: 2px; border-radius: 2px 0 0 2px;
+  background: var(--gradient-accent);
+}
+.right-activity-bar .icon.green-dot::after {
+  content: ''; position: absolute; bottom: 6px; right: 5px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 6px rgba(22,163,74,0.4);
+}
+.right-activity-bar .icon .badge-count {
+  position: absolute; top: 4px; right: 4px;
+  font-size: 8px; font-weight: 700;
+  background: var(--gradient-accent); color: #0d0d0d;
+  min-width: 14px; height: 14px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 3px;
+}
+
+.hidden { display: none !important; }
+
+/* ── Status Bar ── */
+.statusbar {
+  display: flex; align-items: center; height: 20px;
+  background: var(--bg-surface); flex-shrink: 0;
+  padding: 0 8px; font-size: 10px; color: #777;
+  border-top: 1px solid var(--border); gap: 4px; position: relative;
+}
+.statusbar .left { display: flex; align-items: center; gap: 8px; }
+.statusbar .center { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; }
+.statusbar .right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.statusbar .item { display: flex; align-items: center; gap: 2px; cursor: default; white-space: nowrap; }
+.statusbar .item.action { cursor: pointer; transition: color 0.08s; }
+.statusbar .item.action:hover { color: #bbb; }
+.statusbar .accent { color: var(--accent-cyan); }
+.statusbar .dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.statusbar .dot.green { background: var(--accent-green); box-shadow: 0 0 5px rgba(22,163,74,0.3); }
+.statusbar .dot.purple { background: var(--accent-purple); box-shadow: 0 0 5px rgba(139,92,246,0.3); }
+
+/* ── Animations ── */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.04); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.08); }
+::selection { background: rgba(45,212,191,0.12); }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ── Title Bar ── -->
+  <div class="titlebar">
+    <div class="titlebar-logo">
+      <span>IDE<span style="color: var(--accent-cyan);">IA</span></span>
+    </div>
+    <div class="titlebar-menu">
+      <span class="item">File</span>
+      <span class="item">Edit</span>
+      <span class="item">Selection</span>
+      <span class="item">View</span>
+      <span class="item">Go</span>
+      <span class="item">Run</span>
+      <span class="item">Terminal</span>
+      <span class="item highlight">IDEIA</span>
+      <span class="item">Help</span>
+    </div>
+    <div class="titlebar-project" id="projectName">ai-devkit-workspace</div>
+
+    <!-- Floating search overlay -->
+    <div class="search-overlay" id="searchOverlay">
+      <div class="backdrop" id="searchBackdrop"></div>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search files and projects..." autofocus>
+        <div class="search-results">
+          <div class="search-result"><span class="sr-icon">◆</span><span class="sr-name">pipeline.ts</span><span class="sr-path">src/agents/</span></div>
+          <div class="search-result"><span class="sr-icon">⚡</span><span class="sr-name">coder-agent.ts</span><span class="sr-path">src/agents/</span></div>
+          <div class="search-result"><span class="sr-icon">◎</span><span class="sr-name">chat-panel.tsx</span><span class="sr-path">src/ui/</span></div>
+          <div class="search-result"><span class="sr-icon">📄</span><span class="sr-name">AGENTS.md</span><span class="sr-path">./</span></div>
+          <div class="search-result"><span class="sr-icon">📄</span><span class="sr-name">package.json</span><span class="sr-path">./</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="titlebar-actions">
+      <span class="mode-badge">✦ Agent Mode</span>
+      <button title="Minimize">─</button>
+      <button title="Maximize">□</button>
+      <button class="close" title="Close">✕</button>
+    </div>
+  </div>
+
+  <!-- ── Shell ── -->
+  <div class="shell">
+
+    <!-- Activity Bar -->
+    <div class="activity-bar">
+      <div class="icon active" title="Explorer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></div>
+      <div class="icon" title="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+      <div class="icon" title="Source Control"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v9"/><path d="M6 9a6 6 0 006 6h6"/></svg></div>
+      <div class="icon" title="Run"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+      <div class="icon" title="Extensions"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="8" height="8" rx="1"/><rect x="14" y="2" width="8" height="8" rx="1"/><rect x="2" y="14" width="8" height="8" rx="1"/><rect x="14" y="14" width="8" height="8" rx="1"/></svg></div>
+      <div class="separator"></div>
+      <div class="icon" title="IDEIA Agents" style="color:#8b5cf6;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8L12 2z"/></svg></div>
+      <div class="icon" title="Dashboard"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17h4v6H3z"/><path d="M10 5h4v18h-4z"/><path d="M17 11h4v12h-4z"/></svg></div>
+      <div class="spacer"></div>
+      <div class="separator"></div>
+      <div class="icon" title="Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <span>EXPLORER</span>
+        <button title="New File">+</button>
+        <button title="Collapse">−</button>
+      </div>
+      <div class="file-tree">
+        <div class="tree-item"><span class="indent"></span><span class="toggle expanded">▸</span><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1.5 4A1.5 1.5 0 013 2.5h3.5l1.5 2H13a1.5 1.5 0 011.5 1.5v5A1.5 1.5 0 0113 12.5H3A1.5 1.5 0 011.5 11V4z" stroke="#888" stroke-width="1" fill="none"/></svg></span><span class="name">src</span></div>
+        <div class="tree-item" style="padding-left:16px"><span class="indent"><span class="indent-guide"></span></span><span class="toggle expanded">▸</span><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1.5 4A1.5 1.5 0 013 2.5h3.5l1.5 2H13a1.5 1.5 0 011.5 1.5v5A1.5 1.5 0 0113 12.5H3A1.5 1.5 0 011.5 11V4z" stroke="#888" stroke-width="1" fill="none"/></svg></span><span class="name">agents</span></div>
+        <div class="tree-item selected" style="padding-left:32px"><span class="indent"><span class="indent-guide"></span><span class="indent-guide"></span></span><span class="toggle" style="visibility:hidden">▸</span><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 1.5A1.5 1.5 0 014.5 0h5l4 4v10a1.5 1.5 0 01-1.5 1.5h-8A1.5 1.5 0 012 14V2.5A1.5 1.5 0 013 1.5z" stroke="#999" stroke-width="1" fill="none"/><path d="M9.5 0V4h4" stroke="#999" stroke-width="1" fill="none"/><circle cx="12" cy="12" r="2" fill="#8b5cf6"/></svg></span><span class="name">pipeline.ts</span><span class="git-status git-M">M</span></div>
+        <div class="tree-item" style="padding-left:32px"><span class="indent"><span class="indent-guide"></span><span class="indent-guide"></span></span><span class="toggle" style="visibility:hidden">▸</span><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 1.5A1.5 1.5 0 014.5 0h5l4 4v10a1.5 1.5 0 01-1.5 1.5h-8A1.5 1.5 0 012 14V2.5A1.5 1.5 0 013 1.5z" stroke="#999" stroke-width="1" fill="none"/><path d="M9.5 0V4h4" stroke="#999" stroke-width="1" fill="none"/><circle cx="12" cy="12" r="2" fill="#3b82f6"/></svg></span><span class="name">coder-agent.ts</span><span class="git-status git-A">A</span></div>
+        <div class="tree-item" style="padding-left:32px"><span class="indent"><span class="indent-guide"></span><span class="indent-guide"></span></span><span class="toggle" style="visibility:hidden">▸</span><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 1.5A1.5 1.5 0 014.5 0h5l4 4v10a1.5 1.5 0 01-1.5 1.5h-8A1.5 1.5 0 012 14V2.5A1.5 1.5 0 013 1.5z" stroke="#999" stroke-width="1" fill="none"/><path d="M9.5 0V4h4" stroke="#999" stroke-width="1" fill="none"/><circle cx="12" cy="12" r="2" fill="#61dafb"/></svg></span><span class="name">chat-panel.tsx</span></div>
+        <div class="tree-item" style="padding-left:16px"><span class="indent"><span class="indent-guide"></span></span><span class="toggle expanded">▸</span><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1.5 4A1.5 1.5 0 013 2.5h3.5l1.5 2H13a1.5 1.5 0 011.5 1.5v5A1.5 1.5 0 0113 12.5H3A1.5 1.5 0 011.5 11V4z" stroke="#888" stroke-width="1" fill="none"/></svg></span><span class="name">orchestration</span></div>
+        <div class="tree-item" style="padding-left:32px"><span class="indent"><span class="indent-guide"></span><span class="indent-guide"></span></span><span class="toggle" style="visibility:hidden">▸</span><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 1.5A1.5 1.5 0 014.5 0h5l4 4v10a1.5 1.5 0 01-1.5 1.5h-8A1.5 1.5 0 012 14V2.5A1.5 1.5 0 013 1.5z" stroke="#999" stroke-width="1" fill="none"/><path d="M9.5 0V4h4" stroke="#999" stroke-width="1" fill="none"/><circle cx="12" cy="12" r="2" fill="#8b5cf6"/></svg></span><span class="name">agent-pipeline.ts</span><span class="git-status git-M">M</span></div>
+        <div class="tree-item" style="padding-left:16px"><span class="indent"><span class="indent-guide"></span></span><span class="toggle expanded">▸</span><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1.5 4A1.5 1.5 0 013 2.5h3.5l1.5 2H13a1.5 1.5 0 011.5 1.5v5A1.5 1.5 0 0113 12.5H3A1.5 1.5 0 011.5 11V4z" stroke="#888" stroke-width="1" fill="none"/></svg></span><span class="name">llm</span></div>
+        <div class="tree-item" style="padding-left:32px"><span class="indent"><span class="indent-guide"></span><span class="indent-guide"></span></span><span class="toggle" style="visibility:hidden">▸</span><span class="icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 1.5A1.5 1.5 0 014.5 0h5l4 4v10a1.5 1.5 0 01-1.5 1.5h-8A1.5 1.5 0 012 14V2.5A1.5 1.5 0 013 1.5z" stroke="#999" stroke-width="1" fill="none"/><path d="M9.5 0V4h4" stroke="#999" stroke-width="1" fill="none"/></svg></span><span class="name">provider-router.ts</span></div>
+      </div>
+    </div>
+
+    <!-- Main Area -->
+    <div class="main-area">
+
+      <!-- Editor Tabs -->
+      <div class="editor-tabs">
+        <div class="editor-tab active"><span class="icon">◆</span> pipeline.ts</div>
+        <div class="editor-tab"><span class="icon">⚡</span> coder-agent.ts</div>
+        <div class="editor-tab"><span class="icon">◎</span> chat-panel.tsx<span class="close">✕</span></div>
+        <div class="editor-actions">
+          <button title="Preview">◉</button>
+          <button title="Split">⊞</button>
+        </div>
+      </div>
+
+      <!-- Editor View -->
+      <div class="editor-view">
+        <div class="editor-content">
+          <div class="line-numbers" id="lineNums"></div>
+          <div class="code-lines" id="codeLines"></div>
+        </div>
+      </div>
+
+      <!-- Bottom Panel -->
+      <div class="bottom-panel">
+        <div class="resize-handle"></div>
+        <div class="bottom-tabs">
+          <div class="bottom-tab active">1: powershell</div>
+          <div class="bottom-tab">2: bash</div>
+          <button title="New Terminal" style="background:none;border:none;color:#666;width:20px;height:20px;border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;margin:0 2px;">+</button>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:2px;padding:0 4px;">
+            <button title="Split Terminal" style="background:none;border:none;color:#666;width:20px;height:20px;border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;">⬜</button>
+            <button title="Kill Terminal" style="background:none;border:none;color:#666;width:20px;height:20px;border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;">✕</button>
+            <span style="width:1px;height:14px;background:rgba(255,255,255,0.04);margin:0 2px;"></span>
+            <button title="Terminal type" style="background:none;border:none;color:#555;width:auto;height:20px;border-radius:3px;cursor:pointer;display:flex;align-items:center;gap:2px;padding:0 5px;font-size:9.5px;">powershell ▼</button>
+          </div>
+        </div>
+        <div class="bottom-content">
+          <span class="term-line"><span style="color:#888;">Windows PowerShell</span></span>
+          <span class="term-line"><span style="color:#888;">Copyright (C) Microsoft Corporation. All rights reserved.</span></span>
+          <span class="term-line" style="margin-bottom:2px;"></span>
+          <span class="term-line"><span class="term-prompt">PS C:\projects\ideia></span> npm run dev</span>
+          <span class="term-line"><span class="term-ts">[10:42:18]</span> Starting IDEIA server...</span>
+          <span class="term-line"><span class="term-ts">[10:42:19]</span> Theia backend on :3000 <span style="color:var(--accent-green);">✓</span></span>
+          <span class="term-line"><span class="term-ts">[10:42:20]</span> LLMs: claude, openai, ollama <span style="color:var(--accent-green);">✓</span></span>
+          <span class="term-line"><span class="term-ts">[10:42:21]</span> MCP: filesystem, web-search, shell <span style="color:var(--accent-green);">✓</span></span>
+          <span class="term-line"><span class="term-ts">[10:42:22]</span> Agents: coder → <span class="term-agent">security</span> → reviewer → tester <span style="color:var(--accent-green);">✓</span></span>
+          <span class="term-line"><span class="term-prompt">PS C:\projects\ideia></span> <span class="term-cursor"></span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel Container -->
+    <div class="right-panel-container">
+    <div class="right-panel">
+      <div class="resize-left" id="rightResizeHandle"></div>
+      <div class="right-content" id="rightContent">
+
+        <!-- Agent Chat -->
+        <div data-content="agent" style="display:flex;flex-direction:column;flex:1;min-height:0;">
+          <!-- Session history header -->
+          <div style="display:flex;align-items:center;gap:4px;padding:4px 8px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,0.03);">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#555;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span style="font-size:9.5px;color:#777;cursor:pointer;">History</span>
+            <span style="font-size:9px;color:#555;margin-left:auto;cursor:pointer;">4 sessions</span>
+            <button title="Filter sessions" style="background:none;border:none;color:#555;width:18px;height:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;padding:0;">⊕</button>
+          </div>
+          <!-- Session tabs -->
+          <div style="display:flex;align-items:center;gap:3px;padding:4px 8px 2px;flex-shrink:0;">
+            <span style="font-size:9.5px;padding:2px 7px;border-radius:4px;background:rgba(45,212,191,0.08);color:var(--accent-cyan);cursor:pointer;">Pipeline security</span>
+            <span style="font-size:9.5px;padding:2px 7px;border-radius:4px;color:#777;cursor:pointer;">Refactor agents</span>
+            <span style="font-size:9.5px;padding:2px 7px;border-radius:4px;color:#555;cursor:pointer;font-style:italic;">+ new</span>
+            <span style="font-size:9px;color:#666;margin-left:auto;">5 agents</span>
+            <button title="New Chat" style="background:none;border:none;color:#777;width:18px;height:18px;border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:background 0.08s;">+</button>
+          </div>
+          <!-- Messages -->
+          <div style="flex:1;overflow-y:auto;padding:4px 0;display:flex;flex-direction:column;gap:6px;">
+            <div class="msg sys"><div class="msg-avatar">≡</div><div class="msg-bubble">IDEIA Agent ready. Connected via Theia AI.</div></div>
+            <div class="msg user"><div class="msg-avatar">U</div><div class="msg-bubble">Add security auditor to the pipeline</div></div>
+            <div class="msg agent">
+              <div class="msg-avatar">◆</div>
+              <div class="msg-bubble">
+                <div class="msg-agent">ORCHESTRATOR</div>
+                <div class="msg-tool">→ read_file pipeline.ts</div>
+                <div class="msg-tool">→ read_file security-auditor.ts</div>
+                <div class="msg-code">pipeline.insert(2, new SecurityAuditor());</div>
+                <div style="color:var(--accent-green);font-size:10.5px;margin-top:4px;">✓ Files updated</div>
+              </div>
+            </div>
+            <div class="msg sys"><div class="msg-avatar">≡</div><div class="msg-bubble"><code>pipeline.ts</code> · <code>security-auditor.ts</code> — +45 lines</div></div>
+          </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div data-content="dashboard" class="hidden">
+          <div style="padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.03);flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+              <span style="font-size:11px;font-weight:600;color:#ccc;">Project Dashboard</span>
+              <button title="Refresh" style="margin-left:auto;background:none;border:none;color:#555;width:20px;height:20px;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;">↻</button>
+              <button title="Full report" style="background:none;border:none;color:#555;width:auto;height:20px;border-radius:4px;cursor:pointer;display:flex;align-items:center;gap:3px;padding:0 5px;font-size:9px;">📊 Report</button>
+            </div>
+            <div style="display:flex;gap:4px;">
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(45,212,191,0.1);color:var(--accent-cyan);cursor:pointer;">Overview</span>
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;color:#777;cursor:pointer;">Trends</span>
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;color:#777;cursor:pointer;">Modules</span>
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;color:#777;cursor:pointer;">Dependencies</span>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:8px 10px;">
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:6px;padding:8px 10px;">
+              <div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.3px;">Coverage</div>
+              <div style="font-size:18px;font-weight:700;color:var(--accent-green);margin-top:2px;">87%</div>
+              <div style="height:2px;background:rgba(255,255,255,0.04);border-radius:1px;margin-top:4px;overflow:hidden;"><div style="width:87%;height:100%;background:var(--accent-green);border-radius:1px;"></div></div>
+              <div style="font-size:9px;color:#666;margin-top:2px;">+3% vs last scan</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:6px;padding:8px 10px;">
+              <div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.3px;">Scorecard</div>
+              <div style="font-size:18px;font-weight:700;color:var(--accent-cyan);margin-top:2px;">A-</div>
+              <div style="height:2px;background:rgba(255,255,255,0.04);border-radius:1px;margin-top:4px;overflow:hidden;"><div style="width:82%;height:100%;background:var(--accent-cyan);border-radius:1px;"></div></div>
+              <div style="font-size:9px;color:#666;margin-top:2px;">Minor issues</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:6px;padding:8px 10px;">
+              <div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.3px;">Tests</div>
+              <div style="font-size:18px;font-weight:700;color:var(--accent-green);margin-top:2px;">1,247</div>
+              <div style="font-size:9px;color:#666;margin-top:2px;">12 suites · all passing</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:6px;padding:8px 10px;">
+              <div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.3px;">Gaps</div>
+              <div style="font-size:18px;font-weight:700;color:var(--accent-orange);margin-top:2px;">8</div>
+              <div style="font-size:9px;color:#666;margin-top:2px;">3 critical · 5 medium</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:6px;padding:8px 10px;">
+              <div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.3px;">Tech Debt</div>
+              <div style="font-size:18px;font-weight:700;color:var(--accent-red);margin-top:2px;">14h</div>
+              <div style="font-size:9px;color:#666;margin-top:2px;">Estimated remediation</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:6px;padding:8px 10px;">
+              <div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.3px;">Complexity</div>
+              <div style="font-size:18px;font-weight:700;color:#999;margin-top:2px;">7.3</div>
+              <div style="font-size:9px;color:#666;margin-top:2px;">Avg cyclomatic</div>
+            </div>
+          </div>
+          <div style="padding:0 10px 8px;">
+            <div style="font-size:9.5px;font-weight:600;color:#777;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:6px;">Agent Pipeline</div>
+            <div style="display:flex;gap:3px;flex-wrap:wrap;">
+              <span style="font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(45,212,191,0.12);color:var(--accent-cyan);">Coder</span>
+              <span style="font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(139,92,246,0.12);color:var(--accent-purple);">Security</span>
+              <span style="font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(234,88,12,0.12);color:var(--accent-orange);">Reviewer</span>
+              <span style="font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(22,163,74,0.12);color:var(--accent-green);">Tester</span>
+              <span style="font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(59,130,246,0.12);color:#60a5fa;">Deploy</span>
+            </div>
+            <div style="font-size:9.5px;font-weight:600;color:#777;text-transform:uppercase;letter-spacing:0.3px;margin:8px 0 4px;">Scope</div>
+            <div style="display:flex;flex-wrap:wrap;gap:3px;"><span style="font-size:9px;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,0.03);color:#888;">agents/</span><span style="font-size:9px;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,0.03);color:#888;">orchestration/</span><span style="font-size:9px;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,0.03);color:#888;">llm/</span><span style="font-size:9px;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,0.03);color:#888;">tools/</span><span style="font-size:9px;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,0.03);color:#888;">ui/</span><span style="font-size:9px;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,0.03);color:#888;">docs/</span></div>
+          </div>
+        </div>
+
+        <!-- Studies -->
+        <div data-content="studies" class="hidden">
+          <div style="padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.03);flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span style="font-size:11px;font-weight:600;color:#ccc;">Studies</span>
+              <div style="margin-left:auto;display:flex;gap:2px;align-items:center;">
+                <button title="Search" style="background:none;border:none;color:#555;width:20px;height:20px;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;">🔍</button>
+                <button title="Filter" style="background:none;border:none;color:#555;width:20px;height:20px;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;">⊞</button>
+              </div>
+            </div>
+            <div style="display:flex;gap:3px;">
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(45,212,191,0.1);color:var(--accent-cyan);cursor:pointer;">All</span>
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;color:#777;cursor:pointer;">Active</span>
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;color:#777;cursor:pointer;">Completed</span>
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;color:#777;cursor:pointer;margin-left:auto;">4 total</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0;">
+            <div style="font-size:9px;font-weight:600;color:#777;text-transform:uppercase;letter-spacing:0.3px;padding:8px 10px 4px;">Active</div>
+            <div style="padding:5px 10px;display:flex;align-items:center;gap:6px;cursor:pointer;transition:background 0.06s;border-left:2px solid var(--accent-purple);margin-left:0;">
+              <span style="font-size:10px;color:var(--accent-purple);font-weight:500;width:18px;">M</span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:10.5px;color:#aaa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">MCP server orchestration patterns</div>
+                <div style="font-size:9px;color:#666;">Started 2d ago · 3 sources</div>
+              </div>
+            </div>
+            <div style="padding:5px 10px;display:flex;align-items:center;gap:6px;cursor:pointer;transition:background 0.06s;border-left:2px solid var(--accent-purple);margin-left:0;">
+              <span style="font-size:10px;color:var(--accent-purple);font-weight:500;width:18px;">V</span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:10.5px;color:#aaa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Vector search for agent memory</div>
+                <div style="font-size:9px;color:#666;">Started 4d ago · 5 references</div>
+              </div>
+            </div>
+            <div style="padding:5px 10px;display:flex;align-items:center;gap:6px;cursor:pointer;transition:background 0.06s;border-left:2px solid var(--accent-purple);margin-left:0;">
+              <span style="font-size:10px;color:var(--accent-purple);font-weight:500;width:18px;">T</span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:10.5px;color:#aaa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Tree-sitter vs LSP analysis</div>
+                <div style="font-size:9px;color:#666;">Started 1w ago · 2 sources</div>
+              </div>
+            </div>
+            <div style="font-size:9px;font-weight:600;color:#777;text-transform:uppercase;letter-spacing:0.3px;padding:8px 10px 4px;margin-top:4px;">Completed</div>
+            <div style="padding:5px 10px;display:flex;align-items:center;gap:6px;cursor:pointer;transition:background 0.06s;opacity:0.6;">
+              <span style="font-size:10px;color:var(--accent-green);font-weight:500;width:18px;">✓</span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:10.5px;color:#999;">Theia AI integration patterns</div>
+                <div style="font-size:9px;color:#555;">Completed 3d ago</div>
+              </div>
+            </div>
+            <div style="padding:5px 10px;display:flex;align-items:center;gap:6px;cursor:pointer;transition:background 0.06s;opacity:0.6;">
+              <span style="font-size:10px;color:var(--accent-green);font-weight:500;width:18px;">✓</span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:10.5px;color:#999;">NATS JetStream event bus</div>
+                <div style="font-size:9px;color:#555;">Completed 5d ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Approvals -->
+        <div data-content="approvals" class="hidden">
+          <div style="padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.03);flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span style="font-size:11px;font-weight:600;color:#ccc;">Approvals</span>
+              <span style="font-size:9px;background:rgba(139,92,246,0.2);color:var(--accent-purple);padding:0 5px;border-radius:6px;line-height:16px;">11</span>
+              <div style="margin-left:auto;display:flex;gap:2px;">
+                <button title="Search" style="background:none;border:none;color:#555;width:20px;height:20px;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;">🔍</button>
+                <button title="Filter" style="background:none;border:none;color:#555;width:20px;height:20px;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;">⊞</button>
+              </div>
+            </div>
+            <div style="display:flex;gap:3px;">
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(45,212,191,0.1);color:var(--accent-cyan);cursor:pointer;">Pending</span>
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;color:#777;cursor:pointer;">History</span>
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;color:#777;cursor:pointer;">All</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;">
+            <div style="padding:6px 10px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:background 0.06s;border-left:2px solid var(--accent-red);margin:2px 0;">
+              <div style="width:4px;height:4px;border-radius:50%;background:var(--accent-red);flex-shrink:0;"></div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:10.5px;color:#aaa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Review security-auditor integration</div>
+                <div style="font-size:9px;color:#666;">Blocking · pipeline@main</div>
+              </div>
+              <button style="background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.2);color:var(--accent-green);font-size:9px;padding:1px 8px;border-radius:4px;cursor:pointer;white-space:nowrap;">✔</button>
+              <button style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:#666;font-size:9px;padding:1px 8px;border-radius:4px;cursor:pointer;">✕</button>
+            </div>
+            <div style="padding:6px 10px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:background 0.06s;border-left:2px solid var(--accent-orange);margin:2px 0;">
+              <div style="width:4px;height:4px;border-radius:50%;background:var(--accent-orange);flex-shrink:0;"></div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:10.5px;color:#aaa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Approve pipeline config changes</div>
+                <div style="font-size:9px;color:#666;">3 files · 2h ago</div>
+              </div>
+              <button style="background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.2);color:var(--accent-green);font-size:9px;padding:1px 8px;border-radius:4px;cursor:pointer;">✔</button>
+              <button style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:#666;font-size:9px;padding:1px 8px;border-radius:4px;cursor:pointer;">✕</button>
+            </div>
+            <div style="padding:6px 10px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:background 0.06s;border-left:2px solid var(--accent-orange);margin:2px 0;">
+              <div style="width:4px;height:4px;border-radius:50%;background:var(--accent-orange);flex-shrink:0;"></div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:10.5px;color:#aaa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Validate MCP server permissions</div>
+                <div style="font-size:9px;color:#666;">2 endpoints</div>
+              </div>
+              <button style="background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.2);color:var(--accent-green);font-size:9px;padding:1px 8px;border-radius:4px;cursor:pointer;">✔</button>
+              <button style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:#666;font-size:9px;padding:1px 8px;border-radius:4px;cursor:pointer;">✕</button>
+            </div>
+            <div style="padding:6px 10px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:background 0.06s;border-left:2px solid var(--accent-orange);margin:2px 0;">
+              <div style="width:4px;height:4px;border-radius:50%;background:var(--accent-orange);flex-shrink:0;"></div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:10.5px;color:#aaa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Approve agent-level N3 autonomy</div>
+                <div style="font-size:9px;color:#666;">Requires security review</div>
+              </div>
+              <button style="background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.2);color:var(--accent-green);font-size:9px;padding:1px 8px;border-radius:4px;cursor:pointer;">✔</button>
+              <button style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:#666;font-size:9px;padding:1px 8px;border-radius:4px;cursor:pointer;">✕</button>
+            </div>
+            <div style="padding:6px 10px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:background 0.06s;border-left:2px solid var(--accent-green);margin:2px 0;">
+              <div style="width:4px;height:4px;border-radius:50%;background:var(--accent-green);flex-shrink:0;"></div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:10.5px;color:#aaa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Deploy v0.2.0 to staging</div>
+                <div style="font-size:9px;color:#666;">Auto-approve in 12h</div>
+              </div>
+              <button style="background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.2);color:var(--accent-green);font-size:9px;padding:1px 8px;border-radius:4px;cursor:pointer;">✔</button>
+              <button style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:#666;font-size:9px;padding:1px 8px;border-radius:4px;cursor:pointer;">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Suggestions -->
+        <div data-content="suggestions" class="hidden">
+          <div style="padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.03);flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-size:11px;font-weight:600;color:#ccc;">AI Suggestions</span>
+              <button title="Refresh" style="margin-left:auto;background:none;border:none;color:#555;width:20px;height:20px;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;">↻</button>
+              <button title="Filter by impact" style="background:none;border:none;color:#555;width:auto;height:20px;border-radius:4px;cursor:pointer;display:flex;align-items:center;gap:2px;padding:0 5px;font-size:9px;">Impact ▼</button>
+            </div>
+            <div style="display:flex;gap:3px;margin-top:4px;">
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(45,212,191,0.1);color:var(--accent-cyan);cursor:pointer;">All</span>
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;color:#777;cursor:pointer;">Security</span>
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;color:#777;cursor:pointer;">Performance</span>
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;color:#777;cursor:pointer;">Features</span>
+              <span style="font-size:9px;padding:1px 6px;border-radius:3px;color:#777;cursor:pointer;">Quality</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;padding:4px 10px;">
+            <div style="background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);border-radius:6px;padding:8px 10px;cursor:pointer;transition:border-color 0.08s;">
+              <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px;">
+                <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(220,38,38,0.12);color:var(--accent-red);font-weight:500;">Security</span>
+                <span style="font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(220,38,38,0.08);color:var(--accent-red);">High</span>
+                <span style="font-size:9px;color:#555;margin-left:auto;">~3h</span>
+              </div>
+              <div style="font-size:10.5px;font-weight:500;color:#bbb;margin-bottom:2px;">Add input validation to tool executor</div>
+              <div style="font-size:9.5px;color:#888;line-height:1.4;">Tool executor missing input sanitization for file paths. Could allow path traversal in sandbox mode.</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);border-radius:6px;padding:8px 10px;cursor:pointer;transition:border-color 0.08s;">
+              <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px;">
+                <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(234,88,12,0.12);color:var(--accent-orange);font-weight:500;">Performance</span>
+                <span style="font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(234,88,12,0.08);color:var(--accent-orange);">Medium</span>
+                <span style="font-size:9px;color:#555;margin-left:auto;">~4h</span>
+              </div>
+              <div style="font-size:10.5px;font-weight:500;color:#bbb;margin-bottom:2px;">Cache LLM responses by context hash</div>
+              <div style="font-size:9.5px;color:#888;line-height:1.4;">Reduce latency by ~40%. Simple key-value approach with TTL of 5 minutes.</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);border-radius:6px;padding:8px 10px;cursor:pointer;transition:border-color 0.08s;">
+              <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px;">
+                <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(139,92,246,0.12);color:var(--accent-purple);font-weight:500;">Features</span>
+                <span style="font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(139,92,246,0.08);color:var(--accent-purple);">Medium</span>
+                <span style="font-size:9px;color:#555;margin-left:auto;">~6h</span>
+              </div>
+              <div style="font-size:10.5px;font-weight:500;color:#bbb;margin-bottom:2px;">Add agent telemetry with OpenTelemetry</div>
+              <div style="font-size:9.5px;color:#888;line-height:1.4;">Instrument agent pipeline with traces and metrics for full observability.</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);border-radius:6px;padding:8px 10px;cursor:pointer;transition:border-color 0.08s;">
+              <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px;">
+                <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:rgba(45,212,191,0.12);color:var(--accent-cyan);font-weight:500;">Quality</span>
+                <span style="font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(45,212,191,0.08);color:var(--accent-cyan);">Low</span>
+                <span style="font-size:9px;color:#555;margin-left:auto;">~2h</span>
+              </div>
+              <div style="font-size:10.5px;font-weight:500;color:#bbb;margin-bottom:2px;">Refactor agent orchestrator</div>
+              <div style="font-size:9.5px;color:#888;line-height:1.4;">Extract stage runner from pipeline.ts to improve testability and reduce coupling.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Resize handle -->
+      <div style="flex-shrink:0;position:relative;">
+        <div style="height:4px;cursor:ns-resize;display:flex;align-items:center;justify-content:center;background:transparent;transition:background 0.15s;" class="ai-resize-handle" title="Resize input">
+          <span style="width:32px;height:2px;border-radius:1px;background:rgba(255,255,255,0.04);transition:background 0.15s,width 0.2s;"></span>
+        </div>
+      </div>
+      <!-- Input area -->
+      <div style="flex-shrink:0;border-top:1px solid rgba(255,255,255,0.04);background:rgba(20,20,20,0.75);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);isolation:isolate;" data-agent-input>
+        <div style="position:relative;">
+          <textarea rows="5" style="display:block;width:100%;background:transparent;border:none;border-radius:0;padding:10px 12px 44px 12px;font-size:12px;color:#ccc;font-family:var(--font-ui);outline:none;resize:none;min-height:90px;max-height:300px;line-height:1.4;" placeholder="Ask the agent..." id="agentInput">Check pipeline for vulnerabilities</textarea>
+          <div style="position:absolute;bottom:6px;left:6px;display:flex;gap:1px;">
+            <button title="Attach files" style="background:none;border:none;color:#666;width:26px;height:26px;border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;transition:background 0.08s,color 0.08s;">📎</button>
+            <button title="Voice input" style="background:none;border:none;color:#666;width:26px;height:26px;border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;transition:background 0.08s,color 0.08s;">🎤</button>
+            <span style="width:1px;height:18px;background:rgba(255,255,255,0.04);margin:4px 2px;"></span>
+            <button title="Agent model" style="background:none;border:none;color:#555;width:auto;height:26px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:3px;padding:0 5px;font-size:9.5px;transition:background 0.08s;">◆ Claude 4<span style="color:#444;font-size:8px;">▼</span></button>
+            <button title="Agent variations" style="background:none;border:none;color:#555;width:auto;height:26px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:3px;padding:0 5px;font-size:9.5px;transition:background 0.08s;">⚙ Orchestrator<span style="color:#444;font-size:8px;">▼</span></button>
+          </div>
+          <button title="Send" style="position:absolute;bottom:6px;right:6px;width:28px;height:28px;border-radius:6px;border:none;background:var(--gradient-accent);color:#0d0d0d;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity 0.1s;">↑</button>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- Right Activity Bar (fixed right edge) -->
+    <div class="right-activity-bar" id="rightActivityBar">
+      <div class="icon active green-dot" data-right="agent" title="Agent">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div class="icon" data-right="dashboard" title="Dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17h4v6H3z"/><path d="M10 5h4v18h-4z"/><path d="M17 11h4v12h-4z"/></svg>
+      </div>
+      <div class="icon" data-right="studies" title="Studies">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div class="icon" data-right="approvals" title="Approvals">
+        <div class="badge-count">11</div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </div>
+      <div class="icon" data-right="suggestions" title="Suggestions">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 003.17 9a4.65 4.65 0 000 6.12 7.2 7.2 0 001.41 2.5"/></svg>
+      </div>
+      <div class="separator" style="margin-top:auto;"></div>
+    </div>
+
+  </div>
+
+  <!-- Status Bar -->
+  <div class="statusbar">
+    <div class="left">
+      <span class="item">⎇ main</span>
+      <span class="item">↓0 ↑2</span>
+      <span class="item">UTF-8</span>
+      <span class="item"><span style="color:#888;">Spaces: 2</span></span>
+    </div>
+    <div class="center">
+      <span class="item action term-toggle" id="termToggle" title="Toggle Terminal" style="font-size:14px;font-weight:500;font-family:var(--font-code);letter-spacing:-1px;">&gt;_</span>
+    </div>
+    <div class="right">
+      <span class="item action"><span class="dot green"></span> Agent Ready</span>
+      <span class="item action accent">✦ Claude 4</span>
+      <span class="item"><span class="dot purple"></span> MCP: 3</span>
+      <span class="item">Ln 42, Col 18</span>
+      <span class="item">TypeScript</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// Render code with line numbers
+const code = [
+  { t: '<span class="tk-cm">// IDEIA — Multi-Agent Pipeline</span>' },
+  { t: '' },
+  { t: '<span class="tk-kw">import</span> { Agent, PipelineStage } <span class="tk-kw">from</span> <span class="tk-str">\'@ideia/core\'</span>;' },
+  { t: '<span class="tk-kw">import</span> { CoderAgent } <span class="tk-kw">from</span> <span class="tk-str">\'./agents/coder\'</span>;' },
+  { t: '<span class="tk-kw">import</span> { SecurityAuditor } <span class="tk-kw">from</span> <span class="tk-str">\'./agents/security\'</span>;' },
+  { t: '<span class="tk-kw">import</span> { ReviewerAgent } <span class="tk-kw">from</span> <span class="tk-str">\'./agents/reviewer\'</span>;' },
+  { t: '<span class="tk-kw">import</span> { TesterAgent } <span class="tk-kw">from</span> <span class="tk-str">\'./agents/tester\'</span>;' },
+  { t: '' },
+  { t: '<span class="tk-kw">const</span> pipeline: PipelineStage[] = [', fold: true },
+  { t: '  { name: <span class="tk-str">\'coder\'</span>, agent: <span class="tk-kw">new</span> <span class="tk-type">CoderAgent</span>() },', indent: 1 },
+  { t: '  { name: <span class="tk-str">\'security\'</span>, agent: <span class="tk-kw">new</span> <span class="tk-type">SecurityAuditor</span>() },  <span class="tk-cm">// ← added</span>', indent: 1 },
+  { t: '  { name: <span class="tk-str">\'reviewer\'</span>, agent: <span class="tk-kw">new</span> <span class="tk-type">ReviewerAgent</span>() },', indent: 1 },
+  { t: '  { name: <span class="tk-str">\'tester\'</span>, agent: <span class="tk-kw">new</span> <span class="tk-type">TesterAgent</span>() },', indent: 1 },
+  { t: '];' },
+  { t: '' },
+  { t: '<span class="tk-kw">const</span> orchestrator = <span class="tk-kw">new</span> <span class="tk-type">AgentOrchestrator</span>(pipeline);' },
+  { t: '<span class="tk-kw">const</span> result = <span class="tk-kw">await</span> orchestrator.execute({', active: true, fold: true },
+  { t: '  context: { files: [\'src/**/*.ts\'] },', indent: 1 },
+  { t: '  options: { autonomous: <span class="tk-kw">true</span>, level: <span class="tk-type">N3</span> }', indent: 1 },
+  { t: '});' },
+  { t: '' },
+  { t: '<span class="tk-type">Logger</span>.info(<span class="tk-str">`Pipeline completed: <span class="tk-str">${result.status}</span>`</span>);' },
+];
+
+const nums = document.getElementById('lineNums');
+const lines = document.getElementById('codeLines');
+nums.innerHTML = code.map((l, i) => {
+  const fold = l.fold ? '<span class="fold-arrow">&#x25B6;</span>' : '<span class="fold-space"></span>';
+  return `<div class="ln">${fold}<span${l.active ? ' class="active"' : ''}>${i + 1}</span></div>`;
+}).join('');
+lines.innerHTML = code.map((l, i) => {
+  const guides = l.indent ? Array.from({length: l.indent}, (_, j) => `<span class="ig" style="left:${j * 16}px"></span>`).join('') : '';
+  return `<span class="line${l.active ? ' active' : ''}" style="position:relative">${guides}${l.t || ' '}</span>`;
+}).join('');
+
+// Mode toggle
+document.querySelector('.mode-badge')?.addEventListener('click', function() {
+  const isAgent = this.textContent.includes('Agent');
+  this.textContent = isAgent ? '✎ Editor Mode' : '✦ Agent Mode';
+  this.style.background = isAgent ? 'rgba(255,255,255,0.06)' : 'rgba(45,212,191,0.1)';
+  this.style.color = isAgent ? '#888' : 'var(--accent-cyan)';
+});
+const termToggle = document.getElementById('termToggle');
+termToggle?.addEventListener('click', () => {
+  document.getElementById('app').classList.toggle('bottom-collapsed');
+});
+
+// Bottom panel resize handle
+const bottomPanel = document.querySelector('.bottom-panel');
+const handle = bottomPanel?.querySelector('.resize-handle');
+let isResizing = false;
+let startY, startH;
+
+handle?.addEventListener('mousedown', (e) => {
+  isResizing = true;
+  startY = e.clientY;
+  startH = bottomPanel.offsetHeight;
+  document.body.style.cursor = 'ns-resize';
+  document.body.style.userSelect = 'none';
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!isResizing) return;
+  const delta = startY - e.clientY;
+  const newH = Math.min(Math.max(startH + delta, 60), 350);
+  bottomPanel.style.height = newH + 'px';
+});
+
+document.addEventListener('mouseup', () => {
+  if (!isResizing) return;
+  isResizing = false;
+  document.body.style.cursor = '';
+  document.body.style.userSelect = '';
+});
+
+// Agent input resize
+const agentHandle = document.querySelector('.ai-resize-handle');
+const agentTextarea = document.getElementById('agentInput');
+let aiRes = false, aiStartY, aiStartH;
+
+agentHandle?.addEventListener('mousedown', (e) => {
+  aiRes = true; aiStartY = e.clientY; aiStartH = agentTextarea.offsetHeight;
+  document.body.style.cursor = 'ns-resize';
+});
+document.addEventListener('mousemove', (e) => {
+  if (!aiRes) return;
+  agentTextarea.style.height = Math.min(Math.max(aiStartH - (e.clientY - aiStartY), 80), 300) + 'px';
+});
+document.addEventListener('mouseup', () => {
+  if (!aiRes) return; aiRes = false; document.body.style.cursor = '';
+});
+</script>
+<script>
+// Search overlay
+const projectName = document.getElementById('projectName');
+const overlay = document.getElementById('searchOverlay');
+const backdrop = document.getElementById('searchBackdrop');
+const searchInput = document.getElementById('searchInput');
+
+projectName?.addEventListener('click', () => {
+  overlay.classList.add('open');
+  setTimeout(() => searchInput?.focus(), 100);
+});
+
+backdrop?.addEventListener('click', () => {
+  overlay.classList.remove('open');
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') overlay?.classList.remove('open');
+  if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+    e.preventDefault();
+    overlay?.classList.toggle('open');
+    if (overlay?.classList.contains('open')) setTimeout(() => searchInput?.focus(), 100);
+  }
+});
+
+// Right panel resize handle
+const rightHandle = document.getElementById('rightResizeHandle');
+const rightPanel = document.querySelector('.right-panel');
+let rRes = false, rStartX, rStartW;
+
+rightHandle?.addEventListener('mousedown', (e) => {
+  rRes = true; rStartX = e.clientX; rStartW = rightPanel.offsetWidth;
+  document.body.style.cursor = 'col-resize';
+});
+document.addEventListener('mousemove', (e) => {
+  if (!rRes) return;
+  rightPanel.style.width = Math.min(Math.max(rStartW - (e.clientX - rStartX), 240), 500) + 'px';
+});
+document.addEventListener('mouseup', () => {
+  if (!rRes) return; rRes = false; document.body.style.cursor = '';
+});
+
+// Right activity bar → panel switching
+const rightIcons = document.querySelectorAll('#rightActivityBar .icon');
+const rightContents = document.querySelectorAll('[data-content]');
+const agentInputArea = document.querySelector('[data-agent-input]');
+const agentResize = document.querySelector('.ai-resize-handle')?.parentElement;
+
+rightIcons.forEach(icon => {
+  icon.addEventListener('click', function() {
+    const tabId = this.dataset.right;
+    rightIcons.forEach(i => i.classList.remove('active'));
+    this.classList.add('active');
+    rightContents.forEach(c => {
+      c.classList.add('hidden');
+      c.style.display = 'none';
+    });
+    const target = document.querySelector(`[data-content="${tabId}"]`);
+    if (target) {
+      target.classList.remove('hidden');
+      target.style.display = '';
+    }
+    // Show input only when agent tab is active
+    const showInput = tabId === 'agent';
+    if (agentInputArea) agentInputArea.style.display = showInput ? '' : 'none';
+    if (agentResize) agentResize.style.display = showInput ? '' : 'none';
+  });
+});
+</script>
+</body>
+</html>

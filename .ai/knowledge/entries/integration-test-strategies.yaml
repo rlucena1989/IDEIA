@@ -1,0 +1,7 @@
+id: integration-test-strategies
+title: "Integration Testing Strategies"
+category: testing
+tags: ["integration-testing", "database", "api", "contract", "component"]
+summary: "Integration testing verifica que modulos do sistema funcionam corretamente juntos."
+content: |
+  Tipos: Database Integration (real ou container), API Integration (chamadas HTTP reais), Component Test (testa um componente com dependencias reais), Contract Test (verifica contratos entre servicos). Estrategias: Testcontainers (bancos reais em Docker), banco em memoria (H2, SQLite), API mock (WireMock, MSW). Isolation: cada teste deve deixar estado limpo.

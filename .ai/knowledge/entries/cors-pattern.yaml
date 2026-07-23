@@ -1,0 +1,7 @@
+id: cors-pattern
+title: "CORS Configuration Pattern"
+category: api
+tags: ["cors", "security", "api", "cross-origin", "browser"]
+summary: "CORS (Cross-Origin Resource Sharing) controla quais origens podem acessar sua API pelo browser."
+content: |
+  Headers: Access-Control-Allow-Origin (origem ou *), Access-Control-Allow-Methods (GET, POST, etc), Access-Control-Allow-Headers, Access-Control-Max-Age. Preflight: OPTIONS request antes de requests complexos. Seguranca: nao usar * em producao, validar Origin, allowed origins em whitelist.

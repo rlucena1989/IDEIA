@@ -1,0 +1,18 @@
+{
+  "sessionId": "db80f5af",
+  "taskId": "task-2",
+  "status": "created",
+  "phase": "execution",
+  "step": 0,
+  "totalSteps": 3,
+  "context": {},
+  "startedAt": "2026-07-20T19:11:15.040Z",
+  "updatedAt": "2026-07-20T19:11:15.046Z",
+  "checkpoint": {
+    "path": "",
+    "hash": "",
+    "timestamp": "",
+    "filesChanged": []
+  },
+  "history": []
+}

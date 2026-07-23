@@ -1,0 +1,7 @@
+id: sql-injection
+title: "SQL Injection Prevention"
+category: security
+tags: ["sql-injection", "sqli", "database", "prepared-statement", "orm"]
+summary: "SQL Injection ocorre quando dados nao confiaveis sao interpolados em queries SQL. Previna com parametrizacao."
+content: |
+  Nunca: `SELECT * FROM users WHERE id = ` + userId. Sempre: parametrizacao (PreparedStatement, parameterized queries). ORMs (Prisma, TypeORM) protegem por padrao se usados corretamente. Cuidados: raw queries em ORMs (usar parametros), LIKE (escapar % e _), IN (arrays parametrizados), ORDER BY (whitelist de colunas). Deteccao: query analyzers, WAF, penetration testing.

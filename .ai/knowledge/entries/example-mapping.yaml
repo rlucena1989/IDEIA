@@ -1,0 +1,7 @@
+id: example-mapping
+title: "Example Mapping — Especificacao Colaborativa"
+category: process
+tags: ["example-mapping", "bdd", "specification", "workshop", "acceptance"]
+summary: "Example Mapping usa exemplos para esclarecer regras de negocio e definir acceptance criteria antes de codificar."
+content: |
+  4 cores: Regra azul (regra de negocio), Exemplo verde (exemplo concreto da regra), Pergunta vermelha (duvida a esclarecer), Suposição amarela (hipotese nao validada). Processo: 1) Escreva regra da historia. 2) De exemplos. 3) Identifique perguntas. 4) Separe suposicoes para validar. Beneficio: revela ambiguidades cedo, evita retrabalho, base para BDD. Duracao: 30-60 min por historia.

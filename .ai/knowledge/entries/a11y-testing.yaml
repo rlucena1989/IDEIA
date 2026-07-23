@@ -1,0 +1,7 @@
+id: a11y-testing
+title: "Accessibility (a11y) Testing"
+category: testing
+tags: ["a11y", "accessibility", "axe", "wcag", "inclusive"]
+summary: "Testes de acessibilidade garantem que a aplicacao pode ser usada por pessoas com deficiencias."
+content: |
+  Padroes: WCAG 2.1 (4 principios: Perceivable, Operable, Understandable, Robust), niveis A, AA (minimo legal), AAA. Ferramentas: axe-core (automatizado), Lighthouse a11y, Pa11y, WAVE. Testar: contraste de cores, labels em inputs, hierarquia de headings, navegacao por teclado, ARIA attributes, screen readers (NVDA, VoiceOver). Automatizado detecta ~30% dos problemas, teste manual e necessario.

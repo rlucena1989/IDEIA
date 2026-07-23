@@ -1,0 +1,7 @@
+id: docker-best-practices
+title: "Docker Best Practices"
+category: devops
+tags: ["docker", "container", "multi-stage", "dockerfile", "image"]
+summary: "Boas praticas para criar imagens Docker eficientes, seguras e rapidas."
+content: |
+  Multi-stage builds: separe build e runtime para imagens menores (.NET: build SDK + runtime alpine). Ordem de camadas: dependencias estaveis primeiro (package.json → npm ci), codigo depois (maximiza cache). .dockerignore: exclua node_modules, .git, dist. Seguranca: nao rode como root (USER appuser), use imagens oficiais, escaneie com Trivy/Snyk. Imagens pequenas: alpine, distroless.

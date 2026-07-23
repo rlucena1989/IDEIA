@@ -1,0 +1,30 @@
+version: "1.0.0"
+
+optimizer:
+  enabled: true
+
+  objectives:
+    - "reduce_tokens"
+    - "reduce_latency"
+    - "reduce_rework"
+    - "improve_quality"
+    - "increase_reuse"
+
+  execution_order:
+    - "impact_router"
+    - "risk_scoring"
+    - "context_minimizer"
+    - "repository_memory"
+    - "patch_engine"
+    - "scanners"
+    - "quality_scoring"
+    - "approval_gate"
+
+  fallback:
+    when_ambiguous: "manual_review"
+    when_critical: "block"
+    when_context_insufficient: "expand_context"
+    when_patch_invalid: "retry_or_block"
+
+  outputs:
+    directory: ".ai/reports/latest/"

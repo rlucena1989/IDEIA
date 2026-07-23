@@ -1,0 +1,7 @@
+id: database-migration-tools
+title: "Database Migration Tools (Flyway, Prisma, TypeORM)"
+category: database
+tags: ["migration", "flyway", "prisma", "typeorm", "schema"]
+summary: "Ferramentas de migracao gerenciam mudancas no schema do banco de forma versionada e reproduzivel."
+content: |
+  Flyway (Java, SQL files versionados): migrations em SQL puro, controle fino. Prisma Migrate (TS/JS): migrations geradas do schema.prisma, integracao com ORM. TypeORM Migrations: geradas de entidades, integracao com decorators. Knex Migrations (JS): SQL + JS, flexivel. Praticas: migrations sao imutaveis (nao editar apos aplicar), sempre testar em staging, ter rollback (down migration).

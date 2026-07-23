@@ -1,0 +1,7 @@
+id: multi-modal-ai
+title: "Multi-Modal AI (Text, Image, Audio, Video)"
+category: ai
+tags: ["multi-modal", "vision", "gpt-4v", "clip", "diffusion"]
+summary: "Modelos multi-modais processam e geram multiplos tipos de dados: texto, imagens, audio e video."
+content: |
+  Modelos: GPT-4V/4o (texto + imagem), Claude 3.5 Vision (texto + imagem), DALL-E 3/Flux (texto → imagem), Whisper (audio → texto), ElevenLabs (texto → audio), Stable Diffusion (texto → imagem). Use cases: analise de imagens e documentos, geracao de imagens, transcricao de audio, video understanding. Arquitetura: modelos encoders especificos + projection layer para espaco compartilhado.

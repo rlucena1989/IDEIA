@@ -1,0 +1,14 @@
+# Regras Universais — IDEIA
+
+**IMPORTANTE:** As regras completas estão em `.ai/rules/UNIVERSAL.md`.
+Este arquivo é um atalho. LEIA O ARQUIVO ORIGINAL antes de qualquer operação.
+
+## Resumo
+
+1. **NUNCA confie na sua memória** — leia `docs/governance/REALITY-MANIFEST.md` e `.ai/context/inject.json`
+2. **Documentação é verificada** — `npx tsx scripts/docs-sync.ts --ci` falha se desatualizada
+3. **Pre-commit bloqueia** commits com docs divergentes
+4. **Theia é a única interface** — sem web-ui standalone
+5. **Cross-platform** — Windows + Linux
+
+Leia `.ai/rules/UNIVERSAL.md` para as regras completas.

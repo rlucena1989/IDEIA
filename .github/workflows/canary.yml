@@ -1,0 +1,35 @@
+name: Canary Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  canary:
+    name: Publish Canary
+    if: github.ref == 'refs/heads/main' && github.repository == 'anomalyco/ideia'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: npm run build
+      - name: Publish canary tag
+        run: |
+          SHA=$(git rev-parse --short HEAD)
+          DATE=$(date +%Y%m%d%H%M)
+          npx tsx scripts/canary-publish.ts "$DATE-$SHA" || true
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

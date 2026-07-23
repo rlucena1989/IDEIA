@@ -1,0 +1,7 @@
+# Catalogo de modulos do projeto
+modules: []
+# Exemplo:
+# modules:
+#   - name: users
+#     description: Gestao de usuarios
+#     owner: team-core

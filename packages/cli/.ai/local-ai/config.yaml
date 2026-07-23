@@ -1,0 +1,30 @@
+provider: ollama
+default_model: qwen2:0.5b
+ollama:
+  base_url: http://localhost:11434
+offline: false
+allow_write: false
+timeout_secs: 30
+provider_priority:
+  - openai
+  - openrouter
+  - anthropic
+  - google
+  - ollama
+provider_configs:
+  openai:
+    enabled: true
+    model: gpt-4o-mini
+  openrouter:
+    enabled: false
+    model: openrouter/auto
+  anthropic:
+    enabled: false
+    model: claude-3-haiku-20240307
+  google:
+    enabled: false
+    model: gemini-1.5-flash
+  ollama:
+    enabled: true
+    base_url: http://localhost:11434
+    model: llama3.2

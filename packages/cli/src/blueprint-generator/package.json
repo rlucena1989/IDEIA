@@ -1,0 +1,12 @@
+{
+  "name": "@ideia/blueprint-generator",
+  "version": "0.1.0",
+  "description": "Project Blueprint & Scaffold Engine — Gera projetos completos a partir de blueprints declarativos",
+  "private": true,
+  "main": "index.ts",
+  "types": "index.ts",
+  "dependencies": {
+    "yaml": "^2.9.0",
+    "zod": "^3.23.0"
+  }
+}

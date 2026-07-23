@@ -1,0 +1,24 @@
+{
+  "name": "@ideia/llm-provider",
+  "description": "AI-Devkit LLM Provider ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â interface unificada para Ollama, OpenAI, Anthropic, DeepSeek e compatÃƒÆ’Ã‚Â­veis",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

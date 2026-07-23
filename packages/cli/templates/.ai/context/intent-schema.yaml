@@ -1,0 +1,68 @@
+version: '1.0'
+
+intent_fields:
+  goal:
+    required: true
+    description: 'Objetivo principal do pedido humano'
+
+  user_type:
+    required: false
+    description: 'Quem usará a funcionalidade'
+
+  target_area:
+    required: false
+    examples:
+      - frontend
+      - backend
+      - database
+      - infra
+      - documentation
+      - fullstack
+      - design
+      - security
+
+  feature_type:
+    required: false
+    examples:
+      - crud
+      - auth
+      - dashboard
+      - workflow
+      - integration
+      - report
+      - admin
+      - ai_feature
+      - ui_screen
+      - design_system
+
+  business_value:
+    required: false
+    description: 'Valor esperado para usuário ou negócio'
+
+  constraints:
+    required: false
+    type: list
+
+  assumptions:
+    required: false
+    type: list
+
+  missing_information:
+    required: false
+    type: list
+
+  risks:
+    required: false
+    type: list
+
+  acceptance_criteria:
+    required: true
+    type: list
+
+  ux_considerations:
+    required: false
+    type: list
+
+  accessibility_requirements:
+    required: false
+    type: list

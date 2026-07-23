@@ -1,0 +1,7 @@
+id: repository-pattern
+title: "Repository Pattern"
+category: database
+tags: ["repository", "persistence", "abstraction", "datalayer"]
+summary: "Repository medeia entre o dominio e a camada de mapeamento de dados, agindo como se fosse uma colecao em memoria."
+content: |
+  Interface: metodos como findById, findAll, save, delete. Implementacao: banco real, API externa, mock. O dominio nao sabe se os dados estao em SQL, NoSQL, ou arquivo.

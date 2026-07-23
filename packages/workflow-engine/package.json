@@ -1,0 +1,45 @@
+{
+  "name": "@ideia/workflow-engine",
+  "description": "AI-Devkit Workflow Engine ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â workflow, sprint manager, AI scheduler",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./delivery-integration": {
+      "types": "./dist/delivery-integration.d.ts",
+      "default": "./dist/delivery-integration.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/logger": "*",
+    "@ideia/test-orchestrator": "*",
+    "@types/js-yaml": "^4.0.9",
+    "js-yaml": "^4.3.0"
+  },
+  "peerDependencies": {
+    "@ideia/audit-trail": "*",
+    "@ideia/delivery-orchestrator": "*",
+    "@ideia/event-bus": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

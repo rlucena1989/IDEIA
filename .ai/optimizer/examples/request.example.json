@@ -1,0 +1,8 @@
+{
+  "id": "task-001",
+  "summary": "Ajustar card de usuário para mostrar estado vazio.",
+  "task_hint": "design_change",
+  "details": "O componente UserCard deve exibir fallback quando avatar não existir.",
+  "files": ["src/components/UserCard/UserCard.tsx"],
+  "constraints": ["usar design system", "manter diff pequeno", "não alterar API pública"]
+}

@@ -1,0 +1,17 @@
+# Default owners
+* @anomalyco
+
+# CLI package
+/packages/cli/ @anomalyco
+
+# Adapters
+/packages/adapter-*/ @anomalyco
+
+# Documentation
+/docs/ @anomalyco
+
+# GitHub workflows
+/.github/ @anomalyco
+
+# Governance
+/.ai/ @anomalyco

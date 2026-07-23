@@ -1,0 +1,7 @@
+id: memory-leak
+title: "Memory Leak Detection & Prevention"
+category: performance
+tags: ["memory-leak", "nodejs", "v8", "heap", "gc", "debug"]
+summary: "Memoria e um recurso finito — detectar e prevenir leaks e essencial para estabilidade de longa duracao."
+content: |
+  Causas comuns em Node.js: closures inesperadas, event listeners nao removidos, globals (global, globalThis), caches sem limite, referencias em timers/setInterval, streams nao fechados, detached DOM. Detect: heap snapshots (Chrome DevTools, --inspect), memory usage monitoring (process.memoryUsage()), leak detection (memlab, clinicjs). Prevencao: WeakRef/WeakMap, clearTimeout/clearInterval, limites de cache, event emitter cleanup.

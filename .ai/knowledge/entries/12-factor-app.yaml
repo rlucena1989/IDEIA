@@ -1,0 +1,7 @@
+id: 12-factor-app
+title: "12-Factor App"
+category: devops
+tags: ["12-factor", "cloud-native", "heroku", "saas", "config", "logs"]
+summary: "12-Factor App e uma metodologia para construir aplicacoes SaaS modernas e cloud-native."
+content: |
+  1. Codebase: um repositorio, muitos deploys. 2. Dependencies: declaradas e isoladas. 3. Config: armazenada em variaveis de ambiente. 4. Backing Services: tratados como recursos anexaveis. 5. Build, Release, Run: separacao estrita. 6. Processes: stateless. 7. Port Binding: exporta servicos via porta. 8. Concurrency: escala via modelo de processos. 9. Disposability: inicializacao e desligamento rapidos. 10. Dev/Prod Parity: similaridade maxima. 11. Logs: streams de eventos. 12. Admin Processes: tarefas administrativas como one-off.

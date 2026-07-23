@@ -1,0 +1,743 @@
+{
+  "generatedAt": "2026-07-23T01:35:35.354Z",
+  "projectVersion": "1.0.0",
+  "stats": {
+    "packages": 121,
+    "testFiles": 312,
+    "linesOfCode": 174398,
+    "hasTheiaPlugin": true
+  },
+  "packages": [
+    {
+      "name": "@ideia/a11y-scanner",
+      "path": "a11y-scanner",
+      "tests": 1,
+      "loc": 227
+    },
+    {
+      "name": "@ideia/acceleration",
+      "path": "acceleration",
+      "tests": 13,
+      "loc": 6486
+    },
+    {
+      "name": "@ideia/acp",
+      "path": "acp",
+      "tests": 1,
+      "loc": 180
+    },
+    {
+      "name": "@ideia/adapter-dart",
+      "path": "adapter-dart",
+      "tests": 1,
+      "loc": 359
+    },
+    {
+      "name": "@ideia/adapter-elixir",
+      "path": "adapter-elixir",
+      "tests": 1,
+      "loc": 212
+    },
+    {
+      "name": "@ideia/adapter-fastapi",
+      "path": "adapter-fastapi",
+      "tests": 1,
+      "loc": 336
+    },
+    {
+      "name": "@ideia/adapter-go",
+      "path": "adapter-go",
+      "tests": 1,
+      "loc": 362
+    },
+    {
+      "name": "@ideia/adapter-haskell",
+      "path": "adapter-haskell",
+      "tests": 1,
+      "loc": 227
+    },
+    {
+      "name": "@ideia/adapter-java",
+      "path": "adapter-java",
+      "tests": 1,
+      "loc": 353
+    },
+    {
+      "name": "@ideia/adapter-kotlin",
+      "path": "adapter-kotlin",
+      "tests": 1,
+      "loc": 209
+    },
+    {
+      "name": "@ideia/adapter-nestjs",
+      "path": "adapter-nestjs",
+      "tests": 1,
+      "loc": 449
+    },
+    {
+      "name": "@ideia/adapter-php",
+      "path": "adapter-php",
+      "tests": 1,
+      "loc": 253
+    },
+    {
+      "name": "@ideia/adapter-ruby",
+      "path": "adapter-ruby",
+      "tests": 1,
+      "loc": 225
+    },
+    {
+      "name": "@ideia/adapter-scala",
+      "path": "adapter-scala",
+      "tests": 1,
+      "loc": 199
+    },
+    {
+      "name": "@ideia/adapter-swift",
+      "path": "adapter-swift",
+      "tests": 1,
+      "loc": 217
+    },
+    {
+      "name": "@ideia/adapter-zig",
+      "path": "adapter-zig",
+      "tests": 1,
+      "loc": 229
+    },
+    {
+      "name": "@ideia/agent-benchmark",
+      "path": "agent-benchmark",
+      "tests": 1,
+      "loc": 45
+    },
+    {
+      "name": "@ideia/agent-identity",
+      "path": "agent-identity",
+      "tests": 1,
+      "loc": 166
+    },
+    {
+      "name": "@ideia/agent-router",
+      "path": "agent-router",
+      "tests": 5,
+      "loc": 331
+    },
+    {
+      "name": "@ideia/agent-runtime",
+      "path": "agent-runtime",
+      "tests": 7,
+      "loc": 2704
+    },
+    {
+      "name": "@ideia/architecture-adr",
+      "path": "architecture-adr",
+      "tests": 1,
+      "loc": 49
+    },
+    {
+      "name": "@ideia/audit-trail",
+      "path": "audit-trail",
+      "tests": 1,
+      "loc": 581
+    },
+    {
+      "name": "@ideia/auto-adr",
+      "path": "auto-adr",
+      "tests": 1,
+      "loc": 219
+    },
+    {
+      "name": "@ideia/autonomous-editor",
+      "path": "autonomous-editor",
+      "tests": 1,
+      "loc": 130
+    },
+    {
+      "name": "@ideia/autonomous-evolution-engine",
+      "path": "autonomous-evolution-engine",
+      "tests": 1,
+      "loc": 766
+    },
+    {
+      "name": "@ideia/backend-logging",
+      "path": "backend-logging",
+      "tests": 0,
+      "loc": 127
+    },
+    {
+      "name": "@ideia/bhp",
+      "path": "bhp",
+      "tests": 1,
+      "loc": 674
+    },
+    {
+      "name": "@ideia/browser-agent",
+      "path": "browser-agent",
+      "tests": 1,
+      "loc": 233
+    },
+    {
+      "name": "@ideia/cache",
+      "path": "cache",
+      "tests": 1,
+      "loc": 218
+    },
+    {
+      "name": "@ideia/capability-matcher",
+      "path": "capability-matcher",
+      "tests": 7,
+      "loc": 1313
+    },
+    {
+      "name": "@ideia/capability-registry",
+      "path": "capability-registry",
+      "tests": 1,
+      "loc": 569
+    },
+    {
+      "name": "@ideia/checkpoint-engine",
+      "path": "checkpoint-engine",
+      "tests": 2,
+      "loc": 188
+    },
+    {
+      "name": "@ideia/cli",
+      "path": "cli",
+      "tests": 114,
+      "loc": 106391
+    },
+    {
+      "name": "@ideia/cli-framework",
+      "path": "cli-framework",
+      "tests": 0,
+      "loc": 95
+    },
+    {
+      "name": "@ideia/command-system",
+      "path": "command-system",
+      "tests": 0,
+      "loc": 105
+    },
+    {
+      "name": "@ideia/confidence",
+      "path": "confidence",
+      "tests": 1,
+      "loc": 251
+    },
+    {
+      "name": "@ideia/config-engine",
+      "path": "config-engine",
+      "tests": 1,
+      "loc": 783
+    },
+    {
+      "name": "@ideia/context-builder",
+      "path": "context-builder",
+      "tests": 6,
+      "loc": 578
+    },
+    {
+      "name": "@ideia/continuity-engine",
+      "path": "continuity-engine",
+      "tests": 1,
+      "loc": 525
+    },
+    {
+      "name": "@ideia/contract-cdc",
+      "path": "contract-cdc",
+      "tests": 2,
+      "loc": 579
+    },
+    {
+      "name": "@ideia/contracts",
+      "path": "contracts",
+      "tests": 1,
+      "loc": 936
+    },
+    {
+      "name": "@ideia/control-tower",
+      "path": "control-tower",
+      "tests": 1,
+      "loc": 371
+    },
+    {
+      "name": "@ideia/core",
+      "path": "core",
+      "tests": 2,
+      "loc": 17
+    },
+    {
+      "name": "@ideia/core-backend",
+      "path": "core-backend",
+      "tests": 0,
+      "loc": 174
+    },
+    {
+      "name": "@ideia/core-contributions",
+      "path": "core-contributions",
+      "tests": 0,
+      "loc": 210
+    },
+    {
+      "name": "@ideia/correction-oracle",
+      "path": "correction-oracle",
+      "tests": 1,
+      "loc": 195
+    },
+    {
+      "name": "@ideia/custom-contributions",
+      "path": "custom-contributions",
+      "tests": 0,
+      "loc": 80
+    },
+    {
+      "name": "@ideia/data-layer",
+      "path": "data-layer",
+      "tests": 7,
+      "loc": 2338
+    },
+    {
+      "name": "@ideia/delivery-orchestrator",
+      "path": "delivery-orchestrator",
+      "tests": 5,
+      "loc": 2070
+    },
+    {
+      "name": "@ideia/diff-engine",
+      "path": "diff-engine",
+      "tests": 2,
+      "loc": 484
+    },
+    {
+      "name": "@ideia/docs-generator",
+      "path": "docs-generator",
+      "tests": 1,
+      "loc": 261
+    },
+    {
+      "name": "@ideia/economic-control",
+      "path": "economic-control",
+      "tests": 1,
+      "loc": 48
+    },
+    {
+      "name": "@ideia/editor-core",
+      "path": "editor-core",
+      "tests": 0,
+      "loc": 629
+    },
+    {
+      "name": "@ideia/environment-snapshot",
+      "path": "environment-snapshot",
+      "tests": 1,
+      "loc": 447
+    },
+    {
+      "name": "@ideia/event-bus",
+      "path": "event-bus",
+      "tests": 5,
+      "loc": 2928
+    },
+    {
+      "name": "@ideia/execution-layer",
+      "path": "execution-layer",
+      "tests": 1,
+      "loc": 52
+    },
+    {
+      "name": "@ideia/external-connectors",
+      "path": "external-connectors",
+      "tests": 1,
+      "loc": 167
+    },
+    {
+      "name": "@ideia/feedback-loop",
+      "path": "feedback-loop",
+      "tests": 1,
+      "loc": 175
+    },
+    {
+      "name": "@ideia/feedback-pipeline",
+      "path": "feedback-pipeline",
+      "tests": 1,
+      "loc": 368
+    },
+    {
+      "name": "@ideia/health-check",
+      "path": "health-check",
+      "tests": 1,
+      "loc": 155
+    },
+    {
+      "name": "@ideia/ide-integration",
+      "path": "ide-integration",
+      "tests": 1,
+      "loc": 139
+    },
+    {
+      "name": "@ideia/keybinding-system",
+      "path": "keybinding-system",
+      "tests": 0,
+      "loc": 183
+    },
+    {
+      "name": "@ideia/llm-provider",
+      "path": "llm-provider",
+      "tests": 1,
+      "loc": 672
+    },
+    {
+      "name": "@ideia/logger",
+      "path": "logger",
+      "tests": 2,
+      "loc": 277
+    },
+    {
+      "name": "@ideia/mcp",
+      "path": "mcp",
+      "tests": 2,
+      "loc": 570
+    },
+    {
+      "name": "@ideia/memory-graph",
+      "path": "memory-graph",
+      "tests": 1,
+      "loc": 261
+    },
+    {
+      "name": "@ideia/memory-hierarchy",
+      "path": "memory-hierarchy",
+      "tests": 6,
+      "loc": 603
+    },
+    {
+      "name": "@ideia/memory-store",
+      "path": "memory-store",
+      "tests": 3,
+      "loc": 2534
+    },
+    {
+      "name": "@ideia/menu-system",
+      "path": "menu-system",
+      "tests": 0,
+      "loc": 133
+    },
+    {
+      "name": "@ideia/metrics-store",
+      "path": "metrics-store",
+      "tests": 1,
+      "loc": 260
+    },
+    {
+      "name": "@ideia/model-manager",
+      "path": "model-manager",
+      "tests": 1,
+      "loc": 290
+    },
+    {
+      "name": "@ideia/module-loader",
+      "path": "module-loader",
+      "tests": 0,
+      "loc": 133
+    },
+    {
+      "name": "@ideia/notification-system",
+      "path": "notification-system",
+      "tests": 1,
+      "loc": 692
+    },
+    {
+      "name": "@ideia/observability-engine",
+      "path": "observability-engine",
+      "tests": 2,
+      "loc": 701
+    },
+    {
+      "name": "@ideia/onboarding-engine",
+      "path": "onboarding-engine",
+      "tests": 1,
+      "loc": 41
+    },
+    {
+      "name": "@ideia/onboarding-wizard",
+      "path": "onboarding-wizard",
+      "tests": 1,
+      "loc": 428
+    },
+    {
+      "name": "@ideia/org-trust",
+      "path": "org-trust",
+      "tests": 1,
+      "loc": 44
+    },
+    {
+      "name": "@ideia/performance-monitor",
+      "path": "performance-monitor",
+      "tests": 1,
+      "loc": 51
+    },
+    {
+      "name": "@ideia/persistent-instructions",
+      "path": "persistent-instructions",
+      "tests": 1,
+      "loc": 173
+    },
+    {
+      "name": "@ideia/planning-engine",
+      "path": "planning-engine",
+      "tests": 6,
+      "loc": 783
+    },
+    {
+      "name": "@ideia/plugin",
+      "path": "ideia-plugin",
+      "tests": 3,
+      "loc": 5700
+    },
+    {
+      "name": "@ideia/plugin-sdk",
+      "path": "plugin-sdk",
+      "tests": 1,
+      "loc": 353
+    },
+    {
+      "name": "@ideia/policy-engine",
+      "path": "policy-engine",
+      "tests": 2,
+      "loc": 682
+    },
+    {
+      "name": "@ideia/policy-gateway",
+      "path": "policy-gateway",
+      "tests": 2,
+      "loc": 219
+    },
+    {
+      "name": "@ideia/profiles",
+      "path": "profiles",
+      "tests": 1,
+      "loc": 1009
+    },
+    {
+      "name": "@ideia/progressive-disclosure",
+      "path": "progressive-disclosure",
+      "tests": 1,
+      "loc": 758
+    },
+    {
+      "name": "@ideia/prompt-economy",
+      "path": "prompt-economy",
+      "tests": 6,
+      "loc": 949
+    },
+    {
+      "name": "@ideia/prompt-security",
+      "path": "prompt-security",
+      "tests": 5,
+      "loc": 1352
+    },
+    {
+      "name": "@ideia/prototyping-engine",
+      "path": "prototyping-engine",
+      "tests": 1,
+      "loc": 55
+    },
+    {
+      "name": "@ideia/quality-gates",
+      "path": "quality-gates",
+      "tests": 5,
+      "loc": 360
+    },
+    {
+      "name": "@ideia/real-data",
+      "path": "real-data",
+      "tests": 1,
+      "loc": 51
+    },
+    {
+      "name": "@ideia/reality-sync",
+      "path": "reality-sync",
+      "tests": 1,
+      "loc": 4669
+    },
+    {
+      "name": "@ideia/requirements-engine",
+      "path": "requirements-engine",
+      "tests": 1,
+      "loc": 246
+    },
+    {
+      "name": "@ideia/resilience-engine",
+      "path": "resilience-engine",
+      "tests": 1,
+      "loc": 103
+    },
+    {
+      "name": "@ideia/risk-approval",
+      "path": "risk-approval",
+      "tests": 3,
+      "loc": 216
+    },
+    {
+      "name": "@ideia/rpc-messaging",
+      "path": "rpc-messaging",
+      "tests": 0,
+      "loc": 137
+    },
+    {
+      "name": "@ideia/safety-circuit",
+      "path": "safety-circuit",
+      "tests": 1,
+      "loc": 570
+    },
+    {
+      "name": "@ideia/schema-registry",
+      "path": "schema-registry",
+      "tests": 1,
+      "loc": 460
+    },
+    {
+      "name": "@ideia/scope-isolation",
+      "path": "scope-isolation",
+      "tests": 1,
+      "loc": 405
+    },
+    {
+      "name": "@ideia/security-middleware",
+      "path": "security-middleware",
+      "tests": 1,
+      "loc": 259
+    },
+    {
+      "name": "@ideia/self-optimization-panel",
+      "path": "self-optimization-panel",
+      "tests": 1,
+      "loc": 418
+    },
+    {
+      "name": "@ideia/server-bootstrap",
+      "path": "server-bootstrap",
+      "tests": 0,
+      "loc": 82
+    },
+    {
+      "name": "@ideia/slo-monitor",
+      "path": "slo-monitor",
+      "tests": 1,
+      "loc": 437
+    },
+    {
+      "name": "@ideia/spec-generator",
+      "path": "spec-generator",
+      "tests": 2,
+      "loc": 295
+    },
+    {
+      "name": "@ideia/supply-chain",
+      "path": "supply-chain",
+      "tests": 4,
+      "loc": 225
+    },
+    {
+      "name": "@ideia/task-queue",
+      "path": "task-queue",
+      "tests": 1,
+      "loc": 187
+    },
+    {
+      "name": "@ideia/technology-radar",
+      "path": "technology-radar",
+      "tests": 1,
+      "loc": 312
+    },
+    {
+      "name": "@ideia/telemetry",
+      "path": "telemetry",
+      "tests": 1,
+      "loc": 646
+    },
+    {
+      "name": "@ideia/terminal-sandbox",
+      "path": "terminal-sandbox",
+      "tests": 1,
+      "loc": 330
+    },
+    {
+      "name": "@ideia/test-orchestrator",
+      "path": "test-orchestrator",
+      "tests": 1,
+      "loc": 340
+    },
+    {
+      "name": "@ideia/trace-propagation",
+      "path": "trace-propagation",
+      "tests": 1,
+      "loc": 53
+    },
+    {
+      "name": "@ideia/trace-registry",
+      "path": "trace-registry",
+      "tests": 1,
+      "loc": 369
+    },
+    {
+      "name": "@ideia/trusted-context",
+      "path": "trusted-context",
+      "tests": 1,
+      "loc": 55
+    },
+    {
+      "name": "@ideia/tutorial-system",
+      "path": "tutorial-system",
+      "tests": 4,
+      "loc": 968
+    },
+    {
+      "name": "@ideia/uta",
+      "path": "uta",
+      "tests": 1,
+      "loc": 190
+    },
+    {
+      "name": "@ideia/vector-store",
+      "path": "vector-store",
+      "tests": 1,
+      "loc": 212
+    },
+    {
+      "name": "@ideia/verification-layer",
+      "path": "verification-layer",
+      "tests": 1,
+      "loc": 76
+    },
+    {
+      "name": "@ideia/views-widgets",
+      "path": "views-widgets",
+      "tests": 0,
+      "loc": 614
+    },
+    {
+      "name": "@ideia/violation-registry",
+      "path": "violation-registry",
+      "tests": 1,
+      "loc": 43
+    },
+    {
+      "name": "@ideia/widget-contributions",
+      "path": "widget-contributions",
+      "tests": 0,
+      "loc": 71
+    },
+    {
+      "name": "@ideia/workflow-engine",
+      "path": "workflow-engine",
+      "tests": 1,
+      "loc": 706
+    }
+  ],
+  "rules": {
+    "docSyncRequired": true,
+    "preCommitValidation": true,
+    "contextAutoInject": true
+  }
+}

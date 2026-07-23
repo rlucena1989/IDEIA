@@ -1,0 +1,7 @@
+id: strategy-pattern
+title: "Strategy Pattern"
+category: design
+tags: ["strategy", "gof", "behavioral", "algorithms", "polymorphism"]
+summary: "Strategy permite definir uma familia de algoritmos, encapsular cada um e torna-los intercambiaveis."
+content: |
+  Contexto: usa uma Strategy. Interface Strategy: define contrato. Implementacoes Concretas: cada algoritmo diferente. Exemplo: validacao de precos (desconto normal, black friday, fidelidade).

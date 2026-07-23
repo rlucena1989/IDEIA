@@ -1,0 +1,7 @@
+id: test-data-management
+title: "Test Data Management (Fixtures, Factories, Seeds)"
+category: testing
+tags: ["test-data", "fixtures", "factories", "seeds", "data-builders"]
+summary: "Estrategias para gerenciar dados de teste: fixtures estaticas, factories dinamicas, seeds para E2E."
+content: |
+  Fixtures: dados estaticos em JSON/YAML (caminho feliz, erro, edge case). Factories (recomendado): Builder pattern para criar dados com valores default e override. Ex: new UserFactory().withRole('admin').create(). Seeds: dados de setup para testes E2E ou integracao (populam banco antes dos testes). Dica: factories sao mais flexiveis que fixtures, use Faker.js para dados realistas, limpe dados entre testes (transação rollback ou truncate).

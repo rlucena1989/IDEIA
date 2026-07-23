@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ImpactRequest",
+  "type": "object",
+  "required": ["id", "summary", "task_hint"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "summary": { "type": "string", "minLength": 1 },
+    "task_hint": {
+      "type": "string",
+      "enum": ["bugfix","feature","refactor","documentation","design_change","security_review","test_only","dependency_update","cleanup","incident_response"]
+    },
+    "details": { "type": "string" },
+    "files": { "type": "array", "items": { "type": "string" } },
+    "constraints": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

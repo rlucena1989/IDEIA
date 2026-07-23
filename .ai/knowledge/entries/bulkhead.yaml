@@ -1,0 +1,7 @@
+id: bulkhead
+title: "Bulkhead Pattern"
+category: resilience
+tags: ["bulkhead", "resilience", "isolation", "thread-pool", "circuit-breaker"]
+summary: "Bulkhead isola recursos em pools separados para que uma falha em um componente nao derrube o sistema inteiro."
+content: |
+  Analogia: compartimentos estanques em navios. Se um compartimento enche d'agua, os outros ficam secos. Implementacao: thread pools separados por servico, connection pools separados, filas separadas. Exemplo: pool de 10 threads para servico A, pool de 5 threads para servico B. Se A falhar, B nao e afetado.

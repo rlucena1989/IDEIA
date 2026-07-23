@@ -1,0 +1,54 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: America/Sao_Paulo
+    versioning-strategy: increase
+    open-pull-requests-limit: 20
+    labels:
+      - dependencies
+      - automated
+    commit-message:
+      prefix: chore
+      prefix-development: chore
+      include: scope
+    groups:
+      typescript-eslint:
+        patterns:
+          - '@typescript-eslint/*'
+        update-types:
+          - minor
+          - patch
+      jest:
+        patterns:
+          - 'jest'
+          - '@types/jest'
+          - 'ts-jest'
+        update-types:
+          - minor
+          - patch
+      eslint:
+        patterns:
+          - 'eslint'
+          - 'eslint-*'
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: America/Sao_Paulo
+    labels:
+      - dependencies
+      - automated
+    commit-message:
+      prefix: chore
+      include: scope

@@ -1,0 +1,7 @@
+id: code-splitting
+title: "Code Splitting & Tree Shaking"
+category: performance
+tags: ["code-splitting", "tree-shaking", "bundle", "webpack", "vite"]
+summary: "Code splitting divide o bundle em chunks carregados sob demanda, tree shaking remove codigo morto."
+content: |
+  Code Splitting: dynamic import() separa modulos em chunks, carregados apenas quando necessarios. Ex: React.lazy() para rotas. Tree Shaking: bundlers (Webpack, Vite, esbuild) removem exports nao utilizados. Requer ES modules (import/export staticos, nao CommonJS). Side effects: marcar "sideEffects": false em package.json para permitir tree shaking mais agressivo.

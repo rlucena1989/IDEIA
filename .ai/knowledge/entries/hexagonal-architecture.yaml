@@ -1,0 +1,7 @@
+id: hexagonal-architecture
+title: "Hexagonal Architecture (Ports & Adapters)"
+category: architecture
+tags: ["hexagonal", "ports", "adapters", "dependency-injection"]
+summary: "Arquitetura Hexagonal isola o nucleo do negocio de tecnologias externas usando Ports (interfaces) e Adapters (implementacoes)."
+content: |
+  Nucleo (Core): contem regras de negocio puras. Ports: interfaces definidas pelo core. Adapters: implementacoes concretas (bancos, APIs, UI). Toda comunicacao externa passa por ports.

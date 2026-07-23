@@ -1,0 +1,7 @@
+id: connection-pooling
+title: "Connection Pooling"
+category: performance
+tags: ["connection-pool", "database", "pool", "performance", "tcp"]
+summary: "Connection pool mantem um conjunto de conexoes abertas e reutilizaveis, evitando custo de abrir/fechar para cada requisicao."
+content: |
+  Configuracao: min (conexoes minimas mantidas), max (maximo permitido), idle timeout (fecha conexoes ociosas), max lifetime (recicla conexoes velhas). Beneficios: reduz latencia (evita handshake TCP), limita conexoes simultaneas ao banco, gerencia pressao. Cuidados: pool esgotado = fila de espera, configurar adequadamente ao numero de replicas.

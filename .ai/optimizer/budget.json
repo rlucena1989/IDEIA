@@ -1,0 +1,9 @@
+{
+  "max_tokens": 128000,
+  "max_files_modified": 20,
+  "max_agents": 3,
+  "max_runtime_seconds": 600,
+  "max_context_size": 2097152,
+  "min_quality_score": 70,
+  "max_risk_level": 5
+}
