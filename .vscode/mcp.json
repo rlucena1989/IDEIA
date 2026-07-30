@@ -1,0 +1,16 @@
+{
+  "servers": {
+    "ideia-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["tsx", "packages/mcp-server/src/index.ts"],
+      "description": "IDEIA MCP Server — ferramentas de auditoria, qualidade e governança"
+    },
+    "ideia-local-ai": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["tsx", "packages/local-ai/src/index.ts"],
+      "description": "IDEIA Local AI — LLM local via Ollama/qwen2"
+    }
+  }
+}

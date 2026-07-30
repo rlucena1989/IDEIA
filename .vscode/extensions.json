@@ -1,0 +1,25 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "Orta.vscode-jest",
+    "github.vscode-github-actions",
+    "eamodio.gitlens",
+    "ms-vscode.vscode-typescript-next",
+    "bierner.lit-html",
+    "redhat.vscode-yaml",
+    "tamasfe.even-better-toml",
+    "editorconfig.editorconfig",
+    "mikestead.dotenv",
+    "naumovs.color-highlight",
+    "ms-azuretools.vscode-docker",
+    "cweijan.vscode-database-client2",
+    "ms-vscode-remote.remote-containers",
+    "github.copilot",
+    "github.copilot-chat",
+    "ms-vscode.js-debug-nightly",
+    "vitest.explorer",
+    "streetsidesoftware.code-spell-checker"
+  ],
+  "unwantedRecommendations": []
+}

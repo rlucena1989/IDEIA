@@ -1,0 +1,529 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build All (tsc -b)",
+      "type": "npm",
+      "script": "build",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": ["$tsc"],
+      "detail": "tsc -b — compila todos os packages"
+    },
+    {
+      "label": "TypeCheck (tsc --noEmit)",
+      "type": "npm",
+      "script": "typecheck",
+      "group": "build",
+      "problemMatcher": ["$tsc"],
+      "detail": "tsc --noEmit — verificação de tipos sem emitir"
+    },
+    {
+      "label": "Lint",
+      "type": "npm",
+      "script": "lint",
+      "group": "build",
+      "problemMatcher": ["$eslint-stylish"],
+      "detail": "ESLint em todos os packages"
+    },
+    {
+      "label": "Lint & Fix",
+      "type": "npm",
+      "script": "lint:fix",
+      "group": "build",
+      "problemMatcher": ["$eslint-stylish"],
+      "detail": "ESLint com auto-fix"
+    },
+    {
+      "label": "Format",
+      "type": "npm",
+      "script": "format",
+      "group": "build",
+      "problemMatcher": [],
+      "detail": "Prettier — formata todos os arquivos"
+    },
+    {
+      "label": "Test All",
+      "type": "npm",
+      "script": "test",
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": [],
+      "detail": "Jest — todos os testes"
+    },
+    {
+      "label": "Test Unit (coverage)",
+      "type": "npm",
+      "script": "test:unit",
+      "group": "test",
+      "problemMatcher": [],
+      "detail": "Jest — unitários com cobertura"
+    },
+    {
+      "label": "Test Integration",
+      "type": "npm",
+      "script": "test:integration",
+      "group": "test",
+      "problemMatcher": [],
+      "detail": "Jest — testes de integração"
+    },
+    {
+      "label": "Quality Check",
+      "type": "npm",
+      "script": "quality:check",
+      "group": "test",
+      "problemMatcher": [],
+      "detail": "Script de qualidade multi-dimensão"
+    },
+    {
+      "label": "Quality Check CI",
+      "type": "npm",
+      "script": "quality:check:ci",
+      "group": "test",
+      "problemMatcher": [],
+      "detail": "Quality check em modo CI"
+    },
+    {
+      "label": "Verify (full gate)",
+      "type": "npm",
+      "script": "verify",
+      "group": "test",
+      "problemMatcher": ["$tsc", "$eslint-stylish"],
+      "detail": "quality:check + typecheck + lint + test"
+    },
+    {
+      "label": "Build Theia Plugin",
+      "type": "npm",
+      "script": "build:plugin",
+      "group": "build",
+      "problemMatcher": ["$tsc"],
+      "detail": "Compila packages/ideia-plugin"
+    },
+    {
+      "label": "Build App",
+      "type": "npm",
+      "script": "build:app",
+      "group": "build",
+      "problemMatcher": ["$tsc"],
+      "detail": "Compila apps/ideia-app com Theia"
+    },
+    {
+      "label": "Build Electron",
+      "type": "npm",
+      "script": "build:electron",
+      "group": "build",
+      "detail": "Compila Electron desktop"
+    },
+    {
+      "label": "Docker Up",
+      "type": "npm",
+      "script": "docker:up",
+      "group": "none",
+      "detail": "Sobe serviços Docker (NATS, PG, etc.)"
+    },
+    {
+      "label": "Docker Down",
+      "type": "npm",
+      "script": "docker:down",
+      "group": "none",
+      "detail": "Desce serviços Docker"
+    },
+    {
+      "label": "Performance Bench",
+      "type": "npm",
+      "script": "perf:bench",
+      "group": "none",
+      "detail": "Benchmark Event Bus"
+    },
+    {
+      "label": "Docs Sync",
+      "type": "shell",
+      "command": "npx tsx scripts/docs-sync.ts --fix",
+      "group": "none",
+      "detail": "Sincroniza documentação com código"
+    },
+    {
+      "label": "Clean Build",
+      "type": "npm",
+      "script": "clean",
+      "group": "build",
+      "detail": "Limpa dist/lib de todos os packages"
+    },
+    {
+      "label": "Security Pentest",
+      "type": "shell",
+      "command": "npx tsx scripts/security-pentest.ts",
+      "group": "none",
+      "detail": "Executa pentest automatizado"
+    },
+    {
+      "label": "Generate SBOM",
+      "type": "shell",
+      "command": "npx tsx scripts/generate-sbom.ts",
+      "group": "none",
+      "detail": "Gera SBOM CycloneDX"
+    },
+    {
+      "label": "Init IDEIA CLI",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts init",
+      "group": "none",
+      "detail": "Inicializa projeto IDEIA via CLI"
+    },
+    {
+      "label": "Acceleration Fast",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts acceleration run fast",
+      "group": "none",
+      "detail": "Aceleração rápida — fingerprint + cache"
+    },
+    {
+      "label": "Acceleration Balanced",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts acceleration run balanced",
+      "group": "none",
+      "detail": "Aceleração balanceada — fingerprint + cache + config + predictor"
+    },
+    {
+      "label": "Acceleration Deep",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts acceleration run deep",
+      "group": "none",
+      "detail": "Aceleração completa — fingerprint + cache + config + predictor + planner + executor + quality"
+    },
+    {
+      "label": "Governance Check",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts governance check",
+      "group": "none",
+      "detail": "Verifica permissão de ação"
+    },
+    {
+      "label": "Governance Audit",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts governance audit",
+      "group": "none",
+      "detail": "Audita governança do workspace"
+    },
+    {
+      "label": "Governance Report",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts governance report",
+      "group": "none",
+      "detail": "Gera relatório de governança"
+    },
+    {
+      "label": "Full Workspace Audit",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts audit",
+      "group": "none",
+      "detail": "Auditoria completa do workspace"
+    },
+    {
+      "label": "Audit Ledger",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts audit-ledger",
+      "group": "none",
+      "detail": "Verifica cadeia de auditoria SHA-256"
+    },
+    {
+      "label": "Audit Trail",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts audit-trail",
+      "group": "none",
+      "detail": "Visualiza trilha de auditoria"
+    },
+    {
+      "label": "Compliance Check",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts compliance",
+      "group": "none",
+      "detail": "Checa compliance contra políticas"
+    },
+    {
+      "label": "Drift Detection",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts drift",
+      "group": "none",
+      "detail": "Detecta document drift"
+    },
+    {
+      "label": "Scorecard",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts scorecard",
+      "group": "none",
+      "detail": "Gera scorecard de qualidade do projeto"
+    },
+    {
+      "label": "Verify All Compliance",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts verify --all",
+      "group": "none",
+      "detail": "Verificação completa de compliance"
+    },
+    {
+      "label": "Complexity Report",
+      "type": "shell",
+      "command": "npx tsx scripts/complexity-report.ts",
+      "group": "none",
+      "detail": "Relatório de complexidade ciclomática"
+    },
+    {
+      "label": "Compliance Report",
+      "type": "shell",
+      "command": "npx tsx scripts/compliance-report.ts",
+      "group": "none",
+      "detail": "Relatório de compliance/LGPD"
+    },
+    {
+      "label": "Red Teaming",
+      "type": "shell",
+      "command": "npx tsx scripts/red-teaming.ts",
+      "group": "none",
+      "detail": "Testes de red teaming (injeção, jailbreak)"
+    },
+    {
+      "label": "Quality Audit",
+      "type": "shell",
+      "command": "npx tsx scripts/quality-audit.ts",
+      "group": "none",
+      "detail": "Auditoria de qualidade multi-dimensão"
+    },
+    {
+      "label": "Performance Track",
+      "type": "shell",
+      "command": "npx tsx scripts/performance-track.ts",
+      "group": "none",
+      "detail": "Rastreia métricas de performance"
+    },
+    {
+      "label": "Generate Dashboard",
+      "type": "shell",
+      "command": "npx tsx scripts/generate-dashboard.ts",
+      "group": "none",
+      "detail": "Gera dashboard de métricas"
+    },
+    {
+      "label": "Evolve All Metrics",
+      "type": "shell",
+      "command": "npx tsx scripts/evolve-all-metrics.ts",
+      "group": "none",
+      "detail": "Evolui todas as métricas do projeto"
+    },
+    {
+      "label": "Build Context (ai/bin)",
+      "type": "shell",
+      "command": "node .ai/bin/build-context.js",
+      "group": "none",
+      "detail": "Constrói contexto do projeto via AI bin"
+    },
+    {
+      "label": "Pre-Start Context",
+      "type": "shell",
+      "command": "node .ai/bin/pre-start-context.js",
+      "group": "none",
+      "detail": "Contexto pré-start para nova sessão"
+    },
+    {
+      "label": "MCP Status",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts mcp status",
+      "group": "none",
+      "detail": "Audita saúde do projeto via MCP"
+    },
+    {
+      "label": "MCP Verify Gates",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts mcp verify",
+      "group": "none",
+      "detail": "Quality gates via MCP"
+    },
+    {
+      "label": "Agent Run",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts agent run",
+      "group": "none",
+      "detail": "Executa tarefa em um agente IDEIA"
+    },
+    {
+      "label": "Autonomous Run (F1-F9)",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts autonomous-run",
+      "group": "none",
+      "detail": "Executa ciclo autônomo completo F1-F9"
+    },
+    {
+      "label": "Lifecycle Status",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts lifecycle status",
+      "group": "none",
+      "detail": "Status do lifecycle do projeto"
+    },
+    {
+      "label": "Lifecycle Init",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts lifecycle init",
+      "group": "none",
+      "detail": "Inicializa lifecycle do projeto"
+    },
+    {
+      "label": "Catalog Services",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts catalog list",
+      "group": "none",
+      "detail": "Lista serviços do catálogo"
+    },
+    {
+      "label": "Catalog Capabilities",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts catalog capabilities",
+      "group": "none",
+      "detail": "Lista capacidades do ecossistema"
+    },
+    {
+      "label": "Knowledge Search",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts knowledge search",
+      "group": "none",
+      "detail": "Busca no grafo de conhecimento"
+    },
+    {
+      "label": "RAG Query",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts rag query",
+      "group": "none",
+      "detail": "Consulta RAG engine"
+    },
+    {
+      "label": "Memory Store",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts memory store",
+      "group": "none",
+      "detail": "Armazena decisão na memória"
+    },
+    {
+      "label": "Workflow Run",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts workflow run",
+      "group": "none",
+      "detail": "Executa workflow zero-to-deploy"
+    },
+    {
+      "label": "Orchestrate",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts orchestrate",
+      "group": "none",
+      "detail": "Orquestra fluxo multi-passo"
+    },
+    {
+      "label": "Quality Gate",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts gate",
+      "group": "none",
+      "detail": "Executa quality gates (commit|pr|release)"
+    },
+    {
+      "label": "Safety Check",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts safety",
+      "group": "none",
+      "detail": "Verifica safety do output"
+    },
+    {
+      "label": "Risk Assess",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts risk",
+      "group": "none",
+      "detail": "Avalia risco de ação"
+    },
+    {
+      "label": "Reality Sync",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts reality-sync",
+      "group": "none",
+      "detail": "Sincroniza reality manifest com código"
+    },
+    {
+      "label": "Spec Generator",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts spec",
+      "group": "none",
+      "detail": "Gera especificação a partir de ideia"
+    },
+    {
+      "label": "Close Cycle",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts close-cycle",
+      "group": "none",
+      "detail": "Fecha ciclo de desenvolvimento com relatório"
+    },
+    {
+      "label": "Retrospective",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts retrospective",
+      "group": "none",
+      "detail": "Gera retrospectiva do ciclo"
+    },
+    {
+      "label": "Doctor (Diagnostics)",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts doctor",
+      "group": "none",
+      "detail": "Diagnóstico completo do sistema"
+    },
+    {
+      "label": "Benchmark",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts benchmark",
+      "group": "none",
+      "detail": "Executa benchmark de performance"
+    },
+    {
+      "label": "Resilience Test",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts resilience",
+      "group": "none",
+      "detail": "Testa resiliência do sistema"
+    },
+    {
+      "label": "Supply Chain Check",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts supply-chain",
+      "group": "none",
+      "detail": "Verifica supply chain"
+    },
+    {
+      "label": "Consistency Check",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts consistency",
+      "group": "none",
+      "detail": "Verifica consistência do workspace"
+    },
+    {
+      "label": "Onboarding Wizard",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts wizard",
+      "group": "none",
+      "detail": "Inicia onboarding wizard interativo"
+    },
+    {
+      "label": "Snapshots State",
+      "type": "shell",
+      "command": "npx tsx packages/cli/src/index.ts snapshot",
+      "group": "none",
+      "detail": "Tira snapshot do estado atual"
+    },
+    {
+      "label": "C4 Diagram Generator",
+      "type": "shell",
+      "command": "node .ai/bin/generate-c4.js",
+      "group": "none",
+      "detail": "Gera diagramas C4 de arquitetura"
+    },
+    {
+      "label": "ADR New",
+      "type": "shell",
+      "command": "node .ai/bin/adr-new.js",
+      "group": "none",
+      "detail": "Cria novo Architecture Decision Record"
+    }
+  ]
+}

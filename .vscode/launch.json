@@ -1,0 +1,108 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Current Test",
+      "program": "${workspaceRoot}/node_modules/.bin/jest",
+      "args": [
+        "--runTestsByPath",
+        "${file}",
+        "--config",
+        "jest.config.js",
+        "--no-coverage"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug All Tests",
+      "program": "${workspaceRoot}/node_modules/.bin/jest",
+      "args": [
+        "--config",
+        "jest.config.js",
+        "--no-coverage"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Current File (tsx)",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["tsx"],
+      "args": ["${file}"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Build IDEIA",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "build"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "TypeCheck (tsc --noEmit)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "typecheck"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug IDEIA CLI",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["tsx"],
+      "args": ["packages/cli/src/index.ts"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Quality Check",
+      "program": "${workspaceRoot}/scripts/quality-check.mjs",
+      "args": [],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Theia Plugin (Extension Host)",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceRoot}/packages/ideia-plugin"
+      ],
+      "outFiles": [
+        "${workspaceRoot}/packages/ideia-plugin/lib/**/*.js"
+      ],
+      "preLaunchTask": "Build Theia Plugin"
+    },
+    {
+      "name": "Theia Backend",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/apps/ideia-app/lib/backend/main.js",
+      "args": [],
+      "cwd": "${workspaceRoot}/apps/ideia-app",
+      "outFiles": [
+        "${workspaceRoot}/apps/ideia-app/lib/**/*.js"
+      ],
+      "console": "integratedTerminal",
+      "preLaunchTask": "Build App"
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.rulers": [140],
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.eol": "\n",
+  "files.encoding": "utf8",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.suggest.completeFunctionCalls": true,
+  "typescript.referencesCodeLens.enabled": true,
+  "typescript.implementationsCodeLens.enabled": true,
+  "eslint.validate": ["typescript", "typescriptreact"],
+  "eslint.workingDirectories": [
+    { "mode": "auto" }
+  ],
+  "eslint.lintTask.enable": true,
+  "eslint.lintTask.options": "'packages/*/src/**/*.{ts,tsx}'",
+  "jest.runMode": "on-demand",
+  "jest.autoRun": { "watch": false, "onSave": "test-only" },
+  "jest.showCoverageOnLoad": true,
+  "jest.rootPath": ".",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/lib": true,
+    "**/coverage": true,
+    "**/*.tsbuildinfo": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/lib/**": true,
+    "**/coverage/**": true
+  },
+  "files.associations": {
+    "*.jsonc": "jsonc",
+    ".commitlintrc.json": "jsonc",
+    ".lintstagedrc.json": "jsonc",
+    "tsconfig.base.json": "jsonc",
+    "tsconfig.json": "jsonc"
+  },
+  "npm.enableScripts": true,
+  "npm.scriptExplorerAction": "run",
+  "npm.packageManager": "npm",
+  "npm.exclude": ["**/node_modules/**"],
+  "explorer.sortOrder": "type",
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.js, ${capture}.d.ts, ${capture}.js.map",
+    "tsconfig.json": "tsconfig*.json",
+    "package.json": "package-lock.json, .npmrc, .nvmrc, .node-version",
+    "jest.config.js": "jest*.config.js, jest*.config.ts",
+    ".eslintrc.json": ".eslintrc*",
+    ".prettierrc": ".prettier*",
+    ".commitlintrc.json": ".commitlintrc*",
+    ".lintstagedrc.json": ".lintstagedrc*",
+    ".gitignore": ".gitattributes, .gitmodules"
+  },
+  "debug.javascript.terminalOptions": {
+    "skipFiles": ["<node_internals>/**"]
+  },
+  "protoc": {
+    "options": ["--proto_path=packages/grpc/proto"]
+  },
+  "mcp.server.configurations": {
+    "ideia": {
+      "serversFile": "${workspaceFolder}/.vscode/mcp.json"
+    }
+  },
+  "opencode.autoLoad": true,
+  "opencode.agentsDir": "${workspaceFolder}/.opencode/agents",
+  "opencode.skillsDir": "${workspaceFolder}/.opencode/skills",
+  "opencode.defaultAgent": "programmer",
+  "ai.localAI.enabled": true,
+  "ai.localAI.provider": "ollama",
+  "ai.localAI.model": "qwen2:0.5b",
+  "ai.localAI.endpoint": "http://localhost:11434",
+  "git.inputValidation": true,
+  "git.enableCommitSigning": false,
+  "npm.autoDetect": "on",
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.iconTheme": "vs-seti",
+  "terminal.integrated.defaultProfile.windows": "Windows PowerShell",
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  }
+}

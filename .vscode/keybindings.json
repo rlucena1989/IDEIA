@@ -1,0 +1,42 @@
+[
+  {
+    "key": "ctrl+shift+b",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Build All (tsc -b)"
+  },
+  {
+    "key": "ctrl+shift+t",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Test All"
+  },
+  {
+    "key": "ctrl+shift+l",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Lint"
+  },
+  {
+    "key": "ctrl+k ctrl+d",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Docs Sync"
+  },
+  {
+    "key": "ctrl+k ctrl+v",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Verify (full gate)"
+  },
+  {
+    "key": "ctrl+k ctrl+q",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Quality Check"
+  },
+  {
+    "key": "ctrl+shift+d",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Docker Up"
+  },
+  {
+    "key": "alt+a",
+    "command": "workbench.action.tasks.runTask",
+    "args": "TypeCheck (tsc --noEmit)"
+  }
+]
