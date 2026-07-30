@@ -11,7 +11,7 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "tsc -b",
+    "build": "tsc -b --force",
     "build:plugin": "cd packages/ideia-plugin && npx tsc",
     "build:app": "cd apps/ideia-app && npx theia build",
     "build:electron": "cd electron && npm run build",
@@ -26,7 +26,7 @@
     "lint:fix": "eslint 'packages/*/src/**/*.{ts,tsx}' --fix",
     "format": "prettier --write 'packages/*/src/**/*.{ts,tsx,json,css}'",
     "format:check": "prettier --check 'packages/*/src/**/*.{ts,tsx,json,css}'",
-    "typecheck": "tsc -b",
+    "typecheck": "tsc -b --force",
     "test": "jest --passWithNoTests --no-coverage --testPathIgnorePatterns=\"scripts/__tests__|tests/integration|tests/edge-cases|tests/performance|packages/prompt-security/__tests__/asvs|packages/prompt-security/__tests__/asvs-checker|packages/initiative-feedback/__tests__\"",
     "test:unit": "jest --passWithNoTests --coverage",
     "test:slow": "jest --no-coverage packages/prompt-security/__tests__/asvs packages/prompt-security/__tests__/asvs-checker packages/initiative-feedback/__tests__",
@@ -35,7 +35,7 @@
     "test:mutation": "npx stryker run",
     "quality:check": "node scripts/quality-check.mjs",
     "quality:check:ci": "node scripts/quality-check.mjs --ci",
-    "verify": "npm run quality:check:ci && npm run typecheck && npm run lint && npm test",
+    "verify": "npm run quality:check:ci && npm run typecheck && npm run lint && npm run test -- --no-coverage",
     "perf:bench": "npx tsx tests/performance/benchmark-event-bus.ts",
     "perf:bench:all": "npx tsx tests/performance/benchmark-event-bus.ts && npx tsx tests/performance/benchmark-vector-search.ts && npx tsx tests/performance/benchmark-kg.ts && npx tsx tests/performance/benchmark-cache.ts",
     "perf:load": "k6 run tests/performance/load-test.js",
