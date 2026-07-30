@@ -1,4 +1,7 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+# FA-07: bloqueia agente de alterar infraestrutura de gates
+npx tsx scripts/audit/gate-guard.ts --verify-staged || exit 1
+
 npx --no-install lint-staged --allow-empty
