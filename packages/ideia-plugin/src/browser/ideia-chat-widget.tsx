@@ -169,13 +169,13 @@ export class IDEIA_ChatWidget extends BaseWidget {
           itemSize={80}
           width="100%"
           overscanCount={5}
-          onItemsRendered={({ visibleStopIndex }) => {
+          onItemsRendered={({ visibleStopIndex }: { visibleStopIndex: number }) => {
             if (visibleStopIndex >= itemCount - 1) {
               this.messagesEndRef?.scrollIntoView({ behavior: 'smooth' });
             }
           }}
         >
-          {({ index, style }) => (
+          {({ index, style }: { index: number; style: React.CSSProperties }) => (
             <ChatRow messages={messages} streaming={streaming} index={index} style={style} />
           )}
         </List>
