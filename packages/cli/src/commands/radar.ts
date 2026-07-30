@@ -1,14 +1,21 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { TechnologyRadar, createTechnologyRadar } from '@ideia/technology-radar';
-import { createBus } from '@ideia/event-bus';
+import { createBus, EventBus } from '@ideia/event-bus';
 import { printHeader, printLine, printResult } from '../utils/output';
 
 export function radarCommand(): Command {
   const cmd = new Command('radar')
     .description('Technology Radar: scan, evaluate, recommend technologies');
 
-  const eventBus = await createBus();
-  const radar = createTechnologyRadar(eventBus);
+  let _radar: TechnologyRadar;
+  async function getRadar(): Promise<TechnologyRadar> {
+    if (!_radar) {
+      const eventBus = await createBus() as unknown as EventBus;
+      _radar = createTechnologyRadar(eventBus);
+    }
+    return _radar;
+  }
 
   cmd
     .command('scan')
@@ -18,6 +25,7 @@ export function radarCommand(): Command {
     .action(async (opts) => {
       try {
         printLine('Scanning technology landscape...');
+        const radar = await getRadar();
         const results = await radar.scan();
         if (opts.json) { printLine(JSON.stringify(results, null, 2)); return; }
         printHeader('Technology Scan Results');
@@ -40,6 +48,7 @@ export function radarCommand(): Command {
     .option('--json', 'Output as JSON')
     .action(async (opts) => {
       try {
+        const radar = await getRadar();
         await radar.scan();
         const minScore = parseFloat(opts.minScore || '3.5');
         const recommendations = radar.getRecommendations(minScore);
@@ -68,6 +77,7 @@ export function radarCommand(): Command {
     .option('--json', 'Output as JSON')
     .action(async (opts) => {
       try {
+        const radar = await getRadar();
         const trending = radar.getTrending();
         if (opts.json) { printLine(JSON.stringify(trending, null, 2)); return; }
         printHeader('Trending Technologies');

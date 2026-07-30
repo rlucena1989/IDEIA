@@ -1,0 +1,44 @@
+export interface EnvConfig {
+    nodeEnv: 'development' | 'production' | 'test';
+    logLevel: 'debug' | 'info' | 'warn' | 'error';
+    port: number;
+    host: string;
+    openaiApiKey?: string;
+    openaiModel: string;
+    anthropicApiKey?: string;
+    anthropicModel: string;
+    deepseekApiKey?: string;
+    deepseekModel: string;
+    ollamaBaseUrl: string;
+    ollamaModel: string;
+    databaseUrl: string;
+    pgHost: string;
+    pgPort: number;
+    pgDatabase: string;
+    pgUser: string;
+    pgPassword: string;
+    natsUrl: string;
+    natsToken?: string;
+    authProvider: 'auth0' | 'clerk' | 'none';
+    auth0Domain?: string;
+    auth0ClientId?: string;
+    auth0Audience?: string;
+    jwtSecret: string;
+    sessionSecret: string;
+    sessionMaxAge: number;
+    otelExporterOtlpEndpoint: string;
+    otelServiceName: string;
+    sentryDsn?: string;
+    ideiaHome: string;
+    ideiaLogDir: string;
+    ideiaDataDir: string;
+    ideiaMaxWorkers: number;
+    ideiaDefaultAutonomy: number;
+    enableExperimentalFeatures: boolean;
+    enableTelemetry: boolean;
+    enableLocalAi: boolean;
+}
+export declare function getEnvConfig(): EnvConfig;
+export declare function reloadEnvConfig(): EnvConfig;
+export declare function validateEnvConfig(config: EnvConfig): string[];
+//# sourceMappingURL=env-config.d.ts.map

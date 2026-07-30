@@ -1,4 +1,5 @@
 import type { ValidateOutput, Issue, Rule } from './types';
+import { createLogger } from '@ideia/logger';
 import { detectInconsistencies } from './inconsistencies';
 import { computeMetrics } from './metrics';
 

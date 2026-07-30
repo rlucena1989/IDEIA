@@ -44,7 +44,7 @@ export class VerificationLayer {
       });
       const trimmed = (output || '').trim();
       return { check: check.name, type: check.type, passed: true, duration: Date.now() - start, output: trimmed || undefined };
-    } catch (_e) {
+    } catch (e) {
       const err = e as { stdout?: string; stderr?: string; message?: string };
       return {
         check: check.name, type: check.type, passed: false, duration: Date.now() - start,

@@ -1,4 +1,5 @@
 import { Decision, RiskLevel } from '@ideia/contracts';
+import { createLogger } from '@ideia/logger';
 import { evaluatePolicy, PolicyResult } from '@ideia/policy-engine';
 import { AuditTrail } from '@ideia/audit-trail';
 import { MemoryStore } from '@ideia/memory-store';

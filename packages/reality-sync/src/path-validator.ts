@@ -1,4 +1,5 @@
 import * as path from 'node:path';
+import { createLogger } from '@ideia/logger';
 
 export class ScopeViolationError extends Error {
   public scope: string;
@@ -71,8 +72,8 @@ export function expectViolation(fn: () => void): ScopeViolationError {
     fn();
     throw new Error('Expected ScopeViolationError but no error was thrown');
   } catch (_err) {
-    if (err instanceof ScopeViolationError) return err;
-    throw err;
+    if (_err instanceof ScopeViolationError) return _err;
+    throw _err;
   }
 }
 
@@ -81,7 +82,7 @@ export function expectAllowed(fn: () => void): true {
     fn();
     return true;
   } catch (_err) {
-    throw new Error(`Expected no violation but got: ${err instanceof Error ? err.message : String(err)}`);
+    throw new Error(`Expected no violation but got: ${_err instanceof Error ? _err.message : String(_err)}`);
   }
 }
 

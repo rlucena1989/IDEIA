@@ -1,4 +1,6 @@
 import { EngineMode, Forecast, PrecisionReport, ScorecardAnalysis, CoverageAnalysis, HistorySummary } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('ai-decision-controller');
 
 export interface DecisionResult {
   mode: EngineMode;

@@ -1,4 +1,6 @@
 import type { MemoryRecord, MemoryPattern, LearningRecommendation } from '@ideia/contracts';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('history-summarizer');
 
 export interface HistorySummary {
   totalRecords: number;

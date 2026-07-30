@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import {
   GitService, GitStatus, GitBranchInfo, GitCommit, GitBlameEntry, GitFileChange,
   ScmService, ScmProvider, ScmStatus, ScmChange, ScmInputBox, ScmAction,

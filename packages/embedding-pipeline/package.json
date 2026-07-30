@@ -1,0 +1,21 @@
+{
+  "name": "@ideia/embedding-pipeline",
+  "private": true,
+  "description": "Embedding Pipeline & Vector Search — chunking, model selection, cache, ColBERT, SPLADE, ONNX",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*"
+  }
+}

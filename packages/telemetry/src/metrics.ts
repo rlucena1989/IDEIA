@@ -1,4 +1,6 @@
 import { getTelemetry } from './opentelemetry';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('metrics');
 
 export interface PrometheusMetric {
   name: string;

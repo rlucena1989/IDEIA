@@ -1,4 +1,6 @@
 import { AiProvider, ProviderConfig, ProviderResponse } from './index';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('ollama');
 
 export class OllamaProvider implements AiProvider {
   readonly name = 'ollama';

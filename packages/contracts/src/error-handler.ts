@@ -1,3 +1,6 @@
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('error-handler');
+
 export type ErrorHandler = (err: Error) => void;
 
 let onFatalError: ErrorHandler | null = null;
@@ -7,8 +10,8 @@ export function setFatalErrorHandler(handler: ErrorHandler | null): void {
 }
 
 function handleFatal(err: Error): void {
-  console.error(`[FATAL] ${err.message}`);
-  console.error(err.stack?.split('\n').slice(0, 5).join('\n'));
+  logger.fatal(err.message);
+  logger.fatal(err.stack?.split('\n').slice(0, 5).join('\n') ?? '');
   if (onFatalError) {
     onFatalError(err);
   }

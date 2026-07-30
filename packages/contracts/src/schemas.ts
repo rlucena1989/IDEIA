@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('schemas');
 
 export const RequirementSchema = z.object({
   id: z.string().uuid(),
@@ -122,14 +124,15 @@ export type AdapterResult = z.infer<typeof AdapterResultSchema>;
 
 export interface AdapterInterface {
   name: string;
+  language: string;
   capabilities: string[];
   detect(projectRoot: string): boolean;
-  init(projectRoot: string): boolean;
-  generateTemplate(pkgName: string): string;
-  runLint(projectRoot: string): boolean;
-  runTests(projectRoot: string): boolean;
-  runBuild(projectRoot: string): boolean;
-  qualityGate(projectRoot: string): boolean;
+  init(projectName: string, options?: Record<string, unknown>): Promise<{ success: boolean; files: string[] }>;
+  generateTemplate(type: string): Promise<string>;
+  runLint(projectRoot?: string): Promise<{ success: boolean; output: string }>;
+  runTests(projectRoot?: string): Promise<{ success: boolean; output: string }>;
+  runBuild(projectRoot?: string): Promise<{ success: boolean; output: string }>;
+  qualityGate(projectRoot?: string): Promise<{ passed: boolean; score: number; issues: string[] }>;
 }
 
 export function validateAdapter(config: unknown): AdapterConfig {

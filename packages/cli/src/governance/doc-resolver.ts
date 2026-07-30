@@ -1,4 +1,6 @@
 import { DOCUMENT_REGISTRY, DocumentRegistryEntry } from './document-registry';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('doc-resolver');
 
 export interface ResolvedDocument {
   primary: DocumentRegistryEntry | null;

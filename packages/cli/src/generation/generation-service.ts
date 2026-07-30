@@ -1,7 +1,9 @@
 import { GenerationScope } from './artifact-types';
+import { createLogger } from '@ideia/logger';
 import { DemandGenerationOutput, runDemandGeneration } from './generation-context';
 import { DevkitState } from '../state/state-types';
 import { buildDevkitState } from '../state/state-builder';
+const logger = createLogger('generation-service');
 
 export interface DemandServiceOptions {
   state?: DevkitState;

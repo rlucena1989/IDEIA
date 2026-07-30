@@ -1,4 +1,6 @@
 import { ChatRequest, ChatResponse, EmbeddingRequest, EmbeddingResponse, LLMProvider, LLMProviderConfig } from './index';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('gemini-provider');
 
 interface GeminiContent {
   role: string;

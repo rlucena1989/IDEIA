@@ -10,7 +10,7 @@ jest.mock('../../context/context-publisher');
 jest.mock('../../context/context-report');
 jest.mock('../../hardening/output-contract');
 
-let registryMock: { list: jest.Mock; get: jest.Mock; register: jest.Mock; createAndRegister: jest.Mock };
+var registryMock: { list: jest.Mock; get: jest.Mock; register: jest.Mock; createAndRegister: jest.Mock };
 jest.mock('../../context/context-registry', () => {
   registryMock = { list: jest.fn(), get: jest.fn(), register: jest.fn(), createAndRegister: jest.fn() };
   return { ContextRegistry: jest.fn(() => registryMock) };

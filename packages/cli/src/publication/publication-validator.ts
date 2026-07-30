@@ -1,4 +1,6 @@
 import { PublicationPlan } from './publication-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('publication-validator');
 
 export interface PublicationValidationResult {
   ok: boolean;

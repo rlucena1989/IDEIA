@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.optimize');
 import { spawnSync, execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { printHeader, printLine, finish } from "../utils/output";
@@ -185,7 +187,7 @@ export function optimizeCommand(): Command {
       const script = path.join(cwd, '.ai', 'optimizer', 'bin', 'score-risk.js');
       try {
         const result = execFileSync('node', [script, requestFile], { cwd, encoding: 'utf8', timeout: 30000 }).toString().trim();
-        if (options.json) { console.log(result); }
+        if (options.json) { logger.info(result); }
         else { printHeader('Score de Risco'); printLine(result); }
         finish({ checkpoint: 'score_risk', ok: true, status: 'passed', context_summary: 'Score de risco calculado' });
       } catch {
@@ -233,7 +235,7 @@ export function optimizeCommand(): Command {
       const script = path.join(cwd, '.ai', 'optimizer', 'bin', 'get-repository-memory.js');
       try {
         const result = execFileSync('node', [script], { cwd, encoding: 'utf8', timeout: 30000 }).toString().trim();
-        if (options.json) { console.log(result); }
+        if (options.json) { logger.info(result); }
         else { printHeader('Repository Memory'); printLine(result); }
         finish({ checkpoint: 'repo_memory', ok: true, status: 'passed', context_summary: 'Repository memory loaded' });
       } catch {

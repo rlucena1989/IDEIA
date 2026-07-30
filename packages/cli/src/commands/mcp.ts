@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { spawnSync } from 'node:child_process';
 
 interface JsonRpcRequest {
@@ -126,9 +127,12 @@ export function runCli(args: string, env?: Record<string, string>, entryPoint?: 
   const entry = entryPoint ?? require.resolve('../index.js');
   const result = spawnSync('node', [
     entry, ...args.split(' '),
-  ], { cwd: root, encoding: 'utf8', env: { ...process.env, ...env } });
+  ], { cwd: root, encoding: 'utf8', timeout: MCP_TIMEOUT_MS, env: { ...process.env, ...env } });
   const stdout = typeof result.stdout === 'string' ? result.stdout.trim() : '';
   const stderr = typeof result.stderr === 'string' ? result.stderr.trim() : '';
+  if (result.error && result.error.message?.includes('ETIMEDOUT')) {
+    return { stdout: '', stderr: `MCP command timed out after ${MCP_TIMEOUT_MS}ms`, exitCode: 124 };
+  }
   return {
     stdout,
     stderr,
@@ -200,6 +204,14 @@ export function handleRequest(req: JsonRpcRequest, runCliOverride?: typeof runCl
 
     const out = executeTool(cliArgs, envVars);
 
+    if (out.exitCode === 124) {
+      return {
+        jsonrpc: '2.0',
+        id,
+        error: { code: -32000, message: `Tool ${toolName} timed out after ${MCP_TIMEOUT_MS}ms` },
+      };
+    }
+
     const isError = out.exitCode !== 0 || out.stderr.length > 0;
     return {
       jsonrpc: '2.0',
@@ -225,9 +237,23 @@ export function handleRequest(req: JsonRpcRequest, runCliOverride?: typeof runCl
   };
 }
 
+const MCP_TIMEOUT_MS = 30000;
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error(`MCP timeout after ${ms}ms`)), ms)),
+  ]);
+}
+
 export function startMcpServer(): void {
   const _root = process.cwd();
   let buffer = '';
+  const abortController = new AbortController();
+  const timeout = setTimeout(() => {
+    abortController.abort();
+    process.stderr.write(`{"jsonrpc":"2.0","id":null,"error":{"code":-32000,"message":"Server timeout after ${MCP_TIMEOUT_MS}ms"}}\n`);
+  }, MCP_TIMEOUT_MS);
 
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', (chunk: string) => {
@@ -236,6 +262,7 @@ export function startMcpServer(): void {
     buffer = lines.pop() || '';
 
     for (const line of lines) {
+      if (abortController.signal.aborted) return;
       const trimmed = line.trim();
       if (!trimmed) continue;
       try {
@@ -250,7 +277,10 @@ export function startMcpServer(): void {
     }
   });
 
-  process.stdin.on('end', () => process.exit(0));
+  process.stdin.on('end', () => {
+    clearTimeout(timeout);
+    process.exit(0);
+  });
 }
 
 /**

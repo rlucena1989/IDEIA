@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { LspClientManager, LspClient, LspConnectionOptions } from './types';
 
 class DefaultLspClient implements LspClient {

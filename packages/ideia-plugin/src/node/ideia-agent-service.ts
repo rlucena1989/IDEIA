@@ -1,4 +1,5 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { v4 as uuid } from 'uuid';
 import { EventBus } from '@ideia/event-bus';
 import { IDEIA_AgentService } from '../common/ideia-protocol';

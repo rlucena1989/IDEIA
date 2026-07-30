@@ -46,7 +46,7 @@ export class TechnologyRadar {
         const techs = await this.scanSource(target);
         results.push(...techs);
       } catch (_err) {
-        log.error(`Failed to scan ${target}`, { error: String(err) });
+        log.error(`Failed to scan ${target}`, { error: String(_err) });
       }
     }
 

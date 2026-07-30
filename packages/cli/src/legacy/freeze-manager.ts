@@ -1,4 +1,6 @@
 import { LegacyState } from './legacy-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('freeze-manager');
 
 export function freezeLegacy(items: string[]): LegacyState {
   return {

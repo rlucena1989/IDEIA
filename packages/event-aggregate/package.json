@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/event-aggregate",
+  "private": true,
+  "description": "Event Aggregate Repository — repositorio de agregados baseado em eventos, snapshot e reconstrucao de estado",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

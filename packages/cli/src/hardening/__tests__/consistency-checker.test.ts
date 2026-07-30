@@ -1,45 +1,116 @@
-import { describe, it, expect } from '@jest/globals';
 import { checkConsistency } from '../consistency-checker';
-import { buildConsistencyReport } from '../../state/consistency-builder';
 import { ConsistencyReport } from '../../state/consistency-types';
 
+function makeEmptyReport(): ConsistencyReport {
+  return {
+    generatedAt: new Date().toISOString(),
+    items: [],
+    summary: ['Empty report'],
+  };
+}
+
+function makeItem(area: string, status: 'ok' | 'attention' | 'blocked') {
+  return {
+    area,
+    docs: 'ok' as const,
+    code: 'ok' as const,
+    tests: 'ok' as const,
+    cli: 'ok' as const,
+    extension: 'ok' as const,
+    status,
+    notes: [],
+  };
+}
+
 describe('consistency-checker', () => {
-  it('checkConsistency should be defined', () => {
-    expect(checkConsistency).toBeDefined();
+  test('returns ok for empty report', () => {
+    const result = checkConsistency(makeEmptyReport());
+    expect(result.ok).toBe(true);
+    expect(result.blockedCount).toBe(0);
+    expect(result.attentionCount).toBe(0);
   });
 
-  it('should pass on a clean report', () => {
-    const report = buildConsistencyReport();
-    const result = checkConsistency(report);
-    expect(typeof result.ok).toBe('boolean');
-    expect(typeof result.attentionCount).toBe('number');
-    expect(typeof result.blockedCount).toBe('number');
-  });
-
-  it('should detect blocked items', () => {
+  test('returns ok when all items are ok', () => {
     const report: ConsistencyReport = {
       generatedAt: new Date().toISOString(),
       items: [
-        { area: 'Test', docs: 'missing', code: 'missing', tests: 'missing', cli: 'missing', extension: 'missing', status: 'blocked', notes: ['Bloqueado'] },
+        makeItem('hardening', 'ok'),
+        makeItem('ecosystem', 'ok'),
       ],
-      summary: ['Teste'],
+      summary: ['All good'],
+    };
+    const result = checkConsistency(report);
+    expect(result.ok).toBe(true);
+  });
+
+  test('detects blocked items and returns not ok', () => {
+    const report: ConsistencyReport = {
+      generatedAt: new Date().toISOString(),
+      items: [
+        makeItem('hardening', 'blocked'),
+        makeItem('ecosystem', 'ok'),
+      ],
+      summary: ['Blocked item'],
     };
     const result = checkConsistency(report);
     expect(result.ok).toBe(false);
     expect(result.blockedCount).toBe(1);
   });
 
-  it('should count attention items', () => {
+  test('counts attention items', () => {
     const report: ConsistencyReport = {
       generatedAt: new Date().toISOString(),
       items: [
-        { area: 'A', docs: 'ok', code: 'ok', tests: 'ok', cli: 'ok', extension: 'ok', status: 'ok', notes: [] },
-        { area: 'B', docs: 'partial', code: 'partial', tests: 'partial', cli: 'partial', extension: 'partial', status: 'attention', notes: ['Atenção'] },
+        makeItem('hardening', 'attention'),
+        makeItem('ecosystem', 'attention'),
+        makeItem('security', 'ok'),
       ],
-      summary: ['Teste'],
+      summary: ['Attention needed'],
     };
     const result = checkConsistency(report);
-    expect(result.attentionCount).toBe(1);
     expect(result.ok).toBe(true);
+    expect(result.attentionCount).toBe(2);
+  });
+
+  test('counts multiple blocked items', () => {
+    const report: ConsistencyReport = {
+      generatedAt: new Date().toISOString(),
+      items: [
+        makeItem('a', 'blocked'),
+        makeItem('b', 'blocked'),
+        makeItem('c', 'blocked'),
+      ],
+      summary: ['All blocked'],
+    };
+    const result = checkConsistency(report);
+    expect(result.ok).toBe(false);
+    expect(result.blockedCount).toBe(3);
+  });
+
+  test('preserves summary from report', () => {
+    const report: ConsistencyReport = {
+      generatedAt: new Date().toISOString(),
+      items: [makeItem('a', 'ok')],
+      summary: ['Custom summary line'],
+    };
+    const result = checkConsistency(report);
+    expect(result.summary).toEqual(['Custom summary line']);
+  });
+
+  test('handles mixed blocked and attention', () => {
+    const report: ConsistencyReport = {
+      generatedAt: new Date().toISOString(),
+      items: [
+        makeItem('a', 'blocked'),
+        makeItem('b', 'attention'),
+        makeItem('c', 'ok'),
+        makeItem('d', 'blocked'),
+      ],
+      summary: ['Mixed'],
+    };
+    const result = checkConsistency(report);
+    expect(result.ok).toBe(false);
+    expect(result.blockedCount).toBe(2);
+    expect(result.attentionCount).toBe(1);
   });
 });

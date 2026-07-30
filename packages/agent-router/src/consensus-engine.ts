@@ -1,4 +1,6 @@
 import { AgentOpinion, ConsensusResult, AgentRole } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('consensus-engine');
 
 export interface ConsensusConfig {
   minAgentsForConsensus: number;

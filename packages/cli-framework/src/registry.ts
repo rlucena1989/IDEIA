@@ -1,4 +1,5 @@
 import { CLICommand, CLICommandRegistry, CLIResult } from './types';
+import { createLogger } from '@ideia/logger';
 
 export class DefaultCLICommandRegistry implements CLICommandRegistry {
   private commands = new Map<string, CLICommand>();

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { createLogger } from '@ideia/logger';
 
 export const ConfidenceLevelSchema = z.enum(['high', 'medium', 'low', 'unknown']);
 export type ConfidenceLevel = z.infer<typeof ConfidenceLevelSchema>;

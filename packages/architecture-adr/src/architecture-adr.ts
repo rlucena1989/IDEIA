@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto'; import * as fs from 'fs'; import * as path from 'path';
+import { createLogger } from '@ideia/logger';
 import { ADRStatus, ArchitecturalDecision, ADRSummary, TradeOffAnalysis } from './types';
 const STORAGE = '.ai/architecture/adr';
 export class ArchitectureADR {

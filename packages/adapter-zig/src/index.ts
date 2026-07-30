@@ -1,14 +1,14 @@
 import * as fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'path';
-import { execSync } from 'child_process';
+import { AdapterBase } from '@ideia/adapter-base';
+import type { InitResult, CommandResult, QualityGateResult } from '@ideia/adapter-base';
 import { scaffoldProject, generateModule, writeFiles } from './generator';
+const logger = createLogger('index');
 
-export interface InitResult { success: boolean; files: string[] }
-export interface CommandResult { success: boolean; output: string }
-export interface QualityGateResult { passed: boolean; score: number; issues: string[] }
-
-export class ZigAdapter {
+export class ZigAdapter extends AdapterBase {
   readonly name = 'zig';
+  readonly language = 'zig';
   readonly capabilities = ['detect', 'init', 'generateModule', 'runLint', 'runTests', 'runBuild', 'qualityGate'];
 
   detect(projectRoot: string): boolean {
@@ -36,29 +36,29 @@ export class ZigAdapter {
   }
 
   generateTemplate(type: string): Promise<string> { return this.generateModule(type); }
-  runLint(root?: string): Promise<CommandResult> { return exec('zig fmt --check src/', root); }
-  runTests(root?: string): Promise<CommandResult> { return exec('zig test src/main.zig', root); }
-  runBuild(root?: string): Promise<CommandResult> { return exec('zig build', root); }
+
+  runLint(root?: string): Promise<CommandResult> {
+    const r = root || this.config.projectRoot || process.cwd();
+    return this.exec('zig fmt --check src/', r);
+  }
+
+  runTests(root?: string): Promise<CommandResult> {
+    const r = root || this.config.projectRoot || process.cwd();
+    return this.exec('zig test src/main.zig', r);
+  }
+
+  runBuild(root?: string): Promise<CommandResult> {
+    const r = root || this.config.projectRoot || process.cwd();
+    return this.exec('zig build', r);
+  }
 
   qualityGate(root?: string): Promise<QualityGateResult> {
-    const r = root || process.cwd();
+    const r = root || this.config.projectRoot || process.cwd();
     const issues: string[] = [];
     if (!fs.existsSync(path.join(r, 'build.zig'))) issues.push('build.zig not found');
     if (!fs.existsSync(path.join(r, 'src'))) issues.push('src/ not found');
     return Promise.resolve({ passed: issues.length === 0, score: Math.max(0, 100 - issues.length * 50), issues });
   }
-}
-
-function exec(command: string, cwd?: string): Promise<CommandResult> {
-  return new Promise((resolve) => {
-    try {
-      const output = execSync(command, { cwd: cwd || process.cwd(), encoding: 'utf-8', stdio: 'pipe', timeout: 120000 });
-      resolve({ success: true, output: output || '' });
-    } catch (_err) {
-      const e = err as { stdout?: string; stderr?: string; message?: string };
-      resolve({ success: false, output: e.stdout || e.stderr || e.message || '' });
-    }
-  });
 }
 
 export function createZigAdapter(): ZigAdapter { return new ZigAdapter(); }

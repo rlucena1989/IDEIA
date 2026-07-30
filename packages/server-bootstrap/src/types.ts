@@ -1,4 +1,6 @@
 import { BackendApplication } from '@ideia/core-backend';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('types');
 
 export interface ServerConfig {
   port: number;

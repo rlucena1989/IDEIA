@@ -1,4 +1,5 @@
 import { execFile } from 'child_process';
+import { createLogger } from '@ideia/logger';
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs';
 import { join, resolve } from 'path';
 
@@ -69,10 +70,14 @@ export class PostgresBackup {
       };
 
       const args = [
-        '-h', this.config.host,
-        '-p', String(this.config.port),
-        '-U', this.config.user,
-        '-d', this.config.database,
+        '-h',
+        this.config.host,
+        '-p',
+        String(this.config.port),
+        '-U',
+        this.config.user,
+        '-d',
+        this.config.database,
         '--no-owner',
         '--no-acl',
       ];
@@ -80,9 +85,9 @@ export class PostgresBackup {
       if (this.config.compress) args.push('-Z', '9');
 
       const stdout = await new Promise<string>((resolve, reject) => {
-        const _proc = execFile('pg_dump', args, { env, encoding: 'utf-8', maxBuffer: 100 * 1024 * 1024 }, (err, out) => {
-          if (err) reject(err);
-          else resolve(out);
+        const _proc = execFile('pg_dump', args, { env, encoding: 'utf-8', maxBuffer: 100 * 1024 * 1024 }, (_err, stdout, stderr) => {
+          if (_err) reject(_err);
+          else resolve(stdout);
         });
       });
 
@@ -94,7 +99,10 @@ export class PostgresBackup {
 
       const size = existsSync(backupPath) ? readFileSync(backupPath).length : 0;
       const result: BackupResult = {
-        success: true, path: backupPath, size, durationMs: Date.now() - start,
+        success: true,
+        path: backupPath,
+        size,
+        durationMs: Date.now() - start,
         timestamp: new Date().toISOString(),
       };
 
@@ -103,8 +111,12 @@ export class PostgresBackup {
       return result;
     } catch (_err) {
       const result: BackupResult = {
-        success: false, path: backupPath, size: 0, durationMs: Date.now() - start,
-        error: String(err), timestamp: new Date().toISOString(),
+        success: false,
+        path: backupPath,
+        size: 0,
+        durationMs: Date.now() - start,
+        error: String(_err),
+        timestamp: new Date().toISOString(),
       };
       this.backupHistory.push(result);
       return result;
@@ -113,16 +125,13 @@ export class PostgresBackup {
 
   async restore(backupPath: string): Promise<{ success: boolean; error?: string }> {
     const env = { ...process.env, PGPASSWORD: this.config.password };
-    const args = [
-      '-h', this.config.host, '-p', String(this.config.port),
-      '-U', this.config.user, '-d', this.config.database,
-    ];
+    const args = ['-h', this.config.host, '-p', String(this.config.port), '-U', this.config.user, '-d', this.config.database];
 
     try {
       const content = readFileSync(backupPath, this.config.compress ? 'binary' : 'utf-8');
       await new Promise<void>((resolve, reject) => {
-        const proc = execFile('psql', args, { env, encoding: 'utf-8', timeout: 300000 }, (err) => {
-          if (err) reject(err);
+        const proc = execFile('psql', args, { env, encoding: 'utf-8', timeout: 300000 }, (_err, stdout, stderr) => {
+          if (_err) reject(_err);
           else resolve();
         });
         if (proc.stdin) {
@@ -132,7 +141,7 @@ export class PostgresBackup {
       });
       return { success: true };
     } catch (_err) {
-      return { success: false, error: String(err) };
+      return { success: false, error: String(_err) };
     }
   }
 

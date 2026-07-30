@@ -1,4 +1,5 @@
 import { ProviderKind } from './types';
+import { createLogger } from '@ideia/logger';
 import { LLMAdapter, LLMRequest, LLMResponse } from './llm-adapter';
 import { execSync } from 'node:child_process';
 
@@ -16,7 +17,7 @@ export const OLLAMA_ADAPTER: LLMAdapter = {
         success: true
       };
     } catch (_err) {
-      return { content: '', tokensUsed: 0, latencyMs: Date.now() - start, success: false, error: String(err) };
+      return { content: '', tokensUsed: 0, latencyMs: Date.now() - start, success: false, error: String(_err) };
     }
   },
   isAvailable: () => {

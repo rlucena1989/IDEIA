@@ -7,4 +7,7 @@ export { SLOMonitor, createSLOMonitor, createDefaultSLOs } from './slo-monitor';
 export type { SLOStatus, SLODefinition, SLOState, BurnRate } from './slo-monitor';
 export { SpanTracer, createSpanTracer, SPAN_DEFINITIONS } from './opentelemetry-spans';
 export type { SpanCategory, SpanDefinition } from './opentelemetry-spans';
+export { SessionObserver, createSessionObserver } from './session-observer';
+export type { SessionInfo } from './session-observer';
+export { wireSessionObservability } from './bus-integration';
 export * from './types';

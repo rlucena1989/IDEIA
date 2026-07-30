@@ -1,6 +1,8 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { parse } from 'yaml';
+const logger = createLogger('object-diff');
 
 export interface DiffEntry {
   type: 'breaking' | 'non-breaking';

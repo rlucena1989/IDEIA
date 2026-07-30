@@ -1,4 +1,6 @@
 import { ContextNode } from './federation-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('federation-registry');
 
 export class FederationRegistry {
   private nodes: ContextNode[] = [];

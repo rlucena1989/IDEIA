@@ -1,4 +1,5 @@
 import { FileEntry, buildVars, generateFiles, GeneratorOptions, printGeneratorResult } from './engine';
+import { createLogger } from '@ideia/logger';
 
 /**
  * Processa seed.
@@ -42,7 +43,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   const {{camel}}Data = generate{{Name}}Seed(10);
-  console.log(\`Seeded \${ {{camel}}Data.length } {{name}} records\`);
+  logger.info(\`Seeded \${ {{camel}}Data.length } {{name}} records\`);
 }
 
 main()

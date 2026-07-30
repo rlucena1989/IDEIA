@@ -1,4 +1,5 @@
 import { ComplexityLevel } from './types';
+import { createLogger } from '@ideia/logger';
 
 interface ClassificationHint {
   keywords: string[];

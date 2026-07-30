@@ -1,5 +1,7 @@
 import { OperationalPackage, PackageEmissionResult } from './package-types';
+import { createLogger } from '@ideia/logger';
 import { SyncResult } from './sync-manager';
+const logger = createLogger('distribution-report');
 
 export interface DistributionReport {
   generatedAt: string;

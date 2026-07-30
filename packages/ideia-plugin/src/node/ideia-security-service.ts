@@ -1,4 +1,5 @@
 import { injectable } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { IDEIA_SecurityService, SecurityMetrics, ComplianceReport } from '../common/ideia-protocol';
 import { runCompliance, ComplianceFramework } from '@ideia/policy-engine';
 import { fullPolicyAudit } from '@ideia/policy-engine';

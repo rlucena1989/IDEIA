@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/langgraph-observability",
+  "private": true,
+  "description": "LangGraph observability with OpenTelemetry tracing, LangFuse/LangSmith exporters, SLO monitoring, replay debugging, latency heatmaps, W3C TraceContext propagation, budget tracking, and graph SLO monitoring",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*",
+    "@types/node": "*"
+  }
+}

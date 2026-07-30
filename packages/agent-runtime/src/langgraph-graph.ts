@@ -1,4 +1,5 @@
 import { BaseMessage } from '@langchain/core/messages';
+import { createLogger } from '@ideia/logger';
 import { LLMProvider, ProviderRouter } from '@ideia/llm-provider';
 
 export type LangGraphAgentRole = 'analyst' | 'architect' | 'programmer' | 'reviewer' | 'tester' | 'devops' | 'supervisor' | 'parallel_reviewer_tester';

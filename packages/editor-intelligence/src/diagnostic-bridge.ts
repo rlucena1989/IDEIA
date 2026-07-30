@@ -1,4 +1,5 @@
 import { DefaultProblemManager } from '@ideia/markers-output';
+import { createLogger } from '@ideia/logger';
 import { DiagnosticProvider, DiagnosticItem, DiagnosticSeverity, Range, Position } from './types';
 
 export class ProblemDiagnosticBridge {
@@ -7,11 +8,11 @@ export class ProblemDiagnosticBridge {
   provideDiagnosticsFromProblemManager(uri: string): DiagnosticItem[] {
     const problems = this.problemManager.getProblems(uri);
     return problems.map(p => ({
-      range: p.range,
+      range: p.range as unknown as Range,
       severity: p.severity as unknown as DiagnosticSeverity,
       message: p.message,
       source: p.source,
-    }));
+    })) as DiagnosticItem[];
   }
 }
 

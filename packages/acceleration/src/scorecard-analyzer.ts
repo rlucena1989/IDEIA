@@ -1,5 +1,7 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import { ScorecardAnalysis } from './types';
+const logger = createLogger('scorecard-analyzer');
 
 export function analyzeScorecard(): ScorecardAnalysis {
   const latestPath = '.ai/reports/scorecard/latest.json';

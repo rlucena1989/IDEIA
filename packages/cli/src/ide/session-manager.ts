@@ -6,6 +6,7 @@
  */
 
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import crypto from 'node:crypto';
 

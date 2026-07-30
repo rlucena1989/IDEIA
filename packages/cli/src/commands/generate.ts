@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.generate');
 import { featureBlueprint } from '../generators/feature-blueprint';
 import { domainModel } from '../generators/domain-model';
 import { usecasePipeline } from '../generators/usecase-pipeline';
@@ -34,6 +36,7 @@ import { bugReproduction } from '../generators/bug-reproduction';
 import { goldenPath } from '../generators/golden-path';
 import { GeneratorOptions } from '../generators/engine';
 import * as fs from 'node:fs';
+import * as path from 'node:path';
 import { GenerationScope } from '../generation/artifact-types';
 import { runDemandGeneration } from '../generation/generation-context';
 import { orchestrateGeneration } from '../generation/generation-orchestrator';
@@ -226,24 +229,100 @@ export function generateCommand(): Command {
           return;
         }
 
-        console.log(`\nGeração via modelo de produto "${plan.scope.productName}":`);
-        console.log(`  Tipo: ${plan.scope.productType}`);
-        console.log(`  Confiança: ${(plan.confidence * 100).toFixed(0)}%`);
-        console.log(`  Artefatos planejados: ${plan.artifacts.length}`);
-        console.log(`  Documentos gerados: ${documents.length}`);
-        console.log(`  Completude: ${completeness.ok ? 'OK' : 'INCOMPLETO'}`);
-        for (const doc of documents) console.log(`  → ${doc.path}`);
+        logger.info('\nGeração via modelo de produto "${plan.scope.productName}":');
+        logger.info('  Tipo: ${plan.scope.productType}');
+        logger.info('  Confiança: ${(plan.confidence * 100).toFixed(0)}%');
+        logger.info('  Artefatos planejados: ${plan.artifacts.length}');
+        logger.info('  Documentos gerados: ${documents.length}');
+        logger.info('  Completude: ${completeness.ok ? \'OK\' : \'INCOMPLETO\'}');
+        for (const doc of documents) logger.info('  → ${doc.path}');
         if (completeness.missing.length > 0) {
-          for (const m of completeness.missing) console.log(`  ❌ Ausente: ${m}`);
+          for (const m of completeness.missing) logger.info('  ❌ Ausente: ${m}');
         }
         if (completeness.insufficient.length > 0) {
-          for (const i of completeness.insufficient) console.log(`  ⚠ Insuficiente: ${i}`);
+          for (const i of completeness.insufficient) logger.info('  ⚠ Insuficiente: ${i}');
         }
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
         console.error(`Erro na geração por produto: ${message}`);
         process.exit(1);
       }
+    });
+
+  // ─── Adapter generators (lang scaffold) ─────────────────────────────────────
+  function loadAdapterGenerator(lang: string): { generateFromSpec: (spec: unknown, destDir: string) => Array<{ path: string; content: string }> } | null {
+    const candidates = [
+      path.resolve(__dirname, `../../../../packages/adapter-${lang}/dist/index.js`),
+      path.resolve(__dirname, `../../../packages/adapter-${lang}/dist/index.js`),
+    ];
+    for (const candidate of candidates) {
+      try {
+        if (fs.existsSync(candidate)) {
+          const mod = require(candidate);
+          if (typeof mod.generateFromSpec === 'function') return mod;
+        }
+      } catch { /* try next candidate */ }
+    }
+    try {
+      const mod = require(`@ideia/adapter-${lang}`);
+      if (typeof mod.generateFromSpec === 'function') return mod;
+    } catch { /* not in node_modules */ }
+    return null;
+  }
+
+  function listAvailableLangs(): string[] {
+    const dirs = [
+      path.resolve(__dirname, '../../../../packages'),
+      path.resolve(__dirname, '../../../packages'),
+      path.resolve(process.cwd(), 'packages'),
+    ];
+    for (const dir of dirs) {
+      try {
+        if (fs.existsSync(dir)) {
+          return fs.readdirSync(dir)
+            .filter(d => d.startsWith('adapter-'))
+            .map(d => d.replace('adapter-', ''))
+            .sort();
+        }
+      } catch { /* try next */ }
+    }
+    return ['go', 'typescript', 'python', 'java', 'kotlin', 'ruby', 'rust', 'elixir', 'haskell', 'dart', 'swift', 'php', 'zig', 'scala'];
+  }
+
+  cmd
+    .option('--lang <language>', 'Target language for code generation via adapter (e.g. go)')
+    .option('--spec <file>', 'Spec JSON file to generate from (used with --lang)')
+    .option('--out <dir>', 'Output directory for generated files (used with --lang)', './generated')
+    .action((opts: Record<string, unknown>) => {
+      const lang = opts.lang as string | undefined;
+      if (!lang) return;
+      const gen = loadAdapterGenerator(lang);
+      if (!gen) {
+        const available = listAvailableLangs();
+        console.error(`No adapter found for language "${lang}". Available: ${available.join(', ')}`);
+        process.exit(1);
+      }
+      const specFile = (opts.spec as string) || path.join(process.cwd(), 'spec.json');
+      if (!fs.existsSync(specFile)) {
+        console.error(`Spec file not found: ${specFile}`);
+        console.error('Provide a spec file with --spec <file> or place spec.json in the current directory');
+        process.exit(1);
+      }
+      const raw = fs.readFileSync(specFile, 'utf-8');
+      let spec: unknown;
+      try { spec = JSON.parse(raw); } catch {
+        console.error(`Invalid JSON in spec file: ${specFile}`);
+        process.exit(1);
+      }
+      const destDir = path.resolve(process.cwd(), opts.out as string);
+      const files = gen.generateFromSpec(spec, destDir);
+      for (const f of files) {
+        const fullPath = path.join(destDir, f.path);
+        fs.mkdirSync(path.dirname(fullPath), { recursive: true });
+        fs.writeFileSync(fullPath, f.content, 'utf-8');
+        logger.info('  → ${f.path}');
+      }
+      logger.info('\nGenerated ${files.length} files in ${destDir}');
     });
 
   // Fase 8 — Geração ativa sob demanda
@@ -266,14 +345,14 @@ export function generateCommand(): Command {
           return;
         }
 
-        console.log(`\nGeração sob demanda para "${scope.productName}":`);
-        console.log(`  Tipo: ${scope.productType}`);
-        console.log(`  Artefatos planejados: ${plan.artifacts.length}`);
-        console.log(`  Artefatos gerados: ${artifacts.length}`);
-        console.log(`  Validação: ${validation.ok ? 'OK' : 'FALHAS'}`);
-        for (const artifact of artifacts) console.log(`  → ${artifact.path}`);
+        logger.info('\nGeração sob demanda para "${scope.productName}":');
+        logger.info('  Tipo: ${scope.productType}');
+        logger.info('  Artefatos planejados: ${plan.artifacts.length}');
+        logger.info('  Artefatos gerados: ${artifacts.length}');
+        logger.info('  Validação: ${validation.ok ? \'OK\' : \'FALHAS\'}');
+        for (const artifact of artifacts) logger.info('  → ${artifact.path}');
         if (validation.issues.length > 0) {
-          for (const issue of validation.issues) console.log(`  ⚠ ${issue}`);
+          for (const issue of validation.issues) logger.info('  ⚠ ${issue}');
         }
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);

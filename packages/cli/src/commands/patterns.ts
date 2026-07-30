@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { MemoryStore, createMemoryRecord } from '@ideia/memory-store';
 import { detectPatterns } from '../memory/pattern-detector';
 import { generateRecommendations } from '../memory/learning-engine';
@@ -92,7 +93,7 @@ export function patternsCommand(): Command {
         printLine(`  Frequência: ${p.frequency} ocorrência(s)`);
         printLine(`  Confiança: ${(p.confidence * 100).toFixed(0)}%`);
         printLine(`  Descrição: ${p.description}`);
-        if (recs.length > 0) printLine(`  Recomendação: ${recs[0]!.action}`);
+        if (recs.length > 0) printLine(`  Recomendação: ${recs[0]?.action ?? ''}`);
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
         console.error(`Erro na explicação: ${message}`);

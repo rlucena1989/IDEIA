@@ -1,5 +1,7 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import { CoverageAnalysis } from './types';
+const logger = createLogger('coverage-analyzer');
 
 export function analyzeCoverage(): CoverageAnalysis {
   const summaryPath = 'coverage/coverage-summary.json';

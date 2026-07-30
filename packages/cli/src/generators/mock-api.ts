@@ -1,4 +1,6 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('generators.mock-api');
 import path from 'node:path';
 import { FileEntry, buildVars, generateFiles, GeneratorOptions, printGeneratorResult } from './engine';
 
@@ -13,7 +15,7 @@ export function mockApi(spec: string, options: GeneratorOptions): void {
 
   if (!fs.existsSync(specPath)) {
     console.error(`\nSpec nao encontrado: ${specPath}`);
-    console.log('Gerando mock generico baseado no nome...');
+    logger.info('Gerando mock generico baseado no nome...');
   }
 
   const files: FileEntry[] = [
@@ -45,7 +47,7 @@ app.get('/api/{{name_kebab}}/:id', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(\`Mock API {{Name}} running on port \${PORT}\`);
+  logger.info(\`Mock API {{Name}} running on port \${PORT}\`);
 });
 `,
     },

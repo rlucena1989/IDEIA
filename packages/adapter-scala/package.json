@@ -11,6 +11,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@ideia/adapter-base": "*",
     "@ideia/contracts": "*"
   },
   "repository": {

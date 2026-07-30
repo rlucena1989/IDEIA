@@ -40,7 +40,7 @@ export class KVStore {
       await this.connectionManager.connect();
       this.natsConnected = await this.connectionManager.hasJetStream();
     } catch (_err) {
-      log.info(`Initialized (offline mode): ${err}`);
+      log.info(`Initialized (offline mode): ${_err}`);
       return;
     }
     log.info(`Initialized (NATS: ${this.natsConnected ? 'connected' : 'offline'})`);

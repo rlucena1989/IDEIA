@@ -1,0 +1,23 @@
+{
+  "name": "@ideia/swe-bench",
+  "private": true,
+  "description": "IDEIA SWE-bench Pipeline ? full evaluation pipeline for measuring agent performance on SWE-bench tasks with Docker, LangGraph orchestration, and multi-format reporting",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*",
+    "@ideia/agent-runtime": "*",
+    "@ideia/quality-gates": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*"
+  }
+}

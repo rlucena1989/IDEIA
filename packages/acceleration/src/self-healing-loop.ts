@@ -1,5 +1,7 @@
 import { runEngineOnce } from './engine';
+import { createLogger } from '@ideia/logger';
 import { getRetryDecision } from './retry-policy';
+const logger = createLogger('self-healing-loop');
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -20,11 +22,11 @@ export async function runSelfHealingLoop() {
     const retry = getRetryDecision(attempt);
 
     if (!retry.shouldRetry) {
-      console.error('[self-healing] max retries reached');
+      logger.error('max retries reached');
       break;
     }
 
-    console.log(`[self-healing] retrying in ${retry.delayMs}ms (attempt ${retry.attempt + 1})`);
+    logger.info('[self-healing] retrying in ${retry.delayMs}ms (attempt ${retry.attempt + 1})');
     await sleep(retry.delayMs);
   }
 }

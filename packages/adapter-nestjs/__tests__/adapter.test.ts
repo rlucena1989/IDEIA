@@ -113,7 +113,7 @@ describe('NestJSAdapter', () => {
 
   it('generateNestModule creates valid TypeScript files', () => {
     const files = generateNestModule('test', tmpDir);
-    expect(files.length).toBe(4);
+    expect(files.length).toBe(6);
     const moduleFile = files.find(f => f.path.endsWith('test.module.ts'));
     expect(moduleFile).toBeDefined();
     expect(moduleFile!.content).toContain('@Module');

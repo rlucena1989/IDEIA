@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import type { EventBus } from '@ideia/event-bus';
+import type { IEventBus } from '@ideia/event-bus';
 import type { AuditTrail } from '@ideia/audit-trail';
 import { createLogger } from '@ideia/logger';
 import {
@@ -36,10 +36,10 @@ function nextEscalationLevel(current: EscalationLevel): EscalationLevel | null {
 
 export class ContinuityEngine {
   private decisions: Map<string, DecisionRecord> = new Map();
-  private eventBus?: EventBus;
+  private eventBus?: IEventBus;
   private auditTrail?: AuditTrail;
 
-  constructor(eventBus?: EventBus, auditTrail?: AuditTrail) {
+  constructor(eventBus?: IEventBus, auditTrail?: AuditTrail) {
     this.eventBus = eventBus;
     this.auditTrail = auditTrail;
   }
@@ -278,7 +278,7 @@ export class ContinuityEngine {
     this.eventBus.emit({
       type: `continuity.${eventType}`,
       source: 'continuity-engine',
-      payload: payload,
+      payload: payload as unknown as Record<string, unknown>,
     }).catch((err: unknown) => {
       log.warn('Failed to emit continuity event', { error: String(err) });
     });

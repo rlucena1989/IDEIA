@@ -1,4 +1,6 @@
 import { MaturityScore, ScorecardAnalysis, CoverageAnalysis, Gap } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('maturity-scorer');
 
 export function scoreMaturity(
   scorecard: ScorecardAnalysis,

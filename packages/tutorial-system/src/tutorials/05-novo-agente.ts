@@ -1,4 +1,6 @@
 import { Tutorial } from '../types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('05-novo-agente');
 
 export const novoAgenteTutorial: Tutorial = {
   id: '05-novo-agente',

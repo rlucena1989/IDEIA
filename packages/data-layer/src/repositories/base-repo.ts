@@ -1,4 +1,6 @@
 import { DatabaseAdapter, DataLayerConfig as _DataLayerConfig } from '../types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('base-repo');
 
 export type DbType = 'postgres' | 'sqlite';
 

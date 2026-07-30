@@ -1,4 +1,6 @@
 import { Tutorial } from '../types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('04-deploy-local');
 
 export const deployLocalTutorial: Tutorial = {
   id: '04-deploy-local',

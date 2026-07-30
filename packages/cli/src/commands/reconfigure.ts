@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { CapabilitySwitchboard } from '../self-evolution/capability-switchboard';
 import { buildReconfigurationPlan } from '../self-evolution/reconfiguration-plan';
 import type { EvolutionChange } from '../self-evolution/evolution-types';

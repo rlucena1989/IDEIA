@@ -1,4 +1,6 @@
 import { roundTo } from './numerical-engine';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('domain-precision');
 
 type PrecisionDomain = 'finance' | 'physics' | 'engineering' | 'statistics' | 'general';
 

@@ -1,0 +1,28 @@
+{
+  "name": "@ideia/pattern-detector",
+  "description": "IDEIA Pattern Detector — cross-session analysis, pattern suggestion, and adaptive learning",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/memory-store": "*",
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

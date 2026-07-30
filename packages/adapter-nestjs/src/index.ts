@@ -1,39 +1,24 @@
 import * as fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'path';
-import { execSync } from 'child_process';
+import { AdapterBase } from '@ideia/adapter-base';
+import type { InitResult, CommandResult, QualityGateResult } from '@ideia/adapter-base';
 import { scaffoldProject, generateNestModule, writeFiles } from './generator';
 
 export interface NestJSAdapterConfig {
   projectRoot?: string;
 }
 
-export interface InitResult {
-  success: boolean;
-  files: string[];
-}
-
-export interface CommandResult {
-  success: boolean;
-  output: string;
-}
-
-export interface QualityGateResult {
-  passed: boolean;
-  score: number;
-  issues: string[];
-}
-
-export class NestJSAdapter {
+export class NestJSAdapter extends AdapterBase {
   readonly name = 'nestjs';
+  readonly language = 'typescript';
   readonly capabilities = [
     'detect', 'init', 'generateModule', 'runLint',
     'runTests', 'runBuild', 'validateContracts', 'auditSecurity', 'qualityGate',
   ];
 
-  private config: NestJSAdapterConfig;
-
   constructor(config: NestJSAdapterConfig = {}) {
-    this.config = config;
+    super(config);
   }
 
   detect(projectRoot: string): boolean {
@@ -85,17 +70,17 @@ export class NestJSAdapter {
 
   runLint(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('npm run lint', root);
+    return this.exec('npm run lint', root);
   }
 
   runTests(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('npm run test', root);
+    return this.exec('npm run test', root);
   }
 
   runBuild(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('npm run build', root);
+    return this.exec('npm run build', root);
   }
 
   validateContracts(projectRoot?: string): Promise<CommandResult> {
@@ -115,7 +100,7 @@ export class NestJSAdapter {
       }
       return Promise.resolve({ success: true, output: 'No main.ts found, skipping' });
     } catch (_err) {
-      return Promise.resolve({ success: false, output: String(err) });
+      return Promise.resolve({ success: false, output: String(_err) });
     }
   }
 
@@ -134,7 +119,7 @@ export class NestJSAdapter {
         output: issues.join('\n') || 'Security audit passed',
       });
     } catch (_err) {
-      return Promise.resolve({ success: false, output: String(err) });
+      return Promise.resolve({ success: false, output: String(_err) });
     }
   }
 
@@ -170,20 +155,6 @@ export class NestJSAdapter {
     });
   }
 
-  private execCommand(command: string, cwd: string): Promise<CommandResult> {
-    return new Promise((resolve) => {
-      try {
-        const output = execSync(command, { cwd, encoding: 'utf-8', stdio: 'pipe' });
-        resolve({ success: true, output: output || 'Command completed' });
-      } catch (_err) {
-        const error = err as { stdout?: string; stderr?: string; message?: string };
-        resolve({
-          success: false,
-          output: error.stdout || error.stderr || error.message || 'Command failed',
-        });
-      }
-    });
-  }
 }
 
 export function createNestJSAdapter(config?: NestJSAdapterConfig): NestJSAdapter {

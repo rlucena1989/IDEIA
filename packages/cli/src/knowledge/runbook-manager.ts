@@ -1,4 +1,5 @@
 import { KnowledgeEntry } from './knowledge-types';
+import { createLogger } from '@ideia/logger';
 
 export function buildRunbook(entries: KnowledgeEntry[]): string {
   const active = entries.filter(e => e.status === 'active');
@@ -12,7 +13,7 @@ export function buildRunbookSections(entries: KnowledgeEntry[]): Record<string, 
   for (const e of entries.filter(e => e.status === 'active')) {
     const cat = e.category;
     if (!sections[cat]) sections[cat] = [];
-    sections[cat]!.push(`${e.title}: ${e.content}`);
+    sections[cat]?.push(`${e.title}: ${e.content}`);
   }
   return sections;
 }

@@ -84,7 +84,33 @@ export interface EvolutionPlan {
   createdAt: number;
 }
 
-export type AutonomyLevel = 'passive' | 'assisted' | 'autonomous';
+export type AutonomyLevel = 'N0' | 'N1' | 'N2' | 'N3' | 'N4' | 'N5';
+
+export function autonomyLevelToLabel(level: AutonomyLevel): string {
+  const labels: Record<AutonomyLevel, string> = {
+    N0: 'Passive',
+    N1: 'Assisted',
+    N2: 'Semi-Autonomous',
+    N3: 'Autonomous',
+    N4: 'Proactive',
+    N5: 'Self-Evolving',
+  };
+  return labels[level];
+}
+
+export function autonomyLevelToNumber(level: AutonomyLevel): number {
+  const order: AutonomyLevel[] = ['N0', 'N1', 'N2', 'N3', 'N4', 'N5'];
+  return order.indexOf(level);
+}
+
+export interface MetricsBottleneck {
+  metric: string;
+  severity: 'critical' | 'high' | 'medium' | 'low' | 'info';
+  currentValue: number;
+  thresholdValue: number;
+  recommendation: string;
+  category: 'performance' | 'storage' | 'memory' | 'cpu';
+}
 
 export interface EvolutionReport {
   cycleId: string;
@@ -98,4 +124,12 @@ export interface EvolutionReport {
   duration: number;
   success: boolean;
   errors: string[];
+  levelProgress?: AutonomyLevelProgress;
+}
+
+export interface AutonomyLevelProgress {
+  currentLevel: AutonomyLevel;
+  nextLevel: AutonomyLevel | null;
+  score: number;
+  criteria: Array<{ name: string; met: boolean; weight: number }>;
 }

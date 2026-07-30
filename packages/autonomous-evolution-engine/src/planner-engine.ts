@@ -1,5 +1,15 @@
 import { Logger } from '@ideia/logger';
-import { PrioritizedRecommendation, ExecutionStep, EvolutionPlan } from './types';
+import { PrioritizedRecommendation, ExecutionStep, EvolutionPlan, MetricsBottleneck } from './types';
+
+export interface OptimizationPlan {
+  id: string;
+  bottleneck: MetricsBottleneck;
+  steps: ExecutionStep[];
+  dependencies: string[];
+  totalEffortMs: number;
+  riskScore: number;
+  createdAt: number;
+}
 
 export class PlannerEngine {
   private logger: Logger;
@@ -28,6 +38,22 @@ export class PlannerEngine {
     );
 
     return plan;
+  }
+
+  generateOptimizationPlan(bottleneck: MetricsBottleneck, recommendations: PrioritizedRecommendation[]): OptimizationPlan {
+    const steps = this.buildSteps(recommendations);
+    const totalEffortMs = steps.reduce((sum, s) => sum + s.estimatedMs, 0);
+    const dependencies = recommendations.map(r => r.action);
+
+    return {
+      id: `opt-${Date.now()}`,
+      bottleneck,
+      steps,
+      dependencies,
+      totalEffortMs,
+      riskScore: this.getRiskScore(steps),
+      createdAt: Date.now(),
+    };
   }
 
   estimateEffort(plan: EvolutionPlan): { minutes: number; hours: number; days: number } {

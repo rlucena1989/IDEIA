@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.bootstrap');
 import { bootstrapProject, generateModuleDocs, generatePromptPack } from '../runtime/bootstrap-engine';
 import * as fs from 'fs';
 import * as _path from 'path';
@@ -21,16 +23,16 @@ function createBootstrapCommand(): Command {
       const features = opts.features ? opts.features.split(',').map((f: string) => f.trim()).filter(Boolean) : [];
       const config = { projectName: name, stack: 'node' as const, features, outputDir: opts.output };
       if (opts.dryRun) {
-        console.log(`\nDry-run: ${name}`);
-        console.log(`  Features: ${features.join(', ') || '(nenhuma)'}`);
-        console.log(`  Output: ${opts.output}`);
+        logger.info('\nDry-run: ${name}');
+        logger.info('  Features: ${features.join(\', \') || \'(nenhuma)\'}');
+        logger.info('  Output: ${opts.output}');
         return;
       }
       const result = bootstrapProject(config);
-      console.log(`\nBootstrap de "${name}":`);
-      console.log(`  ${result.summary}`);
-      for (const c of result.created) console.log(`  Criado: ${c}`);
-      for (const s of result.skipped) console.log(`  Pulado: ${s}`);
+      logger.info('\nBootstrap de "${name}":');
+      logger.info('  ${result.summary}');
+      for (const c of result.created) logger.info('  Criado: ${c}');
+      for (const s of result.skipped) logger.info('  Pulado: ${s}');
       for (const e of result.errors) console.error(`  Erro: ${e}`);
     });
 
@@ -61,9 +63,9 @@ function createBootstrapCommand(): Command {
       if (opts.save) {
         fs.mkdirSync(opts.save.substring(0, opts.save.lastIndexOf('\\')), { recursive: true });
         fs.writeFileSync(opts.save, docs, 'utf-8');
-        console.log(`Documentacao salva em: ${opts.save}`);
+        logger.info('Documentacao salva em: ${opts.save}');
       } else {
-        console.log(docs);
+        logger.info(docs);
       }
     });
 
@@ -90,9 +92,9 @@ function createBootstrapCommand(): Command {
       if (opts.save) {
         fs.mkdirSync(opts.save.substring(0, opts.save.lastIndexOf('\\')), { recursive: true });
         fs.writeFileSync(opts.save, pack, 'utf-8');
-        console.log(`Prompt pack salvo em: ${opts.save}`);
+        logger.info('Prompt pack salvo em: ${opts.save}');
       } else {
-        console.log(pack);
+        logger.info(pack);
       }
     });
 

@@ -1,4 +1,5 @@
 import { createHash } from 'crypto';
+import { createLogger } from '@ideia/logger';
 
 export interface ArtifactProvenance {
   id: string;

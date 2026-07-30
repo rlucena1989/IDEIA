@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.experiment');
 import path from 'node:path';
 import { runExperiment } from '../local-ai/experiment/runner';
 import {
@@ -153,7 +155,7 @@ export function experimentReportAction(
       getIO().fs.write(path.resolve(options.output), json);
       printResult('Relatorio salvo', true, options.output);
     } else {
-      console.log(json);
+      logger.info(json);
     }
     return;
   }
@@ -162,7 +164,7 @@ export function experimentReportAction(
     getIO().fs.write(path.resolve(options.output), md);
     printResult('Relatorio salvo', true, options.output);
   } else {
-    console.log(md);
+    logger.info(md);
   }
 }
 

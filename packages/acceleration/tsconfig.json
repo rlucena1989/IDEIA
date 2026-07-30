@@ -2,16 +2,35 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "src",
     "declaration": true,
-    "strict": true
+    "strict": true,
+    "composite": true
   },
   "include": [
-    "src"
+    "src/**/*.ts"
   ],
   "references": [
     {
       "path": "../logger"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../data-layer"
+    },
+    {
+      "path": "../memory-store"
+    },
+    {
+      "path": "../config-engine"
     }
   ]
 }

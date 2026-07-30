@@ -1,4 +1,5 @@
 import { ArtifactRegistry } from './artifact-registry';
+import { createLogger } from '@ideia/logger';
 import { DependencyPolicyManager } from './dependency-policy';
 import { BuildVerifier } from './build-verifier';
 import { ArtifactProvenance, IntegrityCheck, DependencyPolicy, BuildReproducibility } from './types';

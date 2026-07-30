@@ -1,7 +1,9 @@
 import { LangGraphStateAnnotation, LangGraphAgentRole } from './langgraph-graph';
+import { createLogger } from '@ideia/logger';
 import { LangGraphNodeFunction } from './langgraph-graph';
 import { LLMProvider } from '@ideia/llm-provider';
 import { createReviewerNode, createTesterNode } from './nodes';
+const logger = createLogger('parallel');
 
 export interface ParallelNodeConfig {
   role: LangGraphAgentRole;

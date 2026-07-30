@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { printHeader, printLine, finish } from "../utils/output";
 import { getIO, IOContainer } from '../io';
 

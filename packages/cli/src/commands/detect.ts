@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 
 import { printHeader, printLine, finish } from "../utils/output";
@@ -350,7 +351,7 @@ export function detectCommand(): Command {
         context_summary: ok
           ? `Stack detectada: ${info.languages.join(', ')}`
           : 'Nenhuma stack conhecida detectada.',
-        data: info as unknown as Record<string, unknown>,
+        data: { ...info },
       });
     });
 

@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import * as _crypto from 'node:crypto';
 import { AgentRegistry } from '../agents/agent-registry';
 import { createAgent, createTask, OperationalAgent } from '../agents/agent-types';

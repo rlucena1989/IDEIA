@@ -1,4 +1,6 @@
 import type { MCPTool } from './index';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('tool-registry');
 
 export interface ToolRegistration {
   tool: MCPTool;

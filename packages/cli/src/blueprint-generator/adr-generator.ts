@@ -1,5 +1,7 @@
 import type { BlueprintManifest, GeneratedADR, TemplateContext } from './types';
+import { createLogger } from '@ideia/logger';
 import { TemplateEngine, defaultHelpers } from './template-engine';
+const logger = createLogger('adr-generator');
 
 export class ADRGenerator {
   private engine: TemplateEngine;

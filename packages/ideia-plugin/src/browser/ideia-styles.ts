@@ -1,4 +1,5 @@
 import { StylingParticipant, ColorTheme, CssStyleCollector } from '@theia/core/lib/browser/styling-service';
+import { createLogger } from '@ideia/logger';
 
 export class IdeiaStylingParticipant implements StylingParticipant {
   registerThemeStyle(theme: ColorTheme, collector: CssStyleCollector): void {

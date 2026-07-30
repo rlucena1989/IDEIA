@@ -1,4 +1,6 @@
 import { Scope, IsolationPolicyConfig, CrossSpaceAccess } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('isolation-policy');
 
 const DEFAULT_POLICY: IsolationPolicyConfig = {
   crossSpaceAccess: 'block',

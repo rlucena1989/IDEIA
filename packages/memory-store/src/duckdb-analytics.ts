@@ -25,7 +25,7 @@ export class DuckDbAnalytics {
         `const params = ${paramsJson};`,
         `db.all(${JSON.stringify(safeSql)}, ...params, (e, r) => {`,
         `  if (e) { console.error(e.message); process.exit(1); }`,
-        `  console.log(JSON.stringify(r || []));`,
+        `  logger.info(JSON.stringify(r || []));`,
         `});`,
       ].join('\n');
 

@@ -1,5 +1,7 @@
 import { MockIOContainer } from '../../io/mock';
+import { createLogger } from '@ideia/logger';
 import _path from 'node:path';
+const logger = createLogger('use-mock-io');
 
 let _mockIO: MockIOContainer | null = null;
 

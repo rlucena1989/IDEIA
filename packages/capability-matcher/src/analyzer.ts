@@ -1,4 +1,6 @@
 import { Complexity, Stage, SemanticNeed } from './semantic-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('analyzer');
 
 const TECH_KEYWORDS: Record<string, string[]> = {
   typescript: ['typescript', 'ts', 'tsx'],

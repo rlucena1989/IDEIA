@@ -1,5 +1,6 @@
 export { BHP } from './bhp';
 export { DecisionEngine } from './decision-engine';
+export { EscalationProtocol, createEscalationProtocol } from './escalation-protocol';
 export type { DecisionEngineConfig } from './decision-engine';
 export type {
   BHPPlatform,

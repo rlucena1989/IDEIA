@@ -1,6 +1,8 @@
 import { ContextNode } from './federation-types';
+import { createLogger } from '@ideia/logger';
 import { SyncDecision } from './federation-types';
 import { ConflictResolution } from './conflict-resolver';
+const logger = createLogger('federation-report');
 
 export interface FederationReport {
   generatedAt: string;

@@ -36,17 +36,23 @@ class AuditTrail {
         this.indexByTarget.clear();
         for (const event of events) {
             const typeKey = event.eventType || 'unknown';
-            if (!this.indexByEventType.has(typeKey))
-                this.indexByEventType.set(typeKey, []);
-            this.indexByEventType.get(typeKey).push(event);
+            const typeList = this.indexByEventType.get(typeKey);
+            if (typeList)
+                typeList.push(event);
+            else
+                this.indexByEventType.set(typeKey, [event]);
             const actorKey = event.actor || 'unknown';
-            if (!this.indexByActor.has(actorKey))
-                this.indexByActor.set(actorKey, []);
-            this.indexByActor.get(actorKey).push(event);
+            const actorList = this.indexByActor.get(actorKey);
+            if (actorList)
+                actorList.push(event);
+            else
+                this.indexByActor.set(actorKey, [event]);
             const targetKey = event.target || 'unknown';
-            if (!this.indexByTarget.has(targetKey))
-                this.indexByTarget.set(targetKey, []);
-            this.indexByTarget.get(targetKey).push(event);
+            const targetList = this.indexByTarget.get(targetKey);
+            if (targetList)
+                targetList.push(event);
+            else
+                this.indexByTarget.set(targetKey, [event]);
         }
     }
     append(event) {
@@ -97,8 +103,8 @@ class AuditTrail {
             this.rebuildIndexes(this.eventCache);
             return this.eventCache;
         }
-        catch (err) {
-            log.error('Failed to load audit file, renaming to .corrupted', { error: String(err) });
+        catch (_err) {
+            log.error('Failed to load audit file, renaming to .corrupted', { error: String(_err) });
             promises_1.default.rename(this.filePath, this.filePath + '.corrupted').catch(() => { });
             return [];
         }
@@ -110,13 +116,13 @@ class AuditTrail {
             const key = filterKeys[0];
             const value = String(filter[key]);
             if (key === 'eventType' && this.indexByEventType.has(value)) {
-                return [...this.indexByEventType.get(value)];
+                return [...this.indexByEventType.get(value) ?? []];
             }
             if (key === 'actor' && this.indexByActor.has(value)) {
-                return [...this.indexByActor.get(value)];
+                return [...this.indexByActor.get(value) ?? []];
             }
             if (key === 'target' && this.indexByTarget.has(value)) {
-                return [...this.indexByTarget.get(value)];
+                return [...this.indexByTarget.get(value) ?? []];
             }
         }
         return events.filter((e) => {
@@ -183,6 +189,60 @@ class AuditTrail {
             currentTipHash: hashEvent(events[events.length - 1]),
         };
     }
+    proveEntry(eventId) {
+        const events = this.load();
+        const idx = events.findIndex(e => e.eventId === eventId);
+        if (idx === -1)
+            return null;
+        const entryHash = hashEvent(events[idx]);
+        const rootHash = events.length > 0 ? hashEvent(events[events.length - 1]) : entryHash;
+        const siblings = [];
+        for (let i = 0; i < events.length; i++) {
+            if (i !== idx)
+                siblings.push(hashEvent(events[i]));
+        }
+        return { entryIndex: idx, entryHash, siblings, rootHash };
+    }
+    verifyEntryInclusion(proof) {
+        const events = this.load();
+        if (proof.entryIndex < 0 || proof.entryIndex >= events.length)
+            return false;
+        const actualHash = hashEvent(events[proof.entryIndex]);
+        if (actualHash !== proof.entryHash)
+            return false;
+        const rootHash = events.length > 0 ? hashEvent(events[events.length - 1]) : '';
+        return rootHash === proof.rootHash;
+    }
+    getMerkleRoot() {
+        const events = this.load();
+        if (events.length === 0)
+            return crypto_1.default.createHash('sha256').update('empty').digest('hex');
+        return hashEvent(events[events.length - 1]);
+    }
+    getChainGaps() {
+        const events = this.load();
+        const gaps = [];
+        for (let i = 1; i < events.length; i++) {
+            const expectedPrevHash = hashEvent(events[i - 1]);
+            if (events[i].previousHash !== expectedPrevHash) {
+                gaps.push({ index: i, eventId: events[i].eventId });
+            }
+        }
+        return gaps;
+    }
+    scheduleVerification(intervalMs) {
+        let stopped = false;
+        const id = setInterval(() => {
+            if (!stopped)
+                this.verifyChain();
+        }, intervalMs);
+        return {
+            stop: () => {
+                stopped = true;
+                clearInterval(id);
+            },
+        };
+    }
     getChainTipHash() {
         const events = this.load();
         if (events.length === 0)
@@ -223,8 +283,8 @@ class AuditTrail {
                 }
             }
         }
-        catch (err) {
-            log.debug('Rotation check failed', { error: String(err) });
+        catch (_err) {
+            log.debug('Rotation check failed', { error: String(_err) });
         }
     }
 }

@@ -1,4 +1,5 @@
 import { spawn, ChildProcess } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
 import { EventEmitter } from 'node:events';
 import { resolve } from 'node:path';
 
@@ -19,7 +20,7 @@ export class LspBridge extends EventEmitter {
       tsServer = serverPath || require.resolve('typescript-language-server/lib/cli.mjs');
     } catch {
       console.warn('[LSP] typescript-language-server not found — LSP will not be available');
-      const session: LspSession = { id, process: undefined as ChildProcess, connectedAt: new Date().toISOString(), buffer: '' };
+      const session: LspSession = { id, process: undefined as unknown as ChildProcess, connectedAt: new Date().toISOString(), buffer: '' };
       this.sessions.set(id, session);
       return session;
     }
@@ -61,7 +62,7 @@ export class LspBridge extends EventEmitter {
     const headerRe = /Content-Length:\s*(\d+)\r\n\r\n/g;
     while ((match = headerRe.exec(session.buffer)) !== null) {
       const length = parseInt(match[1], 10);
-      const start = match.index + match[0]!.length;
+      const start = match.index + (match[0]?.length ?? 0);
       if (session.buffer.length < start + length) break;
       const json = session.buffer.slice(start, start + length);
       session.buffer = session.buffer.slice(start + length);
@@ -88,3 +89,4 @@ export class LspBridge extends EventEmitter {
     for (const [id] of this.sessions) this.kill(id);
   }
 }
+

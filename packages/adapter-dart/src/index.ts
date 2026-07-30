@@ -1,39 +1,25 @@
 import * as fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'path';
-import { execSync } from 'child_process';
+import { AdapterBase } from '@ideia/adapter-base';
+import type { InitResult, CommandResult, QualityGateResult } from '@ideia/adapter-base';
 import { scaffoldProject, generateEntity, writeFiles } from './generator';
+const logger = createLogger('index');
 
 export interface DartAdapterConfig {
   projectRoot?: string;
 }
 
-export interface InitResult {
-  success: boolean;
-  files: string[];
-}
-
-export interface CommandResult {
-  success: boolean;
-  output: string;
-}
-
-export interface QualityGateResult {
-  passed: boolean;
-  score: number;
-  issues: string[];
-}
-
-export class DartAdapter {
+export class DartAdapter extends AdapterBase {
   readonly name = 'dart';
+  readonly language = 'dart';
   readonly capabilities = [
     'detect', 'init', 'generateEntity', 'runLint',
     'runTests', 'runBuild', 'qualityGate',
   ];
 
-  private config: DartAdapterConfig;
-
   constructor(config: DartAdapterConfig = {}) {
-    this.config = config;
+    super(config);
   }
 
   detect(projectRoot: string): boolean {
@@ -89,17 +75,17 @@ export class DartAdapter {
 
   runLint(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('dart analyze', root);
+    return this.exec('dart analyze', root);
   }
 
   runTests(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('dart test', root);
+    return this.exec('dart test', root);
   }
 
   runBuild(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('dart compile exe bin/main.dart', root);
+    return this.exec('dart compile exe bin/main.dart', root);
   }
 
   qualityGate(projectRoot?: string): Promise<QualityGateResult> {
@@ -122,21 +108,6 @@ export class DartAdapter {
       passed: issues.length === 0,
       score,
       issues,
-    });
-  }
-
-  private execCommand(command: string, cwd: string): Promise<CommandResult> {
-    return new Promise((resolve) => {
-      try {
-        const output = execSync(command, { cwd, encoding: 'utf-8', stdio: 'pipe', timeout: 60000 });
-        resolve({ success: true, output: output || 'Command completed' });
-      } catch (_err) {
-        const error = err as { stdout?: string; stderr?: string; message?: string };
-        resolve({
-          success: false,
-          output: error.stdout || error.stderr || error.message || 'Command failed',
-        });
-      }
     });
   }
 }

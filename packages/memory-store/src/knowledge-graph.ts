@@ -7,6 +7,7 @@
  */
 
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 
 export interface GraphNode {
   id: string;
@@ -117,7 +118,7 @@ export class KnowledgeGraph {
     const visited = new Set<string>();
     const queue: Array<{ id: string; depth: number; path: string[] }> = [{ id: startId, depth: 0, path: [startId] }];
     while (queue.length > 0) {
-      const current = queue.shift()!;
+      const current = queue.shift() as (typeof queue)[number];
       if (visited.has(current.id)) continue;
       visited.add(current.id);
       const node = this.nodes.get(current.id);

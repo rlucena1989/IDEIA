@@ -1,4 +1,6 @@
 import { AiProvider, ProviderConfig, ProviderResponse, getApiKey } from './index';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('openrouter');
 
 export class OpenRouterProvider implements AiProvider {
   readonly name = 'openrouter';

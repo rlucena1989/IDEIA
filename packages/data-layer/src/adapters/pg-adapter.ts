@@ -1,4 +1,5 @@
 import { DatabaseAdapter, DataLayerConfig, Migration, QueryResult } from '../types';
+import { createLogger } from '@ideia/logger';
 
 type PoolType = { connect(): Promise<{ query: (text: string, params?: unknown[]) => Promise<{ rows: unknown[]; rowCount: number }>; release: () => void }>; end: () => Promise<void> };
 

@@ -1,4 +1,5 @@
 import { existsSync, readFileSync, mkdirSync, writeFileSync } from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import { dirname } from 'node:path';
 
 export interface CacheEntry {

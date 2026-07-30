@@ -1,4 +1,6 @@
 import { FileEntry, buildVars, generateFiles, GeneratorOptions, printGeneratorResult } from './engine';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('api-contract');
 
 interface ApiContractOptions extends GeneratorOptions {
   type?: 'rest' | 'graphql';

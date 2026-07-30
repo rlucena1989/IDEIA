@@ -1,15 +1,22 @@
 import * as fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'path';
-import { execSync } from 'child_process';
+import { AdapterBase } from '@ideia/adapter-base';
+import type { InitResult, CommandResult, QualityGateResult } from '@ideia/adapter-base';
 import { scaffoldProject, generateController, writeFiles } from './generator';
 
-export interface InitResult { success: boolean; files: string[] }
-export interface CommandResult { success: boolean; output: string }
-export interface QualityGateResult { passed: boolean; score: number; issues: string[] }
+export interface KotlinAdapterConfig {
+  projectRoot?: string;
+}
 
-export class KotlinAdapter {
+export class KotlinAdapter extends AdapterBase {
   readonly name = 'kotlin';
+  readonly language = 'kotlin';
   readonly capabilities = ['detect', 'init', 'generateController', 'runLint', 'runTests', 'runBuild', 'qualityGate'];
+
+  constructor(config: KotlinAdapterConfig = {}) {
+    super(config);
+  }
 
   detect(projectRoot: string): boolean {
     if (fs.existsSync(path.join(projectRoot, 'build.gradle.kts'))) return true;
@@ -38,12 +45,12 @@ export class KotlinAdapter {
   }
 
   generateTemplate(type: string): Promise<string> { return this.generateController(type); }
-  runLint(root?: string): Promise<CommandResult> { return exec('./gradlew ktlintCheck', root); }
-  runTests(root?: string): Promise<CommandResult> { return exec('./gradlew test', root); }
-  runBuild(root?: string): Promise<CommandResult> { return exec('./gradlew build', root); }
+  runLint(root?: string): Promise<CommandResult> { return this.exec('./gradlew ktlintCheck', root); }
+  runTests(root?: string): Promise<CommandResult> { return this.exec('./gradlew test', root); }
+  runBuild(root?: string): Promise<CommandResult> { return this.exec('./gradlew build', root); }
 
   qualityGate(root?: string): Promise<QualityGateResult> {
-    const r = root || process.cwd();
+    const r = root || this.config.projectRoot || process.cwd();
     const issues: string[] = [];
     if (!fs.existsSync(path.join(r, 'build.gradle.kts'))) issues.push('build.gradle.kts not found');
     if (!fs.existsSync(path.join(r, 'src'))) issues.push('src/ not found');
@@ -51,19 +58,7 @@ export class KotlinAdapter {
   }
 }
 
-function exec(command: string, cwd?: string): Promise<CommandResult> {
-  return new Promise((resolve) => {
-    try {
-      const output = execSync(command, { cwd: cwd || process.cwd(), encoding: 'utf-8', stdio: 'pipe', timeout: 120000 });
-      resolve({ success: true, output: output || '' });
-    } catch (_err) {
-      const e = err as { stdout?: string; stderr?: string; message?: string };
-      resolve({ success: false, output: e.stdout || e.stderr || e.message || '' });
-    }
-  });
-}
-
-export function createKotlinAdapter(): KotlinAdapter { return new KotlinAdapter(); }
+export function createKotlinAdapter(config?: KotlinAdapterConfig): KotlinAdapter { return new KotlinAdapter(config); }
 export const name = 'kotlin';
 export const capabilities = ['detect', 'init', 'generateController', 'runLint', 'runTests', 'runBuild', 'qualityGate'];
 export const detect = (projectRoot: string): boolean => new KotlinAdapter().detect(projectRoot);

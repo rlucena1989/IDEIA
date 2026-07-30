@@ -1,4 +1,6 @@
 import { Tutorial } from '../types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('03-api-externa');
 
 export const apiExternaTutorial: Tutorial = {
   id: '03-api-externa',

@@ -4,23 +4,33 @@
     "outDir": "dist",
     "rootDir": "src",
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
-    "strict": true
+    "strict": true,
+    "composite": true
   },
   "include": [
     "src/**/*.ts"
   ],
   "references": [
     {
-      "path": "../llm-provider"
-    },
-    {
-      "path": "../memory-store"
-    },
-    {
       "path": "../logger"
     },
     {
+      "path": "../agent-runtime"
+    },
+    {
       "path": "../contracts"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../data-layer"
+    },
+    {
+      "path": "../memory-store"
     }
   ]
 }

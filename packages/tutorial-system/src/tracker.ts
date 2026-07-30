@@ -1,4 +1,6 @@
 import { TutorialProgress, TutorialId, UserId, Badge } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('tracker');
 
 interface StoredProgress {
   userId: UserId;

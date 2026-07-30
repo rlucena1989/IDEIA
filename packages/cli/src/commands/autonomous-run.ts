@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import * as _crypto from 'node:crypto';
 import { startCycle, endCycle } from '../autonomous/cycle-controller';
 import { detectDrift } from '../autonomous/drift-detector';

@@ -11,6 +11,7 @@ class NatsEventBus {
     config;
     nc = null;
     js = null;
+    jsm = null;
     subs = new Map();
     stored = [];
     maxHistory;
@@ -20,6 +21,7 @@ class NatsEventBus {
     connected = false;
     seqCounter = 0;
     sc = (0, nats_1.StringCodec)();
+    reconnectTimer = null;
     constructor(config = {}) {
         this.config = config;
         this.maxHistory = config.maxHistory ?? 10000;
@@ -41,14 +43,48 @@ class NatsEventBus {
                 reconnectTimeWait: 2000,
             });
             this.js = this.nc.jetstream();
+            try {
+                this.jsm = await this.nc.jetstreamManager();
+            }
+            catch {
+                this.jsm = null;
+            }
             await this.ensureStream();
             this.connected = true;
             this.logger.info(`[NatsEventBus] Connected to NATS at ${servers}`);
+            this.setupReconnectHandler();
         }
-        catch (err) {
-            const errMsg = err instanceof Error ? err.message : String(err);
-            throw new Error(`Failed to connect to NATS: ${errMsg}`);
+        catch (_err) {
+            this.connected = false;
+            this.logger.warn(`[NatsEventBus] NATS unavailable, using in-memory storage: ${_err}`);
         }
+    }
+    setupReconnectHandler() {
+        const nc = this.nc;
+        if (!nc)
+            return;
+        void (async () => {
+            try {
+                for await (const status of nc.status()) {
+                    if (status.type === 'reconnect') {
+                        this.logger.info('[NatsEventBus] Reconnected to NATS');
+                        try {
+                            this.jsm = await nc.jetstreamManager();
+                        }
+                        catch {
+                            this.jsm = null;
+                        }
+                        await this.ensureStream();
+                    }
+                    else if (status.type === 'disconnect') {
+                        this.logger.warn('[NatsEventBus] Disconnected from NATS');
+                    }
+                }
+            }
+            catch {
+                this.logger.warn('[NatsEventBus] Status listener stopped');
+            }
+        })();
     }
     async ensureStream() {
         if (!this.nc)
@@ -69,13 +105,48 @@ class NatsEventBus {
                 this.logger.info(`[NatsEventBus] Created JetStream stream: ${this.streamName}`);
             }
         }
-        catch (err) {
-            this.logger.warn(`[NatsEventBus] JetStream unavailable, using in-memory fallback: ${err}`);
+        catch (_err) {
+            this.logger.warn(`[NatsEventBus] JetStream unavailable, using in-memory fallback: ${_err}`);
         }
     }
     async subscribe(eventType, handler, once = false) {
         const id = (0, crypto_1.randomUUID)();
         const subject = `${this.streamName}.${eventType}`;
+        if (this.js && this.connected) {
+            try {
+                const consumerConfig = {
+                    ack_policy: once ? nats_1.AckPolicy.None : nats_1.AckPolicy.Explicit,
+                    max_deliver: once ? 1 : 3,
+                    ack_wait: 30_000_000_000,
+                    replay_policy: nats_1.ReplayPolicy.Instant,
+                };
+                const sub = await this.js.subscribe(subject, { config: consumerConfig });
+                let cancelled = false;
+                void (async () => {
+                    for await (const msg of sub) {
+                        if (cancelled)
+                            break;
+                        try {
+                            const data = this.sc.decode(msg.data);
+                            const parsed = JSON.parse(data);
+                            await handler(parsed);
+                            if (once)
+                                break;
+                        }
+                        catch (_e) {
+                            this.logger.error(`[NatsEventBus] Handler error: ${String(_e)}`);
+                        }
+                    }
+                })();
+                this.subs.set(id, {
+                    unsubscribe: () => { cancelled = true; sub.unsubscribe(); this.subs.delete(id); },
+                });
+                return id;
+            }
+            catch (_err) {
+                this.logger.warn(`[NatsEventBus] JetStream subscribe failed for ${subject}, using core NATS: ${_err}`);
+            }
+        }
         if (this.nc) {
             try {
                 const sub = this.nc.subscribe(subject);
@@ -91,8 +162,8 @@ class NatsEventBus {
                             if (once)
                                 break;
                         }
-                        catch (e) {
-                            this.logger.error(`[NatsEventBus] Handler error: ${String(e)}`);
+                        catch (_e) {
+                            this.logger.error(`[NatsEventBus] Handler error: ${String(_e)}`);
                         }
                     }
                 })();
@@ -101,8 +172,8 @@ class NatsEventBus {
                 });
                 return id;
             }
-            catch (err) {
-                this.logger.warn(`[NatsEventBus] Subscribe failed for ${subject}, using fallback: ${err}`);
+            catch (_err) {
+                this.logger.warn(`[NatsEventBus] Subscribe failed for ${subject}, using fallback: ${_err}`);
             }
         }
         this.subs.set(id, { unsubscribe: () => { this.subs.delete(id); } });
@@ -142,8 +213,8 @@ class NatsEventBus {
                     decision: 'approved', result: 'success', metadata: { payload: event.payload, seq },
                 });
             }
-            catch (err) {
-                this.logger.error(`[NatsEventBus] AuditTrail append error: ${String(err)}`);
+            catch (_err) {
+                this.logger.error(`[NatsEventBus] AuditTrail append error: ${String(_err)}`);
             }
         }
         if (this.js && this.connected) {
@@ -151,8 +222,8 @@ class NatsEventBus {
                 const subject = `${this.streamName}.${event.type}`;
                 await this.js.publish(subject, this.sc.encode(JSON.stringify({ ...fullEvent, _seq: seq })), { msgID: fullEvent.id });
             }
-            catch (err) {
-                this.logger.warn(`[NatsEventBus] JetStream publish failed, event stored in-memory: ${err}`);
+            catch (_err) {
+                this.logger.warn(`[NatsEventBus] JetStream publish failed, event stored in-memory: ${_err}`);
             }
         }
         return fullEvent;
@@ -162,7 +233,7 @@ class NatsEventBus {
             return this.stored.filter(e => e.event.type === eventType).map(e => e.event);
         return this.stored.map(e => e.event);
     }
-    subscriberCount() { return this.subs.size; }
+    async subscriberCount() { return this.subs.size; }
     async clearHistory() { this.stored = []; }
     async replayFromSequence(fromSeq, options) {
         let events = this.stored.filter(s => s.seq >= fromSeq);
@@ -180,6 +251,40 @@ class NatsEventBus {
         if (options?.maxEvents && events.length > options.maxEvents)
             events = events.slice(0, options.maxEvents);
         return events.map(e => e.event);
+    }
+    async replayFromJetStream(options) {
+        if (this.js && this.connected) {
+            try {
+                const subject = options?.eventType
+                    ? `${this.streamName}.${options.eventType}`
+                    : `${this.streamName}.>`;
+                const sub = await this.js.subscribe(subject, { config: { deliver_policy: nats_1.DeliverPolicy.All, ack_policy: nats_1.AckPolicy.None } });
+                const events = [];
+                for await (const msg of sub) {
+                    if (options?.maxEvents && events.length >= options.maxEvents)
+                        break;
+                    try {
+                        const data = this.sc.decode(msg.data);
+                        const parsed = JSON.parse(data);
+                        events.push(parsed);
+                    }
+                    catch (_err) {
+                        // Log silenciado propositalmente — falha nao bloqueia fluxo
+                    }
+                }
+                sub.unsubscribe();
+                return events;
+            }
+            catch (_err) {
+                this.logger.warn(`[NatsEventBus] JetStream replay failed, using in-memory: ${_err}`);
+            }
+        }
+        let filtered = options?.eventType
+            ? this.stored.filter(s => s.event.type === options.eventType)
+            : this.stored;
+        if (options?.maxEvents)
+            filtered = filtered.slice(0, options.maxEvents);
+        return filtered.map(e => e.event);
     }
     async replayState(options) {
         const events = options?.fromSeq

@@ -1,5 +1,7 @@
 import { runEngineOnce } from './engine';
+import { createLogger } from '@ideia/logger';
 import { runEngineLoop } from './loop';
+const logger = createLogger('orchestrator');
 
 export interface OrchestratorResult {
   success: boolean;

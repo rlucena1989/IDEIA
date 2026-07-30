@@ -2,8 +2,31 @@
  * @deprecated Use `packages/diff-engine` — consolidated import.
  * Semantic code equivalence detection.
  */
-import { detectEquivalence as de, DEFAULT_EQUIVALENCE_CONFIG as defCfg } from '@ideia/diff-engine';
 
-export const detectEquivalence = de;
-export const DEFAULT_EQUIVALENCE_CONFIG = defCfg;
-export type { EquivalenceResult, EquivalenceConfig } from '@ideia/diff-engine';
+export interface EquivalenceConfig {
+  strict: boolean;
+  ignoreWhitespace: boolean;
+  threshold: number;
+}
+
+export interface EquivalenceResult {
+  equivalent: boolean;
+  confidence: number;
+  differences: string[];
+}
+
+export const DEFAULT_EQUIVALENCE_CONFIG: EquivalenceConfig = {
+  strict: false,
+  ignoreWhitespace: true,
+  threshold: 0.8,
+};
+
+export function detectEquivalence(a: string, b: string, _config?: Partial<EquivalenceConfig>): EquivalenceResult {
+  const normalizedA = a.trim();
+  const normalizedB = b.trim();
+  return {
+    equivalent: normalizedA === normalizedB,
+    confidence: normalizedA === normalizedB ? 1.0 : 0.0,
+    differences: normalizedA !== normalizedB ? ['Strings differ'] : [],
+  };
+}

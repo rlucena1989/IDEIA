@@ -3,10 +3,11 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "strict": true
+    "strict": true,
+    "composite": true
   },
   "include": [
-    "src"
+    "src/**/*.ts"
   ],
   "exclude": [
     "**/__tests__"
@@ -25,13 +26,13 @@
       "path": "../audit-trail"
     },
     {
-      "path": "../event-bus"
-    },
-    {
       "path": "../memory-store"
     },
     {
-      "path": "../mcp"
+      "path": "../event-bus"
+    },
+    {
+      "path": "../data-layer"
     },
     {
       "path": "../llm-provider"

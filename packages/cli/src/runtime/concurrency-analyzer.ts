@@ -58,7 +58,7 @@ export function analyzeConcurrency(code: string): ConcurrencyReport {
     const re = new RegExp(rule.pattern.source, 'g');
     while ((match = re.exec(code)) !== null) {
       const line = code.substring(0, match.index).split('\n').length;
-      findings.push({ name: rule.name, category: rule.severity === 'info' ? 'async' : 'promise', severity: rule.severity, pattern: match[0]!.substring(0, 50), line, suggestion: rule.suggestion });
+      findings.push({ name: rule.name, category: rule.severity === 'info' ? 'async' : 'promise', severity: rule.severity, pattern: (match[0] ?? '').substring(0, 50), line, suggestion: rule.suggestion });
     }
   }
 

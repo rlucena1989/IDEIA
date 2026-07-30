@@ -1,4 +1,5 @@
 import type { HintsOutput, Hint, ProblemDescriptor, ContextInfo } from './types';
+import { createLogger } from '@ideia/logger';
 
 function classifyProblem(input: string): { type: string; keywords: string[] } {
   const lower = input.toLowerCase();

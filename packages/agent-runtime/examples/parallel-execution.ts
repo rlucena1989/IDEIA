@@ -6,7 +6,9 @@ import {
   createReviewerTesterParallelNode,
   createDefaultEdgeConditions,
 } from '../src';
+import { createLogger } from '@ideia/logger';
 import { parallelReviewerTesterEdgeCondition } from '../src/edges';
+const logger = createLogger('parallel-execution');
 
 async function runParallelPipeline() {
   const agent = createLangGraphAgent({
@@ -33,16 +35,16 @@ async function runParallelPipeline() {
   const result = await agent.invoke('Build a task management API');
   const duration = Date.now() - start;
 
-  console.log('=== Parallel Execution Example ===');
-  console.log('Input:', result.finalState.input);
-  console.log('Completed:', result.finalState.completed);
-  console.log('Total duration:', duration, 'ms');
-  console.log('Nodes executed:', result.summary.totalNodes);
-  console.log('Timing:');
+  logger.info('=== Parallel Execution Example ===');
+  logger.info(`Input: ${result.finalState.input}`);
+  logger.info(`Completed: ${result.finalState.completed}`);
+  logger.info(`Total duration: ${duration}ms`);
+  logger.info(`Nodes executed: ${result.summary.totalNodes}`);
+  logger.info('Timing:');
   for (const t of result.summary.timing) {
-    console.log(`  ${t.role}: ${t.status} (${t.durationMs}ms)`);
+    logger.info(`  ${t.role}: ${t.status} (${t.durationMs}ms)`);
   }
-  console.log('Outputs:', Object.keys(result.finalState.outputs));
+  logger.info(`Outputs: ${Object.keys(result.finalState.outputs).join(', ')}`);
 }
 
-runParallelPipeline().catch(console.error);
+runParallelPipeline().catch(logger.error);

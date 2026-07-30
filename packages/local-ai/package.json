@@ -1,0 +1,21 @@
+{
+  "name": "@ideia/local-ai",
+  "description": "Local AI Engine — Ollama-based local inference, model management, embeddings, hardware detection",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/logger": "*",
+    "@ideia/llm-provider": "*",
+    "@ideia/quantization-engine": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

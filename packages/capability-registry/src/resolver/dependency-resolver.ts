@@ -1,4 +1,5 @@
 import type { Capability } from '../types/capability';
+import { createLogger } from '@ideia/logger';
 import type { ICapabilityRegistry } from '../registry/registry.interface';
 import type { IDependencyResolver, DependencyGraph, ResolutionResult } from './resolver.interface';
 
@@ -13,7 +14,7 @@ export class CapabilityDependencyResolver implements IDependencyResolver {
     const queue = [...capabilityIds];
 
     while (queue.length > 0) {
-      const id = queue.shift()!;
+      const id = queue.shift() as string;
       if (visited.has(id)) continue;
       visited.add(id);
       const cap = await this.registry.get(id);

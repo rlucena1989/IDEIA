@@ -1,4 +1,6 @@
 import { KnowledgeEntry, LessonLearned, DocumentationArtifact } from './knowledge-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('knowledge-report');
 
 export interface KnowledgeReport {
   generatedAt: string;

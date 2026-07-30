@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
 
 export interface CommandResult {
   success: boolean;
@@ -50,7 +51,7 @@ export function runCommand(config: CommandConfig): CommandResult {
       durationMs: Date.now() - start,
     };
   } catch (_e) {
-    const err = e as { stdout?: string; stderr?: string; status?: number; message?: string };
+    const err = _e as { stdout?: string; stderr?: string; status?: number; message?: string };
     return {
       success: false,
       output: err.stdout?.toString().trim() || err.stderr?.toString().trim() || err.message || '',
@@ -69,7 +70,7 @@ export async function runStep<T>(
     const result = await fn();
     return { step: name, success: true, durationMs: Date.now() - start, result };
   } catch (_err) {
-    return { step: name, success: false, durationMs: Date.now() - start, error: String(err) };
+    return { step: name, success: false, durationMs: Date.now() - start, error: String(_err) };
   }
 }
 
@@ -92,7 +93,7 @@ export async function runWithRetry<T>(
       ]);
       return { success: true, result, attempts: attempt, durationMs: Date.now() - start };
     } catch (_err) {
-      lastError = err instanceof Error ? err.message : String(err);
+      lastError = _err instanceof Error ? _err.message : String(_err);
     }
   }
 

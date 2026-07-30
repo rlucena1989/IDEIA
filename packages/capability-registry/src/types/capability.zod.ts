@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('capability.zod');
 
 const CapabilityCategorySchema = z.enum(['agent', 'tool', 'context-pack', 'adapter', 'registry', 'workflow', 'observation', 'memory', 'pipeline', 'integration']);
 

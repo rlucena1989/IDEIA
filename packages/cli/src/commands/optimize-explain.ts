@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { createLogger } from '@ideia/logger';
 import { printHeader, printLine, finish } from "../utils/output";
 import { dryRunPipeline, modeLabel, estimateTokensSaved, PipelineRequest } from '../runtime/pipeline-orchestrator';
 import { readRequestJson } from './optimize-pipeline';

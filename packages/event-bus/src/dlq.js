@@ -25,8 +25,8 @@ class DeadLetterQueue {
             await this.connectionManager.connect();
             log.info('Initialized');
         }
-        catch (err) {
-            log.info(`Initialized (offline mode): ${err}`);
+        catch (_err) {
+            log.info(`Initialized (offline mode): ${_err}`);
         }
     }
     async add(message) {

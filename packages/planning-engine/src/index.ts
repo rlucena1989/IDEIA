@@ -21,7 +21,9 @@ export type {
 } from './types';
 
 import { PlanningEngine } from './planner';
+import { createLogger } from '@ideia/logger';
 import { PlanningEngineConfig } from './planner';
+const logger = createLogger('index');
 
 export function createPlanningEngine(config?: Partial<PlanningEngineConfig>): PlanningEngine {
   return new PlanningEngine(config);

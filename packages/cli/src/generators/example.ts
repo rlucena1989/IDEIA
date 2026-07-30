@@ -1,4 +1,5 @@
 import { FileEntry, buildVars, generateFiles, GeneratorOptions, printGeneratorResult } from './engine';
+import { createLogger } from '@ideia/logger';
 
 /**
  * Processa example.
@@ -41,9 +42,9 @@ instance.run();
       path: `examples/{{name_kebab}}/{{Name}}.ts`,
       content: `export class {{Name}} {
   async run(): Promise<void> {
-    console.log('{{Name}} example running...');
+    logger.info('{{Name}} example running...');
     // Implementar logica de exemplo especifica para {{Name}} (substituir por caso real)
-    console.log('{{Name}} example completed');
+    logger.info('{{Name}} example completed');
   }
 }
 

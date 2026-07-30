@@ -6,6 +6,9 @@
  */
 
 import crypto from 'crypto';
+import { createLogger } from '@ideia/logger';
+import path from 'path';
+const logger = createLogger('crypto-utils');
 
 const ALGORITHM = 'aes-256-gcm';
 const KEY_LENGTH = 32;
@@ -33,9 +36,15 @@ export function deriveKey(passphrase: string, salt?: Buffer): { key: Buffer; sal
  * Encrypt data with AES-256-GCM
  */
 export function encrypt(plaintext: string, keyOrPassphrase: string | Buffer): EncryptedData {
-  const key = typeof keyOrPassphrase === 'string'
-    ? deriveKey(keyOrPassphrase).key
-    : keyOrPassphrase;
+  let key: Buffer;
+  let salt: string | undefined;
+  if (typeof keyOrPassphrase === 'string') {
+    const derived = deriveKey(keyOrPassphrase);
+    key = derived.key;
+    salt = derived.salt;
+  } else {
+    key = keyOrPassphrase;
+  }
   const iv = crypto.randomBytes(IV_LENGTH);
   const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
   let encrypted = cipher.update(plaintext, 'utf8', 'base64');
@@ -47,8 +56,8 @@ export function encrypt(plaintext: string, keyOrPassphrase: string | Buffer): En
     tag: (cipher.getAuthTag() as Buffer).toString('base64'),
   };
 
-  if (typeof keyOrPassphrase === 'string') {
-    result.salt = deriveKey(keyOrPassphrase).salt;
+  if (salt) {
+    result.salt = salt;
   }
 
   return result;
@@ -86,10 +95,11 @@ export function generateKey(): string {
 export function createTlsOptions(certPath?: string): object {
   if (certPath) {
     const fs = require('fs');
-    const path = require('path');
+    const pk = fs.readFileSync(path.join(certPath, 'key.pem'));
+    const cert = fs.readFileSync(path.join(certPath, 'cert.pem'));
     return {
-      key: fs.readFileSync(path.join(certPath, 'privkey.pem')),
-      cert: fs.readFileSync(path.join(certPath, 'cert.pem')),
+      key: pk,
+      cert,
       secureOptions: crypto.constants.SSL_OP_NO_TLSv1 | crypto.constants.SSL_OP_NO_TLSv1_1,
       ciphers: 'TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256',
       honorCipherOrder: true,
@@ -103,4 +113,23 @@ export function createTlsOptions(certPath?: string): object {
     ciphers: 'TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256',
     minVersion: 'TLSv1.3',
   };
+}
+
+/**
+ * Load TLS options from certs/ directory, returning null if certs don't exist.
+ * Enables auto-detection: HTTPS when certs present, HTTP fallback otherwise.
+ */
+export function loadTlsOptions(certDir?: string): object | null {
+  const dir = certDir || path.join(process.cwd(), 'certs');
+  const fs = require('fs');
+  try {
+    const keyPath = path.join(dir, 'key.pem');
+    const certPath = path.join(dir, 'cert.pem');
+    if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
+      return createTlsOptions(dir);
+    }
+  } catch {
+    // certs not available — HTTP fallback
+  }
+  return null;
 }

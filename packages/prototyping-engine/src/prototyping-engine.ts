@@ -1,8 +1,9 @@
 import * as fs from 'fs'; import * as path from 'path';
+import { createLogger } from '@ideia/logger';
 import { AppBlueprint, AppType, PrototypeResult, ScaffoldFile } from './types';
 const BLUEPRINTS: Record<string, ScaffoldFile[]> = {
   api: [
-    { path: 'src/index.ts', content: 'import express from "express";\nconst app = express();\napp.listen(3000, () => console.log("running"));\n', template: false },
+    { path: 'src/index.ts', content: "import express from \"express\";\nconst app = express();\napp.listen(3000, () => logger.info('running'));\n", template: false },
     { path: 'src/{{name}}.ts', content: 'export const greet = (name: string) => `Hello {{name}}`;\n', template: true },
     { path: 'package.json', content: '{"name":"{{name}}","version":"1.0.0","scripts":{"start":"ts-node src/index.ts"}}\n', template: true },
     { path: 'tsconfig.json', content: '{"compilerOptions":{"target":"ES2022","module":"commonjs","strict":true}}\n', template: false },
@@ -13,7 +14,7 @@ const BLUEPRINTS: Record<string, ScaffoldFile[]> = {
     { path: 'index.html', content: '<html><body><div id="root"></div></body></html>\n', template: false },
   ],
   cli: [
-    { path: 'src/index.ts', content: '#!/usr/bin/env node\nconsole.log("{{name}} CLI");\n', template: true },
+    { path: 'src/index.ts', content: "#!/usr/bin/env node\nlogger.info('{{name}} CLI');\n", template: true },
     { path: 'package.json', content: '{"name":"{{name}}","bin":{"{{name}}":"./dist/index.js"}}\n', template: true },
   ],
 };

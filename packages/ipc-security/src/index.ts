@@ -1,0 +1,13 @@
+export { IPCSecureProtocol, type IPCRequest, type IPCResponse, PROTOCOL_VERSION, MAX_PAYLOAD_SIZE } from './protocol';
+export { CapabilityChecker, issueToken, type CapabilityToken } from './capability-checker';
+export { SecureIPCRouter, type IPCHandler } from './secure-router';
+export { FsReadSchema, FsWriteSchema, ShellExecSchema, AgentSpawnSchema, DialogOpenSchema, NatsPublishSchema, IPCRequestEnvelope } from './schemas';
+export { SideChannelPrevention, secureIpcHandler } from './side-channel';
+export { AuditLogger, type AuditEntry } from './audit-logger';
+export { FsScopeValidator } from './fs-scope';
+export { sanitizeIpcParams, deepFreeze } from './sanitize';
+export { AntiReplayProtection } from './anti-replay';
+export { type IIpcAdapter, ElectronIpcAdapter, TauriIpcAdapter, TheiaIpcAdapter } from './unified-ipc';
+export { CapabilityHierarchy, type CapabilityNode } from './capability-tree';
+export { AdaptiveRateLimiter } from './adaptive-rate-limiter';
+export { auditCurrentIpc, type IPCAuditResult } from './audit-current-ipc';

@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { DeployEnvironment } from './types';
@@ -105,7 +106,7 @@ export class GitOpsManager {
         currentCommit: '',
         driftDetected: false,
         lastSyncAt: new Date().toISOString(),
-        error: String(err),
+        error: String(_err),
       };
 
       this.lastSyncResult = result;

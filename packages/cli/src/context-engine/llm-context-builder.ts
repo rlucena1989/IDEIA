@@ -1,6 +1,8 @@
 import { SelfAwareness } from '../ecosystem/self-awareness';
+import { createLogger } from '@ideia/logger';
 import { ServiceCatalog } from '../ecosystem/service-catalog';
 import { CapabilityDiscovery } from '../ecosystem/capability-discovery';
+const logger = createLogger('llm-context-builder');
 
 interface TaskProfile {
   category: 'bugfix' | 'feature' | 'refactor' | 'question' | 'documentation' | 'devops' | 'test' | 'review' | 'unknown';

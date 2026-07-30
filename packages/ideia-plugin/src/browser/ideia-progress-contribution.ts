@@ -1,5 +1,7 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { ProgressService } from '@theia/core/lib/common/progress-service';
+const logger = createLogger('ideia-progress-contribution');
 
 @injectable()
 export class IDEIA_ProgressContribution {

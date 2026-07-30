@@ -1,4 +1,6 @@
 import { Command } from "commander";
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.runtime-hooks');
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
@@ -102,7 +104,7 @@ function runScanner(scanner: string, _filePath: string): { passed: boolean; outp
 }
 
 function handleFileChange(filePath: string, event: string, config: RuntimeHookConfig): void {
-  console.log(`\n📝 File ${event}: ${filePath}`);
+  logger.info('\n📝 File ${event}: ${filePath}');
 
   const violations: ViolationEvent[] = [];
 
@@ -122,19 +124,19 @@ function handleFileChange(filePath: string, event: string, config: RuntimeHookCo
       violations.push(violation);
       logViolation(violation);
 
-      console.log(`  ❌ Violation detected by ${scanner}`);
-      console.log(`     ${violation.violation.split("\n")[0]}`);
+      logger.info('  ❌ Violation detected by ${scanner}');
+      logger.info('     ${violation.violation.split("\n")[0]}');
     } else {
-      console.log(`  ✅ ${scanner} passed`);
+      logger.info('  ✅ ${scanner} passed');
     }
   });
 
   if (violations.length > 0 && config.action === "block") {
-    console.log(`\n🚫 File change BLOCKED due to ${violations.length} violation(s)`);
+    logger.info('\n🚫 File change BLOCKED due to ${violations.length} violation(s)');
   } else if (violations.length > 0) {
-    console.log(`\n⚠️  ${violations.length} violation(s) logged (dry-run mode)`);
+    logger.info('\n⚠️  ${violations.length} violation(s) logged (dry-run mode)');
   } else {
-    console.log(`  ✅ All scanners passed`);
+    logger.info('  ✅ All scanners passed');
   }
 }
 
@@ -152,7 +154,7 @@ export function hooksCommand(): Command {
     .action(() => {
       const config = getDefaultConfig();
       saveConfig(config);
-      console.log("✅ Runtime hooks config initialized at .ai/hooks/runtime.yaml");
+      logger.info('✅ Runtime hooks config initialized at .ai/hooks/runtime.yaml');
     });
 
   hooks
@@ -166,11 +168,11 @@ export function hooksCommand(): Command {
         config.action = "log";
       }
 
-      console.log("\n👁️  Starting runtime file watcher...\n");
-      console.log(`Watch paths: ${config.watch_paths.join(", ")}`);
-      console.log(`Ignore paths: ${config.ignore_paths.join(", ")}`);
-      console.log(`Scanners: ${config.scanners.join(", ")}`);
-      console.log(`Action: ${config.action}\n`);
+      logger.info('\n👁️  Starting runtime file watcher...\n');
+      logger.info('Watch paths: ${config.watch_paths.join(", ")}');
+      logger.info('Ignore paths: ${config.ignore_paths.join(", ")}');
+      logger.info('Scanners: ${config.scanners.join(", ")}');
+      logger.info('Action: ${config.action}\n');
 
       const watcher = chokidar.watch(config.watch_paths, {
         ignored: config.ignore_paths,
@@ -183,10 +185,10 @@ export function hooksCommand(): Command {
         .on("change", (path) => handleFileChange(path, "change", config))
         .on("unlink", (path) => handleFileChange(path, "unlink", config));
 
-      console.log("✅ Watcher started. Press Ctrl+C to stop.\n");
+      logger.info('✅ Watcher started. Press Ctrl+C to stop.\n');
 
       process.on("SIGINT", () => {
-        console.log("\n\n🛑 Stopping watcher...");
+        logger.info('\n\n🛑 Stopping watcher...');
         watcher.close();
         process.exit(0);
       });
@@ -198,21 +200,21 @@ export function hooksCommand(): Command {
     .action(() => {
       const config = loadConfig();
       
-      console.log("\n📊 Runtime Hooks Status:\n");
-      console.log(`Enabled: ${config.enabled ? "Yes" : "No"}`);
-      console.log(`Action: ${config.action}`);
-      console.log(`Watch paths: ${config.watch_paths.length}`);
-      console.log(`Ignore paths: ${config.ignore_paths.length}`);
-      console.log(`Scanners: ${config.scanners.length}`);
-      console.log(`Report dir: ${config.report_dir}`);
+      logger.info('\n📊 Runtime Hooks Status:\n');
+      logger.info('Enabled: ${config.enabled ? "Yes" : "No"}');
+      logger.info('Action: ${config.action}');
+      logger.info('Watch paths: ${config.watch_paths.length}');
+      logger.info('Ignore paths: ${config.ignore_paths.length}');
+      logger.info('Scanners: ${config.scanners.length}');
+      logger.info('Report dir: ${config.report_dir}');
 
       const logFile = path.join(process.cwd(), REPORTS_DIR, "violations.jsonl");
       if (fs.existsSync(logFile)) {
         const content = fs.readFileSync(logFile, "utf8").trim();
         const lines = content.split("\n").filter(l => l);
-        console.log(`\nTotal violations logged: ${lines.length}`);
+        logger.info('\nTotal violations logged: ${lines.length}');
       } else {
-        console.log(`\nNo violations logged yet.`);
+        logger.info('\nNo violations logged yet.');
       }
     });
 
@@ -224,7 +226,7 @@ export function hooksCommand(): Command {
       const logFile = path.join(process.cwd(), REPORTS_DIR, "violations.jsonl");
       
       if (!fs.existsSync(logFile)) {
-        console.log("No violations logged yet.");
+        logger.info('No violations logged yet.');
         return;
       }
 
@@ -233,15 +235,15 @@ export function hooksCommand(): Command {
       const limit = parseInt(options.limit);
       const recent = lines.slice(-limit);
 
-      console.log(`\n📋 Recent violations (${recent.length}):\n`);
+      logger.info('\n📋 Recent violations (${recent.length}):\n');
       
       recent.forEach((line, index) => {
         const event: ViolationEvent = JSON.parse(line);
-        console.log(`${index + 1}. [${event.timestamp}] ${event.file}`);
-        console.log(`   Event: ${event.event}`);
-        console.log(`   Scanner: ${event.scanner}`);
-        console.log(`   Blocked: ${event.blocked ? "Yes" : "No"}`);
-        console.log(`   Violation: ${event.violation.split("\n")[0]}`);
+        logger.info('${index + 1}. [${event.timestamp}] ${event.file}');
+        logger.info('   Event: ${event.event}');
+        logger.info('   Scanner: ${event.scanner}');
+        logger.info('   Blocked: ${event.blocked ? "Yes" : "No"}');
+        logger.info('   Violation: ${event.violation.split("\n")[0]}');
         console.log();
       });
     });

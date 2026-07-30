@@ -1,10 +1,12 @@
 import { WIZARD_STEPS } from './steps.js'
+import { createLogger } from '@ideia/logger';
 import { PROFILES, AUTONOMY_OPTIONS as _AUTONOMY_OPTIONS } from './types.js'
 import type { WizardMode, ProfileType, AutonomyLevel, WizardState, WizardAnswer, WizardSummary, WizardStep } from './types.js'
 
 export class OnboardingWizard {
   private state: WizardState
   private active: boolean = false
+  private autoAdvanceMode: boolean = false
 
   constructor() {
     this.state = this.createInitialState()
@@ -16,8 +18,28 @@ export class OnboardingWizard {
     this.state.mode = mode
     this.state.started = true
     this.state.startedAt = Date.now()
+    this.autoAdvanceMode = mode === 'quick'
 
     return this.getFilteredSteps()[0]
+  }
+
+  getSteps(): WizardStep[] {
+    return this.getFilteredSteps()
+  }
+
+  getState(): WizardState {
+    return { ...this.state, answers: this.state.answers as any }
+  }
+
+  getProgress(): { current: number; total: number; percent: number } {
+    const steps = this.getFilteredSteps()
+    const total = steps.length
+    const current = Math.min(this.state.currentStep + 1, total)
+    return {
+      current,
+      total,
+      percent: total > 0 ? Math.round((current / total) * 100) : 0
+    }
   }
 
   getCurrentStep(): WizardStep | null {
@@ -42,6 +64,15 @@ export class OnboardingWizard {
 
     if (step.id === 'autonomy') {
       this.state.autonomyLevel = answers.answers.level as AutonomyLevel
+    }
+
+    if (this.autoAdvanceMode && step.id !== 'summary') {
+      const defaults = this.buildStepDefaults(step)
+      for (const [key, value] of Object.entries(defaults)) {
+        if (!(key in (answers.answers ?? {}))) {
+          this.state.answers.set(step.id, { ...this.state.answers.get(step.id), [key]: value } as Record<string, string | number | boolean | string[]>)
+        }
+      }
     }
 
     this.state.currentStep++
@@ -101,11 +132,21 @@ export class OnboardingWizard {
       currentStep: 0,
       profile: null,
       autonomyLevel: null,
-      answers: new Map(),
+      answers: new Map() as any,
       started: false,
       completed: false,
       startedAt: 0,
       completedAt: null
     }
+  }
+
+  private buildStepDefaults(step: WizardStep): Record<string, unknown> {
+    const defaults: Record<string, unknown> = {}
+    for (const field of step.fields) {
+      if (field.defaultValue !== undefined) {
+        defaults[field.id] = field.defaultValue
+      }
+    }
+    return defaults
   }
 }

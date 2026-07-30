@@ -1,3 +1,6 @@
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('observability-engine:opentelemetry');
+
 export interface OTelExporterConfig {
   endpoint?: string;
   serviceName?: string;
@@ -35,8 +38,7 @@ export interface OTelExporter {
 export class ConsoleExporter implements OTelExporter {
   async exportSpans(spans: SpanData[]): Promise<void> {
     for (const span of spans) {
-      console.log(JSON.stringify({
-        __otel: 'span',
+      logger.info('OTel span', {
         traceId: span.traceId,
         spanId: span.spanId,
         parentSpanId: span.parentSpanId,
@@ -45,20 +47,19 @@ export class ConsoleExporter implements OTelExporter {
         status: span.status,
         attributes: span.attributes,
         events: span.events,
-      }));
+      });
     }
   }
 
   async exportMetrics(metrics: MetricData[]): Promise<void> {
     for (const metric of metrics) {
-      console.log(JSON.stringify({
-        __otel: 'metric',
+      logger.info('OTel metric', {
         name: metric.name,
         value: metric.value,
         type: metric.type,
         timestamp: metric.timestamp,
         attributes: metric.attributes,
-      }));
+      });
     }
   }
 

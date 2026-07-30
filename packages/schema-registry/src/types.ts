@@ -54,3 +54,9 @@ export interface SchemaMetadata {
   createdAt: string;
   tags: string[];
 }
+
+export interface SchemaRegistrySnapshot {
+  schemas: SchemaMetadata[];
+  generatedAt: string;
+  version: string;
+}

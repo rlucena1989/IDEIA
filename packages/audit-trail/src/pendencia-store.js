@@ -5,8 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PendenciaStore = void 0;
 const fs_1 = __importDefault(require("fs"));
+const logger_1 = require("@ideia/logger");
 const path_1 = __importDefault(require("path"));
 const crypto_1 = __importDefault(require("crypto"));
+const logger = (0, logger_1.createLogger)('pendencia-store');
 class PendenciaStore {
     filePath;
     constructor(filePath) {

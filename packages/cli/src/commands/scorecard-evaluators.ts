@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { createLogger } from '@ideia/logger';
 import path from "node:path";
 import {
   npmAudit, coveragePct, pylintOk, golintOk, oldestDep, ex, hasContent,
@@ -221,7 +222,7 @@ function evalCodeQuality(): ScorecardCategory {
     { id: "COD-001", description: "Menos de 100 usos de `: any`", passed: noExplicitAny < 100, weight: 3, value: noExplicitAny, hint: `${noExplicitAny} usos de :any encontrados` },
     { id: "COD-002", description: "Menos de 3 arquivos > 100KB", passed: largeFiles < 3, weight: 2, value: largeFiles, hint: `${largeFiles} arquivos grandes` },
     { id: "COD-003", description: "ESLint configurado", passed: eslintOk, weight: 2 },
-    { id: "COD-004", description: "TypeScript strict mode", passed: tsStrict && hasContent("tsconfig.json") && read("tsconfig.json")!.includes("strict"), weight: 1 },
+    { id: "COD-004", description: "TypeScript strict mode", passed: tsStrict && hasContent("tsconfig.json") && (read("tsconfig.json") ?? '').includes("strict"), weight: 1 },
   ];
   return { name: "Qualidade de CÃ³digo", weight: 8, score: calcScore(items), maxScore: 100, items };
 }

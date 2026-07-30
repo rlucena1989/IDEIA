@@ -1,5 +1,7 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
+const logger = createLogger('coverage-converter');
 
 export interface IstanbulSummary {
   [filePath: string]: {

@@ -1,4 +1,6 @@
 import { GenerationScope, GenerationPlan, PlannedArtifact } from './artifact-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('content-planner');
 
 export function planContent(scope: GenerationScope): GenerationPlan {
   const artifacts: PlannedArtifact[] = scope.requiredArtifacts.map((artifact, index) => ({

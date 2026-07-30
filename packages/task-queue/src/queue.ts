@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { createLogger } from '@ideia/logger';
 import { v4 as uuid } from 'uuid';
 import { Task, TaskInput, TaskStatus, TaskPriority, TaskHandler, TaskResult, RETRY_DELAYS } from './types';
 
@@ -44,7 +45,7 @@ export class TaskQueue extends EventEmitter {
     this.processing = true;
 
     while (this.running && this.queue.length > 0 && this.getRunningCount() < this.concurrency) {
-      const task = this.queue.shift()!;
+      const task = this.queue.shift() as Task;
       this.executeTask(task).catch(() => {});
     }
 
@@ -69,7 +70,7 @@ export class TaskQueue extends EventEmitter {
       this.emit('completed', task);
       return { success: true, taskId: task.id, result, duration: Date.now() - start };
     } catch (_err) {
-      const error = err instanceof Error ? err.message : String(err);
+      const error = _err instanceof Error ? _err.message : String(_err);
       task.retries++;
       const maxRetries = task.maxRetries ?? 3;
       if (task.retries <= maxRetries) {

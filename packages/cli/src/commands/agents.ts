@@ -1,3 +1,4 @@
+﻿import { createLogger } from '@ideia/logger';
 import { Command } from "commander";
 import fs from "node:fs";
 import path from "node:path";
@@ -7,6 +8,8 @@ import {
   loadSession,
   listSessions,
 } from '../local-ai/collaboration';
+
+const log = createLogger('cli:commands:agents');
 
 /** Interface que define a estrutura de agent definition. */
 export interface AgentDefinition {
@@ -45,7 +48,7 @@ function getDefaultRegistry(): AgentRegistry {
     agents: {
       planner: {
         name: "planner",
-        description: "Planeja arquitetura, não altera código diretamente",
+        description: "Planeja arquitetura, nÃ£o altera cÃ³digo diretamente",
         can_write: false,
         context_profile: "feature",
         read_paths: ["**/*"],
@@ -54,7 +57,7 @@ function getDefaultRegistry(): AgentRegistry {
       },
       engineer: {
         name: "engineer",
-        description: "Implementa código seguindo governança",
+        description: "Implementa cÃ³digo seguindo governanÃ§a",
         can_write: true,
         context_profile: "feature",
         read_paths: ["src/**/*", "packages/**/*"],
@@ -63,7 +66,7 @@ function getDefaultRegistry(): AgentRegistry {
       },
       qa: {
         name: "qa",
-        description: "Gate de verificação (read-only + executa checks)",
+        description: "Gate de verificaÃ§Ã£o (read-only + executa checks)",
         can_write: false,
         context_profile: "bugfix",
         read_paths: ["**/*"],
@@ -72,7 +75,7 @@ function getDefaultRegistry(): AgentRegistry {
       },
       reviewer: {
         name: "reviewer",
-        description: "Revisão adversarial (read-only)",
+        description: "RevisÃ£o adversarial (read-only)",
         can_write: false,
         context_profile: "refactor",
         read_paths: ["**/*"],
@@ -81,7 +84,7 @@ function getDefaultRegistry(): AgentRegistry {
       },
       security: {
         name: "security",
-        description: "Auditoria de segurança e compliance (read-only)",
+        description: "Auditoria de seguranÃ§a e compliance (read-only)",
         can_write: false,
         context_profile: "security-review",
         read_paths: ["**/*"],
@@ -90,7 +93,7 @@ function getDefaultRegistry(): AgentRegistry {
       },
       docs: {
         name: "docs",
-        description: "Documentação (escrita limitada a docs/)",
+        description: "DocumentaÃ§Ã£o (escrita limitada a docs/)",
         can_write: true,
         context_profile: "docs",
         read_paths: ["**/*.md", ".ai/**/*"],
@@ -122,7 +125,7 @@ function saveRegistry(registry: AgentRegistry): void {
 
 /**
  * Processa agents.
- * @returns O resultado da operação.
+ * @returns O resultado da operaÃ§Ã£o.
  */
 export function listAgents(): AgentDefinition[] {
   const registry = loadRegistry();
@@ -130,9 +133,9 @@ export function listAgents(): AgentDefinition[] {
 }
 
 /**
- * Obtém agent.
+ * ObtÃ©m agent.
  * @param name - Valor name.
- * @returns O resultado da operação.
+ * @returns O resultado da operaÃ§Ã£o.
  */
 export function getAgent(name: string): AgentDefinition | null {
   const registry = loadRegistry();
@@ -141,7 +144,7 @@ export function getAgent(name: string): AgentDefinition | null {
 
 /**
  * Valida agent permissions.
- * @returns O resultado da operação.
+ * @returns O resultado da operaÃ§Ã£o.
  */
 export function validateAgentPermissions(): {
   valid: boolean;
@@ -159,7 +162,7 @@ export function validateAgentPermissions(): {
 
     if (agent.can_write && agent.forbidden_paths.includes("**/*")) {
       violations.push(
-        `${agent.name}: agente com escrita não pode ter forbidden_paths = **/*`
+        `${agent.name}: agente com escrita nÃ£o pode ter forbidden_paths = **/*`
       );
     }
 
@@ -184,11 +187,11 @@ export function initRegistry(): void {
 
 /**
  * Processa command.
- * @returns O resultado da operação.
+ * @returns O resultado da operaÃ§Ã£o.
  */
 export function agentsCommand(): Command {
   const agents = new Command("agents")
-    .description("Gerencia agentes especializados com permissões limitadas");
+    .description("Gerencia agentes especializados com permissÃµes limitadas");
 
   agents
     .command("list")
@@ -200,81 +203,81 @@ export function agentsCommand(): Command {
       if (options.json) {
         console.log(JSON.stringify(agentList, null, 2));
       } else {
-        console.log("\n🤖 Agentes Registrados:\n");
+        log.info('\nðŸ¤– Agentes Registrados:\n');
         agentList.forEach(agent => {
-          console.log(`${agent.name}`);
-          console.log(`  Descrição: ${agent.description}`);
-          console.log(`  Pode escrever: ${agent.can_write ? "Sim" : "Não"}`);
-          console.log(`  Context profile: ${agent.context_profile}`);
-          console.log(`  Read paths: ${agent.read_paths.length} padrões`);
-          console.log(`  Write paths: ${agent.write_paths.length} padrões`);
-          console.log(`  Forbidden paths: ${agent.forbidden_paths.length} padrões`);
-          console.log();
+          log.info('${agent.name}');
+          log.info('  DescriÃ§Ã£o: ${agent.description}');
+          log.info('  Pode escrever: ${agent.can_write ? "Sim" : "NÃ£o"}');
+          log.info('  Context profile: ${agent.context_profile}');
+          log.info('  Read paths: ${agent.read_paths.length} padrÃµes');
+          log.info('  Write paths: ${agent.write_paths.length} padrÃµes');
+          log.info('  Forbidden paths: ${agent.forbidden_paths.length} padrÃµes');
+          log.info('');
         });
       }
     });
 
   agents
     .command("validate")
-    .description("Verifica que nenhum agente tem permissão global")
+    .description("Verifica que nenhum agente tem permissÃ£o global")
     .action(() => {
-      console.log("\n🔍 Validando permissões dos agentes...\n");
+      log.info('\nðŸ” Validando permissÃµes dos agentes...\n');
       const result = validateAgentPermissions();
 
       if (result.valid) {
-        console.log("✅ Todas as permissões estão válidas.");
+        log.info('âœ… Todas as permissÃµes estÃ£o vÃ¡lidas.');
       } else {
-        console.error("❌ Violações encontradas:\n");
-        result.violations.forEach(v => console.error(`  - ${v}`));
+        log.error("âŒ ViolaÃ§Ãµes encontradas:\n");
+        result.violations.forEach(v => log.error(`  - ${v}`));
         process.exit(1);
       }
     });
 
   agents
     .command("init")
-    .description("Inicializa registry de agentes com configurações padrão")
+    .description("Inicializa registry de agentes com configuraÃ§Ãµes padrÃ£o")
     .action(() => {
       initRegistry();
-      console.log("✅ Registry de agentes inicializado em .ai/agents/registry.yaml");
+      log.info('âœ… Registry de agentes inicializado em .ai/agents/registry.yaml');
     });
 
   agents
     .command("show")
-    .description("Mostra detalhes de um agente específico")
+    .description("Mostra detalhes de um agente especÃ­fico")
     .argument("<name>", "Nome do agente")
     .action((name) => {
       const agent = getAgent(name);
       if (!agent) {
-        console.error(`❌ Agente '${name}' não encontrado.`);
+        log.error(`âŒ Agente '${name}' nÃ£o encontrado.`);
         process.exit(1);
       }
 
-      console.log(`\n🤖 Agente: ${agent.name}\n`);
-      console.log(`Descrição: ${agent.description}`);
-      console.log(`Pode escrever: ${agent.can_write ? "Sim" : "Não"}`);
-      console.log(`Context profile: ${agent.context_profile}\n`);
+      log.info('\nðŸ¤– Agente: ${agent.name}\n');
+      log.info('DescriÃ§Ã£o: ${agent.description}');
+      log.info('Pode escrever: ${agent.can_write ? "Sim" : "NÃ£o"}');
+      log.info('Context profile: ${agent.context_profile}\n');
 
-      console.log("Read paths:");
-      agent.read_paths.forEach(p => console.log(`  - ${p}`));
+      log.info('Read paths:');
+      agent.read_paths.forEach(p => log.info('  - ${p}'));
 
-      console.log("\nWrite paths:");
-      agent.write_paths.forEach(p => console.log(`  - ${p}`));
+      log.info('\nWrite paths:');
+      agent.write_paths.forEach(p => log.info('  - ${p}'));
 
-      console.log("\nForbidden paths:");
-      agent.forbidden_paths.forEach(p => console.log(`  - ${p}`));
+      log.info('\nForbidden paths:');
+      agent.forbidden_paths.forEach(p => log.info('  - ${p}'));
     });
 
   agents
     .command('run')
-    .description('Executa uma task com colaboração multi-agente')
-    .argument('<task>', 'Descrição da tarefa a executar')
+    .description('Executa uma task com colaboraÃ§Ã£o multi-agente')
+    .argument('<task>', 'DescriÃ§Ã£o da tarefa a executar')
     .option('--model <model>', 'Modelo Ollama para os agentes', 'qwen2:0.5b')
     .option('--timeout <ms>', 'Timeout por agente em ms', '30000')
-    .option('--json', 'Saída em JSON')
+    .option('--json', 'SaÃ­da em JSON')
     .action(async (task, options) => {
       const root = process.cwd();
-      console.log(`\n🤖 Multi-Agent Collaboration: "${task}"\n`);
-      console.log(`Model: ${options.model}\n`);
+      log.info('\nðŸ¤– Multi-Agent Collaboration: "${task}"\n');
+      log.info('Model: ${options.model}\n');
 
       const session = await startCollaboration(root, task, {
         ollamaModel: options.model,
@@ -286,32 +289,32 @@ export function agentsCommand(): Command {
         return;
       }
 
-      console.log(`\n✅ Session: ${session.id}`);
-      console.log(`Status: ${session.status}`);
-      console.log(`Agents: ${session.agents.join(', ')}`);
-      console.log(`Messages: ${session.messages.length}\n`);
+      log.info('\nâœ… Session: ${session.id}');
+      log.info('Status: ${session.status}');
+      log.info('Agents: ${session.agents.join(\', \')}');
+      log.info('Messages: ${session.messages.length}\n');
 
-      console.log('📋 Conversation Log:\n');
+      log.info('ðŸ“‹ Conversation Log:\n');
       for (const msg of session.messages) {
-        const icon = msg.type === 'delegation' ? '📤' : msg.type === 'response' ? '📥' : '📋';
-        console.log(`${icon} [${msg.from} → ${msg.to}] ${msg.subject}`);
+        const icon = msg.type === 'delegation' ? 'ðŸ“¤' : msg.type === 'response' ? 'ðŸ“¥' : 'ðŸ“‹';
+        log.info('${icon} [${msg.from} â†’ ${msg.to}] ${msg.subject}');
         const preview = msg.body.length > 300 ? msg.body.slice(0, 300) + '...' : msg.body;
-        console.log(`   ${preview}\n`);
+        log.info('   ${preview}\n');
       }
 
       if (session.result) {
-        console.log('📄 Final Result:\n');
+        log.info('ðŸ“„ Final Result:\n');
         console.log(session.result.slice(0, 2000));
-        if (session.result.length > 2000) console.log('...[truncated]');
+        if (session.result.length > 2000) log.info('...[truncated]');
       }
 
-      console.log(`\n💾 Session saved: .ai/reports/collaboration/${session.id}.json`);
+      log.info(`\nSession saved: .ai/reports/collaboration/${session.id}.json`);
     });
 
   agents
     .command('sessions')
-    .description('Lista sessões de colaboração')
-    .option('--json', 'Saída em JSON')
+    .description('Lista sessÃµes de colaboraÃ§Ã£o')
+    .option('--json', 'SaÃ­da em JSON')
     .action((options) => {
       const root = process.cwd();
       const sessions = listSessions(root);
@@ -322,31 +325,31 @@ export function agentsCommand(): Command {
       }
 
       if (sessions.length === 0) {
-        console.log('No collaboration sessions found.');
+        log.info('No collaboration sessions found.');
         return;
       }
 
-      console.log('\n📋 Collaboration Sessions:\n');
+      log.info('\nðŸ“‹ Collaboration Sessions:\n');
       for (const s of sessions) {
-        const statusIcon = s.status === 'completed' ? '✅' : s.status === 'failed' ? '❌' : '⏳';
-        console.log(`${statusIcon} ${s.id}`);
-        console.log(`   Task: ${s.task.slice(0, 80)}`);
-        console.log(`   Created: ${new Date(s.createdAt).toLocaleString()}`);
-        console.log(`   Status: ${s.status}\n`);
+        const statusIcon = s.status === 'completed' ? 'âœ…' : s.status === 'failed' ? 'âŒ' : 'â³';
+        log.info('${statusIcon} ${s.id}');
+        log.info('   Task: ${s.task.slice(0, 80)}');
+        log.info('   Created: ${new Date(s.createdAt).toLocaleString()}');
+        log.info('   Status: ${s.status}\n');
       }
     });
 
   agents
     .command('conversation')
-    .description('Mostra o log completo de uma sessão de colaboração')
-    .argument('<session-id>', 'ID da sessão')
-    .option('--json', 'Saída em JSON')
+    .description('Mostra o log completo de uma sessÃ£o de colaboraÃ§Ã£o')
+    .argument('<session-id>', 'ID da sessÃ£o')
+    .option('--json', 'SaÃ­da em JSON')
     .action((sessionId, options) => {
       const root = process.cwd();
       const session = loadSession(root, sessionId);
 
       if (!session) {
-        console.error(`❌ Session not found: ${sessionId}`);
+        log.error(`âŒ Session not found: ${sessionId}`);
         process.exit(1);
       }
 
@@ -355,25 +358,25 @@ export function agentsCommand(): Command {
         return;
       }
 
-      console.log(`\n📋 Collaboration: "${session.task}"\n`);
-      console.log(`Session: ${session.id}`);
-      console.log(`Status: ${session.status}`);
-      console.log(`Agents: ${session.agents.join(', ')}`);
-      console.log(`Messages: ${session.messages.length}\n`);
+      log.info('\nðŸ“‹ Collaboration: "${session.task}"\n');
+      log.info('Session: ${session.id}');
+      log.info('Status: ${session.status}');
+      log.info('Agents: ${session.agents.join(\', \')}');
+      log.info('Messages: ${session.messages.length}\n');
 
-      console.log('─'.repeat(60));
+      console.log('â”€'.repeat(60));
       for (const msg of session.messages) {
         const time = new Date(msg.timestamp).toLocaleTimeString();
-        console.log(`\n[${time}] ${msg.from} → ${msg.to}`);
-        console.log(`Type: ${msg.type} | ${msg.subject}`);
-        console.log('─'.repeat(40));
-        console.log(msg.body);
-        console.log('─'.repeat(60));
+        log.info('\n[${time}] ${msg.from} â†’ ${msg.to}');
+        log.info('Type: ${msg.type} | ${msg.subject}');
+        console.log('â”€'.repeat(40));
+        log.info(msg.body);
+        console.log('â”€'.repeat(60));
       }
 
       if (session.result) {
-        console.log('\n📄 Final Result:\n');
-        console.log(session.result);
+        log.info('\nðŸ“„ Final Result:\n');
+        log.info(session.result);
       }
     });
 

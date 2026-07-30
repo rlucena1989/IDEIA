@@ -1,0 +1,26 @@
+{
+  "name": "@ideia/finops",
+  "description": "FinOps cost optimization framework with cost tracking, budget management, anomaly detection and resource optimization",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  }
+}

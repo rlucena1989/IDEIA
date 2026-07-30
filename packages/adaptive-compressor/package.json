@@ -1,0 +1,21 @@
+{
+  "name": "@ideia/adaptive-compressor",
+  "private": true,
+  "description": "Adaptive Context Compression for LLMs — 7-level cascade, neural compressor, causal selector, multi-level cache",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*"
+  }
+}

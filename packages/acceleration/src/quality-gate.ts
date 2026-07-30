@@ -1,4 +1,6 @@
 import { QualityReport, Forecast, PrecisionReport, JobResult, ScorecardAnalysis, CoverageAnalysis } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('quality-gate');
 
 export function qualityGate(
   results: JobResult[],

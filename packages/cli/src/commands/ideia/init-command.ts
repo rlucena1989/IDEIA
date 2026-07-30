@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.ideia.init-command');
 import path from 'node:path';
 import fs from 'node:fs';
 import { detectStack } from '../detect';
@@ -72,12 +74,12 @@ export function ideiaInitCommand(): Command {
         const targetDir = path.resolve(process.cwd(), projectName);
 
         if (options.dryRun) {
-          console.log(`\n[DRY-RUN] IDEIA init: ${projectName}`);
-          console.log(`  Destino: ${targetDir}`);
-          console.log(`  Stack: ${options.stack}`);
-          console.log(`  Database: ${options.database}`);
-          console.log(`  Autonomia: ${options.autonomy}`);
-          console.log(`  Template: ${options.template || 'nenhum'}\n`);
+          logger.info('\n[DRY-RUN] IDEIA init: ${projectName}');
+          logger.info('  Destino: ${targetDir}');
+          logger.info('  Stack: ${options.stack}');
+          logger.info('  Database: ${options.database}');
+          logger.info('  Autonomia: ${options.autonomy}');
+          logger.info('  Template: ${options.template || \'nenhum\'}\n');
           return;
         }
 
@@ -97,17 +99,17 @@ export function ideiaInitCommand(): Command {
 
         generateIdeiaConfig(targetDir, projectName, effectiveStack, options.database);
 
-        console.log(`\n${'='.repeat(56)}`);
-        console.log('  ✅ IDEIA — Projeto inicializado');
-        console.log(`${'='.repeat(56)}\n`);
-        console.log(`  📁 ${targetDir}`);
-        console.log(`  🏗️  ${effectiveStack} + ${options.database}`);
-        console.log(`  🤖 Autonomia: ${options.autonomy}`);
-        console.log(`  📋 Config: .ai/ideia.json\n`);
-        console.log('  Próximos passos:');
-        console.log(`    cd ${projectName}`);
-        console.log('    ideia status');
-        console.log('    ideia idea analyze "Minha ideia"\n');
+        logger.info('\n${\'=\'.repeat(56)}');
+        logger.info('  ✅ IDEIA — Projeto inicializado');
+        logger.info('${\'=\'.repeat(56)}\n');
+        logger.info('  📁 ${targetDir}');
+        logger.info('  🏗️  ${effectiveStack} + ${options.database}');
+        logger.info('  🤖 Autonomia: ${options.autonomy}');
+        logger.info('  📋 Config: .ai/ideia.json\n');
+        logger.info('  Próximos passos:');
+        logger.info('    cd ${projectName}');
+        logger.info('    ideia status');
+        logger.info('    ideia idea analyze "Minha ideia"\n');
 
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);

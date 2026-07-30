@@ -1,4 +1,5 @@
 import * as fs from 'fs'; import * as path from 'path'; import { OnboardingState } from './types';
+import { createLogger } from '@ideia/logger';
 const CONFIG_DIR = '.ai/config'; const CONFIG_FILE = 'onboarding.json';
 export class OnboardingEngine {
   private state: OnboardingState;

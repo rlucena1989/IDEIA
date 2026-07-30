@@ -1,4 +1,5 @@
 import { IOContainer } from './interfaces';
+import { createLogger } from '@ideia/logger';
 import { RealShell, RealFileSystem, RealHttpClient } from './real';
 import { MockIOContainer } from './mock';
 
@@ -16,6 +17,8 @@ export function createIO(): IOContainer {
     shell: new RealShell(),
     fs: new RealFileSystem(),
     http: new RealHttpClient(),
+    output: (data: unknown): void => { console.log(JSON.stringify(data, null, 2)); },
+    outputLines: (lines: string[]): void => { for (const line of lines) console.log(line); },
   };
 }
 

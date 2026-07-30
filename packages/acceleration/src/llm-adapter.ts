@@ -1,4 +1,6 @@
 import { ProviderKind } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('llm-adapter');
 
 export interface LLMRequest {
   model: string;

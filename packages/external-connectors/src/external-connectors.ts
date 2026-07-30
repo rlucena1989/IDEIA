@@ -1,4 +1,5 @@
 import { ConnectorConfig, ConnectorResult, ConnectorType, JiraIssue, SlackMessage, WebhookPayload } from './types';
+import { createLogger } from '@ideia/logger';
 
 export class ExternalConnectors {
   private connectors: Map<string, ConnectorConfig> = new Map();
@@ -42,7 +43,7 @@ export class ExternalConnectors {
         response: response.ok ? undefined : await response.text(),
       };
     } catch (_error) {
-      return { success: false, message: `Slack send failed: ${error instanceof Error ? error.message : String(error)}` };
+      return { success: false, message: `Slack send failed: ${_error instanceof Error ? _error.message : String(_error)}` };
     }
   }
 
@@ -59,7 +60,7 @@ export class ExternalConnectors {
         message: response.ok ? 'Webhook sent' : `Webhook error: ${response.statusText}`,
       };
     } catch (_error) {
-      return { success: false, message: `Webhook failed: ${error instanceof Error ? error.message : String(error)}` };
+      return { success: false, message: `Webhook failed: ${_error instanceof Error ? _error.message : String(_error)}` };
     }
   }
 
@@ -93,7 +94,7 @@ export class ExternalConnectors {
         response: data,
       };
     } catch (_error) {
-      return { success: false, message: `Jira create failed: ${error instanceof Error ? error.message : String(error)}` };
+      return { success: false, message: `Jira create failed: ${_error instanceof Error ? _error.message : String(_error)}` };
     }
   }
 

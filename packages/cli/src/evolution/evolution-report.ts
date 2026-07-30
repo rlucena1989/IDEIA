@@ -1,8 +1,10 @@
 import { StateDelta } from './delta-types';
+import { createLogger } from '@ideia/logger';
 import { EvolutionDecision } from './decision-types';
 import { EvolutionRunResult } from './execution-types';
 import { RevalidationResult } from './revalidation-service';
 import { EvolutionAuditTrail } from './audit-types';
+const logger = createLogger('evolution-report');
 
 export interface EvolutionReport {
   generatedAt: string;

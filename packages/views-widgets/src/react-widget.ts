@@ -1,5 +1,7 @@
 import { IReactWidget, WidgetTitle } from './types';
+import { createLogger } from '@ideia/logger';
 import { BaseWidget } from './widget-core';
+const logger = createLogger('react-widget');
 
 export abstract class ReactWidget extends BaseWidget implements IReactWidget {
   private renderCount = 0;

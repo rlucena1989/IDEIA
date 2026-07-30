@@ -1,4 +1,6 @@
 import { ILogger, LogEntry, LogLevel, LoggerConfig, LOG_LEVEL_NAMES } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('backend-logging');
 
 export class DefaultLogger implements ILogger {
   private config: LoggerConfig;
@@ -72,7 +74,7 @@ export class DefaultLogger implements ILogger {
         console.warn(line);
         break;
       default:
-        console.log(line);
+        logger.info(line);
     }
   }
 }

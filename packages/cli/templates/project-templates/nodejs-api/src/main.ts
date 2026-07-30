@@ -1,4 +1,5 @@
 import express from 'express';
+import { createLogger } from '@ideia/logger';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,7 +11,7 @@ app.get('/api/health', (_req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  logger.info('Server running on port ${port}');
 });
 
 export default app;

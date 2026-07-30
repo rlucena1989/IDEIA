@@ -1,4 +1,5 @@
 import { PlannedStep, Plan, DecompositionStrategy, RiskAssessment, CostEstimate } from './types';
+import { createLogger } from '@ideia/logger';
 
 export interface DecomposerConfig {
   maxSteps: number;

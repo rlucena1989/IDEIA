@@ -95,7 +95,7 @@ export class ConsumerGroupManager {
     try {
       await this.connectionManager.connect();
     } catch (_err) {
-      log.info(`Initialized (offline mode): ${err}`);
+      log.info(`Initialized (offline mode): ${_err}`);
       return;
     }
     log.info('Initialized');

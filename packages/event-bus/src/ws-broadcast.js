@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WSBroadcast = void 0;
 exports.createWSBroadcast = createWSBroadcast;
 const ws_1 = require("ws");
+const logger_1 = require("@ideia/logger");
+const logger = (0, logger_1.createLogger)('ws-broadcast');
 class WSBroadcast {
     wss = null;
     clients = new Set();
@@ -12,7 +14,7 @@ class WSBroadcast {
     constructor(config) {
         this.config = config;
     }
-    start(eventBus) {
+    async start(eventBus) {
         try {
             this.eventBus = eventBus;
             this.wss = new ws_1.WebSocketServer({
@@ -29,7 +31,7 @@ class WSBroadcast {
                     this.clients.delete(ws);
                 });
             });
-            this.subscriptionId = eventBus.subscribe('*', (event) => {
+            this.subscriptionId = await eventBus.subscribe('*', (event) => {
                 const msg = JSON.stringify(event);
                 for (const client of this.clients) {
                     if (client.readyState === ws_1.WebSocket.OPEN) {
@@ -55,9 +57,9 @@ class WSBroadcast {
             return false;
         }
     }
-    stop() {
+    async stop() {
         if (this.eventBus && this.subscriptionId) {
-            this.eventBus.unsubscribe(this.subscriptionId);
+            await this.eventBus.unsubscribe(this.subscriptionId);
         }
         if (this.wss) {
             for (const client of this.clients) {

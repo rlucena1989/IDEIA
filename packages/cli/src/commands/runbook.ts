@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { KnowledgeBase } from '../knowledge/knowledge-base';
 import { createKnowledgeEntry } from '../knowledge/knowledge-types';
 import { buildRunbook, buildRunbookSections } from '../knowledge/runbook-manager';

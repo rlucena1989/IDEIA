@@ -4,9 +4,32 @@
     "rootDir": ".",
     "outDir": "dist",
     "allowJs": true,
-    "composite": false,
+    "composite": true,
     "strict": true
   },
+  "references": [
+    {
+      "path": "../adapter-base"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../data-layer"
+    },
+    {
+      "path": "../memory-store"
+    }
+  ],
   "include": [
     "index.js"
   ],

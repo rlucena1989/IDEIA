@@ -1,7 +1,9 @@
 import { Contribution } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { IEditorWidget } from './types';
+const logger = createLogger('editor-contributions');
 
-export interface IEditorContribution extends Contribution {
+export interface IEditorContribution extends Contribution<unknown> {
   onEditorOpened(editor: IEditorWidget): void;
   onEditorClosed(editor: IEditorWidget): void;
   onEditorFocusChanged(editor: IEditorWidget | undefined): void;

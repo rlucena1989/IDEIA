@@ -1,4 +1,6 @@
 import { Command } from "commander";
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.timeline');
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
@@ -44,7 +46,7 @@ function getLastEntry(): TimelineEntry | null {
   }
 
   const lines = content.split("\n");
-  const lastLine = lines[lines.length - 1]!;
+  const lastLine = lines[lines.length - 1] ?? '';
   return JSON.parse(lastLine);
 }
 
@@ -117,7 +119,7 @@ export function verifyTimeline(): {
   let prevHash = "0".repeat(64);
 
   for (let i = 0; i < lines.length; i++) {
-    const entry: TimelineEntry = JSON.parse(lines[i]!);
+    const entry: TimelineEntry = JSON.parse(lines[i] ?? '');
 
     if (entry.prev_hash !== prevHash) {
       return { valid: false, brokenAt: i, totalEntries: lines.length };
@@ -214,9 +216,9 @@ export function timelineCommand(): Command {
       try {
         const payload = JSON.parse(options.payload);
         const entry = logEvent(options.type, options.actor, payload);
-        console.log("✅ Evento registrado na timeline:");
+        logger.info('✅ Evento registrado na timeline:');
         console.log(JSON.stringify(entry, null, 2));
-      } catch (_e) {
+      } catch (e) {
         console.error("❌ Erro ao registrar evento:", e);
         process.exit(1);
       }
@@ -226,16 +228,16 @@ export function timelineCommand(): Command {
     .command("verify")
     .description("Valida integridade da cadeia de hashes")
     .action(() => {
-      console.log("\n🔐 Verificando integridade da Audit Timeline...\n");
+      logger.info('\n🔐 Verificando integridade da Audit Timeline...\n');
       const result = verifyTimeline();
 
       if (result.totalEntries === 0) {
-        console.log("📭 Timeline vazia. Nenhum evento registrado.");
+        logger.info('📭 Timeline vazia. Nenhum evento registrado.');
         return;
       }
 
       if (result.valid) {
-        console.log(`✅ Timeline íntegra. Total de eventos: ${result.totalEntries}`);
+        logger.info('✅ Timeline íntegra. Total de eventos: ${result.totalEntries}');
       } else {
         console.error(`❌ ALERTA: Adulteração detectada na entrada ${result.brokenAt + 1}.`);
         console.error("A cadeia de hashes foi quebrada. A timeline pode ter sido modificada.");
@@ -253,18 +255,18 @@ export function timelineCommand(): Command {
       const entries = searchTimeline(options.type, options.since);
 
       if (entries.length === 0) {
-        console.log("Nenhum evento encontrado.");
+        logger.info('Nenhum evento encontrado.');
         return;
       }
 
       if (options.json) {
         console.log(JSON.stringify(entries, null, 2));
       } else {
-        console.log(`\n📋 Eventos encontrados: ${entries.length}\n`);
+        logger.info('\n📋 Eventos encontrados: ${entries.length}\n');
         entries.forEach((entry, index) => {
-          console.log(`${index + 1}. [${entry.timestamp}] ${entry.event_type}`);
-          console.log(`   Ator: ${entry.actor}`);
-          console.log(`   Payload: ${JSON.stringify(entry.payload)}`);
+          logger.info('${index + 1}. [${entry.timestamp}] ${entry.event_type}');
+          logger.info('   Ator: ${entry.actor}');
+          logger.info('   Payload: ${JSON.stringify(entry.payload)}');
           console.log();
         });
       }
@@ -285,17 +287,17 @@ export function timelineCommand(): Command {
       const entries = exportTimeline();
 
       if (entries.length === 0) {
-        console.log("Nenhum evento para replay.");
+        logger.info('Nenhum evento para replay.');
         return;
       }
 
-      console.log("\n🔄 Replay da Audit Timeline:\n");
+      logger.info('\n🔄 Replay da Audit Timeline:\n');
       entries.forEach((entry, index) => {
-        console.log(`[${index + 1}/${entries.length}] ${entry.timestamp}`);
-        console.log(`  Tipo: ${entry.event_type}`);
-        console.log(`  Ator: ${entry.actor}`);
-        console.log(`  Hash: ${entry.hash.substring(0, 16)}...`);
-        console.log(`  Prev: ${entry.prev_hash.substring(0, 16)}...`);
+        logger.info('[${index + 1}/${entries.length}] ${entry.timestamp}');
+        logger.info('  Tipo: ${entry.event_type}');
+        logger.info('  Ator: ${entry.actor}');
+        logger.info('  Hash: ${entry.hash.substring(0, 16)}...');
+        logger.info('  Prev: ${entry.prev_hash.substring(0, 16)}...');
         console.log();
       });
     });

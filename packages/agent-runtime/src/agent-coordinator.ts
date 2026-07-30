@@ -1,4 +1,5 @@
 import { AgentRegistry, AgentRegistration } from './agent-registry';
+import { createLogger } from '@ideia/logger';
 import type { EventBus } from '@ideia/event-bus';
 
 export interface CoordinationState {

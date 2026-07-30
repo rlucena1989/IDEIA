@@ -1,4 +1,5 @@
 import { EventBus, createBus, EventType, BusEvent, type IEventBus } from '@ideia/event-bus';
+import { createLogger } from '@ideia/logger';
 import { TraceRegistry, TraceLink, LinkRequest } from '@ideia/trace-registry';
 import { FeedbackPipeline, FeedbackSubmission, FeedbackEntry } from '@ideia/feedback-pipeline';
 import { PolicyGateway, GatewayRequest } from '@ideia/policy-gateway';
@@ -126,11 +127,11 @@ export class IDEIntegration {
 }
 
 export async function createIDEIntegration(config?: { eventBus?: IEventBus }): Promise<IDEIntegration> {
-  const bus = config?.eventBus ?? await createBus();
-  return new IDEIntegration(bus);
+  const bus = config?.eventBus as EventBus | undefined ?? await createBus() as unknown as EventBus;
+  return new IDEIntegration(bus as unknown as EventBus);
 }
 
 export async function createIDEIntegrationWithAutoBus(): Promise<IDEIntegration> {
   const bus = await createBus();
-  return new IDEIntegration(bus);
+  return new IDEIntegration(bus as unknown as EventBus);
 }

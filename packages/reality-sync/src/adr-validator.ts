@@ -1,4 +1,5 @@
 import * as fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'node:path';
 
 export interface ADRValidationResult {
@@ -45,7 +46,7 @@ export class ADRValidator {
     const lines = content.split('\n');
 
     const numMatch = filename.match(/^ADR-(\d{3})-/);
-    const number = numMatch ? parseInt(numMatch[1]!, 10) : 0;
+    const number = numMatch ? parseInt(numMatch[1] ?? '0', 10) : 0;
 
     const missingSections: string[] = [];
     const errors: string[] = [];

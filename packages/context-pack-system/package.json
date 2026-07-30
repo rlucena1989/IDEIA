@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/context-pack-system",
+  "private": true,
+  "description": "Context Pack System — pacotes de contexto para LLMs com segmentacao, priorizacao e montagem inteligente",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

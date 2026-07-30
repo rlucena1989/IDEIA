@@ -1,5 +1,9 @@
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.coverage-improve');
 import { Command } from 'commander';
 import { Project, SyntaxKind } from 'ts-morph';
+
+const log = createLogger('cli:commands:coverage-improve');
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -31,7 +35,7 @@ export function coverageImproveCommand(): Command {
 
       const covPath = fs.existsSync(summaryPath) ? summaryPath : (fs.existsSync(cliSummaryPath) ? cliSummaryPath : null);
       if (!covPath) {
-        console.error('coverage-summary.json not found at coverage/ or packages/cli/coverage/.');
+        log.error('coverage-summary.json not found at coverage/ or packages/cli/coverage/.');
         return;
       }
 
@@ -54,12 +58,12 @@ export function coverageImproveCommand(): Command {
         toStub.push({ srcPath: normalized, data });
       }
 
-      console.log(`Arquivos abaixo do threshold (lines<${lineThreshold}% OR branches<${branchThreshold}%): ${toStub.length}`);
+      logger.info('Arquivos abaixo do threshold (lines<${lineThreshold}% OR branches<${branchThreshold}%): ${toStub.length}');
 
       let generated = 0;
       for (const { srcPath } of toStub) {
         if (!fs.existsSync(srcPath)) {
-          console.log(`  [SKIP] not found: ${srcPath}`);
+          logger.info('  [SKIP] not found: ${srcPath}');
           continue;
         }
         const dir = path.dirname(srcPath);
@@ -148,19 +152,19 @@ export function coverageImproveCommand(): Command {
           const testContent = lines.join('\n');
 
           if (options.dryRun) {
-            console.log(`  [DRY-RUN] would create: ${testPath} (${totalExports} exports)`);
+            logger.info('  [DRY-RUN] would create: ${testPath} (${totalExports} exports)');
           } else {
             fs.mkdirSync(path.dirname(testPath), { recursive: true });
             fs.writeFileSync(testPath, testContent, 'utf8');
-            console.log(`  [CREATE] ${testPath} â€” ${totalExports} exports`);
+            logger.info('  [CREATE] ${testPath} â€” ${totalExports} exports');
             generated++;
           }
         } catch (_err) {
-          console.error(`  [SKIP] ${srcPath}: ${err}`);
+          log.error(`  [SKIP] ${srcPath}: ${_err}`);
         }
       }
 
-      console.log(`\nStubs gerados: ${generated} de ${toStub.length} elegÃ­veis.`);
+      logger.info('\nStubs gerados: ${generated} de ${toStub.length} elegÃ­veis.');
     });
 
   cmd
@@ -178,24 +182,24 @@ export function coverageImproveCommand(): Command {
         try { return fs.statSync(f).size < 5000 && f.includes('__tests__'); } catch { return false; }
       });
 
-      console.log(`\nStubs encontrados: ${stubs.length}`);
+      logger.info('\nStubs encontrados: ${stubs.length}');
       const sample = stubs.slice(0, Math.min(5, stubs.length));
-      console.log(`Testando amostra de ${sample.length} stubs...\n`);
+      logger.info('Testando amostra de ${sample.length} stubs...\n');
 
       let passed = 0; let failed = 0;
       for (const f of sample) {
         try {
           execFileSync(`npx jest --no-coverage -- "${f}" 2>&1`, { cwd: root, encoding: 'utf8', timeout: 60000 });
-          console.log(`  âœ… ${path.basename(f)}`);
+          logger.info('  âœ… ${path.basename(f)}');
           passed++;
         } catch {
-          console.log(`  âŒ ${path.basename(f)}`);
+          logger.info('  âŒ ${path.basename(f)}');
           failed++;
         }
       }
 
-      console.log(`\nAmostra: ${passed}/${sample.length} passed, ${failed} failed`);
-      console.log(`Stubs totais: ${stubs.length} (${((passed/stubs.length)*100).toFixed(0)}% estimado)`);
+      logger.info('\nAmostra: ${passed}/${sample.length} passed, ${failed} failed');
+      logger.info('Stubs totais: ${stubs.length} (${((passed/stubs.length)*100).toFixed(0)}% estimado)');
     });
 
   cmd
@@ -207,31 +211,31 @@ export function coverageImproveCommand(): Command {
       const cli = 'node packages/cli/dist/index.js';
       const root = process.cwd();
 
-      console.log('\n=== Coverage Auto Pipeline ===\n');
+      logger.info('\n=== Coverage Auto Pipeline ===\n');
 
       const totalSteps = opts.parallel ? 4 : 3;
-      console.log(`[1/${totalSteps}] Generating stubs...`);
+      log.info(`[1/${totalSteps}] Generating stubs...`);
       try { execFileSync(`${cli} coverage-improve generate-stubs`, { cwd: root, encoding: 'utf8', timeout: 60000, stdio: 'inherit' }); } catch {}
 
-      console.log(`\n[2/${totalSteps}] Fixing broken tests...`);
+      logger.info('\n[2/${totalSteps}] Fixing broken tests...');
       try { execFileSync(`${cli} test-fix-broken fix`, { cwd: root, encoding: 'utf8', timeout: 60000, stdio: 'inherit' }); } catch {}
 
       if (opts.parallel) {
-        console.log(`\n[3/${totalSteps}] Validating stubs in parallel...`);
+        logger.info('\n[3/${totalSteps}] Validating stubs in parallel...');
         try { execFileSync(`${cli} coverage-improve validate-stubs`, { cwd: root, encoding: 'utf8', timeout: 180000, stdio: 'inherit' }); } catch {}
-        console.log(`\n[4/${totalSteps}] Building...`);
+        logger.info('\n[4/${totalSteps}] Building...');
       } else {
-        console.log(`\n[3/${totalSteps}] Building...`);
+        logger.info('\n[3/${totalSteps}] Building...');
       }
       try {
         execFileSync('npm run build 2>&1', { cwd: path.resolve(root, 'packages/cli'), encoding: 'utf8', timeout: 120000 });
-        console.log('\nâœ… Pipeline completed successfully.');
+        logger.info('\nâœ… Pipeline completed successfully.');
       } catch {
         const distPath = path.resolve(root, 'packages/cli/dist/index.js');
         if (fs.existsSync(distPath)) {
-          console.log('\nâœ… Pipeline completed (dist exists).');
+          logger.info('\nâœ… Pipeline completed (dist exists).');
         } else {
-          console.log('\nâŒ Build failed. dist/index.js not found.');
+          logger.info('\nâŒ Build failed. dist/index.js not found.');
         }
       }
     });
@@ -241,9 +245,9 @@ export function coverageImproveCommand(): Command {
     .description('Exibe dashboard de cobertura, testes quebrados e recomendaÃ§Ãµes')
     .action(() => {
       const root = process.cwd();
-      console.log('\nâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
-      console.log('   Coverage & Health Dashboard');
-      console.log('â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n');
+      logger.info('\nâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•');
+      logger.info('   Coverage & Health Dashboard');
+      logger.info('â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n');
 
       // Coverage
       const covPaths = [
@@ -257,35 +261,35 @@ export function coverageImproveCommand(): Command {
 
       if (covData?.total) {
         const t = covData.total;
-        console.log(`Coverage:`);
-        console.log(`  Lines:    ${t.lines.pct.toFixed(1).padStart(5)}% ${t.lines.pct >= 80 ? 'âœ…' : t.lines.pct >= 50 ? 'ðŸŸ¡' : 'ðŸ”´'}`);
-        console.log(`  Branches: ${t.branches.pct.toFixed(1).padStart(5)}% ${t.branches.pct >= 80 ? 'âœ…' : t.branches.pct >= 50 ? 'ðŸŸ¡' : 'ðŸ”´'}`);
-        console.log(`  Functions: ${(t as { functions: { pct: number } }).functions.pct.toFixed(1).padStart(5)}%`);
+        logger.info('Coverage:');
+        logger.info('  Lines:    ${t.lines.pct.toFixed(1).padStart(5)}% ${t.lines.pct >= 80 ? \'âœ…\' : t.lines.pct >= 50 ? \'ðŸŸ¡\' : \'ðŸ”´\'}');
+        logger.info('  Branches: ${t.branches.pct.toFixed(1).padStart(5)}% ${t.branches.pct >= 80 ? \'âœ…\' : t.branches.pct >= 50 ? \'ðŸŸ¡\' : \'ðŸ”´\'}');
+        logger.info('  Functions: ${(t as { functions: { pct: number } }).functions.pct.toFixed(1).padStart(5)}%');
         const files = Object.keys(covData).filter(k => k !== 'total');
         const lowCov = files.filter(k => covData[k]?.lines?.pct < 50);
-        console.log(`  Files abaixo de 50%: ${lowCov.length}/${files.length}`);
+        logger.info('  Files abaixo de 50%: ${lowCov.length}/${files.length}');
       } else {
-        console.log('Coverage: N/A (run test:cov:full first)');
+        logger.info('Coverage: N/A (run test:cov:full first)');
       }
 
       // Build
       const distPath = path.join(root, 'packages/cli/dist/index.js');
-      console.log(`\nBuild:     ${fs.existsSync(distPath) ? 'âœ… PASS' : 'âŒ FAIL'}`);
+      logger.info('\nBuild:     ${fs.existsSync(distPath) ? \'âœ… PASS\' : \'âŒ FAIL\'}');
 
       // Test files
       try {
         const { execFileSync } = require('node:child_process');
         const listOutput = execFileSync('npx jest --listTests 2>&1', { cwd: root, encoding: 'utf8', timeout: 30000 });
         const testFiles = listOutput.split('\n').filter(Boolean);
-        console.log(`\nTest files: ${testFiles.length}`);
+        logger.info('\nTest files: ${testFiles.length}');
 
         // Count generated stubs (small files under 5KB in __tests__ dirs)
         const genStubs = testFiles.filter((f: string) => {
           try { return fs.statSync(f).size < 5000 && f.includes('__tests__'); } catch { return false; }
         });
-        console.log(`  Generated stubs: ~${genStubs.length}`);
+        logger.info('  Generated stubs: ~${genStubs.length}');
       } catch {
-        console.log(`\nTest files: N/A`);
+        logger.info('\nTest files: N/A');
       }
 
       // Broken tests
@@ -294,23 +298,23 @@ export function coverageImproveCommand(): Command {
         const content = fs.readFileSync(brokenPath, 'utf8');
         const m = content.match(/BROKEN_TESTS\s*=\s*\[([^\]]+)\]/);
         if (m) {
-          const broken = m[1]!.split(',').map(l => l.trim().replace(/['"]/g, '')).filter(Boolean);
-          console.log(`\nBroken tests: ${broken.length}`);
-          broken.forEach(b => console.log(`  ðŸŸ¡ ${b}`));
+          const broken = (m[1] ?? '').split(',').map(l => l.trim().replace(/['"]/g, '')).filter(Boolean);
+          logger.info('\nBroken tests: ${broken.length}');
+          broken.forEach(b => logger.info('  ðŸŸ¡ ${b}'));
         }
       }
 
       // Recommendations
-      console.log(`\nRecommendations:`);
+      logger.info('\nRecommendations:');
       if (covData?.total && covData.total.lines.pct < 80) {
-        console.log(`  â€¢ Run "ai-devkit coverage-improve auto" to regenerate stubs and fix tests`);
-        console.log(`  â€¢ Run "npm run test:cov:full" to refresh coverage data`);
+        logger.info('  â€¢ Run "ai-devkit coverage-improve auto" to regenerate stubs and fix tests');
+        logger.info('  â€¢ Run "npm run test:cov:full" to refresh coverage data');
       }
       if (fs.existsSync(path.join(root, 'packages/cli/coverage/lcov.info'))) {
-        console.log(`  â€¢ Detailed report: packages/cli/coverage/lcov-report/index.html`);
+        logger.info('  â€¢ Detailed report: packages/cli/coverage/lcov-report/index.html');
       }
 
-      console.log('\nâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n');
+      logger.info('\nâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n');
     });
 
   cmd
@@ -331,14 +335,14 @@ export function coverageImproveCommand(): Command {
         try { return fs.statSync(f).size < 5000 && f.includes('__tests__'); } catch { return false; }
       }).sort(() => Math.random() - 0.5); // shuffle
 
-      console.log(`\nBatch runner: ${stubs.length} stubs, ${batchSize} por lote, ${iterations} lotes\n`);
+      logger.info('\nBatch runner: ${stubs.length} stubs, ${batchSize} por lote, ${iterations} lotes\n');
 
       let totalPassed = 0; let totalFailed = 0;
       for (let iter = 0; iter < iterations; iter++) {
         const batch = stubs.slice(iter * batchSize, (iter + 1) * batchSize);
         if (batch.length === 0) break;
 
-        console.log(`[Lote ${iter + 1}/${iterations}] ${batch.length} stubs...`);
+        logger.info('[Lote ${iter + 1}/${iterations}] ${batch.length} stubs...');
         let passed = 0; let failed = 0;
 
         for (const f of batch) {
@@ -353,12 +357,12 @@ export function coverageImproveCommand(): Command {
 
         totalPassed += passed; totalFailed += failed;
         const pct = ((passed / batch.length) * 100).toFixed(0);
-        console.log(`  âœ… ${passed}/${batch.length} (${pct}%)\n`);
+        logger.info('  âœ… ${passed}/${batch.length} (${pct}%)\n');
       }
 
       const total = totalPassed + totalFailed;
-      console.log(`\nTotal: ${totalPassed}/${total} passed (${((totalPassed/total)*100).toFixed(1)}%)`);
-      console.log(`Failed: ${totalFailed}`);
+      logger.info('\nTotal: ${totalPassed}/${total} passed (${((totalPassed/total)*100).toFixed(1)}%)');
+      logger.info('Failed: ${totalFailed}');
     });
 
   cmd
@@ -377,7 +381,7 @@ export function coverageImproveCommand(): Command {
         if (result && fs.existsSync(result)) entries.push({ srcPath: result });
       }
 
-      console.log(`\nGerando testes reais para ${entries.length} arquivos com pior cobertura:\n`);
+      logger.info('\nGerando testes reais para ${entries.length} arquivos com pior cobertura:\n');
 
       let generated = 0;
       for (const entry of entries) {
@@ -390,15 +394,15 @@ export function coverageImproveCommand(): Command {
         // Find exported function signatures
         const funcs: Array<{ name: string; line: number; params: string[] }> = [];
         for (let i = 0; i < lines.length; i++) {
-          const m = lines[i]!.match(/^export\s+(async\s+)?function\s+(\w+)\s*\(([^)]*)\)/);
+          const m = (lines[i] ?? '').match(/^export\s+(async\s+)?function\s+(\w+)\s*\(([^)]*)\)/);
           if (m) {
-            const params = m[3]!.split(',').map(p => p.trim()).filter(Boolean);
+            const params = (m[3] ?? '').split(',').map(p => p.trim()).filter(Boolean);
             funcs.push({ name: m[2], line: i + 1, params });
           }
         }
 
         if (funcs.length === 0) {
-          console.log(`  [SKIP] ${path.basename(srcPath)} â€” no exported functions`);
+          logger.info('  [SKIP] ${path.basename(srcPath)} â€” no exported functions');
           continue;
         }
 
@@ -439,13 +443,13 @@ export function coverageImproveCommand(): Command {
 
         fs.mkdirSync(testDir, { recursive: true });
         fs.writeFileSync(testPath, testLines.join('\n'), 'utf8');
-        console.log(`  [CREATE] ${path.basename(testPath)} â€” ${funcs.length} functions`);
+        logger.info('  [CREATE] ${path.basename(testPath)} â€” ${funcs.length} functions');
         generated++;
       }
 
-      console.log(`\nTestes gerados: ${generated}`);
+      logger.info('\nTestes gerados: ${generated}');
       if (generated > 0) {
-        console.log('\nExecutando validaÃ§Ã£o...');
+        logger.info('\nExecutando validaÃ§Ã£o...');
         try { execFileSync(`npx jest --no-coverage -- packages/cli/src 2>&1`, { cwd: root, encoding: 'utf8', timeout: 60000 }); } catch {}
       }
     });

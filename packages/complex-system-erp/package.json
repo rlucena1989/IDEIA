@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/complex-system-erp",
+  "private": true,
+  "description": "Complex System Construction & ERP — padroes arquiteturais para sistemas complexos, modelagem de dominios ERP, integracao modular",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

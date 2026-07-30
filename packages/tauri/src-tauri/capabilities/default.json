@@ -1,0 +1,31 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Default capabilities for IDEIA desktop",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "shell:allow-open",
+    "shell:allow-execute",
+    "shell:allow-spawn",
+    "dialog:default",
+    "notification:default",
+    "notification:allow-notify",
+    "notification:allow-is-permission-granted",
+    "notification:allow-request-permission",
+    "process:default",
+    "process:allow-exit",
+    "updater:default",
+    "global-shortcut:default",
+    "deep-link:default",
+    "deep-link:allow-is-registered",
+    "deep-link:allow-register",
+    "fs:default",
+    "fs:allow-read",
+    "fs:allow-write",
+    {
+      "identifier": "fs:scope",
+      "allow": [{ "path": "$APPDATA/**" }, { "path": "$HOME/**" }]
+    }
+  ]
+}

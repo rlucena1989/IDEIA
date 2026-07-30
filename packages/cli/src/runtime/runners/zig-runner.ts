@@ -1,5 +1,7 @@
 import { BaseRunner } from './base-runner';
+import { createLogger } from '@ideia/logger';
 import { LanguageId } from '../adapter-contract';
+const logger = createLogger('zig-runner');
 
 /** Classe responsável por processa runner. */
 export class ZigRunner extends BaseRunner {

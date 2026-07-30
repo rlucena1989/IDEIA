@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { chunkDirectory, setChunkerConfig } from './chunker';
 import { generateNeuralEmbedding, generateBatchEmbeddings } from './embeddings';
@@ -146,9 +147,9 @@ export async function ingestDirectory(
           totalChunks: chunk.totalChunks,
           startOffset: chunk.startOffset,
           endOffset: chunk.endOffset,
-          vector: embeddings[i]!.vector,
+          vector: embeddings[i]?.vector ?? [],
           model: config.embeddingModel,
-          dimensions: embeddings[i]!.dimensions,
+          dimensions: embeddings[i]?.dimensions ?? 0,
           indexedAt: new Date().toISOString(),
           mtimeMs,
           fileSize,
@@ -169,7 +170,7 @@ export async function ingestDirectory(
         addVectorDocs(root, docs as DenseVectorDoc[]);
       }
       chunksIndexed += docs.length;
-    } catch (_err) {
+    } catch (err) {
       errors++;
       console.error(`[rag] Embedding error for ${dir}:`, err instanceof Error ? err.message : String(err));
     }
@@ -194,7 +195,7 @@ export async function ingestDirectory(
   try {
     rebuildVectorIndex(root);
   } catch (_idxErr) {
-    console.error('[rag] Index rebuild error:', idxErr instanceof Error ? idxErr.message : String(idxErr));
+    console.error('[rag] Index rebuild error:', _idxErr instanceof Error ? _idxErr.message : String(_idxErr));
   }
 
   return { filesProcessed, chunksIndexed, errors, skipped };
@@ -257,7 +258,7 @@ export async function search(
     }));
 
     if (config.useCache) {
-      const dominantCategory = docs.length > 0 ? docs[0]!.category : undefined;
+      const dominantCategory = docs.length > 0 ? (docs[0]?.category ?? undefined) : undefined;
       setCachedResults(root, query, results, config.cacheTtlMs, dominantCategory);
     }
     return results;
@@ -395,3 +396,6 @@ export function getRagStats(root: string): {
   } catch {}
   return { dense, tfidf, index: indexStats };
 }
+
+
+

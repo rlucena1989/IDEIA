@@ -62,7 +62,7 @@ export class DisposableCollection implements Disposable {
   }
 }
 
-export class DefaultContributionProvider<T extends Contribution> implements ContributionProvider<T> {
+export class DefaultContributionProvider<T extends Contribution<unknown>> implements ContributionProvider<T> {
   private contributions: T[] = [];
   private onChangedEmitter = new Emitter<void>();
 
@@ -100,7 +100,7 @@ export class DefaultContributionProvider<T extends Contribution> implements Cont
   }
 }
 
-export function bindContributionProvider<T extends Contribution>(
+export function bindContributionProvider<T extends Contribution<unknown>>(
   contributions: DefaultContributionProvider<T>
 ): ContributionProvider<T> {
   return contributions;

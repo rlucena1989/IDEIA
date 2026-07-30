@@ -1,4 +1,6 @@
 import { KnowledgeEntry, DocumentationArtifact } from './knowledge-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('doc-generator');
 
 export function generateMarkdownDocs(entries: KnowledgeEntry[]): string {
   const sections = entries.map(entry => `## ${entry.title}\n\n${entry.content}\n`);

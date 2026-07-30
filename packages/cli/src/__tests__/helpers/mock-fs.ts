@@ -1,4 +1,6 @@
 import path from 'node:path';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('mock-fs');
 
 interface MockFS {
   _reset(): void;
@@ -12,7 +14,7 @@ let mockFS: MockFS | null = null;
 export function useMockFS(): MockFS {
   jest.mock('node:fs');
   jest.mock('fs');
-  mockFS = require('fs') as unknown as MockFS;
+  mockFS = require('fs') as MockFS;
   mockFS._reset();
   return mockFS;
 }

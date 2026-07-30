@@ -12,10 +12,11 @@
  *   event: tool_call  data: {"name": "...", "args": {...}}
  *   event: tool_result data: {"content": "..."}
  *   event: done     data: {"messages": [...]}
- *   event: error    data: {"error": "..."}
+ *   event: _error    data: {"_error": "..."}
  */
 
 import { IncomingMessage, ServerResponse } from 'node:http';
+import { createLogger } from '@ideia/logger';
 import { ChatEngine, ChatMessage, ChatConfig } from '../local-ai/chat';
 import { AuditTrail } from '@ideia/audit-trail';
 import { AgentRuntime } from '@ideia/agent-runtime';
@@ -34,7 +35,7 @@ export function createChatHandler(auditTrail: AuditTrail, memoryPath: string, ro
   return async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
     if (req.method !== 'POST') {
       res.writeHead(405, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Method not allowed' }));
+      res.end(JSON.stringify({ _error: 'Method not allowed' }));
       return;
     }
 
@@ -64,7 +65,7 @@ export function createChatHandler(auditTrail: AuditTrail, memoryPath: string, ro
         config = parsed.config;
       } catch {
         res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Invalid JSON' }));
+        res.end(JSON.stringify({ _error: 'Invalid JSON' }));
         clearTimeout(connectionTimeout);
         return;
       }
@@ -153,15 +154,15 @@ export function createChatHandler(auditTrail: AuditTrail, memoryPath: string, ro
         if (!aborted) sendEvent('done', { messages: result });
       } catch (_err) {
         if (!aborted) {
-          const msg = err instanceof Error ? err.message : String(err);
-          const isOffline = msg.includes('fetch') || msg.includes('ECONNREFUSED') || msg.includes('ENOTFOUND') || msg.includes('LLM erro');
+          const msg = _err instanceof Error ? _err.message : String(_err);
+          const isOffline = msg.includes('fetch') || msg.includes('ECONNREFUSED') || msg.includes('ENOTFOUND') || msg.includes('LLM _erro');
           if (isOffline) {
             sendEvent('delta', { content: '\n\n⚠️ **Provedor LLM indisponível.** ' });
             sendEvent('delta', { content: 'O servidor de IA pode estar offline ou não configurado. ' });
             sendEvent('delta', { content: 'Verifique se o servidor está rodando ou configure um provedor diferente em Settings.\n' });
             sendEvent('done', { messages: [...messages, { role: 'assistant', content: '⚠️ Provedor LLM indisponível. Verifique a configuração ou tente novamente mais tarde.' }] });
           } else {
-            sendEvent('error', { error: msg });
+            sendEvent('_error', { _error: msg });
           }
         }
       } finally {

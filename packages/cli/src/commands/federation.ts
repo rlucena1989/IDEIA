@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { FederationRegistry } from '../federation/federation-registry';
 import { createContextNode, ContextNode, SyncDecision } from '../federation/federation-types';
 import { resolveConflict } from '../federation/conflict-resolver';

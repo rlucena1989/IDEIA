@@ -1,6 +1,8 @@
 import { OperationalContext } from './context-types';
+import { createLogger } from '@ideia/logger';
 import { ContextPriorityResult } from './context-prioritizer';
 import { MergedContext } from './context-merge';
+const logger = createLogger('context-report');
 
 export interface ContextReport {
   generatedAt: string;

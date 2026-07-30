@@ -1,4 +1,5 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { EventBus } from '@ideia/event-bus';
 import { IDEIA_STUDIES_SERVICE, IDEIA_StudiesService, StudyItem } from '../common/ideia-protocol';
 import * as fs from 'fs';
@@ -37,7 +38,7 @@ export class IDEIA_StudiesBackendService implements IDEIA_StudiesService {
     }
 
     const history = await this.eventBus.getHistory();
-    const activeStudies = history.filter(e => e.type.startsWith('study.'));
+    const activeStudies = history.filter((e: any) => e.type.startsWith('study.'));
     for (const event of activeStudies) {
       const p = event.payload as Record<string, string> | undefined;
       if (p?.studyId && !studies.find(s => s.id === p.studyId)) {

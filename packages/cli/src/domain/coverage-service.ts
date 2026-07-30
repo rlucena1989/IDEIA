@@ -1,4 +1,5 @@
 import type { CliCommandResult } from '../types/cli-result';
+import { createLogger } from '@ideia/logger';
 import { success, failure } from '../types/cli-result';
 import { readCoverageReport, summarizeCoverage, extractFileSummaries } from '../coverage/coverage-reader';
 import { prioritizeGaps, rankBySeverity } from '../coverage/gap-prioritizer';
@@ -101,7 +102,7 @@ export function handleCoverageRepair(maxIterations: number): CliCommandResult<Co
   const repaired: string[] = [];
 
   for (let i = 0; i < Math.min(maxIterations, ordered.length); i++) {
-    repaired.push(ordered[i]!.id);
+    const item = ordered[i]; if (item) repaired.push(item.id);
   }
 
   const avg = summarizeCoverage(report);

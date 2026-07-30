@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { EventBus } from '@ideia/event-bus';
+import type { IEventBus } from '@ideia/event-bus';
 import { AuditTrail } from '@ideia/audit-trail';
 import { createLogger } from '@ideia/logger';
 import { BHPConfig, BHPContext, BHPMessage, BHPMessageType, BHPPlatform, BHPPlan, PlanEvaluation, CollaborationState, BHPDecision } from './types';
@@ -20,14 +20,14 @@ function messageTypeToEventType(type: BHPMessageType): string {
 
 export class BHP {
   private config: BHPConfig;
-  private eventBus: EventBus;
+  private eventBus: IEventBus;
   private auditTrail?: AuditTrail;
   private messages: BHPMessage[] = [];
   private activePlans: Map<string, { plan: BHPPlan; state: CollaborationState; timer: NodeJS.Timeout }> = new Map();
   private cleanupFunctions: (() => void)[] = [];
 
   constructor(
-    eventBus: EventBus,
+    eventBus: IEventBus,
     config?: Partial<BHPConfig>,
     auditTrail?: AuditTrail,
   ) {
@@ -41,7 +41,7 @@ export class BHP {
     const types: BHPMessageType[] = ['HELP!', 'STATS', 'PLAN', 'APPROVE', 'REJECT', 'CLARIFY', 'ADAPT'];
     for (const type of types) {
       const eventType = messageTypeToEventType(type);
-      const subId = await this.eventBus.subscribe(eventType, (event) => {
+      const subId = await this.eventBus.subscribe(eventType, (event: any) => {
         const msg = event.payload?.message as BHPMessage | undefined;
         if (msg) {
           this.handleMessage(msg);

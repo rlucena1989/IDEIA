@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { AiAgent, AiRequest, AiResponse, AiTool } from './types';
 
 export class AgentRegistry {

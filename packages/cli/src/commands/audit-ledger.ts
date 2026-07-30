@@ -1,15 +1,17 @@
 import { Command } from "commander";
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.audit-ledger');
 import path from "path";
 import { AuditTrail } from "@ideia/audit-trail";
 
 export function auditLedgerAction(): void {
   const trailPath = path.join(process.cwd(), ".ai", "audit", "cli-trail.jsonl");
   const auditTrail = new AuditTrail(trailPath);
-  console.log('\nVerifying integridade do Audit Trail (SHA-256 chain)...\n');
+  logger.info('\nVerifying integridade do Audit Trail (SHA-256 chain)...\n');
   const result = auditTrail.verifyChain();
   if (result.valid) {
-    console.log(`Ledger confiavel. Total de eventos: ${result.totalEvents}`);
-    console.log(`Tip hash: ${result.currentTipHash?.slice(0, 16)}...\n`);
+    logger.info('Ledger confiavel. Total de eventos: ${result.totalEvents}');
+    logger.info('Tip hash: ${result.currentTipHash?.slice(0, 16)}...\n');
     process.exit(0);
   } else {
     console.error(`ALERTA: adulteracao detectada no evento ${result.breakAtIndex}`);

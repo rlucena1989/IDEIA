@@ -1,4 +1,5 @@
 import { Disposable, Contribution, Event } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 
 export interface IEditorWidget {
   readonly uri: string;
@@ -92,6 +93,30 @@ export interface IDiffEditorWidget {
   setReadonly(ro: boolean): void;
 }
 
+export interface UndoRedoStack {
+  undoStack: EditAction[];
+  redoStack: EditAction[];
+  maxSize: number;
+  canUndo: boolean;
+  canRedo: boolean;
+}
+
+export interface AutoSaveConfig {
+  enabled: boolean;
+  delay: number;
+  onFocusChange: boolean;
+  onWindowChange: boolean;
+}
+
+export interface EditAction {
+  type: string;
+  timestamp: number;
+  description: string;
+  data: unknown;
+  undo(): void;
+  redo(): void;
+}
+
 export interface EditorPreferences {
   tabSize: number;
   insertSpaces: boolean;
@@ -102,6 +127,7 @@ export interface EditorPreferences {
   fontFamily: string;
   autoSave: 'off' | 'afterDelay' | 'onFocusChange' | 'onWindowChange';
   autoSaveDelay: number;
+  autoSaveOnFocusChange: boolean;
   formatOnSave: boolean;
   formatOnPaste: boolean;
   cursorBlinking: 'blink' | 'smooth' | 'phase' | 'expand' | 'solid';
@@ -110,4 +136,6 @@ export interface EditorPreferences {
   bracketPairColorization: { enabled: boolean };
   suggestOnTriggerCharacters: boolean;
   quickSuggestions: { other: boolean; comments: boolean; strings: boolean };
+  enableUndoRedo: boolean;
+  undoStackSize: number;
 }

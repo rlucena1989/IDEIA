@@ -1,4 +1,6 @@
 import { PlatformState, MaintenanceTask } from './platform-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('platform-maintenance');
 
 export function planPlatformMaintenance(state: PlatformState): MaintenanceTask[] {
   const tasks: MaintenanceTask[] = [];

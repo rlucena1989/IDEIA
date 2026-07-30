@@ -1,4 +1,5 @@
 import { Emitter, Event } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { RpcMessageTransport, RpcMessage, RpcProtocol } from './types';
 
 class DefaultRpcMessageTransport implements RpcMessageTransport {

@@ -1,0 +1,11 @@
+export { EdgeRuntime } from './runtime';
+export { EdgeEventBus } from './event-bus';
+export { EdgeSync } from './sync';
+export { EdgeLLM } from './llm';
+export { OfflineQueue } from './offline-queue';
+export type { QueuedMessage, OfflineQueueConfig } from './offline-queue';
+export { EdgeNatsBridge } from './edge-nats-bridge';
+export type { EdgeNatsBridgeConfig, BridgeStatus, BridgeStatusEvent } from './edge-nats-bridge';
+export { EdgeDeploymentReference } from './references-integration';
+export type { EdgeDeploymentConfig } from './references-integration';
+export * from './types';

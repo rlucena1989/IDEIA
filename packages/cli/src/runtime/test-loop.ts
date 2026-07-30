@@ -18,6 +18,7 @@ export interface TestLoopReport {
 }
 
 import { spawnSync } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
 import fs from 'node:fs';
 import path from 'node:path';
 const ROOT = process.cwd();

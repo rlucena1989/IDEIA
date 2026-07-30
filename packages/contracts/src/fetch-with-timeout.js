@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fetchWithTimeout = fetchWithTimeout;
 exports.fetchWithRetry = fetchWithRetry;
+const logger_1 = require("@ideia/logger");
+const logger = (0, logger_1.createLogger)('fetch-with-timeout');
 const DEFAULT_OPTIONS = {
     timeout: 10000,
     retries: 2,
@@ -29,10 +31,10 @@ async function fetchWithRetry(url, options = {}) {
         try {
             return await fetchWithTimeout(url, options);
         }
-        catch (err) {
-            lastError = err instanceof Error ? err : new Error(String(err));
+        catch (_err) {
+            lastError = _err instanceof Error ? _err : new Error(String(_err));
             if (attempt < config.retries) {
-                console.warn(`[fetch] Retry ${attempt + 1}/${config.retries} for ${url.slice(0, 100)}: ${lastError.message}`);
+                logger.warn(`Retry ${attempt + 1}/${config.retries} for ${url.slice(0, 100)}: ${lastError.message}`);
                 await new Promise(r => setTimeout(r, config.retryDelay * Math.pow(2, attempt)));
             }
         }

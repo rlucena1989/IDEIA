@@ -1,5 +1,7 @@
 import { LangGraphStateAnnotation, LangGraphAgentRole } from '../langgraph-graph';
+import { createLogger } from '@ideia/logger';
 import { LangGraphNodeFunction } from '../langgraph-graph';
+const logger = createLogger('supervisor-node');
 
 export function createSupervisorNode(): LangGraphNodeFunction {
   return async (state: LangGraphStateAnnotation) => {

@@ -1,4 +1,6 @@
 import { LangGraphStateAnnotation, LangGraphAgentRole } from './langgraph-graph';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('edges');
 
 export function reviewerEdgeCondition(state: LangGraphStateAnnotation): LangGraphAgentRole | 'end' {
   if (state.errors.length > 0) {

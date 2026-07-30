@@ -1,4 +1,6 @@
 import { createHash } from 'node:crypto';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('incremental-engine');
 
 interface CacheSlot {
   inputHash: string;

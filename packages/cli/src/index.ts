@@ -1,4 +1,7 @@
-﻿import { Command } from 'commander';
+﻿import { createLogger } from '@ideia/logger';
+import {
+  Command,
+} from 'commander';
 import {
   initCommand, doctorCommand, featureCommand, statusCommand, verifyCommand,
   syncCommand, auditCommand, contextCommand, adapterCommand, auditLedgerCommand,
@@ -32,13 +35,31 @@ import {
   accelerationCommand, anomalyCommand, complexityCommand, polyglotCommand,
   reportCommand, webhookCommand, registerIdeiaCommand,
   emergencyCommand, configCommand, evolutionCommand, radarCommand, setupCommand, notifyCommand,
-  catalogCommand, tutorialCommand, lifecycleCliCommand,
+  catalogCommand, tutorialCommand,
+  lifecycleCommand,
   auditTrailCommand,
+  specCommand,
+  serveCommand,
+  benchmarkCommand,
+  distillReportCommand,
+  defenseReportCommand,
+  finetuneCommand,
+  quantizeCommand,
+  rlCommand,
+  forgetCommand,
+  privacyCommand,
+  incidentCommand,
+  safetyCommand,
+  bhpCommand,
+  continuityCommand,
+  profileCommand,
+  chaosCommand,
 } from './commands/index';
 
 import { getCliVersion } from './utils/version';
 import { AuditTrail } from '@ideia/audit-trail';
 import path from 'node:path';
+import { checkConsent } from './privacy/consent-check';
 
 const AUDIT_TRAIL_PATH = path.join(process.cwd(), '.ai', 'audit', 'cli-trail.jsonl');
 const auditTrail = new AuditTrail(AUDIT_TRAIL_PATH);
@@ -184,7 +205,7 @@ registerIdeiaCommand(program);
 
 program.addCommand(catalogCommand());
 program.addCommand(tutorialCommand());
-program.addCommand(lifecycleCliCommand());
+program.addCommand(lifecycleCommand());
 program.addCommand(emergencyCommand());
 program.addCommand(configCommand());
 program.addCommand(evolutionCommand());
@@ -192,12 +213,34 @@ program.addCommand(radarCommand());
 program.addCommand(setupCommand());
 program.addCommand(notifyCommand());
 program.addCommand(auditTrailCommand(auditTrail));
+program.addCommand(specCommand());
+program.addCommand(serveCommand());
+program.addCommand(benchmarkCommand());
+program.addCommand(distillReportCommand());
+program.addCommand(defenseReportCommand());
+program.addCommand(finetuneCommand());
+program.addCommand(pipelineCommand());
+program.addCommand(quantizeCommand());
+program.addCommand(rlCommand());
+program.addCommand(forgetCommand());
+program.addCommand(privacyCommand());
+program.addCommand(incidentCommand());
+program.addCommand(safetyCommand());
+program.addCommand(bhpCommand());
+program.addCommand(continuityCommand());
+program.addCommand(profileCommand());
+program.addCommand(chaosCommand());
 
 // MET-01: Auto-tracing middleware — records trace entry for every CLI command
 let _traceStart = 0;
 let _traceCommand = '';
+let _consentChecked = false;
 
 program.hook('preAction', () => {
+  if (!_consentChecked) {
+    checkConsent(process.cwd());
+    _consentChecked = true;
+  }
   _traceStart = Date.now();
   _traceCommand = program.args[0] || '';
 });

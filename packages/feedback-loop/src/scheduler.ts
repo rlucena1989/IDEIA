@@ -1,5 +1,7 @@
 import { EventEmitter } from 'events';
+import { createLogger } from '@ideia/logger';
 import { LoopConfig } from './types';
+const logger = createLogger('scheduler');
 
 export class LoopScheduler extends EventEmitter {
   private timer: ReturnType<typeof setInterval> | null = null;

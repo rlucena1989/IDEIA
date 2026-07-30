@@ -1,4 +1,5 @@
 import os from 'node:os';
+import { createLogger } from '@ideia/logger';
 import { HardwareProfile } from './types';
 import { execSync } from 'node:child_process';
 

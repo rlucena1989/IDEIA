@@ -1,5 +1,7 @@
 import { Emitter, Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { ActivationEvent, ActivationEventHandler, ExtensionActivationService } from './types';
+const logger = createLogger('activation');
 
 export class DefaultExtensionActivationService implements ExtensionActivationService {
   private handlers: ActivationEventHandler[] = [];

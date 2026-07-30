@@ -1,4 +1,5 @@
 import { ConsistencyItem, ConsistencyReport } from './consistency-types';
+import { createLogger } from '@ideia/logger';
 
 export interface PrioritizedItem {
   area: string;

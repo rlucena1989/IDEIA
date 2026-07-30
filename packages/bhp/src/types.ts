@@ -1,6 +1,6 @@
 export type BHPPlatform = 'ideia' | 'ia' | 'human';
 
-export type BHPMessageType = 'HELP!' | 'STATS' | 'PLAN' | 'APPROVE' | 'REJECT' | 'CLARIFY' | 'ADAPT';
+export type BHPMessageType = 'HELP!' | 'STATS' | 'PLAN' | 'APPROVE' | 'REJECT' | 'CLARIFY' | 'ADAPT' | 'help_request' | 'help_offer' | 'clarification' | 'confirmation' | 'error_report';
 
 export type BHPDecision = 'approved' | 'rejected' | 'pending' | 'clarify' | 'escalated';
 
@@ -89,4 +89,9 @@ export interface BHPMessageHandler {
   onReject?: (msg: BHPMessage) => void | Promise<void>;
   onClarify?: (msg: BHPMessage) => void | Promise<void>;
   onAdapt?: (msg: BHPMessage) => void | Promise<void>;
+  onHelpRequest?: (msg: BHPMessage) => void | Promise<void>;
+  onHelpOffer?: (msg: BHPMessage) => void | Promise<void>;
+  onClarification?: (msg: BHPMessage) => void | Promise<void>;
+  onConfirmation?: (msg: BHPMessage) => void | Promise<void>;
+  onErrorReport?: (msg: BHPMessage) => void | Promise<void>;
 }

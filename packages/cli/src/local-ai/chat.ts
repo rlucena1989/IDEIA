@@ -1,4 +1,5 @@
 import { OllamaProvider } from './providers/ollama';
+import { createLogger } from '@ideia/logger';
 import { OpenAiProvider } from './providers/openai';
 import { OpenRouterProvider } from './providers/openrouter';
 import { AnthropicProvider } from './providers/anthropic';
@@ -52,7 +53,8 @@ const TOOLS = [
     type: 'function',
     function: {
       name: 'run_ai_devkit_command',
-      description: 'Executa um comando do ai-devkit no projeto atual. Exemplos: verify, audit, status, doctor, generate crud Product --dry-run, scorecard.',
+      description:
+        'Executa um comando do ai-devkit no projeto atual. Exemplos: verify, audit, status, doctor, generate crud Product --dry-run, scorecard.',
       parameters: {
         type: 'object',
         properties: {
@@ -125,15 +127,21 @@ export class ChatEngine {
   }
 
   async chat(history: ChatMessage[], callbacks: ChatCallbacks, config?: ChatConfig): Promise<ChatMessage[]> {
-    const sanitized = history.map(m => ({
+    const sanitized = history.map((m) => ({
       ...m,
-      content: m.role === 'user' ? m.content.split('').filter(c => { const n = c.charCodeAt(0); return n > 0x08 && n !== 0x0B && n !== 0x0C && (n < 0x0E || n > 0x1F); }).join('') : m.content,
+      content:
+        m.role === 'user'
+          ? m.content
+              .split('')
+              .filter((c) => {
+                const n = c.charCodeAt(0);
+                return n > 0x08 && n !== 0x0b && n !== 0x0c && (n < 0x0e || n > 0x1f);
+              })
+              .join('')
+          : m.content,
     }));
     const trimmed = this.trimHistory(sanitized);
-    const messages: ChatMessage[] = [
-      { role: 'system', content: SYSTEM_PROMPT },
-      ...trimmed,
-    ];
+    const messages: ChatMessage[] = [{ role: 'system', content: SYSTEM_PROMPT }, ...trimmed];
 
     let provider: AiProvider;
     if (config?.provider) {
@@ -151,7 +159,10 @@ export class ChatEngine {
     while (guard++ < MAX_TOOL_ITERATIONS) {
       const totalChars = messages.reduce((s, m) => s + m.content.length, 0);
       if (totalChars > MAX_TOTAL_CHARS) {
-        messages.push({ role: 'assistant', content: `[Limite de contexto atingido (${totalChars} chars). Interrompendo execuÃ§Ã£o de ferramentas.]` });
+        messages.push({
+          role: 'assistant',
+          content: `[Limite de contexto atingido (${totalChars} chars). Interrompendo execuÃ§Ã£o de ferramentas.]`,
+        });
         break;
       }
       const result = await this.streamCompletion(provider, model, messages, callbacks.onDelta, config);
@@ -195,8 +206,8 @@ export class ChatEngine {
 
   private trimHistory(history: ChatMessage[]): ChatMessage[] {
     if (history.length <= 20) return history;
-    const _systemIdx = history.findIndex(m => m.role === 'system');
-    const content = history.map(m => m.content).join(' ').length;
+    const _systemIdx = history.findIndex((m) => m.role === 'system');
+    const content = history.map((m) => m.content).join(' ').length;
     if (content <= MAX_HISTORY_CHARS) return history;
     const keep = history.slice(-10);
     keep.unshift({ role: 'system', content: 'HistÃ³rico anterior resumido para continuidade.' });
@@ -225,7 +236,7 @@ export class ChatEngine {
       return this.streamOllama(model, messages, onDelta, baseUrl);
     }
 
-    const openaiMessages = messages.map(m => ({
+    const openaiMessages = messages.map((m) => ({
       role: m.role,
       content: m.content,
       ...(m.tool_call_id ? { tool_call_id: m.tool_call_id } : {}),
@@ -282,19 +293,24 @@ export class ChatEngine {
               if (!accToolCalls[idx]) {
                 accToolCalls[idx] = { id: '', function: { name: '', arguments: '' } };
               }
-              if (tc.id) accToolCalls[idx]!.id = tc.id;
-              if (tc.function?.name) accToolCalls[idx]!.function.name = tc.function.name;
-              if (tc.function?.arguments) accToolCalls[idx]!.function.arguments += tc.function.arguments;
+              const acc = accToolCalls[idx];
+              if (acc) {
+                if (tc.id) acc.id = tc.id;
+                if (tc.function?.name) acc.function.name = tc.function.name;
+                if (tc.function?.arguments) acc.function.arguments += tc.function.arguments;
+              }
             }
           }
           if (choice.finish_reason) finishReason = choice.finish_reason;
-        } catch { continue; }
+        } catch {
+          continue;
+        }
       }
     }
 
     const assistantMsg: ChatMessage = { role: 'assistant', content: accContent };
     if (accToolCalls.length > 0) {
-      assistantMsg.tool_calls = accToolCalls.map(tc => ({
+      assistantMsg.tool_calls = accToolCalls.map((tc) => ({
         id: tc.id,
         function: { name: tc.function.name, arguments: tc.function.arguments },
       }));
@@ -303,7 +319,7 @@ export class ChatEngine {
     return {
       newMessages: [assistantMsg],
       finishReason,
-      toolCalls: accToolCalls.filter(tc => tc.function.name),
+      toolCalls: accToolCalls.filter((tc) => tc.function.name),
     };
   }
 
@@ -320,7 +336,7 @@ export class ChatEngine {
     const url = `${baseUrl}/api/chat`;
     const body = JSON.stringify({
       model,
-      messages: messages.map(m => ({ role: m.role, content: m.content })),
+      messages: messages.map((m) => ({ role: m.role, content: m.content })),
       stream: true,
       options: { num_predict: 4096 },
     });
@@ -360,7 +376,9 @@ export class ChatEngine {
             onDelta(json.message.content);
           }
           if (json.done) break;
-        } catch { continue; }
+        } catch {
+          continue;
+        }
       }
     }
 
@@ -387,8 +405,9 @@ export class ChatEngine {
           maxBuffer: 1024 * 1024,
         });
         return `$ ai-devkit ${argStr}\n${stdout}\n[exit 0]`;
-      } catch (err: { stdout?: string; stderr?: string; status?: number }) {
-        return `$ ai-devkit ${argStr}\n${err.stdout || ''}${err.stderr ? `\n[stderr] ${err.stderr}` : ''}\n[exit ${err.status}]`;
+      } catch (err: unknown) {
+        const execErr = err as { stdout?: string; stderr?: string; status?: number };
+        return `$ ai-devkit ${argStr}\n${execErr.stdout || ''}${execErr.stderr ? `\n[stderr] ${execErr.stderr}` : ''}\n[exit ${execErr.status}]`;
       }
     }
     return `Ferramenta desconhecida: ${name}`;

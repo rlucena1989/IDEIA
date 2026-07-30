@@ -1,5 +1,7 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { ResourceMonitor, ResourceLimits } from './types';
+const logger = createLogger('resources');
 
 export class DefaultResourceMonitor implements ResourceMonitor {
   private limits: ResourceLimits;

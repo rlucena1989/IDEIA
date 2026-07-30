@@ -1,0 +1,674 @@
+[
+  {
+    "id": "solid-principles",
+    "title": "SOLID Principles",
+    "category": "design",
+    "tags": [
+      "solid",
+      "srp",
+      "ocp",
+      "lsp",
+      "isp",
+      "dip",
+      "oop"
+    ],
+    "summary": "SOLID sao 5 principios de design orientado a objetos que tornam o codigo mais manutenivel e escalavel.",
+    "content": "S: Single Responsibility ÔÇö uma classe, uma razao para mudar. O: Open/Closed ÔÇö aberto para extensao, fechado para modificacao. L: Liskov Substitution ÔÇö subtipos devem ser substituiveis por seus tipos base. I: Interface Segregation ÔÇö muitas interfaces especificas > uma interface geral. D: Dependency Inversion ÔÇö dependa de abstracoes, nao de concretas.",
+    "when_to_use": [
+      "Sempre em codigo orientado a objetos",
+      "Projetos de medio/longo prazo"
+    ],
+    "when_not_to_use": [
+      "Codigo procedural simples",
+      "Scripts descartaveis"
+    ]
+  },
+  {
+    "id": "error-handling",
+    "title": "Error Handling Patterns",
+    "category": "design",
+    "tags": [
+      "error-handling",
+      "exceptions",
+      "result-type",
+      "either",
+      "resilience"
+    ],
+    "summary": "Padroes para tratamento de erros: Result Type, Either, Exceptions, Circuit Breaker, Retry.",
+    "content": "Result Type: retorna sucesso ou falha como tipo, sem excecoes (Rust, Go). Either: Left (erro) ou Right (sucesso) (Scala, Kotlin). Exceptions: throw/catch (Java, C#, JS). Circuit Breaker: para de chamar servico com falha, retry apos timeout. Retry: tenta novamente com backoff exponencial. Bulkhead: isola recursos por servico.",
+    "when_to_use": [
+      "Result Type em codigo funcional",
+      "Exceptions em OOP",
+      "Circuit Breaker em comunicacao remota"
+    ],
+    "references": [
+      "Michael Nygard - Release It!"
+    ]
+  },
+  {
+    "id": "strategy-pattern",
+    "title": "Strategy Pattern",
+    "category": "design",
+    "tags": [
+      "strategy",
+      "gof",
+      "behavioral",
+      "algorithms",
+      "polymorphism"
+    ],
+    "summary": "Strategy permite definir uma familia de algoritmos, encapsular cada um e torna-los intercambiaveis.",
+    "content": "Contexto: usa uma Strategy. Interface Strategy: define contrato. Implementacoes Concretas: cada algoritmo diferente. Exemplo: validacao de precos (desconto normal, black friday, fidelidade).",
+    "when_to_use": [
+      "Variantes de um algoritmo",
+      "Evitar condicionais complexas (if/switch)"
+    ]
+  },
+  {
+    "id": "factory-pattern",
+    "title": "Factory Method & Abstract Factory",
+    "category": "design",
+    "tags": [
+      "factory",
+      "gof",
+      "creational",
+      "object-creation"
+    ],
+    "summary": "Factory Method define uma interface para criar objetos, permitindo que subclasses decidam qual classe instanciar.",
+    "content": "Factory Method: metodo que cria objetos, subclasses decidem o tipo. Abstract Factory: fabrica de fabricas, cria familias de objetos relacionados.",
+    "when_to_use": [
+      "Quando a criacao e complexa",
+      "Quando o tipo exato nao e conhecido ate runtime"
+    ]
+  },
+  {
+    "id": "observer-pattern",
+    "title": "Observer Pattern",
+    "category": "design",
+    "tags": [
+      "observer",
+      "gof",
+      "behavioral",
+      "events",
+      "pub-sub"
+    ],
+    "summary": "Observer define uma dependencia um-para-muitos entre objetos para que quando um mude de estado, todos sejam notificados.",
+    "content": "Subject: mantem lista de observers, notifica mudancas. Observer: interface com metodo update. Exemplo: eventos de dominio, listeners, pub-sub.",
+    "when_to_use": [
+      "Notificacoes de mudancas para multiplos objetos",
+      "Event-driven systems"
+    ]
+  },
+  {
+    "id": "di-pattern",
+    "title": "Dependency Injection",
+    "category": "design",
+    "tags": [
+      "di",
+      "dependency-injection",
+      "ioc",
+      "inversion-of-control",
+      "testing"
+    ],
+    "summary": "Dependency Injection fornece dependencias a um objeto em vez do objeto cria-las, promovendo baixo acoplamento.",
+    "content": "Tipos: Constructor Injection (recomendado), Setter Injection, Interface Injection. Containers: gerenciam ciclo de vida (DI containers). Beneficios: testabilidade, flexibilidade, separacao de concerns.",
+    "when_to_use": [
+      "Sempre em codigo OOP",
+      "Especialmente em testes automatizados"
+    ]
+  },
+  {
+    "id": "singleton",
+    "title": "Singleton Pattern",
+    "category": "design",
+    "tags": [
+      "singleton",
+      "gof",
+      "creational",
+      "global-state"
+    ],
+    "summary": "Singleton garante que uma classe tenha apenas uma instancia e fornece um ponto global de acesso a ela.",
+    "content": "Implementacao: construtor privado, metodo estatico getInstance(), lazy initialization. Cuidados: nao e thread-safe por padrao (usar double-checked locking ou enum). Em Node.js: modules sao naturalmente singletons devido ao caching do require/import.",
+    "when_to_use": [
+      "Gerenciamento de recursos compartilhados (pool, logger)",
+      "Configuracao global",
+      "Cache"
+    ],
+    "when_not_to_use": [
+      "Dificulta testes (estado global)",
+      "Acoplamento escondido"
+    ]
+  },
+  {
+    "id": "builder",
+    "title": "Builder Pattern",
+    "category": "design",
+    "tags": [
+      "builder",
+      "gof",
+      "creational",
+      "fluent-api"
+    ],
+    "summary": "Builder separa a construcao de um objeto complexo de sua representacao, permitindo diferentes representacoes.",
+    "content": "Construtor: fornece metodos para configurar partes do objeto. Produto: o objeto final construido. Fluent API: metodos retornam this para encadeamento. Exemplo: StringBuilder, QueryBuilder, HTTP Request Builder.",
+    "when_to_use": [
+      "Objetos com muitos parametros opcionais",
+      "Construcao em multiplos passos",
+      "Objetos imutaveis com configuracao complexa"
+    ]
+  },
+  {
+    "id": "prototype",
+    "title": "Prototype Pattern",
+    "category": "design",
+    "tags": [
+      "prototype",
+      "gof",
+      "creational",
+      "clone"
+    ],
+    "summary": "Prototype cria novos objetos copiando um prototipo existente, em vez de instanciar diretamente.",
+    "content": "Implementacao: metodo clone() que cria copia do objeto. Clone shallow vs deep. Em JS/TS: Object.create(), spread operator, structuredClone(). Exemplo: celulas em jogos, configuracao de ambientes.",
+    "when_to_use": [
+      "Criacao de objetos e cara",
+      "Objetos com muitas variacoes",
+      "Evitar hierarquias de fabrica profundas"
+    ]
+  },
+  {
+    "id": "adapter-gof",
+    "title": "Adapter Pattern (Wrapper)",
+    "category": "design",
+    "tags": [
+      "adapter",
+      "gof",
+      "structural",
+      "wrapper",
+      "compatibility"
+    ],
+    "summary": "Adapter permite que classes com interfaces incompativeis trabalhem juntas, convertendo a interface de uma classe em outra.",
+    "content": "Adapter de classe: usa heranca multipla (ou implements) para adaptar. Adapter de objeto: usa composicao, delega para o adaptee. Exemplo: adaptar API de terceiros para interface esperada, conector de banco.",
+    "when_to_use": [
+      "Integrar com codigo legado",
+      "Usar bibliotecas de terceiros com interface diferente",
+      "Padronizar interfaces"
+    ]
+  },
+  {
+    "id": "bridge",
+    "title": "Bridge Pattern",
+    "category": "design",
+    "tags": [
+      "bridge",
+      "gof",
+      "structural",
+      "abstraction",
+      "implementation"
+    ],
+    "summary": "Bridge desacopla uma abstracao de sua implementacao para que ambas possam variar independentemente.",
+    "content": "Abstracao: interface de alto nivel. Implementador: interface de implementacao. Implementacoes concretas: variacoes. Exemplo: dispositivos (TV, Radio) e controles remotos. Beneficio: evita explosao de classes (se cada abstracao tivesse cada implementacao).",
+    "when_to_use": [
+      "Variacoes multiplas em duas dimensoes (abstracao x implementacao)",
+      "Trocar implementacao em runtime"
+    ]
+  },
+  {
+    "id": "composite",
+    "title": "Composite Pattern",
+    "category": "design",
+    "tags": [
+      "composite",
+      "gof",
+      "structural",
+      "tree",
+      "hierarchy"
+    ],
+    "summary": "Composite compoe objetos em estruturas de arvore para representar hierarquias parte-todo, tratando objetos individuais e composicoes uniformemente.",
+    "content": "Component: interface comum. Leaf: objeto simples (folha). Composite: objeto que contem filhos (tambem Components). Exemplo: sistema de arquivos (arquivo/pasta), hierarquia de componentes de UI, estrutura organizacional.",
+    "when_to_use": [
+      "Estruturas hierarquicas",
+      "Operacoes que devem ser aplicadas a individuos e grupos"
+    ]
+  },
+  {
+    "id": "decorator",
+    "title": "Decorator Pattern",
+    "category": "design",
+    "tags": [
+      "decorator",
+      "gof",
+      "structural",
+      "wrapper",
+      "aop"
+    ],
+    "summary": "Decorator adiciona responsabilidades a um objeto dinamicamente, sem alterar sua classe.",
+    "content": "Decorator: wrapa um objeto com mesma interface, adicionando comportamento antes/depois de delegar. Exemplo: adicionar logging, caching, compression a uma operacao sem modificar a operacao. Diferenca de Adapter: decorator mantem a mesma interface, adapter muda.",
+    "when_to_use": [
+      "Adicionar comportamento transversal (logging, auth, cache)",
+      "Evitar heranca para varias combinacoes de comportamento"
+    ]
+  },
+  {
+    "id": "facade",
+    "title": "Facade Pattern",
+    "category": "design",
+    "tags": [
+      "facade",
+      "gof",
+      "structural",
+      "simplification"
+    ],
+    "summary": "Facade fornece uma interface simplificada para um subsistema complexo, reduzindo dependencias e acoplamento.",
+    "content": "Facade: classe que encapsula interacoes com multiplos componentes. Clientes usam apenas a Facade. Exemplo: API de biblioteca que esconde complexidade interna (ex: ffmpeg wrapper, SDK de AWS simplificado).",
+    "when_to_use": [
+      "Reduzir complexidade para o cliente",
+      "Desacoplar cliente do subsistema",
+      "Ponto unico de entrada para um modulo grande"
+    ]
+  },
+  {
+    "id": "flyweight",
+    "title": "Flyweight Pattern",
+    "category": "design",
+    "tags": [
+      "flyweight",
+      "gof",
+      "structural",
+      "memory",
+      "sharing"
+    ],
+    "summary": "Flyweight usa compartilhamento para suportar grandes quantidades de objetos de granularidade fina eficientemente.",
+    "content": "Estado intrinseco: compartilhado entre objetos (immutable). Estado extrinseco: especifico do contexto, passado como parametro. Exemplo: caracteres em editor de texto (glyphs compartilhados, posicoes sao extrinsecas), particles em jogos.",
+    "when_to_use": [
+      "Muitos objetos similares na memoria",
+      "Custo de armazenamento alto",
+      "Estado pode ser externalizado"
+    ]
+  },
+  {
+    "id": "proxy",
+    "title": "Proxy Pattern",
+    "category": "design",
+    "tags": [
+      "proxy",
+      "gof",
+      "structural",
+      "lazy",
+      "virtual",
+      "protection"
+    ],
+    "summary": "Proxy fornece um substituto ou placeholder para controlar acesso a outro objeto.",
+    "content": "Tipos: Virtual Proxy (lazy loading ÔÇö cria objeto real apenas quando necessario), Protection Proxy (controla acesso), Remote Proxy (representa objeto remoto), Logging Proxy (loga chamadas), Cache Proxy. Same interface as real subject.",
+    "when_to_use": [
+      "Lazy loading de objetos pesados",
+      "Controle de acesso",
+      "Logging/monitoring",
+      "Cache"
+    ]
+  },
+  {
+    "id": "chain-of-responsibility",
+    "title": "Chain of Responsibility",
+    "category": "design",
+    "tags": [
+      "chain-of-responsibility",
+      "gof",
+      "behavioral",
+      "middleware",
+      "pipeline"
+    ],
+    "summary": "Chain of Responsibility passa uma requisicao por uma cadeia de handlers, onde cada um decide processar ou passar adiante.",
+    "content": "Handler: define interface com metodo handle() e referencia ao proximo handler. Cada handler decide se processa e/ou passa. Exemplo: middleware HTTP (Express, Koa), pipeline de validacao, filtros de logging. Diferenca de Decorator: chain passa adiante, decorator envolve.",
+    "when_to_use": [
+      "Processamento em multiplos passos",
+      "Middleware/Interceptors",
+      "Validacao em cascata"
+    ]
+  },
+  {
+    "id": "command-pattern",
+    "title": "Command Pattern",
+    "category": "design",
+    "tags": [
+      "command",
+      "gof",
+      "behavioral",
+      "undo",
+      "queue",
+      "transaction"
+    ],
+    "summary": "Command encapsula uma requisicao como um objeto, permitindo parametrizar, enfileirar e desfazer operacoes.",
+    "content": "Command: objeto com metodo execute() e opcional undo(). Invoker: chama command. Receiver: executa acao real. Exemplo: acoes de editor (undo/redo), fila de tarefas, transacoes de banco. Command vs Strategy: command representa acao, strategy representa algoritmo.",
+    "when_to_use": [
+      "Undo/redo",
+      "Fila de tarefas",
+      "Operacoes transacionais",
+      "Macros"
+    ]
+  },
+  {
+    "id": "interpreter",
+    "title": "Interpreter Pattern",
+    "category": "design",
+    "tags": [
+      "interpreter",
+      "gof",
+      "behavioral",
+      "grammar",
+      "ast"
+    ],
+    "summary": "Interpreter define uma representacao para a gramatica de uma linguagem e um interpretador para processar sentencas.",
+    "content": "Expressao: interface com interpret(context). Terminal: expressoes simples (literais, variaveis). Non-terminal: combinacoes de expressoes (soma, if, loop). Exemplo: calculadoras, DSLs simples, filtros de busca. Para linguagens complexas, prefira parser generators (ANTLR, PEG).",
+    "when_to_use": [
+      "Gramatica simples e estavel",
+      "DSLs pequenas",
+      "Configuracoes complexas"
+    ]
+  },
+  {
+    "id": "iterator",
+    "title": "Iterator Pattern",
+    "category": "design",
+    "tags": [
+      "iterator",
+      "gof",
+      "behavioral",
+      "collection",
+      "traversal"
+    ],
+    "summary": "Iterator fornece acesso sequencial aos elementos de uma colecao sem expor sua estrutura interna.",
+    "content": "Iterator: interface com next(), hasNext(), opcional current(). Iterable: interface que cria iterator. Em JS/TS: Symbol.iterator, generators (function*), for...of. Arrays, Maps, Sets sao iteraveis nativamente.",
+    "when_to_use": [
+      "Percorrer colecoes sem expor estrutura",
+      "Iteracoes personalizadas",
+      "Lazy sequences"
+    ]
+  },
+  {
+    "id": "mediator",
+    "title": "Mediator Pattern",
+    "category": "design",
+    "tags": [
+      "mediator",
+      "gof",
+      "behavioral",
+      "orchestration",
+      "centralized"
+    ],
+    "summary": "Mediator centraliza comunicacao entre objetos, reduzindo dependencias muitos-para-muitos para um-para-muitos.",
+    "content": "Mediator: objeto central que coordena interacao. Colleagues: objetos que se comunicam apenas via Mediator. Exemplo: controlador de trafego aereo (torre), chat room, orquestrador de microservicos. Diferenca de Observer: mediator e centralizado, observer e distribuido.",
+    "when_to_use": [
+      "Multiplos objetos se comunicando",
+      "Reduzir acoplamento complexo",
+      "Centralizar controle"
+    ]
+  },
+  {
+    "id": "memento",
+    "title": "Memento Pattern",
+    "category": "design",
+    "tags": [
+      "memento",
+      "gof",
+      "behavioral",
+      "snapshot",
+      "undo"
+    ],
+    "summary": "Memento captura e externaliza o estado interno de um objeto para restauracao posterior (snapshot).",
+    "content": "Originator: objeto que tem estado. Memento: snapshot do estado (immutable). Caretaker: guarda mementos sem acessar conteudo. Exemplo: save/load em jogos, historico de estados em editores. Em JS: JSON.parse/stringify para snapshots simples.",
+    "when_to_use": [
+      "Undo/redo",
+      "Checkpoints",
+      "Transacoes com rollback"
+    ]
+  },
+  {
+    "id": "state-pattern",
+    "title": "State Pattern",
+    "category": "design",
+    "tags": [
+      "state",
+      "gof",
+      "behavioral",
+      "fsm",
+      "state-machine"
+    ],
+    "summary": "State permite que um objeto altere seu comportamento quando seu estado interno muda, parecendo ter mudado de classe.",
+    "content": "Context: mantem referencia ao estado atual. State: interface com comportamentos especificos. Estados concretos: implementam comportamentos para aquele estado. Transicoes: podem ser feitas pelos proprios estados. Exemplo: maquina de estados de pedido (novo, pago, enviado, entregue, cancelado) onde cada estado tem acoes permitidas.",
+    "when_to_use": [
+      "Comportamento varia conforme estado",
+      "Maquinas de estado",
+      "Evitar if/switch gigantes"
+    ]
+  },
+  {
+    "id": "template-method",
+    "title": "Template Method Pattern",
+    "category": "design",
+    "tags": [
+      "template-method",
+      "gof",
+      "behavioral",
+      "algorithm",
+      "skeleton"
+    ],
+    "summary": "Template Method define o esqueleto de um algoritmo em um metodo, adiando passos para subclasses.",
+    "content": "Metodo template: define ordem dos passos. Passos abstratos: subclasses implementam. Passos concretos: implementacao padrao. Hooks: metodos opcionais que subclasses podem sobrescrever. Exemplo: CI pipeline (checkout, build, test, deploy ÔÇö cada passo pode ser personalizado por projeto).",
+    "when_to_use": [
+      "Algoritmo com estrutura fixa e passos variaveis",
+      "Evitar duplicacao de codigo",
+      "Frameworks que guiam implementacao"
+    ]
+  },
+  {
+    "id": "visitor",
+    "title": "Visitor Pattern",
+    "category": "design",
+    "tags": [
+      "visitor",
+      "gof",
+      "behavioral",
+      "double-dispatch",
+      "operation"
+    ],
+    "summary": "Visitor separa um algoritmo da estrutura de objetos na qual ele opera, permitindo adicionar novas operacoes sem modificar as classes.",
+    "content": "Visitor: interface com metodos visit() para cada tipo concreto. Element: interface com accept(visitor). Elementos concretos: implementam accept chamando visitor.visit(this). Exemplo: AST traversal (parser), operacoes em hierarquia de documentos (export para JSON, XML, YAML).",
+    "when_to_use": [
+      "Estrutura estavel com operacoes que mudam frequentemente",
+      "Evitar poluir classes com multiplos metodos"
+    ]
+  },
+  {
+    "id": "null-object",
+    "title": "Null Object Pattern",
+    "category": "design",
+    "tags": [
+      "null-object",
+      "behavioral",
+      "null-safety",
+      "noop"
+    ],
+    "summary": "Null Object fornece um objeto substituto que implementa a interface mas nao faz nada, evitando null checks.",
+    "content": "Implementacao: classe que implementa a interface com metodos vazios ou valores default. Exemplo: logger null (nao loga nada), EmptyIterator, NullCommand. Beneficio: elimina if (x != null) checks, codigo mais limpo. Em TS/JS: optional chaining (?.) e nullish coalescing (??) sao alternativas.",
+    "when_to_use": [
+      "Evitar null checks repetitivos",
+      "Implementacoes default inofensivas",
+      "Optional dependencies"
+    ]
+  },
+  {
+    "id": "value-object",
+    "title": "Value Object Pattern",
+    "category": "design",
+    "tags": [
+      "value-object",
+      "ddd",
+      "immutability",
+      "equality",
+      "identity"
+    ],
+    "summary": "Value Object e um objeto imutavel definido por seus atributos (nao por identidade), onde dois objetos sao iguais se todos os atributos sao iguais.",
+    "content": "Caracteristicas: imutavel (nenhum setter), equality por valor (equals/hashCode), auto-validacao na criacao. Exemplos: Money(amount, currency), Email(endereco), CPF, Endereco. Em DDD, prefira Value Objects a primitives para modelagem rica.",
+    "when_to_use": [
+      "Dados que nao tem identidade propria",
+      "Substituir primitives por tipos ricos",
+      "DDD"
+    ],
+    "references": [
+      "Martin Fowler - ValueObject",
+      "Eric Evans - DDD"
+    ]
+  },
+  {
+    "id": "specification",
+    "title": "Specification Pattern",
+    "category": "design",
+    "tags": [
+      "specification",
+      "ddd",
+      "business-rules",
+      "predicate",
+      "reuse"
+    ],
+    "summary": "Specification encapsula uma regra de negocio em um objeto reutilizavel e combinavel com AND/OR/NOT.",
+    "content": "Specification: interface com isSatisfiedBy(candidate). Combinacoes: AndSpecification, OrSpecification, NotSpecification. Exemplo: ClienteEspecialSpec (compras > R$1000 AND cliente ha > 1 ano), ProdutoEmPromocaoSpec. Beneficio: regras de negocio reutilizaveis e combinaveis, evitando duplicacao de logicas em queries e validacao.",
+    "when_to_use": [
+      "Regras de negocio que aparecem em multiplos lugares",
+      "Filtrar colecoes em memoria e em banco"
+    ],
+    "references": [
+      "Eric Evans - DDD",
+      "Martin Fowler - Specification"
+    ]
+  },
+  {
+    "id": "event-storming",
+    "title": "Event Storming ÔÇö Modelagem Colaborativa",
+    "category": "process",
+    "tags": [
+      "event-storming",
+      "ddd",
+      "workshop",
+      "modeling",
+      "collaboration"
+    ],
+    "summary": "Event Storming e um workshop colaborativo onde equipe de negocio e tecnica modelam o dominio atraves de eventos.",
+    "content": "Processo: 1) Big Picture (eventos caoticos,Õà¿µÖ»). 2) Process Modeling (sequencia temporal, comandos, atores). 3) Design (aggregates, bounded contexts). Elementos: Evento laranja (fato ocorrido), Comando azul (acao do usuario), Ator amarelo (quem executa), Aggregate roxo (consistencia), Policy roxo (regra automatica). Read Model verde (dados que a UI precisa). Facilitado por um domain expert. Duracao: 2-4 horas por sessao.",
+    "when_to_use": [
+      "Inicio de projeto complexo",
+      "Entender dominio",
+      "Alinhar negocio e tecnologia"
+    ],
+    "references": [
+      "Alberto Brandolini - Event Storming"
+    ]
+  },
+  {
+    "id": "example-mapping",
+    "title": "Example Mapping ÔÇö Especificacao Colaborativa",
+    "category": "process",
+    "tags": [
+      "example-mapping",
+      "bdd",
+      "specification",
+      "workshop",
+      "acceptance"
+    ],
+    "summary": "Example Mapping usa exemplos para esclarecer regras de negocio e definir acceptance criteria antes de codificar.",
+    "content": "4 cores: Regra azul (regra de negocio), Exemplo verde (exemplo concreto da regra), Pergunta vermelha (duvida a esclarecer), Suposi├º├úo amarela (hipotese nao validada). Processo: 1) Escreva regra da historia. 2) De exemplos. 3) Identifique perguntas. 4) Separe suposicoes para validar. Beneficio: revela ambiguidades cedo, evita retrabalho, base para BDD. Duracao: 30-60 min por historia.",
+    "when_to_use": [
+      "Refinamento de backlog",
+      "Antes de comecar a implementar"
+    ],
+    "references": [
+      "Matt Wynne - Example Mapping"
+    ]
+  },
+  {
+    "id": "impact-mapping",
+    "title": "Impact Mapping ÔÇö Planejamento Estrategico",
+    "category": "process",
+    "tags": [
+      "impact-mapping",
+      "strategy",
+      "product",
+      "goals",
+      "delivery"
+    ],
+    "summary": "Impact Mapping alinha entregas de tecnologia com objetivos de negocio atraves de mapas visuais de impacto.",
+    "content": "4 niveis: Goal (objetivo de negocio), Actor (quem pode ajudar/atrapalhar), Impact (mudanca de comportamento do actor), Deliverable (o que vamos construir). Processo: 1) Defina goal (por que?). 2) Identifique actors (quem?). 3) Mapeie impacts (como?). 4) Defina deliverables (o que?). Beneficio: evita construir features que nao impactam objetivos, priorizacao baseada em valor.",
+    "when_to_use": [
+      "Planejamento de produto",
+      "Roadmap",
+      "Priorizacao de features"
+    ],
+    "references": [
+      "Gojko Adzic - Impact Mapping"
+    ]
+  },
+  {
+    "id": "ddd-strategic",
+    "title": "DDD Strategic Design ÔÇö Bounded Context, Context Map",
+    "category": "process",
+    "tags": [
+      "ddd",
+      "strategic",
+      "bounded-context",
+      "context-map",
+      "ubiquitous-language"
+    ],
+    "summary": "Strategic DDD mapeia o dominio em bounded contexts e define relacoes entre eles via Context Map.",
+    "content": "Bounded Context: limite explicito onde um modelo de dominio e valido. Ex: contexto de Vendas e contexto de Estoque tem modelos diferentes de Produto. Context Map: relacionamentos entre contexts (Partnership, Shared Kernel, Customer-Supplier, Conformist, Anti-Corruption Layer, Open-Host Service, Published Language, Separate Ways). Core Domain: diferencial competitivo (fa├ºa voce mesmo). Supporting Domain: necessario, mas nao core (considere comprar). Generic Domain: commodity (compre pronto).",
+    "when_to_use": [
+      "Sistemas grandes com multiplos modulos",
+      "Microservicos",
+      "Organizacao por squads"
+    ],
+    "references": [
+      "Eric Evans - DDD",
+      "Vaughn Vernon - DDD Distilled"
+    ]
+  },
+  {
+    "id": "domain-storytelling",
+    "title": "Domain Storytelling",
+    "category": "process",
+    "tags": [
+      "domain-storytelling",
+      "workshop",
+      "modeling",
+      "communication"
+    ],
+    "summary": "Domain Storytelling usa historias contadas por especialistas do dominio para modelar processos de negocio.",
+    "content": "Elementos: Actor (pessoa/sistema que age), Work Object (documento/dado manipulado), Activity (acao realizada), Sequence (ordem das atividades), Arrows (fluxo de trabalho). Processo: especialista conta historia enquanto facilitador desenha. Beneficios: linguagem natural, sem tecnicidade, alinhamento rapido. Ferramentas: Domain Storytelling Modeler (gratuito, web), caneta e papel.",
+    "when_to_use": [
+      "Descoberta de requisitos",
+      "Modelagem de processos",
+      "Onboarding de novos membros"
+    ],
+    "references": [
+      "Stefan Hofer - Domain Storytelling"
+    ]
+  },
+  {
+    "id": "user-story-mapping",
+    "title": "User Story Mapping",
+    "category": "process",
+    "tags": [
+      "story-mapping",
+      "agile",
+      "backlog",
+      "user-stories",
+      "product"
+    ],
+    "summary": "User Story Mapping organiza historias de usuario em um mapa visual que mostra o fluxo completo do produto.",
+    "content": "Estrutura: eixo horizontal (atividades do fluxo, da esquerda para direita), eixo vertical (complexidade/detalhe, de cima para baixo). Primeira linha: backbone (atividades principais). Segunda linha: walking skeleton (fluxo minimo viavel). Abaixo: detalhes, variantes, excecoes. Beneficios: visao do todo, priorizacao contextual, identificacao de MVP, comunicacao visual. Use Miro, Mural, ou post-its na parede.",
+    "when_to_use": [
+      "Planejamento de produto",
+      "Discovery",
+      "Roadmap visual"
+    ],
+    "references": [
+      "Jeff Patton - User Story Mapping"
+    ]
+  }
+]

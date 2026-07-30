@@ -1,4 +1,6 @@
 import { Disposable, Event } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('types');
 
 export interface AuthUser {
   id: string;

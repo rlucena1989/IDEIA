@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/robotic-integration",
+  "private": true,
+  "description": "Robotic Integration Architecture — padroes de integracao com sistemas externos, adaptadores, protocolos e roteamento",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

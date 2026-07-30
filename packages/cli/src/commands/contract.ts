@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { validateSpec, detectSpecType } from '../contracts/validator';
 import { diffSpecs } from '../contracts/differ';

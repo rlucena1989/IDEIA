@@ -1,4 +1,6 @@
 import { EngineMode, ExecutionTarget, ProviderKind } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('policy-engine');
 
 export interface Policy {
   id: string;

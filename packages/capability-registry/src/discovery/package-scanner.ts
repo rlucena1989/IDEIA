@@ -1,5 +1,7 @@
 import type { Capability } from '../types/capability';
+import { createLogger } from '@ideia/logger';
 import type { IDiscoveryEngine, DiscoveryResult } from './discovery.interface';
+const logger = createLogger('package-scanner');
 
 export class PackageScanner implements IDiscoveryEngine {
   constructor(private workspaceRoot: string) {}

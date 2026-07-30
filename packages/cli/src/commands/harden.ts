@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { buildDevkitState } from '../state/state-builder';
 import { buildConsistencyReport } from '../state/consistency-builder';
 import { checkConsistency } from '../hardening/consistency-checker';

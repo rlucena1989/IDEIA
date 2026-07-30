@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { BaseRunner } from './base-runner';
 import { LanguageId } from '../adapter-contract';

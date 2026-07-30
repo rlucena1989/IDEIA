@@ -1,4 +1,5 @@
 import { ComplexityLevel, RouteDecision } from './types';
+import { createLogger } from '@ideia/logger';
 import { selectRoute } from './route-selector';
 import { composePrompt, composeMinimalPrompt, PromptSpec } from './prompt-composer';
 import { compressSmart } from './context-compressor';

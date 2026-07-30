@@ -1,4 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('security-middleware');
 
 interface RateLimitEntry {
   tokens: number;
@@ -96,6 +98,14 @@ export class SecurityMiddleware {
     res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('X-XSS-Protection', '1; mode=block');
     res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'");
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+    res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), interest-cohort=()');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-DNS-Prefetch-Control', 'off');
+    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+    res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
   }
 
   getRateLimitStats(): { totalIps: number; totalEntries: number } {

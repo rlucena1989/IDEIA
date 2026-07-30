@@ -1,4 +1,5 @@
 import { FileEntry, buildVars, generateFiles, GeneratorOptions, printGeneratorResult } from './engine';
+import { createLogger } from '@ideia/logger';
 
 /**
  * Processa notification.
@@ -28,7 +29,7 @@ export interface {{Name}}Result {
 export class {{Name}}Notification {
   async send(payload: {{Name}}Payload): Promise<{{Name}}Result> {
     try {
-      console.log(\`[{{Name}}Notification] Sending to \${payload.to}\`);
+      logger.info(\`[{{Name}}Notification] Sending to \${payload.to}\`);
       // Implementar envio real pelo canal {{name}} (ex: email SMTP, push notification, notificacao in-app)
       return { success: true, messageId: crypto.randomUUID() };
     } catch (_error) {

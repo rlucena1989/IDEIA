@@ -6,9 +6,16 @@ import { createLogger } from '@ideia/logger';
 
 const log = createLogger('step-executor');
 
+export const MAX_OUTPUT_TOKENS = 2000;
+
 export interface FileSystemExecutorOptions {
   workspaceRoot?: string;
   allowedCommands?: RegExp[];
+  hooks?: ToolHookEngine;
+}
+
+export interface ToolHookEngine {
+  fire(event: string, context: { toolType: string; filePath?: string; projectPath: string; metadata: Record<string, unknown> }): Promise<Array<{ passed: boolean; message: string }>>
 }
 
 const DEFAULT_ALLOWED = [/^npm\s/, /^npx\s/, /^node\s/, /^ls\b/, /^dir\b/, /^cat\b/, /^type\b/, /^git\b/, /^echo\b/, /^mkdir\b/, /^cp\b/, /^copy\b/, /^mv\b/, /^move\b/];
@@ -23,13 +30,30 @@ function assertWithinWorkspace(workspaceRoot: string, resolvedPath: string): voi
 export class FileSystemStepExecutor implements StepExecutor {
   private workspaceRoot: string;
   private allowedCommands: RegExp[];
+  private hooks?: ToolHookEngine;
 
   constructor(options?: FileSystemExecutorOptions) {
     this.workspaceRoot = path.resolve(options?.workspaceRoot || process.cwd());
     this.allowedCommands = options?.allowedCommands || DEFAULT_ALLOWED;
+    this.hooks = options?.hooks;
   }
 
   async execute(step: ExecutableStep): Promise<unknown> {
+    const context = {
+      toolType: step.type,
+      filePath: step.params?.resource as string || step.params?.content as string,
+      projectPath: this.workspaceRoot,
+      metadata: { description: step.description, handler: step.handler },
+    };
+
+    if (this.hooks) {
+      const results = await this.hooks.fire('preToolUse', context);
+      const blocked = results.find(r => !r.passed);
+      if (blocked) {
+        return { blocked: true, reason: blocked.message, hook: blocked };
+      }
+    }
+
     switch (step.type) {
       case 'interpret':
       case 'evaluate':
@@ -97,14 +121,20 @@ export class FileSystemStepExecutor implements StepExecutor {
     return fullPath;
   }
 
-  private async readFile(filePath: string): Promise<{ content: string }> {
+  private async readFile(filePath: string): Promise<{ content: string; truncated: boolean }> {
     const fullPath = this.resolvePath(filePath);
     try {
       await fsp.access(fullPath);
     } catch {
       throw new Error(`File not found: ${filePath}`);
     }
-    return { content: await fsp.readFile(fullPath, 'utf-8') };
+    const content = await fsp.readFile(fullPath, 'utf-8');
+    const approxTokens = content.length / 4;
+    if (approxTokens > MAX_OUTPUT_TOKENS) {
+      const truncated = content.slice(0, MAX_OUTPUT_TOKENS * 4);
+      return { content: truncated + '\n\n... [TRUNCATED: output exceeds token budget]', truncated: true };
+    }
+    return { content, truncated: false };
   }
 
   private async writeFile(filePath: string, content: string): Promise<{ path: string }> {
@@ -125,7 +155,7 @@ export class FileSystemStepExecutor implements StepExecutor {
     return { path: filePath };
   }
 
-  private async runCommand(command: string): Promise<{ stdout: string; stderr: string }> {
+  private async runCommand(command: string): Promise<{ stdout: string; stderr: string; truncated: boolean }> {
     const allowed = this.allowedCommands.some(r => r.test(command));
     if (!allowed) throw new Error(`Command not allowed: ${command}`);
     const [cmd, ...args] = parseCommand(command);
@@ -135,10 +165,21 @@ export class FileSystemStepExecutor implements StepExecutor {
           if (err) reject(err); else resolve(out);
         });
       });
-      return { stdout: stdout.trim(), stderr: '' };
+      const trimmed = stdout.trim();
+      const approxTokens = trimmed.length / 4;
+      if (approxTokens > MAX_OUTPUT_TOKENS) {
+        return { stdout: trimmed.slice(0, MAX_OUTPUT_TOKENS * 4) + '\n\n... [TRUNCATED]', stderr: '', truncated: true };
+      }
+      return { stdout: trimmed, stderr: '', truncated: false };
     } catch (err: unknown) {
       const e = err as { stdout?: string; stderr?: string; message?: string };
-      return { stdout: (e.stdout || '').toString().trim(), stderr: (e.stderr || e.message || String(err)).toString().trim() };
+      const out = (e.stdout || '').toString().trim();
+      const errMsg = (e.stderr || e.message || String(err)).toString().trim();
+      const approxTokens = errMsg.length / 4;
+      if (approxTokens > MAX_OUTPUT_TOKENS) {
+        return { stdout: out, stderr: errMsg.slice(0, MAX_OUTPUT_TOKENS * 4) + '\n\n... [TRUNCATED]', truncated: true };
+      }
+      return { stdout: out, stderr: errMsg, truncated: false };
     }
   }
 
@@ -184,7 +225,7 @@ export class FileSystemStepExecutor implements StepExecutor {
 
 function parseCommand(command: string): [string, ...string[]] {
   const parts = command.match(/(?:[^\s"]+|"[^"]*")+/g) || [command];
-  const cmd = parts[0]!.replace(/"/g, '');
+  const cmd = (parts[0] ?? '').replace(/"/g, '');
   const args = parts.slice(1).map(a => a.replace(/"/g, ''));
   return [cmd, ...args];
 }

@@ -1,5 +1,7 @@
 import { resolve } from 'path';
+import { createLogger } from '@ideia/logger';
 import { existsSync } from 'fs';
+const logger = createLogger('env-loader');
 
 export function loadEnv(root?: string): void {
   try {

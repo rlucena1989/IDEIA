@@ -1,4 +1,6 @@
 import { IDiffEditorWidget } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('diff-editor');
 
 export class DefaultDiffEditorWidget implements IDiffEditorWidget {
   private originalUri = '';

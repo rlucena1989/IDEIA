@@ -1,5 +1,7 @@
 import { GenerationPlan } from './artifact-types';
+import { createLogger } from '@ideia/logger';
 import { DevkitState } from '../state/state-types';
+const logger = createLogger('artifact-generator');
 
 export interface GeneratedArtifact {
   path: string;

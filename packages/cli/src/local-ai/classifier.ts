@@ -1,4 +1,5 @@
 import * as crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
 
 /** Interface que define a estrutura de inference log entry. */
 export interface InferenceLogEntry {

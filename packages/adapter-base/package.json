@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/adapter-base",
+  "description": "Base class, types, and registry for all IDEIA language adapters",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/contracts": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "files": [
+    "dist"
+  ]
+}

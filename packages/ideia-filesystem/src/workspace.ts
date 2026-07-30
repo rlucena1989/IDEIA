@@ -1,5 +1,7 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { WorkspaceService } from './types';
+const logger = createLogger('workspace');
 
 export class DefaultWorkspaceService implements WorkspaceService {
   private _roots: string[] = [];

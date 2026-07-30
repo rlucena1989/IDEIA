@@ -1,8 +1,10 @@
 import { OperationalFailure, FailureSummary } from './failure-types';
+import { createLogger } from '@ideia/logger';
 import { FallbackAction } from './fallback-policy';
 import { RecoveryPlan } from './recovery-plan';
 import { RecoveryResult } from './recovery-engine';
 import { CircuitBreakerState } from './circuit-breaker';
+const logger = createLogger('resilience-report');
 
 export interface ResilienceReport {
   generatedAt: string;

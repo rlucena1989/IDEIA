@@ -1,4 +1,6 @@
 import { PlannedStep, RiskAssessment, RiskLevel } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('risk-estimator');
 
 export interface RiskEstimatorConfig {
   environmentRisk: Record<string, number>;

@@ -1,4 +1,6 @@
 import { PlatformState, PlatformPackage } from './platform-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('platform-packager');
 
 export function packagePlatform(state: PlatformState): PlatformPackage {
   return {

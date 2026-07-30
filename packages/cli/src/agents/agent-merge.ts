@@ -1,4 +1,6 @@
 import { AgentTaskResult } from './agent-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('agent-merge');
 
 export interface MergedAgentResult {
   mergedAt: string;

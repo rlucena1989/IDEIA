@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import {
   TaskService, TaskDefinition, TaskExecution, TaskProvider, ProblemMatcher, ProblemMatch, TaskOptions,
 } from './types';

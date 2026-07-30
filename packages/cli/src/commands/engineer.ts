@@ -1,5 +1,9 @@
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.engineer');
 import { Command } from 'commander';
 import path from 'node:path';
+
+const log = createLogger('cli:commands:engineer');
 import { startCollaboration } from '../local-ai/collaboration';
 import { getIO } from '../io';
 import { CognitiveCoprocessor } from '../cognitive-coprocessor/integration';
@@ -134,10 +138,10 @@ export async function startEngineerMode(
     updatedAt: now(),
   };
 
-  console.log(`\nðŸ¤– Autonomous Engineer Mode`);
-  console.log(`Task: "${task}"`);
-  console.log(`Max iterations: ${maxIter}`);
-  console.log(`Model: ${model}\n`);
+  logger.info('\nðŸ¤– Autonomous Engineer Mode');
+  logger.info('Task: "${task}"');
+  logger.info('Max iterations: ${maxIter}');
+  logger.info('Model: ${model}\n');
 
   for (let iter = 1; iter <= maxIter; iter++) {
     session.iteration = iter;
@@ -145,24 +149,24 @@ export async function startEngineerMode(
     session.updatedAt = now();
     saveEngineerSession(root, session);
     indexSession(root, session.id);
-    console.log(`\n${'='.repeat(50)}`);
-    console.log(`ðŸ”„ Iteration ${iter}/${maxIter}`);
-    console.log(`${'='.repeat(50)}\n`);
+    logger.info('\n${\'=\'.repeat(50)}');
+    logger.info('ðŸ”„ Iteration ${iter}/${maxIter}');
+    logger.info('${\'=\'.repeat(50)}\n');
 
     session.status = 'implementing';
     saveEngineerSession(root, session);
 
-    console.log('ðŸ“ Planning and implementing...');
+    logger.info('ðŸ“ Planning and implementing...');
     const collab = await startCollaboration(root, task, { ollamaModel: model });
     session.collaborationId = collab.id;
     session.artifacts.push(`collaboration:${collab.id}`);
-    console.log(`   Collaboration: ${collab.id}`);
+    log.info(`   Collaboration: ${collab.id}`);
 
     if (!options?.skipGates) {
       session.status = 'testing';
       saveEngineerSession(root, session);
 
-      console.log('\nðŸ§ª Running quality gates...');
+      logger.info('\nðŸ§ª Running quality gates...');
       const gates = [
         { name: 'TypeScript Compile', command: 'npx tsc --noEmit' },
         { name: 'Lint Check', command: 'npx eslint packages/cli/src/ --max-warnings 200' },
@@ -174,9 +178,9 @@ export async function startEngineerMode(
         const result = await runQualityGate(gate.name, gate.command);
         result.iteration = iter;
         session.gates.push(result);
-        console.log(result.status === 'passed' ? 'âœ…' : 'âŒ');
+        logger.info(result.status === 'passed' ? 'âœ…' : 'âŒ');
         if (result.status === 'failed' && result.output) {
-          console.log(`      ${result.output.slice(0, 200)}`);
+          logger.info('      ${result.output.slice(0, 200)}');
         }
       }
 
@@ -187,7 +191,7 @@ export async function startEngineerMode(
         session.updatedAt = now();
         saveEngineerSession(root, session);
 
-        console.log(`\nðŸ”§ ${failedGates.length} gate(s) failed. Fixing in next iteration...`);
+        logger.info('\nðŸ”§ ${failedGates.length} gate(s) failed. Fixing in next iteration...');
         task = `${task}\n\nPrevious iteration had these failures:\n${failedGates.map((g) => `- ${g.name}: ${g.output.slice(0, 100)}`).join('\n')}\n\nFix all issues.`;
         continue;
       }
@@ -195,7 +199,7 @@ export async function startEngineerMode(
 
     session.status = 'reviewing';
     saveEngineerSession(root, session);
-    console.log('\nðŸ“‹ Review passed.');
+    logger.info('\nðŸ“‹ Review passed.');
     break;
   }
 
@@ -239,12 +243,12 @@ export function engineerCommand(): Command {
       if (options.coprocess) {
         const hints = coprocessBefore(task);
         if (hints) {
-          console.log('\n=== Cognitive Coprocessor ===');
+          logger.info('\n=== Cognitive Coprocessor ===');
           for (const h of hints.hints.hints) {
-            console.log(`  [${h.type}] ${h.message}`);
+            logger.info('  [${h.type}] ${h.message}');
           }
           if (hints.hints.deterministicPaths.length > 0) {
-            console.log(`  Caminhos deterministicos: ${hints.hints.deterministicPaths.join(', ')}`);
+            logger.info('  Caminhos deterministicos: ${hints.hints.deterministicPaths.join(\', \')}');
           }
           console.log('');
         }
@@ -261,25 +265,25 @@ export function engineerCommand(): Command {
         return;
       }
 
-      console.log(`\n${'='.repeat(50)}`);
-      console.log(`âœ… Engineer Mode Complete`);
-      console.log(`${'='.repeat(50)}`);
-      console.log(`Session: ${session.id}`);
-      console.log(`Status: ${session.status}`);
-      console.log(`Iterations: ${session.iteration}/${session.maxIterations}`);
-      console.log(`Collaboration: ${session.collaborationId}`);
+      logger.info('\n${\'=\'.repeat(50)}');
+      logger.info('âœ… Engineer Mode Complete');
+      logger.info('${\'=\'.repeat(50)}');
+      logger.info('Session: ${session.id}');
+      logger.info('Status: ${session.status}');
+      logger.info('Iterations: ${session.iteration}/${session.maxIterations}');
+      logger.info('Collaboration: ${session.collaborationId}');
 
       const passed = session.gates.filter((g) => g.status === 'passed').length;
       const total = session.gates.length;
       if (total > 0) {
-        console.log(`Gates: ${passed}/${total} passed`);
+        logger.info('Gates: ${passed}/${total} passed');
         for (const gate of session.gates) {
           const icon = gate.status === 'passed' ? 'âœ…' : 'âŒ';
-          console.log(`  ${icon} ${gate.name} (iter ${gate.iteration})`);
+          logger.info('  ${icon} ${gate.name} (iter ${gate.iteration})');
         }
       }
 
-      console.log(`\nSession saved: .ai/engineer/${session.id}.json`);
+      logger.info('\nSession saved: .ai/engineer/${session.id}.json');
     });
 
   cmd
@@ -296,17 +300,17 @@ export function engineerCommand(): Command {
       }
 
       if (sessions.length === 0) {
-        console.log('No engineer sessions found.');
+        logger.info('No engineer sessions found.');
         return;
       }
 
-      console.log('\nðŸ¤– Engineer Sessions:\n');
+      logger.info('\nðŸ¤– Engineer Sessions:\n');
       for (const s of sessions) {
         const icon = s.status === 'completed' ? 'âœ…' : s.status === 'failed' ? 'âŒ' : 'â³';
-        console.log(`${icon} ${s.id}`);
-        console.log(`   Task: ${s.task.slice(0, 80)}`);
-        console.log(`   Status: ${s.status}`);
-        console.log(`   Updated: ${new Date(s.updatedAt).toLocaleString()}\n`);
+        logger.info('${icon} ${s.id}');
+        logger.info('   Task: ${s.task.slice(0, 80)}');
+        logger.info('   Status: ${s.status}');
+        logger.info('   Updated: ${new Date(s.updatedAt).toLocaleString()}\n');
       }
     });
 
@@ -320,7 +324,7 @@ export function engineerCommand(): Command {
       const session = loadEngineerSession(root, sessionId);
 
       if (!session) {
-        console.error(`Session not found: ${sessionId}`);
+        log.error(`Session not found: ${sessionId}`);
         process.exit(1);
       }
 
@@ -329,29 +333,29 @@ export function engineerCommand(): Command {
         return;
       }
 
-      console.log(`\nðŸ¤– Engineer Session: ${session.id}`);
-      console.log(`Task: ${session.task}`);
-      console.log(`Status: ${session.status}`);
-      console.log(`Iterations: ${session.iteration}/${session.maxIterations}\n`);
+      logger.info('\nðŸ¤– Engineer Session: ${session.id}');
+      logger.info('Task: ${session.task}');
+      logger.info('Status: ${session.status}');
+      logger.info('Iterations: ${session.iteration}/${session.maxIterations}\n');
 
-      console.log('â± Timeline:');
-      console.log(`  Created: ${new Date(session.createdAt).toLocaleString()}`);
-      console.log(`  Updated: ${new Date(session.updatedAt).toLocaleString()}`);
-      console.log(`  Collaboration: ${session.collaborationId}\n`);
+      logger.info('â± Timeline:');
+      logger.info('  Created: ${new Date(session.createdAt).toLocaleString()}');
+      logger.info('  Updated: ${new Date(session.updatedAt).toLocaleString()}');
+      logger.info('  Collaboration: ${session.collaborationId}\n');
 
       if (session.gates.length > 0) {
-        console.log('ðŸ§ª Quality Gates:');
+        logger.info('ðŸ§ª Quality Gates:');
         for (const gate of session.gates) {
           const icon = gate.status === 'passed' ? 'âœ…' : 'âŒ';
-          console.log(`  ${icon} [iter ${gate.iteration}] ${gate.name}`);
-          if (gate.output) console.log(`     ${gate.output.slice(0, 300)}`);
+          logger.info('  ${icon} [iter ${gate.iteration}] ${gate.name}');
+          if (gate.output) logger.info('     ${gate.output.slice(0, 300)}');
           console.log();
         }
       }
 
       if (session.result) {
-        console.log('ðŸ“„ Result:\n');
-        console.log(session.result);
+        logger.info('ðŸ“„ Result:\n');
+        logger.info(session.result);
       }
     });
 

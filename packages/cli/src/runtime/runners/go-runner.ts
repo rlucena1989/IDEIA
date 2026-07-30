@@ -5,7 +5,9 @@
  */
 
 import { BaseRunner } from './base-runner';
+import { createLogger } from '@ideia/logger';
 import { LanguageId } from '../adapter-contract';
+const logger = createLogger('go-runner');
 
 /** Runner Go. */
 export class GoRunner extends BaseRunner {

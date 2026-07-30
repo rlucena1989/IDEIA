@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { detectFailures } from '../resilience/failure-detector';
 import { resolveFallback } from '../resilience/fallback-policy';
 import { buildRecoveryPlan } from '../resilience/recovery-plan';
@@ -144,7 +145,8 @@ export function recoverCommand(): Command {
         printHeader('Relatório de Resiliência');
         printLine(`  Falhas: ${summary.total} | Críticas: ${summary.critical}`);
         for (let i = 0; i < failures.length; i++) {
-          printLine(`  ${recoveries[i]!.ok ? '✅' : '❌'} ${failures[i]!.source} → fallback: ${fallbacks[i]!.action}`);
+          const r = recoveries[i]; const f = failures[i]; const fb = fallbacks[i];
+          printLine(`  ${r?.ok ? '✅' : '❌'} ${f?.source ?? 'unknown'} → fallback: ${fb?.action ?? 'none'}`);
         }
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);

@@ -1,5 +1,7 @@
 import * as crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
 import { EvolutionAuditEntry } from './evolution-types';
+const logger = createLogger('evolution-audit');
 
 export function createEvolutionAudit(params: {
   planId: string;

@@ -21,5 +21,25 @@
   "exclude": [
     "**/__tests__"
   ],
-  "extends": "../tsconfig.base.json"
+  "extends": "../../tsconfig.base.json",
+  "references": [
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../data-layer"
+    },
+    {
+      "path": "../memory-store"
+    }
+  ]
 }

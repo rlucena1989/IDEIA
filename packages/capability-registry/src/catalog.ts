@@ -1,4 +1,6 @@
 import type { Capability } from './types/capability';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('catalog');
 
 function cap(id: string, name: string, desc: string, cat: Capability['category'], sub: string, deps: Capability['dependsOn'] = [], tags: string[] = []): Capability {
   return { id, name, description: desc, category: cat, subcategory: sub, version: '1.0.0', status: 'active', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), dependsOn: deps, inputs: [], outputs: [], examples: [], tags, metadata: { tags, keywords: [], links: {} } };

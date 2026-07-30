@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { runTestLoop, formatTestReport } from '../runtime/test-loop';
 import { printLine, printResult, finish } from '../utils/output';
 

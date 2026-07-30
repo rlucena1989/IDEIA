@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { assessRisk, RiskAssessment } from '../prediction/risk-model';
 import { DEFAULT_RISK_THRESHOLDS } from '../prediction/risk-thresholds';
 import { createEnvelope } from '../hardening/output-contract';

@@ -1,4 +1,6 @@
 import { EventEmitter } from 'node:events';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('bhp-protocol');
 
 type BHPMessageType = 'HELP' | 'STATS' | 'PLAN' | 'APPROVE' | 'REJECT' | 'CLARIFY' | 'ADAPT';
 

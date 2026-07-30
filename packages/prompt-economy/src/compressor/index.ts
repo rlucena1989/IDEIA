@@ -1,4 +1,5 @@
 import { CompressorInput, CompressorOutput, CompressionStrategy } from '../types';
+import { createLogger } from '@ideia/logger';
 import { SummarizeTrimmer } from './summarize-trimmer';
 import { DeduplicateTrimmer } from './deduplicate-trimmer';
 import { PriorityRanker } from './priority-ranker';

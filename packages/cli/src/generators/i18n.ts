@@ -1,4 +1,6 @@
 import { FileEntry, buildVars, generateFiles, GeneratorOptions, printGeneratorResult } from './engine';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('i18n');
 
 /**
  * Processa i18n.

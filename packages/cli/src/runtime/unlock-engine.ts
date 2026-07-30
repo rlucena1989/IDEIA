@@ -1,3 +1,4 @@
+import { createLogger } from '@ideia/logger';
 import {
   TaskNode,
   OrchestrationCheckpoint,
@@ -166,7 +167,7 @@ export function getParallelGroups(tasks: TaskNode[]): TaskNode[][] {
   for (const task of readyTasks) {
     const depth = depthMap.get(task.id) ?? 0;
     if (!groups.has(depth)) groups.set(depth, []);
-    groups.get(depth) ?? {}.push(task);
+    groups.get(depth)?.push(task);
   }
 
   return [...groups.entries()]

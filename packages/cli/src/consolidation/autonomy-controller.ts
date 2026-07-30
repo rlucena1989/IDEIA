@@ -1,4 +1,5 @@
 import { FinalVerdict } from './consolidation-types';
+import { createLogger } from '@ideia/logger';
 
 export interface AutonomyState {
   enabled: boolean;

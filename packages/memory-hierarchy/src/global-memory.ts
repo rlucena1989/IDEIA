@@ -1,5 +1,7 @@
 import { MemoryEntry, EntryCategory } from './types';
+import { createLogger } from '@ideia/logger';
 import { randomUUID } from 'crypto';
+const logger = createLogger('global-memory');
 
 export class GlobalMemory {
   private entries: Map<string, MemoryEntry> = new Map();

@@ -1,4 +1,6 @@
 import { ITitleBar } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('title-bar');
 
 export class DefaultTitleBar implements ITitleBar {
   private _title = 'IDEIA';

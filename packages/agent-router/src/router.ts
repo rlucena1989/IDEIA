@@ -1,4 +1,5 @@
 import { ComplexityLevel, ComplexityCriteria, RoutePipeline, AgentOpinion, ConsensusResult, FusionInput, FusionResult } from './types';
+import { createLogger } from '@ideia/logger';
 import { ComplexityClassifier } from './complexity-classifier';
 import { RouteSelector } from './route-selector';
 import { ConsensusEngine } from './consensus-engine';

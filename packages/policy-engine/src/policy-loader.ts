@@ -1,6 +1,8 @@
 import fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import path from 'path';
 import yaml from 'js-yaml';
+const logger = createLogger('policy-loader');
 
 export interface PolicyRule {
   id: string;
@@ -49,9 +51,9 @@ export function loadPolicyDirectory(dirPath: string = DEFAULT_POLICY_DIR): Map<s
     try {
       const doc = loadPolicyFile(path.join(dirPath, file));
       policies.set(doc.metadata.name || file.replace(/\.policy\.ya?ml$/, ''), doc);
-    } catch (_err) {
+    } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      console.warn(`[PolicyLoader] Skipping ${file}: ${msg}`);
+      logger.warn(`Skipping ${file}: ${msg}`);
     }
   }
 

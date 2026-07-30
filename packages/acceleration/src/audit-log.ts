@@ -1,4 +1,6 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('audit-log');
 
 interface AuditEntry {
   timestamp: string;

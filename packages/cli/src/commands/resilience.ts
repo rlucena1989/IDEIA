@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { createCircuitBreaker, updateCircuitBreaker, resetCircuitBreaker } from '../resilience/circuit-breaker';
 import { createEnvelope } from '../hardening/output-contract';
 import { printHeader, printLine, printResult } from '../utils/output';

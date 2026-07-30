@@ -1,0 +1,59 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "strict": true,
+    "composite": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../schema-registry"
+    },
+    {
+      "path": "../auto-adr"
+    },
+    {
+      "path": "../technology-radar"
+    },
+    {
+      "path": "../scope-isolation"
+    },
+    {
+      "path": "../feedback-pipeline"
+    },
+    {
+      "path": "../contract-cdc"
+    },
+    {
+      "path": "../slo-monitor"
+    },
+    {
+      "path": "../initiative-feedback"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../data-layer"
+    },
+    {
+      "path": "../memory-store"
+    }
+  ]
+}

@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.ideia.deploy-command');
 import path from 'node:path';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -66,13 +68,13 @@ export function ideiaDeployCommand(): Command {
         const checks = runPreDeployChecks();
 
         if (options.dryRun) {
-          console.log(`\n[DRY-RUN] Deploy para ${env}:\n`);
-          console.log('  VerificaÃ§Ãµes:');
-          for (const c of checks) console.log(`   ${c.passed ? 'âœ…' : 'âŒ'} ${c.name}`);
-          console.log('\n  AÃ§Ãµes planejadas:');
-          console.log('   â€¢ Bump version');
-          console.log('   â€¢ Gerar release notes');
-          console.log('   â€¢ Publicar artefatos');
+          logger.info('\n[DRY-RUN] Deploy para ${env}:\n');
+          logger.info('  VerificaÃ§Ãµes:');
+          for (const c of checks) logger.info('   ${c.passed ? \'âœ…\' : \'âŒ\'} ${c.name}');
+          logger.info('\n  AÃ§Ãµes planejadas:');
+          logger.info('   â€¢ Bump version');
+          logger.info('   â€¢ Gerar release notes');
+          logger.info('   â€¢ Publicar artefatos');
           console.log('   â€¢ Deploy para', env, '\n');
           return;
         }
@@ -81,16 +83,16 @@ export function ideiaDeployCommand(): Command {
 
         const failedChecks = checks.filter(c => !c.passed);
         if (failedChecks.length > 0 && !options.approve) {
-          console.log('  âš  VerificaÃ§Ãµes de prÃ©-deploy:\n');
+          logger.info('  âš  VerificaÃ§Ãµes de prÃ©-deploy:\n');
           for (const c of checks) {
-            console.log(`   ${c.passed ? 'âœ…' : 'âŒ'} ${c.name}`);
+            logger.info('   ${c.passed ? \'âœ…\' : \'âŒ\'} ${c.name}');
           }
-          console.log(`\n  ${failedChecks.length} verificaÃ§Ã£o(Ãµes) falhou(ram). Use --approve para ignorar.\n`);
+          logger.info('\n  ${failedChecks.length} verificaÃ§Ã£o(Ãµes) falhou(ram). Use --approve para ignorar.\n');
           return;
         }
 
         for (const c of checks) {
-          console.log(`   ${c.passed ? 'âœ…' : 'âš '} ${c.name} ${c.passed ? '' : '(ignorado)'}`);
+          logger.info('   ${c.passed ? \'âœ…\' : \'âš \'} ${c.name} ${c.passed ? \'\' : \'(ignorado)\'}');
         }
 
         const manifest: DeployManifest = {
@@ -102,7 +104,7 @@ export function ideiaDeployCommand(): Command {
           checks,
         };
 
-        console.log(`\n  âœ… Deploy preparado para ${env}.\n`);
+        logger.info('\n  âœ… Deploy preparado para ${env}.\n');
 
         if (options.json) {
           console.log(JSON.stringify(manifest, null, 2));
@@ -138,20 +140,20 @@ export function ideiaDeployCommand(): Command {
         }
 
         if (history.length === 0) {
-          console.log('\n  Nenhum deploy realizado.\n');
+          logger.info('\n  Nenhum deploy realizado.\n');
           return;
         }
 
         const last = history[history.length - 1];
-        console.log(`\n${'='.repeat(56)}`);
-        console.log('  ðŸš€ IDEIA â€” Ãšltimo Deploy');
-        console.log(`${'='.repeat(56)}\n`);
-        console.log(`  Ambiente: ${last.environment}`);
-        console.log(`  VersÃ£o: ${last.version}`);
-        console.log(`  Data: ${new Date(last.timestamp).toLocaleString()}`);
-        console.log(`  Status: ${last.approved ? 'âœ… Aprovado' : 'â³ Pendente'}`);
-        console.log(`  Artefatos: ${last.artifacts.join(', ')}`);
-        console.log(`  Total de deploys: ${history.length}\n`);
+        logger.info('\n${\'=\'.repeat(56)}');
+        logger.info('  ðŸš€ IDEIA â€” Ãšltimo Deploy');
+        logger.info('${\'=\'.repeat(56)}\n');
+        logger.info('  Ambiente: ${last.environment}');
+        logger.info('  VersÃ£o: ${last.version}');
+        logger.info('  Data: ${new Date(last.timestamp).toLocaleString()}');
+        logger.info('  Status: ${last.approved ? \'âœ… Aprovado\' : \'â³ Pendente\'}');
+        logger.info('  Artefatos: ${last.artifacts.join(\', \')}');
+        logger.info('  Total de deploys: ${history.length}\n');
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
         console.error(`\nâŒ Erro: ${message}`);

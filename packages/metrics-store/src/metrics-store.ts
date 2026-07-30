@@ -1,6 +1,6 @@
 import { EventBus } from '@ideia/event-bus';
 import { Logger } from '@ideia/logger';
-import { MetricEntry, MetricsSummary, TrendResult } from './types';
+import { MetricEntry, MetricsSummary, TrendResult, MetricsBackend, DashboardMetricCard } from './types';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -10,12 +10,14 @@ export class MetricsStore {
   private storageDir: string;
   private cache: Map<string, MetricEntry[]>;
   private ttlMs: number;
+  private backend: MetricsBackend | null;
 
   constructor(
     bus: EventBus,
     logger: Logger,
-    options?: { storageDir?: string; ttlMs?: number }
+    options?: { storageDir?: string; ttlMs?: number; backend?: MetricsBackend }
   ) {
+    this.backend = options?.backend ?? null;
     this.bus = bus;
     this.logger = logger;
     this.storageDir = options?.storageDir ?? path.join(process.cwd(), '.ai', 'metrics');
@@ -146,6 +148,17 @@ export class MetricsStore {
     }
 
     return removed;
+  }
+
+  async getDashboardMetrics(): Promise<DashboardMetricCard[]> {
+    const summary = await this.getSummary();
+    const cards: DashboardMetricCard[] = [
+      { label: 'Total Entries', value: summary.totalEntries, change: 0, trend: 'stable' },
+    ];
+    for (const [category, count] of Object.entries(summary.categories)) {
+      cards.push({ label: `Category: ${category}`, value: count, change: 0, trend: 'stable' });
+    }
+    return cards;
   }
 
   private async flushCategory(category: string): Promise<void> {

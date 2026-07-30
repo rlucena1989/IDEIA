@@ -1,4 +1,6 @@
 import { INavigationLocation, INavigationService, EditorSelection } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('navigation');
 
 export class DefaultNavigationService implements INavigationService {
   private backStack: INavigationLocation[] = [];

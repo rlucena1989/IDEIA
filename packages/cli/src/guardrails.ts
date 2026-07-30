@@ -1,4 +1,6 @@
 import { PromptSecurity } from '@ideia/prompt-security';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('guardrails');
 
 export interface GuardrailReport {
   passed: boolean;

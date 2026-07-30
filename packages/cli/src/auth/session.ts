@@ -195,7 +195,7 @@ export class SessionManager {
 
   updateConfig(config: Partial<SessionConfig>): void {
     this.config = { ...this.config, ...config };
-    log.info('Session config updated', this.config);
+    log.info('Session config updated', this.config as unknown as Record<string, unknown>);
   }
 
   getConfig(): SessionConfig {

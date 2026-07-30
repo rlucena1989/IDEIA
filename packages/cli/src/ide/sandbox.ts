@@ -1,7 +1,9 @@
 import { Worker } from 'node:worker_threads';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import fs from 'node:fs';
 import { execFile } from 'node:child_process';
+import { PluginIsolation, type PluginInfo, type IsolationLevel } from './plugin-isolation';
 
 const SANDBOX_DIR = '.ai/sandbox';
 
@@ -10,6 +12,8 @@ export interface SandboxRequest {
   language?: 'javascript' | 'typescript' | 'shell';
   timeout?: number;
   files?: Record<string, string>;
+  pluginId?: string;
+  isolationLevel?: IsolationLevel;
 }
 
 export interface SandboxResult {
@@ -24,6 +28,16 @@ function getSandboxDir(root: string): string {
   const dir = path.join(root, SANDBOX_DIR);
   fs.mkdirSync(dir, { recursive: true });
   return dir;
+}
+
+function getPluginInfo(request: SandboxRequest): PluginInfo | null {
+  if (!request.pluginId) return null;
+  return {
+    id: request.pluginId,
+    name: request.pluginId,
+    version: '1.0.0',
+    source: 'sandbox',
+  };
 }
 
 function workerScript(): string {
@@ -111,27 +125,76 @@ export async function runInSandbox(root: string, request: SandboxRequest): Promi
   const workerFile = path.join(sandboxDir, 'sandbox-worker.js');
   fs.writeFileSync(workerFile, workerScript(), 'utf8');
 
+  const pluginInfo = getPluginInfo(request);
+  let isolation: PluginIsolation | null = null;
+  if (pluginInfo) {
+    isolation = new PluginIsolation(pluginInfo, {
+      level: request.isolationLevel || 'medium',
+      timeoutMs: request.timeout || 10000,
+    });
+
+    const resourceCheck = isolation.checkResourceLimits();
+    if (!resourceCheck.withinLimits) {
+      return {
+        ok: false,
+        output: '',
+        error: `Resource limit exceeded: ${resourceCheck.reason}`,
+        durationMs: 0,
+        memoryMb: resourceCheck.currentMemoryMb,
+      };
+    }
+
+    if (request.language === 'shell') {
+      const spawnCheck = isolation.checkProcessSpawn(request.code);
+      if (!spawnCheck.allowed) {
+        return {
+          ok: false,
+          output: '',
+          error: `Process spawn blocked: ${spawnCheck.reason}`,
+          durationMs: 0,
+          memoryMb: 0,
+        };
+      }
+    }
+
+    if (request.files) {
+      for (const filePath of Object.values(request.files)) {
+        const writeCheck = isolation.checkFileWrite(filePath);
+        if (!writeCheck.allowed) {
+          return {
+            ok: false,
+            output: '',
+            error: `File write blocked: ${writeCheck.reason}`,
+            durationMs: 0,
+            memoryMb: 0,
+          };
+        }
+      }
+    }
+  }
+
   return new Promise((resolve) => {
     const start = Date.now();
 
     const worker = new Worker(workerFile, {
       resourceLimits: {
-        maxOldGenerationSizeMb: 64,
-        maxYoungGenerationSizeMb: 16,
-        codeRangeSizeMb: 8,
+        maxOldGenerationSizeMb: isolation ? 32 : 64,
+        maxYoungGenerationSizeMb: isolation ? 8 : 16,
+        codeRangeSizeMb: isolation ? 4 : 8,
       },
     });
 
+    const timeoutMs = request.timeout || (isolation ? isolation.getConfig().timeoutMs : 15000);
     const timer = setTimeout(() => {
       worker.terminate();
       resolve({
         ok: false,
         output: '',
-        error: `Sandbox timeout after ${(request.timeout || 15000) / 1000}s`,
+        error: `Sandbox timeout after ${timeoutMs / 1000}s`,
         durationMs: Date.now() - start,
         memoryMb: 0,
       });
-    }, (request.timeout || 15000) + 1000);
+    }, timeoutMs + 1000);
 
     worker.on('message', (result: SandboxResult) => {
       clearTimeout(timer);
@@ -154,7 +217,7 @@ export async function runInSandbox(root: string, request: SandboxRequest): Promi
     worker.postMessage({
       code: request.code,
       language: request.language || 'javascript',
-      timeout: request.timeout || 10000,
+      timeout: timeoutMs,
     });
   });
 }

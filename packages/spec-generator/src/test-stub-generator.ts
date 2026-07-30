@@ -1,4 +1,6 @@
 import { GherkinFeature, GherkinScenario, TestFramework } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('test-stub-generator');
 
 export class TestStubGenerator {
   generate(feature: GherkinFeature, framework: TestFramework = 'jest'): string {

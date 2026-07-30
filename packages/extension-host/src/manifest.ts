@@ -1,4 +1,5 @@
 import { ExtensionManifest, ExtensionContribution } from './types';
+import { createLogger } from '@ideia/logger';
 import { z } from 'zod';
 
 const ExtensionManifestSchema = z.object({

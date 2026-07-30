@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { OutputChannel, OutputChannelManager } from './types';
 
 class DefaultOutputChannel implements OutputChannel {

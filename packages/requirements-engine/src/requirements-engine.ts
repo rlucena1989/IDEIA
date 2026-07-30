@@ -1,7 +1,9 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Requirement, RequirementCreate, RequirementSummary, RequirementUpdate } from './types';
+const logger = createLogger('requirements-engine');
 
 const STORAGE_DIR = '.ai/requirements';
 const STORAGE_FILE = 'requirements.json';
@@ -63,7 +65,7 @@ export class RequirementsEngine {
     if (filters?.category) result = result.filter(r => r.category === filters.category);
     if (filters?.status) result = result.filter(r => r.status === filters.status);
     if (filters?.priority) result = result.filter(r => r.priority === filters.priority);
-    if (filters?.tag) result = result.filter(r => r.tags.includes(filters.tag));
+    if (filters?.tag) result = result.filter(r => r.tags.includes(filters.tag!));
 
     return result.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
   }

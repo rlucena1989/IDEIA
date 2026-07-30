@@ -27,7 +27,7 @@ function _nextId(): string {
   return `n-${Date.now()}-${notificationCounter}`;
 }
 
-abstract class BaseChannel implements NotificationChannel {
+export abstract class BaseChannel implements NotificationChannel {
   abstract readonly type: ChannelType;
   protected enabled = true;
 

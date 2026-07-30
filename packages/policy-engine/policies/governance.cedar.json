@@ -1,0 +1,45 @@
+{
+  "version": "1.0",
+  "policies": [
+    {
+      "id": "gv-001",
+      "description": "User creation requires approval",
+      "effect": "forbid",
+      "action": { "type": "user.create" },
+      "conditions": [],
+      "priority": 50
+    },
+    {
+      "id": "gv-002",
+      "description": "Permission changes require approval",
+      "effect": "forbid",
+      "action": { "type": "permission.change" },
+      "conditions": [],
+      "priority": 50
+    },
+    {
+      "id": "gv-003",
+      "description": "Audit trail tampering forbidden",
+      "effect": "forbid",
+      "action": { "type": "audit.modify" },
+      "conditions": [],
+      "priority": 100
+    },
+    {
+      "id": "gv-004",
+      "description": "Configuration changes require approval",
+      "effect": "forbid",
+      "action": { "type": "config.change" },
+      "conditions": [{ "clause": "unless", "match": "riskLevel", "operator": "eq", "value": "low" }],
+      "priority": 50
+    },
+    {
+      "id": "gv-005",
+      "description": "System operations blocked",
+      "effect": "forbid",
+      "action": { "type": "system.exec" },
+      "conditions": [{ "clause": "if", "match": "riskLevel", "operator": "eq", "value": "high" }],
+      "priority": 100
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { PlannedJob } from './planner';
+import { createLogger } from '@ideia/logger';
 
 export interface ImpactEntry {
   area: string;
@@ -15,7 +16,7 @@ export function mapImpact(plan: PlannedJob[]): ImpactEntry[] {
       if (!areas.has(tag)) {
         areas.set(tag, { jobs: [], risk: 0 });
       }
-      const area = areas.get(tag) ?? null;
+      const area = areas.get(tag)!;
       area.jobs.push(job.id);
       if (tag.includes('high-risk')) area.risk += 3;
       else if (tag.includes('medium-risk')) area.risk += 2;

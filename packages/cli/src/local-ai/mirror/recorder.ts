@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
 import { MirrorEntry } from './types';
 import { loadMirrorConfig, appendEntry } from './ledger';
 

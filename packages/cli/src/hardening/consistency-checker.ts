@@ -1,4 +1,6 @@
 import { ConsistencyReport } from '../state/consistency-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('consistency-checker');
 
 export interface ConsistencyCheckResult {
   ok: boolean;

@@ -1,4 +1,6 @@
 import { Command } from "commander";
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.feature');
 import fs from "node:fs";
 import path from "node:path";
 
@@ -12,7 +14,7 @@ export function ensureDir(dirPath: string) {
 
 export function generateArtifact(filePath: string, content: string) {
   fs.writeFileSync(filePath, content.trim() + "\n", "utf8");
-  console.log(`✅ Gerado: ${filePath}`);
+  logger.info('✅ Gerado: ${filePath}');
 }
 
 /**
@@ -20,8 +22,8 @@ export function generateArtifact(filePath: string, content: string) {
  * @returns O resultado da operação.
  */
 export function featureAnalyzeAction(request: string, options: { ui?: boolean }): void {
-  console.log(`\n🧠 Iniciando Feature Intelligence Dinâmica...`);
-  console.log(`📝 Processando: "${request}"\n`);
+  logger.info('\n🧠 Iniciando Feature Intelligence Dinâmica...');
+  logger.info('📝 Processando: "${request}"\n');
 
   const featureSlug = slugify(request.split(" ").slice(0, 3).join("-") || "nova-feature");
   const featureDir = path.join(process.cwd(), ".ai", "features", featureSlug);
@@ -53,11 +55,11 @@ export function featureAnalyzeAction(request: string, options: { ui?: boolean })
 
   const requiresUI = options.ui || /tela|interface|página|dashboard|view|frontend/i.test(request);
   if (requiresUI) {
-    console.log(`✨ Intenção de UI detectada.`);
+    logger.info('✨ Intenção de UI detectada.');
     generateArtifact(path.join(featureDir, "ui-checklist.md"), `# UI/UX Checklist (A ser resolvido pela IA)\n- [ ] Validar acessibilidade\n- [ ] Aplicar design system`);
   }
 
-  console.log(`\n🚀 Análise real concluída.`);
+  logger.info('\n🚀 Análise real concluída.');
 }
 
 export function featureCommand(): Command {

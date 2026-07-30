@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { Diagnostic, MarkerSeverity, ProblemManager, ProblemNode } from './types';
 
 export class DefaultProblemManager implements ProblemManager {

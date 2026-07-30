@@ -1,4 +1,6 @@
 import { Tutorial, TutorialSession, CompletionSummary, TutorialProgress } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('renderer');
 
 export type OutputFormat = 'cli' | 'markdown' | 'json';
 

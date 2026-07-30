@@ -1,4 +1,6 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('generators.boilerplate-detector');
 import path from 'node:path';
 import { GeneratorOptions, printGeneratorResult, GeneratorResult } from './engine';
 
@@ -38,10 +40,10 @@ export function boilerplateRemove(options: GeneratorOptions): void {
   }
 
   if (suggestions.length > 0) {
-    console.log(`\nBoilerplate detectado — sugestoes:`);
-    suggestions.forEach((s: string) => console.log(`  ${s}`));
+    logger.info('\nBoilerplate detectado — sugestoes:');
+    suggestions.forEach((s: string) => logger.info('  ${s}'));
   } else {
-    console.log('\nNenhum boilerplate padrao detectado.');
+    logger.info('\nNenhum boilerplate padrao detectado.');
   }
 
   printGeneratorResult('Boilerplate Removal Scan', result, options.dryRun);

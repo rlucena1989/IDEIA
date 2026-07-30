@@ -1,3 +1,6 @@
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('fetch-with-timeout');
+
 export interface FetchOptions {
   timeout?: number;
   retries?: number;
@@ -41,9 +44,9 @@ export async function fetchWithRetry(
     try {
       return await fetchWithTimeout(url, options);
     } catch (_err) {
-      lastError = err instanceof Error ? err : new Error(String(err));
+      lastError = _err instanceof Error ? _err : new Error(String(_err));
       if (attempt < config.retries) {
-        console.warn(`[fetch] Retry ${attempt + 1}/${config.retries} for ${url.slice(0, 100)}: ${lastError.message}`);
+        logger.warn(`Retry ${attempt + 1}/${config.retries} for ${url.slice(0, 100)}: ${lastError.message}`);
         await new Promise(r => setTimeout(r, config.retryDelay * Math.pow(2, attempt)));
       }
     }

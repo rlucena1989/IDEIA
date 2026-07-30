@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/api-sdk",
+  "private": true,
+  "description": "IDEIA API SDK — API SDK Generator, OpenAPI Parser, SDK Client, Webhooks, JWT Auth, TypeSafe Client, WebSocket, GraphQL Versioning",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*",
+    "@types/node": "*"
+  }
+}

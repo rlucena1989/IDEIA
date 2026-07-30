@@ -1,4 +1,6 @@
 import { DomainNode } from './ecosystem-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('ecosystem-router');
 
 export function routeEcosystemSync(
   from: DomainNode,

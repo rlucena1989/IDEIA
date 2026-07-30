@@ -1,7 +1,19 @@
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.reality-sync');
 import { Command } from 'commander';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { RealitySyncDaemon, createDefaultConfig, ProactiveInitiativeEngine, StudyIntensifier, applyProfile, getProfile, listProfiles } from '@ideia/reality-sync';
+
+const log = createLogger('cli:commands:reality-sync');
+import {
+  RealitySyncDaemon,
+  createDefaultConfig,
+  ProactiveInitiativeEngine,
+  StudyIntensifier,
+  applyProfile,
+  getProfile,
+  listProfiles,
+} from '@ideia/reality-sync';
 
 const spinnerFrames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 let spinnerInterval: ReturnType<typeof setInterval> | null = null;
@@ -31,7 +43,7 @@ async function withProgress<T>(msg: string, fn: () => T | Promise<T>, showProgre
     const result = await fn();
     if (showProgress) stopSpinner(msg);
     return result;
-  } catch (_e) {
+  } catch (e) {
     if (showProgress) stopSpinner(`✗ ${msg} failed`);
     throw e;
   }
@@ -48,8 +60,7 @@ function createDaemon(verbose: boolean, debounceMs?: number): RealitySyncDaemon 
 }
 
 export function realitySyncCommand(): Command {
-  const cmd = new Command('reality-sync')
-    .description('Reality Sync Engine — mantém código, docs e manifests alinhados');
+  const cmd = new Command('reality-sync').description('Reality Sync Engine — mantém código, docs e manifests alinhados');
 
   cmd
     .command('start')
@@ -59,19 +70,25 @@ export function realitySyncCommand(): Command {
     .action((opts) => {
       const daemon = createDaemon(!!opts.verbose, parseInt(opts.debounce, 10));
 
-      daemon.on('sync:complete', ({ _ok, results }: { ok: boolean; results: Array<{ actions: string[]; errors: string[] }> }) => {
+      daemon.on('sync:complete', ({ ok, results }: { ok: boolean; results: Array<{ actions: string[]; errors: string[] }> }) => {
         for (const r of results) {
-          for (const a of r.actions) console.log(`  ✓ ${a}`);
-          for (const e of r.errors) console.error(`  ✗ ${e}`);
+          for (const a of r.actions) logger.info('  ✓ ${a}');
+          for (const e of r.errors) log.error(`  ✗ ${e}`);
         }
       });
 
       daemon.start();
-      console.log('RealitySync daemon started with auto-heal.');
-      console.log('Auto-heal cycle every 30min. Press Ctrl+C to stop.');
+      log.info('RealitySync daemon started with auto-heal.');
+      log.info('Auto-heal cycle every 30min. Press Ctrl+C to stop.');
 
-      process.on('SIGINT', () => { daemon.stop(); process.exit(0); });
-      process.on('SIGTERM', () => { daemon.stop(); process.exit(0); });
+      process.on('SIGINT', () => {
+        daemon.stop();
+        process.exit(0);
+      });
+      process.on('SIGTERM', () => {
+        daemon.stop();
+        process.exit(0);
+      });
     });
 
   cmd
@@ -82,11 +99,11 @@ export function realitySyncCommand(): Command {
       const daemon = createDaemon(!!opts.verbose);
       const results = daemon.syncNow();
       for (const r of results) {
-        for (const a of r.actions) console.log(`✓ ${a}`);
-        for (const e of r.errors) console.error(`✗ ${e}`);
+        for (const a of r.actions) logger.info('✓ ${a}');
+        for (const e of r.errors) log.error(`✗ ${e}`);
       }
-      const ok = results.every(r => r.ok);
-      console.log(ok ? '✓ Reality sync complete' : '✗ Sync completed with errors');
+      const ok = results.every((r) => r.ok);
+      logger.info(ok ? '✓ Reality sync complete' : '✗ Sync completed with errors');
       process.exit(ok ? 0 : 1);
     });
 
@@ -97,20 +114,20 @@ export function realitySyncCommand(): Command {
     .action((opts) => {
       const engine = new ProactiveInitiativeEngine(process.cwd(), !!opts.verbose);
       const result = engine.scanAll();
-      console.log(`\nScan results:`);
-      console.log(`  Total: ${result.total} issues`);
-      console.log(`  Auto-fixable: ${result.fixable}`);
-      console.log(`  Requires human: ${result.unfixable}`);
+      logger.info('\nScan results:');
+      logger.info('  Total: ${result.total} issues');
+      logger.info('  Auto-fixable: ${result.fixable}');
+      logger.info('  Requires human: ${result.unfixable}');
       if (result.autoFixable.length > 0) {
-        console.log(`\nAuto-fixable issues:`);
+        logger.info('\nAuto-fixable issues:');
         for (const issue of result.autoFixable) {
-          console.log(`  [${issue.severity}] ${issue.description} (${issue.autoFix?.length || 0} fix actions)`);
+          logger.info('  [${issue.severity}] ${issue.description} (${issue.autoFix?.length || 0} fix actions)');
         }
       }
       if (result.requiresHuman.length > 0) {
-        console.log(`\nRequires human intervention:`);
+        logger.info('\nRequires human intervention:');
         for (const issue of result.requiresHuman) {
-          console.log(`  [${issue.severity}] ${issue.description}`);
+          logger.info('  [${issue.severity}] ${issue.description}');
         }
       }
     });
@@ -130,34 +147,33 @@ export function realitySyncCommand(): Command {
         if (opts.progress) startSpinner('Scanning for issues...');
         const scan = engine.scanAll();
         if (opts.progress) stopSpinner('Scan complete');
-        console.log(`\nHeal dry-run report (${scan.total} total issues):`);
-        console.log(`  Auto-fixable: ${scan.fixable}`);
-        console.log(`  Requires human: ${scan.unfixable}`);
+        logger.info('\nHeal dry-run report (${scan.total} total issues):');
+        logger.info('  Auto-fixable: ${scan.fixable}');
+        logger.info('  Requires human: ${scan.unfixable}');
         for (const issue of scan.autoFixable) {
-          console.log(`  [${issue.severity}] ${issue.description} (${issue.autoFix?.length || 0} fix actions)`);
+          logger.info('  [${issue.severity}] ${issue.description} (${issue.autoFix?.length || 0} fix actions)');
         }
         for (const issue of scan.requiresHuman) {
-          console.log(`  [${issue.severity}] ${issue.description} (requires human)`);
+          logger.info('  [${issue.severity}] ${issue.description} (requires human)');
         }
         process.exit(0);
       }
 
       const report = opts.progress ? await withProgress('Running heal cycle...', () => engine.runCycle(), true) : engine.runCycle();
-      console.log(`\nHeal report:`);
-      console.log(`  Level: ${engine.getLevel()}`);
-      console.log(`  Scanned: ${report.scanned} issues`);
-      console.log(`  Fixed: ${report.fixed}`);
-      console.log(`  Failed: ${report.failed}`);
-      console.log(`  Skipped: ${report.skipped}`);
+      logger.info('\nHeal report:');
+      logger.info('  Level: ${engine.getLevel()}');
+      logger.info('  Scanned: ${report.scanned} issues');
+      logger.info('  Fixed: ${report.fixed}');
+      logger.info('  Failed: ${report.failed}');
+      logger.info('  Skipped: ${report.skipped}');
       for (const d of report.details) {
         const icon = d.status === 'fixed' ? '✅' : d.status === 'failed' ? '❌' : d.status === 'pending' ? '⏳' : '⏭️';
-        console.log(`  ${icon} ${d.message}`);
+        logger.info('  ${icon} ${d.message}');
       }
       process.exit(report.failed > 0 ? 1 : 0);
     });
 
-  const configCmd = new Command('config')
-    .description('Gerencia configuração do reality-sync');
+  const configCmd = new Command('config').description('Gerencia configuração do reality-sync');
 
   configCmd
     .command('set')
@@ -168,7 +184,11 @@ export function realitySyncCommand(): Command {
       const configPath = path.join(process.cwd(), '.ai', 'reality-sync.json');
       let config: Record<string, unknown> = {};
       if (fs.existsSync(configPath)) {
-        try { config = JSON.parse(fs.readFileSync(configPath, 'utf-8')); } catch { /* ignore */ }
+        try {
+          config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+        } catch {
+          /* ignore */
+        }
       }
 
       const parsedValue: unknown = value === 'true' ? true : value === 'false' ? false : !isNaN(Number(value)) ? Number(value) : value;
@@ -177,7 +197,7 @@ export function realitySyncCommand(): Command {
       const dir = path.dirname(configPath);
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
-      console.log(`✓ ${key} = ${JSON.stringify(parsedValue)}`);
+      logger.info('✓ ${key} = ${JSON.stringify(parsedValue)}');
     });
 
   configCmd
@@ -187,13 +207,15 @@ export function realitySyncCommand(): Command {
     .action((key: string) => {
       const configPath = path.join(process.cwd(), '.ai', 'reality-sync.json');
       if (!fs.existsSync(configPath)) {
-        console.log('Config file not found');
+        log.info('Config file not found');
         return;
       }
       try {
         const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
-        console.log(config[key] !== undefined ? JSON.stringify(config[key]) : 'undefined');
-      } catch { console.log('Error reading config'); }
+        logger.info(config[key] !== undefined ? JSON.stringify(config[key]) : 'undefined');
+      } catch {
+        log.warn('Error reading config');
+      }
     });
 
   configCmd
@@ -202,13 +224,15 @@ export function realitySyncCommand(): Command {
     .action(() => {
       const configPath = path.join(process.cwd(), '.ai', 'reality-sync.json');
       if (!fs.existsSync(configPath)) {
-        console.log('Config file not found');
+        log.info('Config file not found');
         return;
       }
       try {
         const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
         console.log(JSON.stringify(config, null, 2));
-      } catch { console.log('Error reading config'); }
+      } catch {
+        log.warn('Error reading config');
+      }
     });
 
   configCmd
@@ -225,22 +249,21 @@ export function realitySyncCommand(): Command {
       const dir = path.dirname(configPath);
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(configPath, JSON.stringify(defaults, null, 2), 'utf-8');
-      console.log('✓ Config reset to defaults');
+      logger.info('✓ Config reset to defaults');
     });
 
-  const profileCmd = new Command('profile')
-    .description('Gerencia perfis de configuração');
+  const profileCmd = new Command('profile').description('Gerencia perfis de configuração');
 
   profileCmd
     .command('list')
     .description('Lista perfis disponíveis')
     .action(() => {
       const profiles = listProfiles();
-      console.log('\nPerfis disponíveis:');
+      logger.info('\nPerfis disponíveis:');
       console.log('─'.repeat(60));
       for (const p of profiles) {
-        console.log(`  ${p.name.padEnd(15)} ${p.label.padEnd(15)} ${p.level.padEnd(12)} risk=${p.riskThreshold}`);
-        console.log(`  ${''.padEnd(17)} ${p.description}`);
+        logger.info('  ${p.name.padEnd(15)} ${p.label.padEnd(15)} ${p.level.padEnd(12)} risk=${p.riskThreshold}');
+        logger.info("  ${''.padEnd(17)} ${p.description}");
         console.log();
       }
     });
@@ -252,7 +275,7 @@ export function realitySyncCommand(): Command {
     .action((name: string) => {
       const result = applyProfile(name, process.cwd());
       if (!result) {
-        console.error(`✗ Perfil não encontrado: ${name}`);
+        log.error(`✗ Perfil não encontrado: ${name}`);
         process.exit(1);
       }
     });
@@ -267,18 +290,20 @@ export function realitySyncCommand(): Command {
     .action((opts) => {
       const engine = new ProactiveInitiativeEngine(process.cwd(), !!opts.verbose);
       const results = engine.scanStudies();
-      console.log(`\n📊 Score de Intensidade dos Estudos\n`);
-      console.log(`  ${'Score'.padEnd(6)} ${'Nome'.padEnd(50)} ${'Linhas'.padEnd(8)} T ADR R M TM T`);
-      console.log(`  ${''.padEnd(6, '─')} ${''.padEnd(50, '─')} ${''.padEnd(8, '─')} ─ ─── ─ ─ ── ─`);
+      logger.info('\n📊 Score de Intensidade dos Estudos\n');
+      logger.info("  ${'Score'.padEnd(6)} ${'Nome'.padEnd(50)} ${'Linhas'.padEnd(8)} T ADR R M TM T");
+      logger.info("  ${''.padEnd(6, '─')} ${''.padEnd(50, '─')} ${''.padEnd(8, '─')} ─ ─── ─ ─ ── ─");
       for (const r of results) {
         const scoreBar = '█'.repeat(r.score) + '░'.repeat(5 - r.score);
-        console.log(`  ${(r.score + ' ' + scoreBar).padEnd(6)} ${r.name.padEnd(50)} ${String(r.lines).padEnd(8)} ${r.hasTasks ? '✅' : '❌'} ${r.hasAdr ? '✅' : '❌'} ${r.hasRisks ? '✅' : '❌'} ${r.hasMetrics ? '✅' : '❌'} ${r.hasTimeline ? '✅' : '❌'} ${r.hasTests ? '✅' : '❌'}`);
+        logger.info(
+          "  ${(r.score + ' ' + scoreBar).padEnd(6)} ${r.name.padEnd(50)} ${String(r.lines).padEnd(8)} ${r.hasTasks ? '✅' : '❌'} ${r.hasAdr ? '✅' : '❌'} ${r.hasRisks ? '✅' : '❌'} ${r.hasMetrics ? '✅' : '❌'} ${r.hasTimeline ? '✅' : '❌'} ${r.hasTests ? '✅' : '❌'}",
+        );
       }
       const avg = results.reduce((a: number, r: { score: number }) => a + r.score, 0) / results.length;
       const max = Math.max(...results.map((r: { score: number }) => r.score));
       const min = Math.min(...results.map((r: { score: number }) => r.score));
-      console.log(`\n  Média: ${avg.toFixed(1)} | Máx: ${max} | Mín: ${min} | Total: ${results.length} estudos`);
-      console.log(`\n  Legenda: T=Tasks ADR=ADR R=Riscos M=Métricas TM=Timeline T=Testes`);
+      logger.info('\n  Média: ${avg.toFixed(1)} | Máx: ${max} | Mín: ${min} | Total: ${results.length} estudos');
+      logger.info('\n  Legenda: T=Tasks ADR=ADR R=Riscos M=Métricas TM=Timeline T=Testes');
     });
 
   cmd
@@ -294,32 +319,32 @@ export function realitySyncCommand(): Command {
       const gaps = engine.scanGaps();
       if (opts.progress) stopSpinner('Scan complete');
 
-      console.log(`\n📊 Gaps encontrados: ${gaps.length} estudos\n`);
+      logger.info('\n📊 Gaps encontrados: ${gaps.length} estudos\n');
       for (const g of gaps) {
-        console.log(`  [${g.currentScore}/5 → ${g.targetScore}/5] ${g.study.substring(0, 50)}`);
-        console.log(`      Faltando: ${g.missing.join(', ')}`);
+        logger.info('  [${g.currentScore}/5 → ${g.targetScore}/5] ${g.study.substring(0, 50)}');
+        logger.info("      Faltando: ${g.missing.join(', ')}");
       }
 
       if (opts.dryRun) {
-        console.log(`\nDry-run: ${gaps.length} estudos precisam de intensificação`);
+        logger.info('\nDry-run: ${gaps.length} estudos precisam de intensificação');
         process.exit(0);
       }
 
       if (gaps.length === 0) {
-        console.log('\n✅ Todos os estudos estão completos!');
+        logger.info('\n✅ Todos os estudos estão completos!');
         process.exit(0);
       }
 
       if (opts.progress) startSpinner('Applying automatic intensification...');
       const report = opts.progress ? await withProgress('Intensifying studies...', () => engine.runCycle(), true) : engine.runCycle();
       if (opts.progress) stopSpinner('Intensification complete');
-      console.log(`\nRelatório:`);
-      console.log(`  Scan: ${report.scanned} estudos`);
-      console.log(`  Fixes aplicados: ${report.fixesApplied}`);
-      console.log(`  Fixes falhos: ${report.fixesFailed}`);
+      logger.info('\nRelatório:');
+      logger.info('  Scan: ${report.scanned} estudos');
+      logger.info('  Fixes aplicados: ${report.fixesApplied}');
+      logger.info('  Fixes falhos: ${report.fixesFailed}');
       for (const d of report.details) {
         const icon = d.status === 'fixed' ? '✅' : d.status === 'failed' ? '❌' : '⏭️';
-        console.log(`  ${icon} ${d.study.substring(0, 45)}: ${d.action.substring(0, 60)}`);
+        logger.info('  ${icon} ${d.study.substring(0, 45)}: ${d.action.substring(0, 60)}');
       }
       process.exit(report.fixesFailed > 0 ? 1 : 0);
     });

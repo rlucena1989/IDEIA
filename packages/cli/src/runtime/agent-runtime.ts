@@ -36,6 +36,7 @@ export interface CheckpointData {
 const RUNTIME_DIR = '.ai/optimizer/runtime/agents';
 
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import crypto from 'node:crypto';
 import path from 'node:path';
 

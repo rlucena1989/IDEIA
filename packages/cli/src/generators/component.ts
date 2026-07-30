@@ -1,4 +1,5 @@
 import { FileEntry, buildVars, generateFiles, GeneratorOptions, printGeneratorResult } from './engine';
+import { createLogger } from '@ideia/logger';
 import { BUILT_IN_TOKENS, formatTokensCSS } from '../runtime/design-tokens';
 
 interface ComponentOptions extends GeneratorOptions {

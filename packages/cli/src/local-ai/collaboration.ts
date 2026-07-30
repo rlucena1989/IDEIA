@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { queryOllama } from './ollama';
 import { listAgents, getAgent, AgentDefinition } from '../commands/agents';
@@ -163,7 +164,8 @@ STEP: <description> | AGENT: <agent-name> | DEPENDS-ON: <step-number-or-none>`,
       continue;
     }
 
-    const agent = getAgent(step.agent) || getAgent('engineer')!;
+    const agent = getAgent(step.agent) ?? getAgent('engineer');
+    if (!agent) throw new Error('No engineer agent found');
     addMessage(session, 'system', step.agent, 'delegation', step.description, `Execute: ${step.description}`);
 
     const agentResult = await runAgentPrompt(
@@ -266,8 +268,8 @@ function parseSteps(text: string): { description: string; agent: string; depends
     const match = line.match(/STEP:\s*(.+?)\s*\|\s*AGENT:\s*(\w+)(?:\s*\|\s*DEPENDS-ON:\s*(.+))?/i);
     if (match) {
       steps.push({
-        description: match[1]!.trim(),
-        agent: match[2]!.trim().toLowerCase(),
+        description: (match[1] ?? '').trim(),
+        agent: (match[2] ?? '').trim().toLowerCase(),
         dependsOn: (match[3] || 'none').trim(),
       });
     }
@@ -282,7 +284,7 @@ function parseSteps(text: string): { description: string; agent: string; depends
 
 function simulateAgentResponse(agent: AgentDefinition, prompt: string): string {
   const taskMatch = prompt.match(/Current task:\s*(.+?)(?:\n|$)/);
-  const task = taskMatch ? taskMatch[1]!.trim() : prompt.slice(0, 100);
+  const task = taskMatch ? (taskMatch[1] ?? '').trim() : prompt.slice(0, 100);
 
   const templates: Record<string, string> = {
     planner: `## Plan for: "${task}"

@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -150,8 +151,9 @@ export function revokeAttestation(root: string, id: string, reason?: string): bo
   const idx = chain.findIndex(a => a.id === id);
   if (idx === -1) return false;
 
-  chain[idx]!.revoked = true;
-  chain[idx]!.revoke_reason = reason || 'Revogado manualmente';
+  const entry = chain[idx] as NonNullable<typeof chain[0]>;
+  entry.revoked = true;
+  entry.revoke_reason = reason || 'Revogado manualmente';
 
   const storagePath = path.join(root, STORAGE_DIR);
   fs.mkdirSync(storagePath, { recursive: true });

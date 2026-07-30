@@ -1,4 +1,6 @@
 import { ProductPlan } from './product-model';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('artifact-content-generator');
 
 export interface GeneratedDocument {
   path: string;

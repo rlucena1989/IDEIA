@@ -1,6 +1,8 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { TelemetryEvent } from './types';
+const logger = createLogger('telemetry');
 
 export class Telemetry {
   private events: TelemetryEvent[] = [];

@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/deep-dives-engine",
+  "private": true,
+  "description": "Deep Dives Tecnicos — tecnicas avançadas de obtencao de profundidade tecnica, analise de complexidade e geracao de codigo aprofundado",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*",
+    "@types/node": "*"
+  }
+}

@@ -1,4 +1,5 @@
 import { PlannedStep, Plan, DecompositionStrategy } from './types';
+import { createLogger } from '@ideia/logger';
 import { AdaptiveDecomposer } from './decomposer';
 
 export class DynamicReplanner {

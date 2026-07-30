@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.ideia.memory-command');
 import path from 'node:path';
 import fs from 'node:fs';
 import { MemoryStore } from '@ideia/memory-store';
@@ -58,31 +60,31 @@ export function ideiaMemoryCommand(): Command {
           return;
         }
 
-        console.log(`\n${'='.repeat(56)}`);
-        console.log('  🧠 IDEIA — Memória');
-        console.log(`${'='.repeat(56)}\n`);
+        logger.info('\n${\'=\'.repeat(56)}');
+        logger.info('  🧠 IDEIA — Memória');
+        logger.info('${\'=\'.repeat(56)}\n');
 
         if (records.length === 0 && storeRecords.length === 0) {
-          console.log('  Nenhum registro de memória encontrado.\n');
+          logger.info('  Nenhum registro de memória encontrado.\n');
           return;
         }
 
         if (records.length > 0) {
-          console.log('  📚 Memória IDEIA:\n');
+          logger.info('  📚 Memória IDEIA:\n');
           for (const r of records) {
             const icon = r.type === 'decision' ? '📌' : r.type === 'lesson' ? '🎓' : r.type === 'pattern' ? '🔧' : '⭐';
-            console.log(`  ${icon} [${r.type}] ${r.title}`);
-            console.log(`     ${r.description.slice(0, 100)}`);
-            console.log(`     Tags: ${r.tags.join(', ')}`);
-            console.log(`     ${r.timestamp}\n`);
+            logger.info('  ${icon} [${r.type}] ${r.title}');
+            logger.info('     ${r.description.slice(0, 100)}');
+            logger.info('     Tags: ${r.tags.join(\', \')}');
+            logger.info('     ${r.timestamp}\n');
           }
         }
 
         if (storeRecords.length > 0) {
-          console.log('  📋 Memória Operacional (últimas 10):\n');
+          logger.info('  📋 Memória Operacional (últimas 10):\n');
           for (const r of storeRecords.slice(-10)) {
             const icon = r.severity === 'critical' ? '❌' : r.severity === 'high' ? '⚠️' : '📝';
-            console.log(`  ${icon} [${r.category}] ${r.summary.slice(0, 80)}`);
+            logger.info('  ${icon} [${r.category}] ${r.summary.slice(0, 80)}');
             console.log('');
           }
         }
@@ -116,28 +118,28 @@ export function ideiaMemoryCommand(): Command {
           return;
         }
 
-        console.log(`\n${'='.repeat(56)}`);
-        console.log(`  🔍 IDEIA — Pesquisa: "${query}"`);
-        console.log(`${'='.repeat(56)}\n`);
+        logger.info('\n${\'=\'.repeat(56)}');
+        logger.info('  🔍 IDEIA — Pesquisa: "${query}"');
+        logger.info('${\'=\'.repeat(56)}\n');
 
         if (results.length === 0 && storeResults.length === 0) {
-          console.log('  Nenhum resultado encontrado.\n');
+          logger.info('  Nenhum resultado encontrado.\n');
           return;
         }
 
         if (results.length > 0) {
-          console.log(`  📚 Memória IDEIA (${results.length}):\n`);
+          logger.info('  📚 Memória IDEIA (${results.length}):\n');
           for (const r of results) {
-            console.log(`  • [${r.type}] ${r.title}`);
-            console.log(`    ${r.description.slice(0, 120)}`);
+            logger.info('  • [${r.type}] ${r.title}');
+            logger.info('    ${r.description.slice(0, 120)}');
             console.log('');
           }
         }
 
         if (storeResults.length > 0) {
-          console.log(`  📋 Memória Operacional (${storeResults.length}):\n`);
+          logger.info('  📋 Memória Operacional (${storeResults.length}):\n');
           for (const r of storeResults.slice(-5)) {
-            console.log(`  • ${r.summary.slice(0, 80)}`);
+            logger.info('  • ${r.summary.slice(0, 80)}');
             console.log('');
           }
         }
@@ -178,7 +180,7 @@ export function ideiaMemoryCommand(): Command {
         records.push(record);
         saveIdeiaMemory(records);
 
-        console.log(`\n✅ Registro adicionado à memória: "${title}"\n`);
+        logger.info('\n✅ Registro adicionado à memória: "${title}"\n');
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
         console.error(`\n❌ Erro: ${message}`);
@@ -193,7 +195,7 @@ export function ideiaMemoryCommand(): Command {
     .action((opts) => {
       try {
         if (!opts.force) {
-          console.log('\n  ⚠ Use --force para confirmar a limpeza da memória.\n');
+          logger.info('\n  ⚠ Use --force para confirmar a limpeza da memória.\n');
           return;
         }
 
@@ -202,7 +204,7 @@ export function ideiaMemoryCommand(): Command {
           fs.writeFileSync(memoryPath, JSON.stringify([], null, 2));
         }
 
-        console.log('\n✅ Memória limpa.\n');
+        logger.info('\n✅ Memória limpa.\n');
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
         console.error(`\n❌ Erro: ${message}`);

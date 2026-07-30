@@ -1,4 +1,5 @@
 import { Disposable, Event } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 
 export interface LspClientManager {
   connect(serverId: string, options: LspConnectionOptions): Promise<LspClient>;

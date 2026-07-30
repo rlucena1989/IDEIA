@@ -1,0 +1,37 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../cli"
+    },
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../reality-sync"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../data-layer"
+    },
+    {
+      "path": "../memory-store"
+    }
+  ]
+}

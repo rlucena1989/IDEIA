@@ -1,4 +1,5 @@
 import { spawnSync } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
 import fs from 'node:fs';
 import _path from 'node:path';
 import type { Shell, ShellResult, FileSystem, HttpClient } from './interfaces';

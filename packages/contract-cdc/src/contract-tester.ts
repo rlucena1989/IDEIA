@@ -1,4 +1,5 @@
 import { ContractCDC } from './contract-cdc';
+import { createLogger } from '@ideia/logger';
 import type { CDCContract, ContractDiff, PactContract, PactInteraction, ConsumerExpectation, ProviderVerificationResult, CompatibilityMatrix } from './types';
 
 export class ContractTester {

@@ -1,0 +1,31 @@
+{
+  "name": "@ideia/agent-graph",
+  "description": "IDEIA DAG execution system — orchestrates agent pipeline as analyst→architect→programmer→reviewer→tester→devops with supervisor-driven decisions and checkpoints",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@ideia/agent-runtime": "*",
+    "@ideia/checkpoint-engine": "*",
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false
+}

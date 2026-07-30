@@ -3,7 +3,8 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "strict": true
+    "strict": true,
+    "composite": true
   },
   "include": [
     "src/**/*.ts"
@@ -17,6 +18,18 @@
     },
     {
       "path": "../event-bus"
+    },
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../data-layer"
+    },
+    {
+      "path": "../memory-store"
     }
   ]
 }

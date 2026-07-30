@@ -1,0 +1,30 @@
+{
+  "name": "@ideia/learning-engine",
+  "description": "Adaptive Learning Engine — observes usage patterns and suggests personalized optimizations (aliases, workflows, shortcuts, automation)",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "optionalDependencies": {
+    "@ideia/memory-store": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

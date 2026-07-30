@@ -192,7 +192,7 @@ export class ContextStore {
 
         return { ...item, relevanceScore: score };
       })
-      .filter(item => item.relevanceScore! >= minRelevance)
+      .filter(item => (item.relevanceScore ?? 0) >= minRelevance)
       .sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0))
       .slice(0, maxItems);
 
@@ -225,7 +225,7 @@ export class ContextStore {
   }
 
   private evictLowestPriority(): void {
-    const sorted = Array.from(this.items.entries()).sort((a, b) => a[1]!.priority - b[1]!.priority);
+    const sorted = Array.from(this.items.entries()).sort((a, b) => (a[1]?.priority ?? 0) - (b[1]?.priority ?? 0));
     const toRemove = sorted.slice(0, Math.max(1, Math.floor(this.items.size * 0.1)));
     for (const [id] of toRemove) {
       this.items.delete(id);

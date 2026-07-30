@@ -1,5 +1,7 @@
 import { Roadmap } from './roadmap-types';
+import { createLogger } from '@ideia/logger';
 import { GapItem } from './gap-analyzer';
+const logger = createLogger('evolution-roadmap');
 
 export interface EvolutionPlan {
   roadmap: Roadmap;

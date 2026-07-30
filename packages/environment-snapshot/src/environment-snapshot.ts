@@ -264,7 +264,7 @@ export class EnvironmentSnapshot {
       }
       const filePath = resolve(this.storageDir, `${id}.json`);
       writeFileSync(filePath, JSON.stringify(snapshot, null, 2), 'utf-8');
-    } catch (_e) {
+    } catch (e) {
       logger.error(`Failed to save snapshot to disk: ${e}`);
     }
   }

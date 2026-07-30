@@ -1,6 +1,8 @@
 import { readFileSync, readdirSync, existsSync } from 'fs';
+import { createLogger } from '@ideia/logger';
 import { join, resolve } from 'path';
 import { DatabaseAdapter } from './types';
+const logger = createLogger('data-layer:migrate');
 
 export interface MigrationFile {
   version: number;
@@ -21,7 +23,7 @@ export class MigrationRunner {
   }
 
   async ensureTable(): Promise<void> {
-    if (this.dryRun) { console.log('[DRY-RUN] CREATE TABLE IF NOT EXISTS ideia_migrations ...'); return; }
+    if (this.dryRun) { logger.info('[DRY-RUN] CREATE TABLE IF NOT EXISTS ideia_migrations ...'); return; }
     await this.adapter.query(`
       CREATE TABLE IF NOT EXISTS ideia_migrations (
         version INT PRIMARY KEY,
@@ -45,7 +47,7 @@ export class MigrationRunner {
     for (const m of pending) {
       if (targetVersion !== undefined && m.version > targetVersion) break;
       if (this.dryRun) {
-        console.log(`[DRY-RUN] Apply migration ${m.version}: ${m.name}`);
+        logger.info('[DRY-RUN] Apply migration ${m.version}: ${m.name}');
         count++;
         continue;
       }
@@ -56,10 +58,10 @@ export class MigrationRunner {
           'INSERT INTO ideia_migrations (version, name, checksum) VALUES ($1, $2, $3)',
           [m.version, m.name, checksum]
         );
-        console.log(`Applied migration ${m.version}: ${m.name}`);
+        logger.info('Applied migration ${m.version}: ${m.name}');
         count++;
       } catch (_err) {
-        throw new Error(`Migration ${m.version} (${m.name}) failed: ${err}`);
+        throw new Error(`Migration ${m.version} (${m.name}) failed: ${_err}`);
       }
     }
     return count;
@@ -72,21 +74,21 @@ export class MigrationRunner {
     for (const version of toRollback) {
       const m = this.loadMigrations().find(x => x.version === version);
       if (!m || !m.down) {
-        console.warn(`No down migration for version ${version}, skipping`);
+        logger.warn(`No down migration for version ${version}, skipping`);
         continue;
       }
       if (this.dryRun) {
-        console.log(`[DRY-RUN] Rollback migration ${version}: ${m.name}`);
+        logger.info('[DRY-RUN] Rollback migration ${version}: ${m.name}');
         count++;
         continue;
       }
       try {
         await this.adapter.query(m.down);
         await this.adapter.query('DELETE FROM ideia_migrations WHERE version = $1', [version]);
-        console.log(`Rolled back migration ${version}: ${m.name}`);
+        logger.info('Rolled back migration ${version}: ${m.name}');
         count++;
       } catch (_err) {
-        throw new Error(`Rollback ${version} failed: ${err}`);
+        throw new Error(`Rollback ${version} failed: ${_err}`);
       }
     }
     return count;

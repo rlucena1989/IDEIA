@@ -1,0 +1,50 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "strict": true,
+    "composite": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../control-tower"
+    },
+    {
+      "path": "../safety-circuit"
+    },
+    {
+      "path": "../resilience-engine"
+    },
+    {
+      "path": "../resilience-v2"
+    },
+    {
+      "path": "../health-check"
+    },
+    {
+      "path": "../acceleration"
+    },
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../data-layer"
+    },
+    {
+      "path": "../memory-store"
+    }
+  ]
+}

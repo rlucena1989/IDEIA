@@ -1,4 +1,6 @@
 import { SimulationScenario } from './simulation-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('scenario-builder');
 
 export function buildScenario(
   scenarioId: string,

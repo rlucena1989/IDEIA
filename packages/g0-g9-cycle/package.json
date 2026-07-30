@@ -1,0 +1,28 @@
+{
+  "name": "@ideia/g0-g9-cycle",
+  "private": true,
+  "description": "IDEIA G0-G9 Cycle Orchestrator — formaliza o fluxo estudo→projeto→implementação→teste em 10 gates reproduzíveis",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*",
+    "@ideia/study-engine": "*",
+    "@ideia/risk-approval": "*",
+    "@ideia/quality-gates": "*",
+    "@ideia/planning-engine": "*",
+    "@ideia/spec-engine": "*",
+    "@ideia/agent-runtime": "*",
+    "@ideia/distillation-engine": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*"
+  }
+}

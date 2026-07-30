@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.plan');
 import type { TaskSpec } from '../planner/types';
 import { createTaskSpec, inferTaskType, validateTaskSpec } from '../planner/task-spec';
 import { createExecutionPlan } from '../planner/execution-plan';
@@ -39,8 +41,8 @@ export function planCommand(): Command {
 
       const validation = validateTaskSpec(spec);
       if (!validation.valid) {
-        console.log('⚠ Task spec validation failed:');
-        for (const r of validation.reasons) console.log(`  - ${r}`);
+        logger.info('⚠ Task spec validation failed:');
+        for (const r of validation.reasons) logger.info('  - ${r}');
         return;
       }
 
@@ -54,33 +56,33 @@ export function planCommand(): Command {
         return;
       }
 
-      console.log(`📋 Plano criado: ${spec.title}`);
-      console.log(`   ID: ${spec.id}`);
-      console.log(`   Tipo: ${spec.taskType}`);
-      console.log(`   Fonte: ${spec.sourceDocument}`);
-      console.log(`   Risco: ${spec.riskLevel}`);
-      console.log(`   Requer aprovação: ${spec.requiresApproval ? 'Sim' : 'Não'}`);
+      logger.info('📋 Plano criado: ${spec.title}');
+      logger.info('   ID: ${spec.id}');
+      logger.info('   Tipo: ${spec.taskType}');
+      logger.info('   Fonte: ${spec.sourceDocument}');
+      logger.info('   Risco: ${spec.riskLevel}');
+      logger.info('   Requer aprovação: ${spec.requiresApproval ? \'Sim\' : \'Não\'}');
 
       if (plan.blocked) {
-        console.log(`\n🔴 Plano bloqueado: ${plan.reason}`);
+        logger.info('\n🔴 Plano bloqueado: ${plan.reason}');
         return;
       }
 
-      console.log('\n📌 Etapas:');
+      logger.info('\n📌 Etapas:');
       for (const step of plan.steps) {
-        console.log(`  ${step.id}: ${step.title}`);
-        console.log(`     ${step.description}`);
-        if (step.command) console.log(`     Comando: ${step.command}`);
+        logger.info('  ${step.id}: ${step.title}');
+        logger.info('     ${step.description}');
+        if (step.command) logger.info('     Comando: ${step.command}');
       }
 
-      console.log('\n🔧 Comandos sugeridos:');
+      logger.info('\n🔧 Comandos sugeridos:');
       for (const c of commands) {
         const allowed = isCommandAllowed(c, spec);
-        console.log(`  ${allowed ? '✅' : '⛔'} ${c}`);
+        logger.info('  ${allowed ? \'✅\' : \'⛔\'} ${c}');
       }
 
-      console.log(`\n✅ ${plan.successCriteria.length} critérios de sucesso definidos`);
-      console.log(`🏁 ${plan.checkpoints.length} checkpoints`);
+      logger.info('\n✅ ${plan.successCriteria.length} critérios de sucesso definidos');
+      logger.info('🏁 ${plan.checkpoints.length} checkpoints');
     });
 
   cmd
@@ -89,7 +91,7 @@ export function planCommand(): Command {
     .option('--json', 'Saída em JSON')
     .action((options: { json?: boolean }) => {
       if (!_activeTaskSpec) {
-        console.log('⚠ Nenhuma tarefa ativa. Crie um plano primeiro com: ai-devkit plan create <description>');
+        logger.info('⚠ Nenhuma tarefa ativa. Crie um plano primeiro com: ai-devkit plan create <description>');
         return;
       }
 
@@ -106,20 +108,20 @@ export function planCommand(): Command {
       const allReasons = [...context.reasons, ...scope.reasons, ...deps.reasons, ...mode.reasons];
       const allValid = context.valid && scope.valid && deps.valid && mode.valid;
 
-      console.log('🔍 Validação da tarefa ativa:');
-      console.log(`   ID: ${_activeTaskSpec.id}`);
-      console.log(`   Tipo: ${_activeTaskSpec.taskType}`);
-      console.log(`   Fonte: ${_activeTaskSpec.sourceDocument}\n`);
+      logger.info('🔍 Validação da tarefa ativa:');
+      logger.info('   ID: ${_activeTaskSpec.id}');
+      logger.info('   Tipo: ${_activeTaskSpec.taskType}');
+      logger.info('   Fonte: ${_activeTaskSpec.sourceDocument}\n');
 
-      console.log(`  Contexto:   ${context.valid ? '✅' : '❌'} ${context.reasons.join(', ')}`);
-      console.log(`  Escopo:     ${scope.valid ? '✅' : '❌'} ${scope.reasons.join(', ')}`);
-      console.log(`  Deps:       ${deps.valid ? '✅' : '❌'} ${deps.reasons.join(', ')}`);
-      console.log(`  Modo:       ${mode.valid ? '✅' : '❌'} ${mode.reasons.join(', ')}`);
+      logger.info('  Contexto:   ${context.valid ? \'✅\' : \'❌\'} ${context.reasons.join(\', \')}');
+      logger.info('  Escopo:     ${scope.valid ? \'✅\' : \'❌\'} ${scope.reasons.join(\', \')}');
+      logger.info('  Deps:       ${deps.valid ? \'✅\' : \'❌\'} ${deps.reasons.join(\', \')}');
+      logger.info('  Modo:       ${mode.valid ? \'✅\' : \'❌\'} ${mode.reasons.join(\', \')}');
 
-      console.log(`\nStatus geral: ${allValid ? '✅ Válido' : '❌ Inválido'}`);
+      logger.info('\nStatus geral: ${allValid ? \'✅ Válido\' : \'❌ Inválido\'}');
       if (!allValid) {
-        console.log('Razões:');
-        for (const r of allReasons) console.log(`  - ${r}`);
+        logger.info('Razões:');
+        for (const r of allReasons) logger.info('  - ${r}');
       }
     });
 
@@ -129,7 +131,7 @@ export function planCommand(): Command {
     .option('--json', 'Saída em JSON')
     .action((options: { json?: boolean }) => {
       if (!_activeTaskSpec) {
-        console.log('⚠ Nenhum plano ativo.');
+        logger.info('⚠ Nenhum plano ativo.');
         return;
       }
 
@@ -141,14 +143,14 @@ export function planCommand(): Command {
         return;
       }
 
-      console.log('📊 Status do plano ativo:');
-      console.log(`   Tarefa: ${_activeTaskSpec.title} (${_activeTaskSpec.id})`);
-      console.log(`   Tipo: ${_activeTaskSpec.taskType}`);
-      console.log(`   Status: ${plan.blocked ? '🔴 Bloqueado' : '✅ Pronto'}`);
-      if (plan.reason) console.log(`   Razão: ${plan.reason}`);
-      console.log(`   Etapas: ${plan.steps.length}`);
-      console.log(`   Comandos: ${commands.length}`);
-      console.log(`   Checkpoints: ${plan.checkpoints.length}`);
+      logger.info('📊 Status do plano ativo:');
+      logger.info('   Tarefa: ${_activeTaskSpec.title} (${_activeTaskSpec.id})');
+      logger.info('   Tipo: ${_activeTaskSpec.taskType}');
+      logger.info('   Status: ${plan.blocked ? \'🔴 Bloqueado\' : \'✅ Pronto\'}');
+      if (plan.reason) logger.info('   Razão: ${plan.reason}');
+      logger.info('   Etapas: ${plan.steps.length}');
+      logger.info('   Comandos: ${commands.length}');
+      logger.info('   Checkpoints: ${plan.checkpoints.length}');
     });
 
   return cmd;

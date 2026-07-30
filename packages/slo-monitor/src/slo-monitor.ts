@@ -1,4 +1,5 @@
 import { SLO_TARGETS } from './types.js'
+import { createLogger } from '@ideia/logger';
 import type { SloMetric, SloThreshold, SloStatus, SloResult, SloViolation, SloDashboard } from './types.js'
 
 export class SloMonitor {

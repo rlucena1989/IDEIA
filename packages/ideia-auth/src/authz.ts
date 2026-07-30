@@ -1,5 +1,6 @@
 import { Emitter } from '@ideia/core-contributions';
-import { RbacService, AbacService, AbacSubject, AbacResource, AbacPolicy, AbacCondition, JwtService, JwtPayload } from './types';
+import { createLogger } from '@ideia/logger';
+import { RbacService, AbacService, AbacSubject, AbacResource, AbacPolicy, AbacCondition, JwtService, JwtPayload, ApiKey } from './types';
 
 export class DefaultRbacService implements RbacService {
   private userRoles = new Map<string, Set<string>>();
@@ -119,12 +120,12 @@ export class DefaultJwtService implements JwtService {
 }
 
 export class DefaultApiKeyService {
-  private keys = new Map<string, { id: string; name: string; key: string; scopes: string[]; userId: string; createdAt: Date; expiresAt?: Date; revoked: boolean }>();
+  private keys = new Map<string, ApiKey>();
 
-  async createKey(userId: string, name: string, scopes: string[], expiresIn?: string): Promise<{ id: string; name: string; key: string; scopes: string[]; userId: string; createdAt: Date; expiresAt?: Date; revoked: boolean }> {
+  async createKey(userId: string, name: string, scopes: string[], expiresIn?: string): Promise<ApiKey> {
     const id = `key-${Date.now()}`;
     const key = `ideia_${Buffer.from(id + Math.random()).toString('base64').slice(0, 32)}`;
-    const entry = { id, name, key, scopes, userId, createdAt: new Date(), expiresAt: expiresIn ? new Date(Date.now() + 86400000) : undefined, revoked: false };
+    const entry: ApiKey = { id, name, key, scopes, userId, createdAt: new Date(), expiresAt: expiresIn ? new Date(Date.now() + 86400000) : undefined, revoked: false };
     this.keys.set(key, entry);
     return entry;
   }
@@ -135,7 +136,7 @@ export class DefaultApiKeyService {
     }
   }
 
-  async validateKey(key: string): Promise<{ valid: boolean; key?: typeof entry; error?: string }> {
+  async validateKey(key: string): Promise<{ valid: boolean; key?: ApiKey; error?: string }> {
     const entry = this.keys.get(key);
     if (!entry) return { valid: false, error: 'Invalid key' };
     if (entry.revoked) return { valid: false, error: 'Key revoked' };
@@ -143,7 +144,7 @@ export class DefaultApiKeyService {
     return { valid: true, key: entry };
   }
 
-  async listKeys(userId: string): Promise<Array<{ id: string; name: string; key: string; scopes: string[]; userId: string; createdAt: Date; expiresAt?: Date; revoked: boolean }>> {
+  async listKeys(userId: string): Promise<ApiKey[]> {
     return Array.from(this.keys.values()).filter(k => k.userId === userId);
   }
 }

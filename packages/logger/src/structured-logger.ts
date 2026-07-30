@@ -1,4 +1,4 @@
-import { LogLevel, Logger } from './index';
+import { LogLevel, Logger, createLogger } from './index';
 
 export interface StructuredLogEntry {
   timestamp: string;

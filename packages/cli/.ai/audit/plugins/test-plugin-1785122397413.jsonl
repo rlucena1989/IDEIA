@@ -1,0 +1,3 @@
+{"id":"1785122397414-famm1m","timestamp":"2026-07-27T03:19:57.414Z","pluginId":"test-plugin","action":"process-spawn","resource":"node server.js","allowed":true}
+{"id":"1785122397414-id6ldf","timestamp":"2026-07-27T03:19:57.414Z","pluginId":"test-plugin","action":"process-spawn","resource":"npm install","allowed":true}
+{"id":"1785122397415-hfskz8","timestamp":"2026-07-27T03:19:57.415Z","pluginId":"test-plugin","action":"process-spawn","resource":"git status","allowed":true}

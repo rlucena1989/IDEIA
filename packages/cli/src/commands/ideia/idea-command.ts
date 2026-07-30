@@ -1,5 +1,9 @@
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.ideia.idea-command');
 import { Command } from 'commander';
 import _path from 'node:path';
+
+const log = createLogger('cli:commands:ideia:idea');
 import { startEngineerMode, EngineerSession, listEngineerSessions } from '../engineer';
 import { getIO } from '../../io';
 import { keywordClassifier } from '../../intent-classifier';
@@ -69,41 +73,41 @@ export function buildPlan(idea: string, analysis: { stack: string[] }): IdeiaPla
 }
 
 export async function runIdeiaPipeline(idea: string, root: string, options?: { approve?: boolean; autonomy?: string }): Promise<IdeiaPipelineResult> {
-  console.log(`\n${'='.repeat(56)}`);
-  console.log('  IDEIA — Pipeline de transformação');
-  console.log(`${'='.repeat(56)}\n`);
+  logger.info('\n${\'=\'.repeat(56)}');
+  logger.info('  IDEIA — Pipeline de transformação');
+  logger.info('${\'=\'.repeat(56)}\n');
 
   const analysis = classifyIdeaNaturalLanguage(idea);
   const plan = buildPlan(idea, analysis);
   const intent = keywordClassifier(idea);
 
-  console.log('  📋 Análise da ideia:\n');
-  console.log(`     🎯 Intenção: ${intent.intent} (${intent.confidence})`);
-  console.log(`     Stack detectada: ${analysis.stack.join(', ')}`);
-  console.log(`     Arquitetura: ${analysis.architecture}`);
-  console.log(`     Arquivos estimados: ~${analysis.estimatedFiles}`);
+  logger.info('  📋 Análise da ideia:\n');
+  logger.info('     🎯 Intenção: ${intent.intent} (${intent.confidence})');
+  logger.info('     Stack detectada: ${analysis.stack.join(\', \')}');
+  logger.info('     Arquitetura: ${analysis.architecture}');
+  logger.info('     Arquivos estimados: ~${analysis.estimatedFiles}');
   if (analysis.risks.length > 0) {
-    console.log('\n     ⚠ Riscos identificados:');
-    for (const risk of analysis.risks) console.log(`       • ${risk}`);
+    logger.info('\n     ⚠ Riscos identificados:');
+    for (const risk of analysis.risks) logger.info('       • ${risk}');
   }
 
-  console.log(`\n  📋 Plano de implementação:\n`);
+  logger.info('\n  📋 Plano de implementação:\n');
   for (const step of plan) {
-    console.log(`     ${step.step}. [${step.module}] ${step.action}`);
+    logger.info('     ${step.step}. [${step.module}] ${step.action}');
   }
 
   const autoApprove = options?.approve || false;
   if (!autoApprove) {
-    console.log(`\n  ────────────────────────────────────────`);
-    console.log('  Projeto analisado. Para executar, use:');
-    console.log('    ideia idea run <sua-ideia>');
-    console.log(`  ────────────────────────────────────────\n`);
-    return { idea, analysis, plan, session: null as EngineerSession };
+    logger.info('\n  ────────────────────────────────────────');
+    logger.info('  Projeto analisado. Para executar, use:');
+    logger.info('    ideia idea run <sua-ideia>');
+    logger.info('  ────────────────────────────────────────\n');
+    return { idea, analysis, plan, session: null as unknown as EngineerSession };
   }
 
   const autonomyLevel = options?.autonomy || 'N2';
-  console.log(`\n  🤖 Nível de autonomia: ${autonomyLevel}`);
-  console.log(`  🚀 Iniciando implementação...\n`);
+  logger.info('\n  🤖 Nível de autonomia: ${autonomyLevel}');
+  logger.info('  🚀 Iniciando implementação...\n');
 
   const session = await startEngineerMode(root, idea, {
     maxIterations: 5,
@@ -133,33 +137,33 @@ export function ideaCommand(): Command {
           return;
         }
 
-        console.log(`\n${'='.repeat(56)}`);
-        console.log('  🔍 IDEIA — Análise');
-        console.log(`${'='.repeat(56)}\n`);
-        console.log(`  Ideia: "${idea}"\n`);
+        logger.info('\n${\'=\'.repeat(56)}');
+        logger.info('  🔍 IDEIA — Análise');
+        logger.info('${\'=\'.repeat(56)}\n');
+        logger.info('  Ideia: "${idea}"\n');
         const intent = keywordClassifier(idea);
-        console.log(`  🎯 Intenção detectada: ${intent.intent} (confiança: ${intent.confidence})`);
-        if (intent.reasoning) console.log(`     ${intent.reasoning}`);
+        logger.info('  🎯 Intenção detectada: ${intent.intent} (confiança: ${intent.confidence})');
+        if (intent.reasoning) logger.info('     ${intent.reasoning}');
         console.log('');
-        console.log('  📋 Stack detectada:');
-        for (const s of analysis.stack) console.log(`     ✅ ${s}`);
-        console.log(`\n  🏗️  Arquitetura: ${analysis.architecture}`);
-        console.log(`  📦 Arquivos estimados: ~${analysis.estimatedFiles}`);
+        logger.info('  📋 Stack detectada:');
+        for (const s of analysis.stack) logger.info('     ✅ ${s}');
+        logger.info('\n  🏗️  Arquitetura: ${analysis.architecture}');
+        logger.info('  📦 Arquivos estimados: ~${analysis.estimatedFiles}');
 
         if (analysis.risks.length > 0) {
-          console.log('\n  ⚠ Riscos:');
-          for (const r of analysis.risks) console.log(`     • ${r}`);
+          logger.info('\n  ⚠ Riscos:');
+          for (const r of analysis.risks) logger.info('     • ${r}');
         }
 
-        console.log('\n  📋 Plano:\n');
+        logger.info('\n  📋 Plano:\n');
         for (const step of plan) {
-          console.log(`     ${step.step}. [${step.module}] ${step.action}`);
+          logger.info('     ${step.step}. [${step.module}] ${step.action}');
         }
-        console.log(`\n  💡 Para executar: ideia idea run "${idea}"`);
+        logger.info('\n  💡 Para executar: ideia idea run "${idea}"');
         console.log('');
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
-        console.error(`\n❌ Erro: ${message}`);
+        log.error(`\n❌ Erro: ${message}`);
         process.exit(1);
       }
     });
@@ -185,21 +189,21 @@ export function ideaCommand(): Command {
         }
 
         if (result.session) {
-          console.log(`\n${'='.repeat(56)}`);
-          console.log('  ✅ IDEIA — Pipeline concluído');
-          console.log(`${'='.repeat(56)}\n`);
-          console.log(`  Sessão: ${result.session.id}`);
-          console.log(`  Status: ${result.session.status}`);
-          console.log(`  Iterações: ${result.session.iteration}/${result.session.maxIterations}`);
+          logger.info('\n${\'=\'.repeat(56)}');
+          logger.info('  ✅ IDEIA — Pipeline concluído');
+          logger.info('${\'=\'.repeat(56)}\n');
+          logger.info('  Sessão: ${result.session.id}');
+          logger.info('  Status: ${result.session.status}');
+          logger.info('  Iterações: ${result.session.iteration}/${result.session.maxIterations}');
 
           const passed = result.session.gates.filter(g => g.status === 'passed').length;
           const total = result.session.gates.length;
-          if (total > 0) console.log(`  Gates: ${passed}/${total}`);
+          if (total > 0) logger.info('  Gates: ${passed}/${total}');
           console.log('');
         }
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
-        console.error(`\n❌ Erro: ${message}`);
+        log.error(`\n❌ Erro: ${message}`);
         process.exit(1);
       }
     });
@@ -219,26 +223,27 @@ export function ideaCommand(): Command {
         }
 
         if (sessions.length === 0) {
-          console.log('\n  Nenhuma ideia em execução.\n');
+          logger.info('\n  Nenhuma ideia em execução.\n');
           return;
         }
 
-        console.log(`\n${'='.repeat(56)}`);
-        console.log('  📋 IDEIA — Projetos em andamento');
-        console.log(`${'='.repeat(56)}\n`);
+        logger.info('\n${\'=\'.repeat(56)}');
+        logger.info('  📋 IDEIA — Projetos em andamento');
+        logger.info('${\'=\'.repeat(56)}\n');
 
         for (const s of sessions) {
           const icon = s.status === 'completed' ? '✅' : s.status === 'failed' ? '❌' : '⏳';
-          console.log(`  ${icon} ${s.task.slice(0, 80)}`);
-          console.log(`     ID: ${s.id} | Status: ${s.status} | Atualizado: ${new Date(s.updatedAt).toLocaleString()}`);
+          logger.info('  ${icon} ${s.task.slice(0, 80)}');
+          logger.info('     ID: ${s.id} | Status: ${s.status} | Atualizado: ${new Date(s.updatedAt).toLocaleString()}');
           console.log('');
         }
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
-        console.error(`\n❌ Erro: ${message}`);
+        log.error(`\n❌ Erro: ${message}`);
         process.exit(1);
       }
     });
 
   return cmd;
 }
+

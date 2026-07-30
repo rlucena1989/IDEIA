@@ -1,5 +1,8 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { AuditTrail } from '@ideia/audit-trail';
+
+const logger = createLogger('cli-audit-trail');
 
 export function auditTrailCommand(auditTrail: AuditTrail): Command {
   const cmd = new Command('audit-trail')
@@ -21,7 +24,7 @@ export function auditTrailCommand(auditTrail: AuditTrail): Command {
       const filtered = Object.keys(filter).length > 0
         ? events.filter(e => {
             for (const [k, v] of Object.entries(filter)) {
-              if ((e as Record<string, unknown>)[k] !== v) return false;
+              if ((e as unknown as Record<string, unknown>)[k] !== v) return false;
             }
             return true;
           })
@@ -29,14 +32,14 @@ export function auditTrailCommand(auditTrail: AuditTrail): Command {
       const limit = parseInt(opts.limit, 10) || 50;
       const sliced = filtered.slice(-limit);
       if (opts.json) {
-        console.log(JSON.stringify({ total: filtered.length, events: sliced }, null, 2));
+        logger.info(JSON.stringify({ total: filtered.length, events: sliced }, null, 2));
         return;
       }
-      console.log(`\nAudit Trail — ${filtered.length} events (showing last ${sliced.length})\n`);
+      logger.info('\nAudit Trail — ${filtered.length} events (showing last ${sliced.length})\n');
       for (const e of sliced) {
-        console.log(`  [${e.timestamp.slice(0, 19)}] ${e.eventType} | ${e.actor} → ${e.target} | ${e.result}`);
+        logger.info('  [${e.timestamp.slice(0, 19)}] ${e.eventType} | ${e.actor} → ${e.target} | ${e.result}');
       }
-      console.log();
+      logger.info('');
     });
 
   cmd.command('verify')
@@ -45,14 +48,14 @@ export function auditTrailCommand(auditTrail: AuditTrail): Command {
     .action((opts) => {
       const result = auditTrail.verifyChain();
       if (opts.json) {
-        console.log(JSON.stringify(result, null, 2));
+        logger.info(JSON.stringify(result, null, 2));
         return;
       }
       if (result.valid) {
-        console.log(`\n✅ Chain integrity verified — ${result.totalEvents} events, tip: ${result.currentTipHash?.slice(0, 16)}...\n`);
+        logger.info('\n✅ Chain integrity verified — ${result.totalEvents} events, tip: ${result.currentTipHash?.slice(0, 16)}...\n');
       } else {
-        console.log(`\n❌ Chain BROKEN at event ${result.breakAtIndex}`);
-        console.log(`   Reason: ${result.breakReason}\n`);
+        logger.info('\n❌ Chain BROKEN at event ${result.breakAtIndex}');
+        logger.info('   Reason: ${result.breakReason}\n');
       }
     });
 
@@ -74,30 +77,30 @@ export function auditTrailCommand(auditTrail: AuditTrail): Command {
         chainTip: chain.currentTipHash,
         byEventType: byType,
         byResult: byResult,
-        lastEvent: events.length > 0 ? events[events.length - 1]!.timestamp : null,
+        lastEvent: events.length > 0 ? events[events.length - 1]?.timestamp ?? null : null,
       };
       if (opts.json) {
-        console.log(JSON.stringify(stats, null, 2));
+        logger.info(JSON.stringify(stats, null, 2));
         return;
       }
-      console.log(`\nAudit Trail Status\n`);
-      console.log(`  Events:     ${stats.totalEvents}`);
-      console.log(`  Chain:      ${stats.chainValid ? '✅ Valid' : '❌ Broken'}`);
-      console.log(`  Tip hash:   ${stats.chainTip?.slice(0, 16) || 'N/A'}...`);
-      console.log(`  Last event: ${stats.lastEvent || 'N/A'}`);
+      logger.info('\nAudit Trail Status\n');
+      logger.info('  Events:     ${stats.totalEvents}');
+      logger.info('  Chain:      ${stats.chainValid ? \'✅ Valid\' : \'❌ Broken\'}');
+      logger.info('  Tip hash:   ${stats.chainTip?.slice(0, 16) || \'N/A\'}...');
+      logger.info('  Last event: ${stats.lastEvent || \'N/A\'}');
       if (Object.keys(byType).length > 0) {
-        console.log(`\n  By type:`);
+        logger.info('\n  By type:');
         for (const [t, c] of Object.entries(byType).sort((a, b) => b[1] - a[1])) {
-          console.log(`    ${t}: ${c}`);
+          logger.info('    ${t}: ${c}');
         }
       }
       if (Object.keys(byResult).length > 0) {
-        console.log(`\n  By result:`);
+        logger.info('\n  By result:');
         for (const [r, c] of Object.entries(byResult)) {
-          console.log(`    ${r}: ${c}`);
+          logger.info('    ${r}: ${c}');
         }
       }
-      console.log();
+      logger.info('');
     });
 
   return cmd;

@@ -1,5 +1,7 @@
 import { Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { IStatusBar, StatusBarEntry } from './types';
+const logger = createLogger('status-bar');
 
 export class DefaultStatusBar implements IStatusBar {
   private entries = new Map<string, StatusBarEntry>();

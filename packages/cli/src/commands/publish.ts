@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { buildPublicationPlan } from '../publication/publication-builder';
 import { validatePublication } from '../publication/publication-validator';
 import { routePublication } from '../publication/publication-router';

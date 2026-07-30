@@ -1,4 +1,6 @@
 import { SemanticNeed, AgentRecommendation } from './semantic-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('agent-router');
 
 type AgentId = 'Analyst' | 'Architect' | 'Programmer' | 'Reviewer' | 'Tester' | 'DevOps';
 

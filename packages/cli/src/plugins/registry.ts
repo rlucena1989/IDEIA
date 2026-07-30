@@ -1,4 +1,5 @@
 import https from 'node:https';
+import { createLogger } from '@ideia/logger';
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -242,7 +243,7 @@ export async function downloadPlugin(
 
     fs.rmSync(tmpDir, { recursive: true, force: true });
     return { ok: true };
-  } catch (_err) {
+  } catch (err) {
     if (fs.existsSync(tmpDir)) {
       fs.rmSync(tmpDir, { recursive: true, force: true });
     }

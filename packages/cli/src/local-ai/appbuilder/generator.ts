@@ -1,4 +1,5 @@
 import { AppBlueprint, GeneratedFile } from './types';
+import { createLogger } from '@ideia/logger';
 
 /**
  * Gera app.
@@ -85,7 +86,7 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
   res.status(500).json({ error: 'Internal Server Error' });
 });
 
-app.listen(PORT, () => { console.log(\`Server running on port \${PORT}\`); });
+app.listen(PORT, () => { logger.info(\`Server running on port \${PORT}\`); });
 export default app;`,
   });
 
@@ -171,7 +172,7 @@ function generateWeb(blueprint: AppBlueprint): GeneratedFile[] {
 function generateCli(blueprint: AppBlueprint): GeneratedFile[] {
   return [
     { path: 'package.json', language: 'json', content: JSON.stringify({ name: blueprint.name.toLowerCase().replace(/\s+/g, '-'), version: '1.0.0', bin: { [blueprint.name.toLowerCase().replace(/\s+/g, '-')]: './dist/index.js' }, scripts: { build: 'tsc', start: 'node dist/index.js', dev: 'ts-node src/index.ts' }, dependencies: { commander: '^10.0.0', chalk: '^4.1.2' }, devDependencies: { '@types/node': '^20.0.0', typescript: '^5.0.0' } }, null, 2) },
-    { path: 'src/index.ts', language: 'typescript', content: `#!/usr/bin/env node\nimport { Command } from 'commander';\nimport chalk from 'chalk';\n\nconst program = new Command();\nprogram.name('${blueprint.name.toLowerCase().replace(/\s+/g, '-')}').description('${blueprint.description}').version('1.0.0');\n\nprogram.command('hello').description('Say hello').action(() => { console.log(chalk.green('Hello from ${blueprint.name}!')); });\n\nprogram.parse(process.argv);` },
+    { path: 'src/index.ts', language: 'typescript', content: `#!/usr/bin/env node\nimport { Command } from 'commander';\nimport chalk from 'chalk';\n\nconst program = new Command();\nprogram.name('${blueprint.name.toLowerCase().replace(/\s+/g, '-')}').description('${blueprint.description}').version('1.0.0');\n\nprogram.command('hello').description('Say hello').action(() => { logger.info(chalk.green('Hello from ${blueprint.name}!')); });\n\nprogram.parse(process.argv);` },
   ];
 }
 

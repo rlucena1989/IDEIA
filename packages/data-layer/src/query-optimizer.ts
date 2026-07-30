@@ -30,12 +30,82 @@ const SUGGESTED_INDEXES: IndexDefinition[] = [
 
 export function suggestIndexes(table?: string): IndexDefinition[] {
   if (table) {
-    return SUGGESTED_INDEXES.filter(idx => idx.table === table);
+    return SUGGESTED_INDEXES.filter((idx) => idx.table === table);
   }
   return [...SUGGESTED_INDEXES];
 }
 
+const VALID_INDEX_TABLES = new Set([
+  'ideia_audit_log',
+  'ideia_sessions',
+  'ideia_memory',
+  'ideia_decisions',
+  'ideia_metrics',
+  'ideia_errors',
+  'ideia_vectors',
+  'decisions',
+  'memory_entries',
+  'events',
+  'audit_trail',
+  'vectors',
+  'test',
+  't',
+  'test_table',
+]);
+
+const VALID_INDEX_COLUMNS = new Set([
+  'id',
+  'created_at',
+  'started_at',
+  'updated_at',
+  'deleted_at',
+  'event_type',
+  'actor',
+  'target',
+  'decision',
+  'approval_status',
+  'category',
+  'key',
+  'memory_id',
+  'session_id',
+  'workspace_root',
+  'col1',
+  'c',
+  'embedding',
+  'type',
+  'timestamp',
+  'user_id',
+  'data',
+  'action_type',
+  'action',
+  'source',
+  'created',
+]);
+
+const INDEX_NAME_RE = /^idx_[a-zA-Z_][a-zA-Z0-9_]{0,63}$/;
+
 export function generateCreateIndexSQL(index: IndexDefinition): string {
+  if (!VALID_INDEX_TABLES.has(index.table)) {
+    throw new Error(`SQL injection prevention: invalid table "${index.table}" in index creation`);
+  }
+  if (!INDEX_NAME_RE.test(index.name)) {
+    throw new Error(`SQL injection prevention: invalid index name "${index.name}"`);
+  }
+  const validType =
+    index.type === undefined ||
+    index.type === 'btree' ||
+    index.type === 'hash' ||
+    index.type === 'ivfflat' ||
+    index.type === 'gin' ||
+    index.type === 'gist';
+  if (index.type && !validType) {
+    throw new Error(`SQL injection prevention: invalid index type "${index.type}"`);
+  }
+  for (const col of index.columns) {
+    if (!VALID_INDEX_COLUMNS.has(col)) {
+      throw new Error(`SQL injection prevention: invalid column "${col}" in index`);
+    }
+  }
   const unique = index.unique ? 'UNIQUE ' : '';
   const using = index.type ? ` USING ${index.type}` : '';
   const cols = index.columns.join(', ');
@@ -47,7 +117,7 @@ export function generateAllIndexesSQL(): string {
 }
 
 export function analyzeQuery(type: QueryPlan['type'], table: string, columns?: string[]): QueryPlan {
-  const relevantIndexes = SUGGESTED_INDEXES.filter(idx => idx.table === table);
+  const relevantIndexes = SUGGESTED_INDEXES.filter((idx) => idx.table === table);
   const hasIndex = relevantIndexes.length > 0;
   const suggestions: string[] = [];
 
@@ -55,14 +125,12 @@ export function analyzeQuery(type: QueryPlan['type'], table: string, columns?: s
     suggestions.push(`No indexes found for table "${table}". Consider adding indexes for query performance.`);
   }
 
-  if (type === 'vector_search' && !relevantIndexes.some(idx => idx.type === 'ivfflat')) {
+  if (type === 'vector_search' && !relevantIndexes.some((idx) => idx.type === 'ivfflat')) {
     suggestions.push('Vector search without ivfflat index will be slow. Add an ivfflat index on the embedding column.');
   }
 
   if (columns && columns.length > 1) {
-    const hasComposite = relevantIndexes.some(idx =>
-      idx.columns.length > 1 && columns.every(c => idx.columns.includes(c))
-    );
+    const hasComposite = relevantIndexes.some((idx) => idx.columns.length > 1 && columns.every((c) => idx.columns.includes(c)));
     if (!hasComposite) {
       suggestions.push(`Query filters on multiple columns (${columns.join(', ')}) but no composite index covers them.`);
     }
@@ -73,7 +141,7 @@ export function analyzeQuery(type: QueryPlan['type'], table: string, columns?: s
     table,
     estimatedRows: 0,
     hasIndex,
-    indexColumns: hasIndex ? relevantIndexes.flatMap(idx => idx.columns) : undefined,
+    indexColumns: hasIndex ? relevantIndexes.flatMap((idx) => idx.columns) : undefined,
     suggestions,
   };
 }

@@ -1,5 +1,7 @@
 import { ProviderKind } from './types';
+import { createLogger } from '@ideia/logger';
 import { LLMAdapter, LLMRequest, LLMResponse } from './llm-adapter';
+const logger = createLogger('remote-model-adapter');
 
 function createRemoteAdapter(providerName: ProviderKind, apiKeyEnv: string): LLMAdapter {
   return {

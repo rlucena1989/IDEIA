@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 
 /** Interface que define a estrutura de stack info. */
@@ -115,10 +116,10 @@ if (entry.isDirectory() && entry.name !== 'node_modules' && entry.name !== 'dist
       const match = d.detect(allFiles);
       if (match) {
         if (!evMap.has(d.category)) evMap.set(d.category, []);
-        evMap.get(d.category) ?? {}.push(match);
+        (evMap.get(d.category) ?? []).push(match);
         const current = result[d.category];
         if (current === 'unknown' || d.confidence > 0.85) {
-          (result as Record<string, unknown>)[d.category] = match;
+          (result as unknown as Record<string, unknown>)[d.category] = match;
         }
         result.evidence.push(`  ${d.category}: ${match}`);
       }

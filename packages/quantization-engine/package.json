@@ -1,0 +1,19 @@
+{
+  "name": "@ideia/quantization-engine",
+  "description": "Quantization engine with real backends — AWQ, GPTQ, GGUF, FP8, NF4 via AutoGPTQ/AutoAWQ/llama.cpp/vLLM",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

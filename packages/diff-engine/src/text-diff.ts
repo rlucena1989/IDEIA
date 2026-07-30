@@ -20,8 +20,8 @@ export function diffText(original: string, modified: string, filePath: string): 
 
   const maxLen = Math.max(origLines.length, modLines.length);
   for (let i = 0; i < maxLen; i++) {
-    const origLine = i < origLines.length ? origLines[i]! : undefined;
-    const modLine = i < modLines.length ? modLines[i]! : undefined;
+    const origLine = i < origLines.length ? (origLines[i] ?? '') : undefined;
+    const modLine = i < modLines.length ? (modLines[i] ?? '') : undefined;
     if (origLine !== modLine) {
       if (i < origLines.length && i >= modLines.length && origLine !== undefined) {
         removed.add(i);
@@ -38,7 +38,7 @@ export function diffText(original: string, modified: string, filePath: string): 
         }
       }
     } else if (origLine !== undefined) {
-      if (chunks.length === 0 || chunks[chunks.length - 1]!.type !== 'context') {
+      if (chunks.length === 0 || (chunks[chunks.length - 1]?.type ?? '') !== 'context') {
         chunks.push({ type: 'context', content: origLine });
       }
     }

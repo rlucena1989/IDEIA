@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { SearchService, SearchOptions, SearchResult, ReplaceResult, SearchProvider } from './types';
 
 export class DefaultSearchService implements SearchService {
@@ -16,17 +17,19 @@ export class DefaultSearchService implements SearchService {
 
   async search(query: string, options?: SearchOptions): Promise<SearchResult[]> {
     this.cancelled = false;
-    const results: SearchResult[] = [];
 
-    for (const provider of this.providers) {
-      if (this.cancelled) break;
+    const tasks = this.providers.map(async (provider) => {
+      const providerResults: SearchResult[] = [];
+      if (this.cancelled) return providerResults;
       for await (const result of provider.search(query, options)) {
         if (this.cancelled) break;
-        results.push(result);
-        if (options?.maxResults && results.length >= options.maxResults) break;
+        providerResults.push(result);
+        if (options?.maxResults && providerResults.length >= options.maxResults) break;
       }
-    }
+      return providerResults;
+    });
 
+    const results = (await Promise.all(tasks)).flat();
     this.onCompleteEmitter.fire(results);
     return results;
   }
@@ -36,6 +39,7 @@ export class DefaultSearchService implements SearchService {
     let files = 0;
 
     for (const provider of this.providers) {
+      if (this.cancelled) break;
       if (provider.replace) {
         const result = await provider.replace(query, replacement, options);
         replacements += result.replacements;

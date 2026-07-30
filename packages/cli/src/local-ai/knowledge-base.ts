@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 
 import { KnowledgeEntry, CURATED_ENTRIES } from './knowledge-entries';

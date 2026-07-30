@@ -1,4 +1,6 @@
 import { LegacyState } from './legacy-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('shutdown-coordinator');
 
 export function shutdownSystem(state: LegacyState): LegacyState {
   return {

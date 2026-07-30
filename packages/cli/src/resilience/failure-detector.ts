@@ -1,4 +1,6 @@
 import { OperationalFailure, FailureSummary } from './failure-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('failure-detector');
 
 export interface FailureEvent {
   name: string;

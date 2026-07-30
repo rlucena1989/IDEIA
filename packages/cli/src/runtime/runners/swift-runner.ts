@@ -1,5 +1,7 @@
 import { BaseRunner } from './base-runner';
+import { createLogger } from '@ideia/logger';
 import { LanguageId } from '../adapter-contract';
+const logger = createLogger('swift-runner');
 
 /** Classe responsável por processa runner. */
 export class SwiftRunner extends BaseRunner {

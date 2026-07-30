@@ -1,4 +1,5 @@
 import { injectable, inject, postConstruct } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import * as fs from 'fs';
 import * as path from 'path';
 import { EventBus } from '@ideia/event-bus';

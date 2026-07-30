@@ -1,4 +1,5 @@
 import { DataLayerConfig, DatabaseAdapter, Migration, QueryResult } from './types';
+import { createLogger } from '@ideia/logger';
 import { VectorStore } from './vector-store';
 import { PgAdapter } from './adapters/pg-adapter';
 import { SqliteAdapter } from './adapters/sqlite-adapter';
@@ -70,7 +71,7 @@ export class DataLayer {
       await this.vectorStore.ensureSchema();
       this.connected = true;
     } catch (_err) {
-      throw new Error(`DataLayer connect failed: ${err}`);
+      throw new Error(`DataLayer connect failed: ${_err}`);
     }
   }
 

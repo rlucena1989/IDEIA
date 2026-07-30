@@ -1,4 +1,6 @@
 import { BaseRepository } from './base-repo';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('decision-repo');
 
 export interface DecisionRecord {
   id: string;

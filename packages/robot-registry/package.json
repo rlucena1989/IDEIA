@@ -1,0 +1,17 @@
+{
+  "name": "@ideia/robot-registry",
+  "description": "Robot worker registry, sandbox executor, and task queue for specialized automated workers in the IDEIA ecosystem",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

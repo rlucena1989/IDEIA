@@ -1,39 +1,24 @@
 import * as fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'path';
-import { execSync } from 'child_process';
+import { AdapterBase } from '@ideia/adapter-base';
+import type { InitResult, CommandResult, QualityGateResult } from '@ideia/adapter-base';
 import { scaffoldProject, generateRouter, writeFiles } from './generator';
 
 export interface FastAPIAdapterConfig {
   projectRoot?: string;
 }
 
-export interface InitResult {
-  success: boolean;
-  files: string[];
-}
-
-export interface CommandResult {
-  success: boolean;
-  output: string;
-}
-
-export interface QualityGateResult {
-  passed: boolean;
-  score: number;
-  issues: string[];
-}
-
-export class FastAPIAdapter {
+export class FastAPIAdapter extends AdapterBase {
   readonly name = 'fastapi';
+  readonly language = 'python';
   readonly capabilities = [
     'detect', 'init', 'generateRouter', 'runLint',
     'runTests', 'runBuild', 'qualityGate',
   ];
 
-  private config: FastAPIAdapterConfig;
-
   constructor(config: FastAPIAdapterConfig = {}) {
-    this.config = config;
+    super(config);
   }
 
   detect(projectRoot: string): boolean {
@@ -89,17 +74,17 @@ export class FastAPIAdapter {
 
   runLint(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('python -m ruff check src/', root);
+    return this.exec('python -m ruff check src/', root);
   }
 
   runTests(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('python -m pytest', root);
+    return this.exec('python -m pytest', root);
   }
 
   runBuild(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('python -m compileall src/', root);
+    return this.exec('python -m compileall src/', root);
   }
 
   qualityGate(projectRoot?: string): Promise<QualityGateResult> {
@@ -124,20 +109,6 @@ export class FastAPIAdapter {
     });
   }
 
-  private execCommand(command: string, cwd: string): Promise<CommandResult> {
-    return new Promise((resolve) => {
-      try {
-        const output = execSync(command, { cwd, encoding: 'utf-8', stdio: 'pipe', timeout: 30000 });
-        resolve({ success: true, output: output || 'Command completed' });
-      } catch (_err) {
-        const error = err as { stdout?: string; stderr?: string; message?: string };
-        resolve({
-          success: false,
-          output: error.stdout || error.stderr || error.message || 'Command failed',
-        });
-      }
-    });
-  }
 }
 
 export function createFastAPIAdapter(config?: FastAPIAdapterConfig): FastAPIAdapter {

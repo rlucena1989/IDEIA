@@ -1,5 +1,7 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { FeedbackEntry, FeedbackSubmission, MemoryEntry, Recommendation } from './types';
+const logger = createLogger('feedback-pipeline');
 
 export interface PatternDetectorAdapter {
   record(text: string, metadata?: Record<string, unknown>): void;

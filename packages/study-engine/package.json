@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/study-engine",
+  "private": true,
+  "description": "IDEIA Study Engine (G1) — versioned research artifact management with ADRs for the G0-G9 cycle",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*",
+    "@ideia/architecture-adr": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*"
+  }
+}

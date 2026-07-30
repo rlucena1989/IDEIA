@@ -1,7 +1,9 @@
 import { AutonomousCycle } from './autonomous-types';
+import { createLogger } from '@ideia/logger';
 import { DriftSignal, TrendSignal } from './autonomous-types';
 import { SelfCorrectionAction } from './self-correction-engine';
 import { MaintenancePlan } from './maintenance-planner';
+const logger = createLogger('autonomous-report');
 
 export interface AutonomousReport {
   generatedAt: string;

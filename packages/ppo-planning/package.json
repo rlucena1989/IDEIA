@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/ppo-planning",
+  "private": true,
+  "description": "PPO Planning Strategy Optimization — otimizacao de estrategias de planejamento via Proximal Policy Optimization",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

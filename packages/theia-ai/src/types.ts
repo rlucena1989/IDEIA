@@ -1,4 +1,6 @@
 import { Disposable, Event } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('types');
 
 export interface AiMessage {
   role: 'system' | 'user' | 'assistant' | 'tool';
@@ -37,6 +39,15 @@ export interface AiStreamChunk {
   content: string;
   toolCall?: AiToolCall;
   finishReason?: string;
+  done?: boolean;
+  cancelled?: boolean;
+}
+
+export interface ChatStreamOptions {
+  signal?: AbortSignal;
+  onChunk?: (chunk: AiStreamChunk) => void;
+  onComplete?: (fullContent: string) => void;
+  onError?: (error: Error) => void;
 }
 
 export interface AiTool {

@@ -1,0 +1,17 @@
+{
+  "name": "@ideia/heuristic-engine",
+  "description": "Heuristic AI decision engine with priority strategies, routing, optimization (genetic/simulated annealing), fuzzy rules, and expert systems for the IDEIA ecosystem",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

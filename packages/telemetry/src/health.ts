@@ -47,7 +47,7 @@ export class HealthAggregator {
             status: 'down' as const,
             latencyMs: Math.round(performance.now() - start),
             lastCheck: new Date().toISOString(),
-            detail: error instanceof Error ? error.message : String(error),
+            detail: _error instanceof Error ? _error.message : String(_error),
           };
         }
       }),

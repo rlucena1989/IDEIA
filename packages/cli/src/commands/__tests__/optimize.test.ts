@@ -1,6 +1,7 @@
 process.env.GTI_TEST_MODE = '1';
 
-import { optimizeCommand, runOptimizerPipeline, runWithBudgetEnforcement, readJson, readRequestJson, loadBudgetConfig, estimateTokensFromRequest } from '../optimize';
+import { optimizeCommand } from '../optimize';
+import { runOptimizerPipeline, runWithBudgetEnforcement, readJson, readRequestJson, loadBudgetConfig, estimateTokensFromRequest } from '../optimize-pipeline';
 import { getIO, resetIO } from '../../io';
 import { DEFAULT_BUDGET } from '../../runtime/budget';
 import type { MockFileSystem } from '../../io/mock';

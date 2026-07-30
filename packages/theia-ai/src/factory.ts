@@ -1,4 +1,5 @@
 import { Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { DefaultAiManager } from './manager';
 import { ChatService } from './chat';
 import { AgentRegistry, AgentExecutor } from './agents';

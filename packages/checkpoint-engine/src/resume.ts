@@ -1,4 +1,5 @@
 import { Checkpoint, ResumeState } from './types';
+import { createLogger } from '@ideia/logger';
 import { CheckpointStore } from './store';
 
 export class ResumeManager {

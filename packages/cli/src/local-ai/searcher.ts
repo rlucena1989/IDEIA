@@ -1,4 +1,5 @@
 import { IndexedDocument, cosineSimilarity, generateTFIDFVector, extractRelevantChunk } from './embeddings';
+import { createLogger } from '@ideia/logger';
 
 /** Interface que define a estrutura de search result. */
 export interface SearchResult {

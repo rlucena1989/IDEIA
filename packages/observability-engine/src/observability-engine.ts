@@ -58,12 +58,12 @@ export class Tracer {
     span.durationMs = span.endTime - span.startTime;
     if (status) span.status = status;
     this.spanStack = this.spanStack.filter(s => s !== id);
-    this.activeSpanId = this.spanStack.length > 0 ? this.spanStack[this.spanStack.length - 1]! : null;
+    this.activeSpanId = this.spanStack.length > 0 ? (this.spanStack[this.spanStack.length - 1] ?? null) : null;
     if (this.exporter) {
       try {
         this.exporter.export(span);
       } catch (_err) {
-        this.logger.error('Span export failed', { error: String(err) });
+        this.logger.error('Span export failed', { error: String(_err) });
       }
     }
   }
@@ -91,9 +91,9 @@ export class Tracer {
       this.endSpan(span.spanId, 'ok');
       return result;
     } catch (_err) {
-      this.addEvent(span.spanId, { name: 'error', attributes: { error: String(err) } });
+      this.addEvent(span.spanId, { name: 'error', attributes: { error: String(_err) } });
       this.endSpan(span.spanId, 'error');
-      throw err;
+      throw _err;
     }
   }
 
@@ -104,9 +104,9 @@ export class Tracer {
       this.endSpan(span.spanId, 'ok');
       return result;
     } catch (_err) {
-      this.addEvent(span.spanId, { name: 'error', attributes: { error: String(err) } });
+      this.addEvent(span.spanId, { name: 'error', attributes: { error: String(_err) } });
       this.endSpan(span.spanId, 'error');
-      throw err;
+      throw _err;
     }
   }
 
@@ -143,8 +143,8 @@ export class ObservabilityEngine {
     if (points.length === 0) return null;
     const values = points.map(p => p.value).sort((a, b) => a - b);
     return {
-      name, avg: values.reduce((s, v) => s + v, 0) / values.length, min: values[0]!, max: values[values.length - 1]!,
-      p95: values[Math.floor(values.length * 0.95)]!, count: values.length, lastUpdated: points[points.length - 1]!.timestamp,
+      name, avg: values.reduce((s, v) => s + v, 0) / values.length, min: values[0] ?? 0, max: values[values.length - 1] ?? 0,
+      p95: values[Math.floor(values.length * 0.95)] ?? 0, count: values.length, lastUpdated: points[points.length - 1]?.timestamp ?? '',
     };
   }
 

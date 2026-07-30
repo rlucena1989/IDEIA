@@ -1,6 +1,8 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { EngineState } from './types';
+const logger = createLogger('state-manager');
 
 export class StateManager {
   private state: EngineState = { failures: 0, successes: 0 };

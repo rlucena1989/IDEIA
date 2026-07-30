@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/installer-macos",
+  "description": "IDEIA macOS Installer — DMG creation (hdiutil, create-dmg), PKG enterprise packaging (pkgbuild, productbuild), code signing, notarization (notarytool), stapling, Sparkle auto-update integration, universal binary (lipo), Mac App Store support",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "ts-jest": "^29.1.0",
+    "jest": "^29.5.0",
+    "@types/jest": "^29.5.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

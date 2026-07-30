@@ -1,4 +1,6 @@
 import * as fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('reality-sync-initiative');
 import * as path from 'node:path';
 import { EventEmitter } from 'node:events';
 import { execFileSync } from 'node:child_process';
@@ -136,12 +138,12 @@ export class ProactiveInitiativeEngine extends EventEmitter {
   }
 
   private log(msg: string): void {
-    if (this.verbose) console.log(`[Initiative] ${msg}`);
+    if (this.verbose) logger.info('[Initiative] ${msg}');
   }
 
   private notify(level: 'info' | 'warn' | 'error' | 'success', msg: string): void {
     const prefix = level === 'error' ? 'âŒ' : level === 'warn' ? 'âš ï¸' : level === 'success' ? 'âœ…' : 'â„¹ï¸';
-    console.log(`${prefix} [Initiative] ${msg}`);
+    logger.info('${prefix} [Initiative] ${msg}');
     this.emit('initiative:notification', { level, message: msg, timestamp: Date.now() });
   }
 
@@ -565,7 +567,7 @@ export class ProactiveInitiativeEngine extends EventEmitter {
           return false;
       }
     } catch (_err) {
-      this.log(`Fix failed for ${action.id}: ${err instanceof Error ? err.message : String(err)}`);
+      this.log(`Fix failed for ${action.id}: ${_err instanceof Error ? _err.message : String(_err)}`);
       return false;
     }
   }
@@ -632,7 +634,7 @@ export class ProactiveInitiativeEngine extends EventEmitter {
         details.push({
           id: action.id,
           status: 'failed',
-          message: `Error: ${err instanceof Error ? err.message : String(err)}`,
+          message: `Error: ${_err instanceof Error ? _err.message : String(_err)}`,
         });
       }
     }

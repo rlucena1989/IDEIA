@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 
 export interface RagDoc {
@@ -75,7 +76,7 @@ function buildTfIdfIndex(docs: RagDoc[]): Map<string, Map<number, number>> {
     for (const [term, tf] of tfs[i]) {
       const idf = Math.log(1 + N / (1 + (df.get(term) || 0)));
       if (!index.has(term)) index.set(term, new Map());
-      index.get(term) ?? {}.set(i, tf * idf);
+      index.get(term)!.set(i, tf * idf);
     }
   }
   return index;

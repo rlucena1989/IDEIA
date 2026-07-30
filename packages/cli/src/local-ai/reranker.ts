@@ -1,4 +1,5 @@
 import { DenseVectorDoc } from './vector-store';
+import { createLogger } from '@ideia/logger';
 import { computeFreshnessScore } from './freshness';
 import { cosineSimilarity } from './embeddings';
 

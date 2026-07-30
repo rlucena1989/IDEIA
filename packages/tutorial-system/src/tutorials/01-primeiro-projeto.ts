@@ -1,4 +1,6 @@
 import { Tutorial } from '../types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('01-primeiro-projeto');
 
 export const primeiroProjetoTutorial: Tutorial = {
   id: '01-primeiro-projeto',

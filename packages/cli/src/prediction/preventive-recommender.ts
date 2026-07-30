@@ -1,4 +1,6 @@
 import { PredictionResult } from './prediction-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('preventive-recommender');
 
 export function recommendPrevention(prediction: PredictionResult): string[] {
   if (prediction.riskLevel === 'critical') {

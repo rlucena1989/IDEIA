@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.security');
 import { printLine, printResult } from "../utils/output";
 import {
   createBaseline, loadBaseline, getCurrentRules, detectDowngrades,
@@ -9,6 +11,7 @@ import {
   type SecurityCheckResult
 } from '../security/detector';
 import { checkBarriers, addRule, loadRules } from '../utils/security/barrier';
+import { AsvsChecker, formatAsvsReport } from '@ideia/prompt-security';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -145,6 +148,35 @@ export function securityCommand(): Command {
     .description('Exibe historico de tentativas de downgrade')
     .action(() => runSecurityLogs(makeDeps()));
 
+  cmd
+    .command('asvs')
+    .description('OWASP ASVS compliance verification — all 13 V-categories (V1-V13)')
+    .option('--categories <cats>', 'Comma-separated categories (V1,V2,...,V13)')
+    .option('--json', 'Output as JSON')
+    .action((opts: { categories?: string; json?: boolean }) => {
+      const checker = new AsvsChecker(process.cwd());
+      let categories: string[] | undefined;
+      if (opts.categories) {
+        categories = opts.categories.split(',').map(c => c.trim().toUpperCase());
+        const valid: string[] = [];
+        for (let i = 1; i <= 13; i++) valid.push(`V${i}`);
+        const invalid = categories.filter(c => !valid.includes(c));
+        if (invalid.length > 0) {
+          printResult(`Invalid categories: ${invalid.join(', ')}. Valid: ${valid.join(', ')}`, false);
+          return;
+        }
+      }
+      const report = checker.runAll();
+      if (opts.json) {
+        console.log(JSON.stringify(report, null, 2));
+      } else {
+        logger.info(formatAsvsReport(report));
+      }
+      if (report.l1Summary.percent < 70) {
+        printResult(`L1 coverage: ${report.l1Summary.percent}% (target: 70%)`, false);
+      }
+    });
+
   const barrier = cmd.command('barrier')
     .description('Barreiras de seguranca — protege arquivos de auth, secrets e schema');
 
@@ -167,25 +199,25 @@ export function securityCommand(): Command {
       const result = checkBarriers(cwd, allFiles, opts.bypass as string);
       const rules = loadRules(cwd);
 
-      console.log(`\n=== Barreiras de Seguranca ===`);
-      console.log(`Regras: ${rules.length}`);
-      console.log(`Arquivos escaneados: ${allFiles.length}`);
-      console.log(`Arquivos bloqueados: ${result.blocked.length}`);
-      console.log(`Avisos: ${result.warnings.length}`);
-      if (result.bypass) console.log(`Bypass: ${result.bypass}`);
+      logger.info('\n=== Barreiras de Seguranca ===');
+      logger.info('Regras: ${rules.length}');
+      logger.info('Arquivos escaneados: ${allFiles.length}');
+      logger.info('Arquivos bloqueados: ${result.blocked.length}');
+      logger.info('Avisos: ${result.warnings.length}');
+      if (result.bypass) logger.info('Bypass: ${result.bypass}');
 
       if (result.blocked.length > 0) {
-        console.log(`\nArquivos bloqueados:`);
-        result.blocked.forEach(f => console.log(`  🔒 ${f}`));
+        logger.info('\nArquivos bloqueados:');
+        result.blocked.forEach(f => logger.info('  🔒 ${f}'));
       }
       if (result.warnings.length > 0) {
-        console.log(`\nArquivos com aviso:`);
-        result.warnings.forEach(f => console.log(`  ⚠️ ${f}`));
+        logger.info('\nArquivos com aviso:');
+        result.warnings.forEach(f => logger.info('  ⚠️ ${f}'));
       }
 
       for (const r of rules) {
         const icon = r.severity === 'block' ? '🔒' : '⚠️';
-        console.log(`  ${icon} ${r.pattern} — ${r.description}`);
+        logger.info('  ${icon} ${r.pattern} — ${r.description}');
       }
 
       if (result.blocked.length > 0 && !result.bypass) process.exit(1);
@@ -209,7 +241,7 @@ export function securityCommand(): Command {
     .option('--desc <description>', 'Descricao da regra', 'Protegido por barreira')
     .action((pattern: string, opts: Record<string, unknown>) => {
       addRule(process.cwd(), pattern, opts.severity as 'block' | 'warn', opts.desc as string);
-      console.log(`Regra adicionada: [${opts.severity}] ${pattern} — ${opts.desc}`);
+      logger.info('Regra adicionada: [${opts.severity}] ${pattern} — ${opts.desc}');
     });
 
   return cmd;

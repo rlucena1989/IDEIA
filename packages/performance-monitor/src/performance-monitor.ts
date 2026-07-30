@@ -1,4 +1,5 @@
 import { BudgetCheckResult, BudgetConfig, MetricSnapshot, PerformanceReport } from './types';
+import { createLogger } from '@ideia/logger';
 const DEFAULT_BUDGET: BudgetConfig = { metrics: [
   { name: 'bundle_size', type: 'size', budget: 500000, unit: 'bytes', severity: 'fail' },
   { name: 'api_latency', type: 'latency', budget: 500, unit: 'ms', severity: 'warn' },

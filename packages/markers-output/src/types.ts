@@ -1,4 +1,5 @@
 import { Disposable, Event } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 
 export enum MarkerSeverity {
   Error = 8,
@@ -84,6 +85,8 @@ export interface OutputChannel {
   clear(): void;
   show(preserveFocus?: boolean): void;
   hide(): void;
+  getContent(): string;
+  getLines(): string[];
   dispose(): void;
 }
 

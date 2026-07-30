@@ -35,7 +35,7 @@ export class RateLimiter {
   }
 
   check(key: string, limiterName?: string): RateLimitResult {
-    const config = this.configs.get(limiterName ?? 'default') ?? this.configs.get('default') ?? null;
+    const config = this.configs.get(limiterName ?? 'default') ?? this.configs.get('default') ?? { windowMs: 60000, maxRequests: 60, blockDurationMs: 120000, trackBy: 'ip' as const };
     const now = Date.now();
     const entry = this.store.get(key);
 

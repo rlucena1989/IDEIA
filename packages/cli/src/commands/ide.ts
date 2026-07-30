@@ -12,6 +12,8 @@
  */
 
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.ide');
 
 export function ideCommand(): Command {
   const cmd = new Command('ide');
@@ -29,13 +31,13 @@ export function ideCommand(): Command {
       const root = options.root;
       const host = options.host;
 
-      console.log('╔══════════════════════════════════════════╗');
-      console.log('║          IDEIA IDE Server v0.1.0          ║');
-      console.log('╚══════════════════════════════════════════╝');
+      logger.info('╔══════════════════════════════════════════╗');
+      logger.info('║          IDEIA IDE Server v0.1.0          ║');
+      logger.info('╚══════════════════════════════════════════╝');
       console.log('');
-      console.log(`  Port:     ${port}`);
-      console.log(`  Host:     ${host}`);
-      console.log(`  Root:     ${root}`);
+      logger.info('  Port:     ${port}');
+      logger.info('  Host:     ${host}');
+      logger.info('  Root:     ${root}');
       console.log('');
 
       if (options.daemon && !process.env.AI_DAEMON_CHILD) {
@@ -45,8 +47,8 @@ export function ideCommand(): Command {
           stdio: 'ignore',
         });
         child.unref();
-        console.log(`  PID:      ${child.pid}`);
-        console.log('  IDE server started in background.');
+        logger.info('  PID:      ${child.pid}');
+        logger.info('  IDE server started in background.');
         process.exit(0);
       }
 
@@ -60,10 +62,10 @@ export function ideCommand(): Command {
         console.log('  API:      http://localhost:' + port + '/api/ide/status');
         console.log('  WS:       ws://localhost:' + port + '/ws');
         console.log('');
-        console.log('  Press Ctrl+C to stop the server.');
+        logger.info('  Press Ctrl+C to stop the server.');
 
         process.on('SIGINT', async () => {
-          console.log('\n  Shutting down...');
+          logger.info('\n  Shutting down...');
           await server.stop();
           process.exit(0);
         });
@@ -72,7 +74,7 @@ export function ideCommand(): Command {
           await server.stop();
           process.exit(0);
         });
-      } catch (_err) {
+      } catch (err) {
         console.error('  Failed to start IDE server:', (err as Error).message);
         process.exit(1);
       }

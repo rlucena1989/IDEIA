@@ -1,6 +1,8 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { MetricEntry } from './types';
+const logger = createLogger('metrics-store');
 
 export class MetricsStore {
   private entries: MetricEntry[] = [];

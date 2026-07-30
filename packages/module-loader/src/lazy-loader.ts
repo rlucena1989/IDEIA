@@ -1,5 +1,7 @@
 import { DefaultModuleRegistry } from './registry';
+import { createLogger } from '@ideia/logger';
 import { ModuleDefinition, DynamicImportOptions } from './types';
+const logger = createLogger('lazy-loader');
 
 export class LazyModuleLoader {
   private registry: DefaultModuleRegistry;

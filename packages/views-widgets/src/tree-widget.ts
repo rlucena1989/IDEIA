@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { ITreeWidget, ITreeModel, ITreeNode, WidgetTitle } from './types';
 import { BaseWidget } from './widget-core';
 

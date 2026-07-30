@@ -1,7 +1,9 @@
 import { TargetState } from './target-state';
+import { createLogger } from '@ideia/logger';
 import { Roadmap } from './roadmap-types';
 import { GapItem } from './gap-analyzer';
 import { EvolutionPlan } from './evolution-roadmap';
+const logger = createLogger('strategy-report');
 
 export interface StrategyReport {
   generatedAt: string;

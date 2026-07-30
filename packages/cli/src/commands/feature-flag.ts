@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { printHeader, printLine, printResult, finish } from "../utils/output";
 import { getIO } from '../io';
@@ -121,7 +122,7 @@ export function featureFlagStatusAction(name: string): void {
     ok: true,
     status: 'passed',
     context_summary: `${flag.name}: ${flag.status}`,
-    data: flag,
+    data: flag as unknown as Record<string, unknown>,
   });
 }
 

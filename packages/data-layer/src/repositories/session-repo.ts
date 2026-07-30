@@ -1,4 +1,6 @@
 import { BaseRepository } from './base-repo';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('session-repo');
 
 export interface SessionRecord {
   id: string;

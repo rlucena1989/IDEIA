@@ -132,7 +132,7 @@ describe('HPC - domain-precision', () => {
   });
 
   it('should fallback to general for unknown domain', () => {
-    expect(getDomainPrecision('unknown' as 'cpu' | 'gpu' | 'fpga' | 'asic')).toBe(4);
+    expect(getDomainPrecision('unknown' as 'finance' | 'physics' | 'engineering' | 'statistics' | 'general')).toBe(4);
   });
 
   it('should apply domain precision', () => {

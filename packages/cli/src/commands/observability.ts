@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import fs from 'node:fs';
 import https from 'node:https';
@@ -73,14 +74,20 @@ function computeMetrics(traces: TraceEntry[]) {
   const byProvider: Record<string, { calls: number; totalLatency: number; totalCost: number }> = {};
 
   for (const t of traces) {
-    if (!byModel[t.model]) byModel[t.model] = { calls: 0, totalLatency: 0, totalCost: 0 };
-    const m = byModel[t.model]!;
+    let m = byModel[t.model]
+    if (!m) {
+      m = { calls: 0, totalLatency: 0, totalCost: 0 }
+      byModel[t.model] = m
+    }
     m.calls++;
     m.totalLatency += t.latency_ms;
     m.totalCost += t.cost_usd;
 
-    if (!byProvider[t.provider]) byProvider[t.provider] = { calls: 0, totalLatency: 0, totalCost: 0 };
-    const p = byProvider[t.provider]!;
+    let p = byProvider[t.provider]
+    if (!p) {
+      p = { calls: 0, totalLatency: 0, totalCost: 0 }
+      byProvider[t.provider] = p
+    }
     p.calls++;
     p.totalLatency += t.latency_ms;
     p.totalCost += t.cost_usd;
@@ -230,7 +237,7 @@ export function observabilityCommand(): Command {
         ok: true,
         status: 'passed',
         context_summary: `Trace registrado: ${options.provider}/${options.model}`,
-        data: entry as Record<string, unknown>,
+        data: entry as unknown as Record<string, unknown>,
       });
     });
 

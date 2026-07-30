@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import path from 'path';
 
 export interface AnalyticsRecord {
@@ -30,6 +31,16 @@ export interface AnalyticsResult {
 }
 
 const METRICS_DIR = '.ai/metrics';
+
+function getGroupValue(r: AnalyticsRecord, key: string): string {
+  if (key === 'timestamp') return r.timestamp;
+  if (key === 'category') return r.category;
+  if (key === 'event') return r.event;
+  if (key === 'value') return String(r.value);
+  if (key === 'tags') return JSON.stringify(r.tags);
+  if (key === 'metadata') return r.metadata ? JSON.stringify(r.metadata) : '';
+  return '';
+}
 
 export class AnalyticsEngine {
   private records: AnalyticsRecord[] = [];
@@ -77,8 +88,8 @@ export class AnalyticsEngine {
 
     if (query.category) filtered = filtered.filter(r => r.category === query.category);
     if (query.event) filtered = filtered.filter(r => r.event === query.event);
-    if (query.fromDate) filtered = filtered.filter(r => r.timestamp >= query.fromDate ?? new Date(0));
-    if (query.toDate) filtered = filtered.filter(r => r.timestamp <= query.toDate ?? new Date());
+    if (query.fromDate!) filtered = filtered.filter(r => r.timestamp >= query.fromDate!);
+    if (query.toDate!) filtered = filtered.filter(r => r.timestamp <= query.toDate!);
 
     const columns: string[] = ['timestamp', 'category', 'event', 'value'];
     const rows: unknown[][] = [];
@@ -86,10 +97,10 @@ export class AnalyticsEngine {
     if (query.groupBy && query.groupBy.length > 0) {
       const groups = new Map<string, { count: number; sum: number; values: number[] }>();
       for (const r of filtered) {
-        const key = query.groupBy.map(g => String((r as Record<string, unknown>)[g] ?? '')).join('|');
+        const key = query.groupBy.map(g => getGroupValue(r, g)).join('|');
         if (!groups.has(key)) groups.set(key, { count: 0, sum: 0, values: [] });
-        const g = groups.get(key) ?? null;
-        g.count++; g.sum += r.value; g.values.push(r.value);
+        const g = groups.get(key);
+        if (g) { g.count++; g.sum += r.value; g.values.push(r.value); }
       }
       for (const [key, g] of groups) {
         const groupKeys = key.split('|');
@@ -137,7 +148,7 @@ export class AnalyticsEngine {
     return {
       totalRecords: this.records.length,
       categories: this.getCategories().length,
-      firstEvent: this.records.length > 0 ? this.records[0]!.timestamp : null,
+      firstEvent: this.records.length > 0 ? (this.records[0]?.timestamp ?? null) : null,
       lastEvent: this.records.length > 0 ? this.records[this.records.length - 1].timestamp : null,
     };
   }
@@ -149,8 +160,8 @@ export class AnalyticsEngine {
       const d = new Date(r.timestamp);
       const period = new Date(Math.floor(d.getTime() / (intervalMinutes * 60000)) * intervalMinutes * 60000).toISOString();
       if (!buckets.has(period)) buckets.set(period, { count: 0, sum: 0 });
-      const b = buckets.get(period) ?? null;
-      b.count++; b.sum += r.value;
+      const b = buckets.get(period);
+      if (b) { b.count++; b.sum += r.value; }
     }
     return Array.from(buckets.entries()).map(([period, data]) => ({ period, ...data })).sort((a, b) => a.period.localeCompare(b.period));
   }
@@ -161,3 +172,4 @@ export class AnalyticsEngine {
 export function createAnalyticsEngine(basePath?: string): AnalyticsEngine {
   return new AnalyticsEngine(basePath);
 }
+

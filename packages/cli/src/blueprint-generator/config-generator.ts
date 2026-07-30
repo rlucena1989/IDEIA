@@ -1,4 +1,5 @@
 import type { GeneratedConfig, TemplateContext } from './types';
+import { createLogger } from '@ideia/logger';
 import { TemplateEngine } from './template-engine';
 
 export class ConfigGenerator {
@@ -211,7 +212,7 @@ export class ConfigGenerator {
         ports: ['3000:3000'],
         environment: {
           NODE_ENV: 'development',
-          ...(((options.app?.environment as Record<string, string>) || {})),
+          ...(((options.app as Record<string, unknown>)?.environment as Record<string, string>) || {}),
         },
         volumes: ['.:/app', '/app/node_modules'],
         depends_on: [] as string[],
@@ -229,7 +230,8 @@ export class ConfigGenerator {
         ports: ['5432:5432'],
         volumes: ['pgdata:/var/lib/postgresql/data'],
       };
-      (services.app.depends_on as string[]).push('postgres');
+      (services.app as Record<string, unknown>).depends_on = (services.app as Record<string, unknown>).depends_on as string[] || [];
+      ((services.app as Record<string, unknown>).depends_on as string[]).push('postgres');
     }
 
     if (context.features?.includes('redis')) {
@@ -238,7 +240,8 @@ export class ConfigGenerator {
         ports: ['6379:6379'],
         volumes: ['redisdata:/data'],
       };
-      (services.app.depends_on as string[]).push('redis');
+      (services.app as Record<string, unknown>).depends_on = (services.app as Record<string, unknown>).depends_on as string[] || [];
+      ((services.app as Record<string, unknown>).depends_on as string[]).push('redis');
     }
 
     const config: Record<string, unknown> = {

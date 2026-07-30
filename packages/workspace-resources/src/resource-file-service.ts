@@ -1,4 +1,5 @@
 import { Emitter, Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { FileSystemProviderRegistry } from '@ideia/filesystem';
 import {
   ResourceProvider, ResourceStat, FileService, WatchOptions, FileChangeEvent,

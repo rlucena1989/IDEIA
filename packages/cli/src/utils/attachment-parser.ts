@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { createLogger } from '@ideia/logger';
 import path from "node:path";
 import os from "node:os";
 
@@ -86,7 +87,7 @@ function readFileContent(filePath: string): { content: string; size: number; err
     const content = fs.readFileSync(filePath, "utf8");
     return { content, size: stat.size };
   } catch (_err) {
-    const message = err instanceof Error ? err.message : String(err);
+    const message = _err instanceof Error ? _err.message : String(_err);
     return { content: "", size: 0, error: message };
   }
 }
@@ -103,7 +104,7 @@ export function extractFileReferences(text: string): string[] {
     let match: RegExpExecArray | null;
     const regex = new RegExp(pattern.source, pattern.flags);
     while ((match = regex.exec(text)) !== null) {
-      const ref = match[1]!.replace(/[.,;:!?)]+$/, "");
+      const ref = (match[1] ?? '').replace(/[.,;:!?)]+$/, "");
       if (EXTENSION_PATTERN.test(ref)) {
         references.add(ref);
       }
@@ -113,7 +114,7 @@ export function extractFileReferences(text: string): string[] {
   const inlineRegex = new RegExp(`(?:^|\\s)([\\w./\\\\-]+${EXTENSION_PATTERN.source.slice(1, -1)})`, "gmi");
   let match: RegExpExecArray | null;
   while ((match = inlineRegex.exec(text)) !== null) {
-    const ref = match[1]!.trim().replace(/[.,;:!?)]+$/, "");
+    const ref = (match[1] ?? '').trim().replace(/[.,;:!?)]+$/, "");
     if (!ref.startsWith("@see") && !ref.startsWith("conforme") && !ref.startsWith("arquivo") && !ref.startsWith("file://")) {
       references.add(ref);
     }

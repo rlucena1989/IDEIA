@@ -1,4 +1,5 @@
 import { PromptDefinition, PromptContext, RenderedPrompt } from './prompt-types';
+import { createLogger } from '@ideia/logger';
 import { MASTER_PROMPT } from './prompt-master';
 
 export function buildGenerationPrompt(context: PromptContext): string {

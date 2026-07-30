@@ -84,7 +84,7 @@ export class TestOrchestrator {
         timestamp,
       };
     } catch (_err) {
-      const e = err as { stdout?: string; stderr?: string; message?: string; status?: number };
+      const e = _err as { stdout?: string; stderr?: string; message?: string; status?: number };
       const output = e.stdout?.toString().trim() || e.stderr?.toString().trim() || e.message || '';
       const parsed = this.parseOutput(output);
       return {

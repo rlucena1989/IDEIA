@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { detectDrift } from '../autonomous/drift-detector';
 import { analyzeTrend } from '../autonomous/trend-analyzer';
 import { buildMaintenancePlan } from '../autonomous/maintenance-planner';

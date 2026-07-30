@@ -1,0 +1,26 @@
+{
+  "name": "@ideia/mcp-marketplace",
+  "description": "MCP marketplace with server registry, client manager, tool discovery, permissions and offline installer",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  }
+}

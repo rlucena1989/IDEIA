@@ -1,4 +1,5 @@
 import { injectable } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 
 export interface LazyWidget {
   id: string;
@@ -62,7 +63,7 @@ export class WidgetLoader {
         id: widget.id,
         success: false,
         durationMs: Math.round(performance.now() - start),
-        error: error instanceof Error ? error.message : String(error),
+        error: _error instanceof Error ? _error.message : String(_error),
       };
     }
   }
@@ -83,3 +84,4 @@ export class WidgetLoader {
     this.loaded.delete(widgetId);
   }
 }
+

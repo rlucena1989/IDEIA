@@ -107,7 +107,7 @@ async function runJobWithRetry(job: PlannedJob): Promise<JobResult> {
 
 function parseCommand(command: string): [string, ...string[]] {
   const parts = command.match(/(?:[^\s"]+|"[^"]*")+/g) || [command];
-  const cmd = parts[0]!.replace(/"/g, '');
+  const cmd = (parts[0] ?? '').replace(/"/g, '');
   const args = parts.slice(1).map(a => a.replace(/"/g, ''));
   return [cmd, ...args];
 }

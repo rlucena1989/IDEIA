@@ -1,4 +1,6 @@
 import * as chokidar from 'chokidar';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('reality-sync-watcher');
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { EventEmitter } from 'node:events';
@@ -72,12 +74,12 @@ export class RealitySyncDaemon extends EventEmitter {
   }
 
   private log(msg: string): void {
-    if (this.options.verbose) console.log(`[RealitySync] ${msg}`);
+    if (this.options.verbose) logger.info('[RealitySync] ${msg}');
   }
 
   private notify(level: 'info' | 'warn' | 'error', msg: string): void {
     const prefix = level === 'error' ? '❌' : level === 'warn' ? '⚠️' : '✓';
-    console.log(`${prefix} [RealitySync] ${msg}`);
+    logger.info('${prefix} [RealitySync] ${msg}');
     this.emit('notification', { level, message: msg, timestamp: Date.now() });
   }
 
@@ -285,7 +287,7 @@ export class RealitySyncDaemon extends EventEmitter {
         this.runPendingSyncs();
       }
     } catch (_err) {
-      this.log(`Initiative cycle error: ${err instanceof Error ? err.message : String(err)}`);
+      this.log(`Initiative cycle error: ${_err instanceof Error ? _err.message : String(_err)}`);
     }
 
     // Auto-intensify studies
@@ -304,14 +306,14 @@ export class RealitySyncDaemon extends EventEmitter {
         this.studyIntensifier.generateAIScript(plan, path.join(scriptsDir, 'intensify-helper.js'));
       }
     } catch (_err) {
-      this.log(`Study intensification error: ${err instanceof Error ? err.message : String(err)}`);
+      this.log(`Study intensification error: ${_err instanceof Error ? _err.message : String(_err)}`);
     }
 
     // StudyScanner monitoring
     try {
       this.studyScanner.alertOnDegradation(3);
     } catch (_err) {
-      this.log(`StudyScanner alert error: ${err instanceof Error ? err.message : String(err)}`);
+      this.log(`StudyScanner alert error: ${_err instanceof Error ? _err.message : String(_err)}`);
     }
 
     // TechRadar auto-scan
@@ -329,8 +331,8 @@ export class RealitySyncDaemon extends EventEmitter {
       } catch {
         fs.writeFileSync(lastScanPath, String(now), 'utf-8');
       }
-    } catch (_err) {
-      this.log(`TechRadar scan error: ${err instanceof Error ? err.message : String(err)}`);
+    } catch {
+      this.log('TechRadar scan error (see previous logs)');
     }
   }
 

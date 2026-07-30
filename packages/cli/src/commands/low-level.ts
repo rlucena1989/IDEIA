@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.low-level');
 import { analyzeMemory } from '../runtime/memory-analyzer';
 import { analyzeConcurrency } from '../runtime/concurrency-analyzer';
 import { getPlatformInfo, validatePlatform } from '../runtime/platform-analyzer';
@@ -13,13 +15,13 @@ export function lowLevelMemoryAction(file: string, opts: { json?: boolean }): vo
   const content = fs.readFileSync(file, 'utf-8');
   const report = analyzeMemory(content);
   if (opts.json) { console.log(JSON.stringify(report, null, 2)); return; }
-  console.log(`\nAnalise de Memoria — "${file}":`);
-  console.log(`  ${report.summary}`);
+  logger.info('\nAnalise de Memoria — "${file}":');
+  logger.info('  ${report.summary}');
   for (const m of report.metrics) {
     const icon = m.status === 'critical' ? 'C' : m.status === 'warning' ? 'W' : ' ';
-    console.log(`  [${icon}] ${m.name.padEnd(25)} ${m.value}/${m.threshold} — ${m.suggestion}`);
+    logger.info('  [${icon}] ${m.name.padEnd(25)} ${m.value}/${m.threshold} — ${m.suggestion}');
   }
-  for (const l of report.leakSignals) console.log(`  Leak: ${l}`);
+  for (const l of report.leakSignals) logger.info('  Leak: ${l}');
 }
 
 export function lowLevelConcurrencyAction(file: string, opts: { json?: boolean }): void {
@@ -27,11 +29,11 @@ export function lowLevelConcurrencyAction(file: string, opts: { json?: boolean }
   const content = fs.readFileSync(file, 'utf-8');
   const report = analyzeConcurrency(content);
   if (opts.json) { console.log(JSON.stringify(report, null, 2)); return; }
-  console.log(`\nAnalise de Concorrencia — "${file}":`);
-  console.log(`  ${report.summary}`);
+  logger.info('\nAnalise de Concorrencia — "${file}":');
+  logger.info('  ${report.summary}');
   for (const f of report.findings) {
     const icon = f.severity === 'error' ? 'E' : f.severity === 'warning' ? 'W' : 'I';
-    console.log(`  [${icon}] L${f.line}: ${f.name} — ${f.suggestion}`);
+    logger.info('  [${icon}] L${f.line}: ${f.name} — ${f.suggestion}');
   }
 }
 
@@ -39,13 +41,13 @@ export function lowLevelPlatformAction(opts: { json?: boolean }): void {
   const info = getPlatformInfo();
   const validation = validatePlatform(info);
   if (opts.json) { console.log(JSON.stringify(validation, null, 2)); return; }
-  console.log('\nPlataforma:');
-  console.log(`  OS: ${info.os} (${info.arch})`);
-  console.log(`  Node: ${info.nodeVersion}`);
-  console.log(`  Shell: ${info.shell}`);
-  console.log(`  ${validation.summary}`);
+  logger.info('\nPlataforma:');
+  logger.info('  OS: ${info.os} (${info.arch})');
+  logger.info('  Node: ${info.nodeVersion}');
+  logger.info('  Shell: ${info.shell}');
+  logger.info('  ${validation.summary}');
   for (const r of validation.rules) {
-    console.log(`  [${r.pass ? 'OK' : 'XX'}] ${r.id}: ${r.message}`);
+    logger.info('  [${r.pass ? \'OK\' : \'XX\'}] ${r.id}: ${r.message}');
   }
 }
 

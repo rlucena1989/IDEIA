@@ -1,123 +1,155 @@
-export interface SagaContext {
-  projectId: string;
-  version: string;
-  spec: unknown;
-  artifacts?: string[];
-}
+import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
+import type {
+  SagaDefinition,
+  SagaInstance,
+  SagaStatus,
+  SagaStepResult,
+} from './types-event-sourcing';
 
-export interface StepResult {
-  step: string;
-  success: boolean;
-  output?: unknown;
-  error?: string;
-  durationMs: number;
-}
-
-export interface SagaStep {
-  name: string;
-  handler: (ctx: SagaContext) => Promise<unknown>;
-  compensator?: (ctx: SagaContext, output: unknown) => Promise<void>;
-  dependencies: string[];
-  timeoutMs: number;
-}
-
-export interface SagaResult {
-  id: string;
-  success: boolean;
-  context: SagaContext;
-  steps: StepResult[];
-  failedAt: string | null;
-  compensated: string[];
-  durationMs: number;
-}
+const log = createLogger('saga-coordinator');
 
 export class SagaCoordinator {
-  private steps: SagaStep[] = [];
+  private instances: Map<string, SagaInstance> = new Map();
 
-  constructor(steps?: SagaStep[]) {
-    if (steps) this.steps = steps;
+  begin(definition: SagaDefinition): SagaInstance {
+    const instance: SagaInstance = {
+      id: `saga-${randomUUID()}`,
+      definitionId: definition.id,
+      status: 'running',
+      currentStep: 0,
+      context: {},
+      completedSteps: [],
+      failedStep: null,
+      startedAt: Date.now(),
+      completedAt: null,
+      error: null,
+    };
+    this.instances.set(instance.id, instance);
+    log.info(`Saga ${instance.id} started for definition ${definition.id}`);
+    return instance;
   }
 
-  async execute(projectId: string, context?: Partial<SagaContext>): Promise<SagaResult> {
-    const sagaId = `saga-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-    const ctx: SagaContext = {
-      projectId,
-      version: context?.version || '1.0.0',
-      spec: context?.spec || {},
-      artifacts: context?.artifacts || [],
-    };
+  async executeStep(
+    instanceId: string,
+    definition: SagaDefinition,
+  ): Promise<void> {
+    const instance = this.instances.get(instanceId);
+    if (instance === undefined) {
+      throw new Error(`Saga instance ${instanceId} not found`);
+    }
+    if (instance.status !== 'running') {
+      throw new Error(`Saga instance ${instanceId} is not running (status: ${instance.status})`);
+    }
 
-    const result: SagaResult = {
-      id: sagaId,
-      success: true,
-      context: ctx,
-      steps: [],
-      failedAt: null,
-      compensated: [],
-      durationMs: 0,
-    };
+    const actionSteps = definition.steps.filter((s) => s.type === 'action');
 
-    const overallStart = Date.now();
-    const completed = new Set<string>();
+    while (instance.currentStep < actionSteps.length && instance.status === 'running') {
+      const step = actionSteps[instance.currentStep];
 
-    for (const step of this.steps) {
-      for (const dep of step.dependencies) {
-        if (!completed.has(dep)) {
-          throw new Error(`Dependency ${dep} not completed for step ${step.name}`);
+      try {
+        const stepResult = await this.executeWithTimeout(step, instance);
+        if (stepResult.success) {
+          instance.completedSteps.push(step.name);
+          instance.currentStep += 1;
+        } else {
+          instance.status = 'failed';
+          instance.failedStep = step.name;
+          instance.error = stepResult.error;
+          instance.completedAt = Date.now();
+          log.error(`Saga ${instanceId} failed at step ${step.name}: ${stepResult.error}`);
+          return;
         }
-      }
-
-      const stepResult = await this.executeWithTimeout(step, ctx);
-      result.steps.push(stepResult);
-
-      if (stepResult.success) {
-        completed.add(step.name);
-      } else {
-        result.success = false;
-        result.failedAt = step.name;
-
-        const compensated = new Set<string>();
-        for (let i = result.steps.length - 2; i >= 0; i--) {
-          const completedStep = this.steps[i];
-          if (completedStep.compensator) {
-            try {
-              await completedStep.compensator(ctx, result.steps[i].output);
-              compensated.add(completedStep.name);
-            } catch (_err) {
-              // Log silenciado propositalmente — falha nao bloqueia fluxo
-            }
-          }
-        }
-        result.compensated = Array.from(compensated);
-        break;
+      } catch (error) {
+        instance.status = 'failed';
+        instance.failedStep = step.name;
+        instance.error = error instanceof Error ? error.message : String(error);
+        instance.completedAt = Date.now();
+        log.error(`Saga ${instanceId} failed at step ${step.name}: ${instance.error}`);
+        return;
       }
     }
 
-    result.durationMs = Date.now() - overallStart;
-    return result;
+    if (instance.status === 'running') {
+      instance.status = 'completed';
+      instance.completedAt = Date.now();
+      log.info(`Saga ${instanceId} completed successfully`);
+    }
   }
 
-  private async executeWithTimeout(step: SagaStep, ctx: SagaContext): Promise<StepResult> {
-    const start = Date.now();
-    try {
-      const output = await Promise.race([
-        step.handler(ctx),
-        new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error(`Step ${step.name} timed out after ${step.timeoutMs}ms`)), step.timeoutMs)
-        ),
-      ]);
+  async compensate(instanceId: string, definition: SagaDefinition): Promise<void> {
+    const instance = this.instances.get(instanceId);
+    if (instance === undefined) {
+      throw new Error(`Saga instance ${instanceId} not found`);
+    }
 
+    instance.status = 'compensating';
+    const completedSteps = new Set(instance.completedSteps);
+    const compensationSteps = definition.steps
+      .filter((s) => s.type === 'compensation' && completedSteps.has(s.name))
+      .reverse();
+
+    for (const step of compensationSteps) {
+      try {
+        const result = await this.executeWithTimeout(step, instance);
+        if (!result.success) {
+          log.error(`Compensation step ${step.name} failed: ${result.error}`);
+        }
+      } catch (error) {
+        log.error(`Compensation step ${step.name} threw: ${error instanceof Error ? error.message : String(error)}`);
+      }
+    }
+
+    instance.status = 'compensated';
+    instance.completedAt = Date.now();
+    log.info(`Saga ${instanceId} compensated`);
+  }
+
+  getStatus(instanceId: string): SagaInstance | undefined {
+    return this.instances.get(instanceId);
+  }
+
+  listActive(): SagaInstance[] {
+    const activeStatuses: SagaStatus[] = ['running', 'compensating'];
+    return Array.from(this.instances.values()).filter((i) =>
+      activeStatuses.includes(i.status),
+    );
+  }
+
+  private async executeWithTimeout(
+    step: { handler: (context: Record<string, unknown>) => Promise<SagaStepResult>; timeout?: number },
+    instance: SagaInstance,
+  ): Promise<SagaStepResult> {
+    const start = Date.now();
+    const timeout = step.timeout ?? 30000;
+
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      const result = await Promise.race([
+        (async () => {
+          const res = await step.handler(instance.context);
+          return res;
+        })(),
+        new Promise<never>((_, reject) => {
+          timer = setTimeout(() => reject(new Error(`Step timed out after ${timeout}ms`)), timeout);
+        }),
+      ]);
+      if (timer !== undefined) {
+        clearTimeout(timer);
+      }
       return {
-        step: step.name,
-        success: true,
-        output,
+        ...result,
         durationMs: Date.now() - start,
       };
-    } catch (_err) {
+    } catch (error) {
+      if (timer !== undefined) {
+        clearTimeout(timer);
+      }
       return {
-        step: step.name,
+        stepName: 'unknown',
         success: false,
-        error: err instanceof Error ? err.message : String(err),
+        output: null,
+        error: error instanceof Error ? error.message : String(error),
         durationMs: Date.now() - start,
       };
     }

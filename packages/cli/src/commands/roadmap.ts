@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { createTargetState, TargetState, TargetCapability } from '../strategy/target-state';
 import { buildRoadmap } from '../strategy/roadmap-builder';
 import { RoadmapItem, Roadmap } from '../strategy/roadmap-types';

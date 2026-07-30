@@ -42,7 +42,9 @@ class MetricsStore {
     storageDir;
     cache;
     ttlMs;
+    backend;
     constructor(bus, logger, options) {
+        this.backend = options?.backend ?? null;
         this.bus = bus;
         this.logger = logger;
         this.storageDir = options?.storageDir ?? path.join(process.cwd(), '.ai', 'metrics');
@@ -63,7 +65,7 @@ class MetricsStore {
         entries.push(entry);
         this.cache.set(category, entries);
         await this.flushCategory(category);
-        await this.bus.publish('metrics.recorded', { category, key, value });
+        await this.bus.emit({ type: 'metrics.recorded', source: 'metrics-store', payload: { category, key, value } });
         this.logger.debug(`Metric [${category}] ${key} = ${value}`);
     }
     async query(category, from, to) {
@@ -142,6 +144,16 @@ class MetricsStore {
             this.logger.info(`Cleaned up ${removed} expired metric entries`);
         }
         return removed;
+    }
+    async getDashboardMetrics() {
+        const summary = await this.getSummary();
+        const cards = [
+            { label: 'Total Entries', value: summary.totalEntries, change: 0, trend: 'stable' },
+        ];
+        for (const [category, count] of Object.entries(summary.categories)) {
+            cards.push({ label: `Category: ${category}`, value: count, change: 0, trend: 'stable' });
+        }
+        return cards;
     }
     async flushCategory(category) {
         const entries = this.cache.get(category);

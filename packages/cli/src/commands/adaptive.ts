@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import * as _crypto from 'node:crypto';
 import { PatternStore } from '../adaptive/pattern-store';
 import { analyzePatterns } from '../adaptive/pattern-analyzer';

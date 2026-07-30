@@ -1,39 +1,24 @@
 import * as fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'path';
-import { execSync } from 'child_process';
+import { AdapterBase } from '@ideia/adapter-base';
+import type { InitResult, CommandResult, QualityGateResult } from '@ideia/adapter-base';
 import { scaffoldProject, generateController, writeFiles } from './generator';
 
 export interface JavaAdapterConfig {
   projectRoot?: string;
 }
 
-export interface InitResult {
-  success: boolean;
-  files: string[];
-}
-
-export interface CommandResult {
-  success: boolean;
-  output: string;
-}
-
-export interface QualityGateResult {
-  passed: boolean;
-  score: number;
-  issues: string[];
-}
-
-export class JavaAdapter {
+export class JavaAdapter extends AdapterBase {
   readonly name = 'java';
+  readonly language = 'java';
   readonly capabilities = [
     'detect', 'init', 'generateController', 'runLint',
     'runTests', 'runBuild', 'qualityGate',
   ];
 
-  private config: JavaAdapterConfig;
-
   constructor(config: JavaAdapterConfig = {}) {
-    this.config = config;
+    super(config);
   }
 
   detect(projectRoot: string): boolean {
@@ -91,17 +76,17 @@ export class JavaAdapter {
 
   runLint(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('mvn checkstyle:check -q', root);
+    return this.exec('mvn checkstyle:check -q', root);
   }
 
   runTests(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('mvn test -q', root);
+    return this.exec('mvn test -q', root);
   }
 
   runBuild(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('mvn compile -q', root);
+    return this.exec('mvn compile -q', root);
   }
 
   qualityGate(projectRoot?: string): Promise<QualityGateResult> {
@@ -142,20 +127,6 @@ export class JavaAdapter {
     return false;
   }
 
-  private execCommand(command: string, cwd: string): Promise<CommandResult> {
-    return new Promise((resolve) => {
-      try {
-        const output = execSync(command, { cwd, encoding: 'utf-8', stdio: 'pipe', timeout: 120000 });
-        resolve({ success: true, output: output || 'Command completed' });
-      } catch (_err) {
-        const error = err as { stdout?: string; stderr?: string; message?: string };
-        resolve({
-          success: false,
-          output: error.stdout || error.stderr || error.message || 'Command failed',
-        });
-      }
-    });
-  }
 }
 
 export function createJavaAdapter(config?: JavaAdapterConfig): JavaAdapter {

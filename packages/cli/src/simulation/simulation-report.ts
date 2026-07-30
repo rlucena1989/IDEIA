@@ -1,6 +1,8 @@
 import { SimulationScenario } from './simulation-types';
+import { createLogger } from '@ideia/logger';
 import { SimulationResult, SimulationComparison } from './simulation-types';
 import { ValidationResult } from './simulation-validator';
+const logger = createLogger('simulation-report');
 
 export interface SimulationReport {
   generatedAt: string;

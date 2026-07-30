@@ -1,8 +1,10 @@
 import { FeedbackPipeline } from './feedback-pipeline';
+import { createLogger } from '@ideia/logger';
 import type { FeedbackEntry, Recommendation } from './types';
 import type { MemoryStore, MemoryRecord } from '@ideia/memory-store';
 import type { EventBus } from '@ideia/event-bus';
 import type { AuditTrail } from '@ideia/audit-trail';
+const logger = createLogger('feedback-pipeline:memory-integration');
 
 export interface FeedbackMemoryResult {
   recommendation: Recommendation;
@@ -27,7 +29,7 @@ export async function processFeedbackWithMemory(
     auditTrail?: AuditTrail;
   },
 ): Promise<FeedbackMemoryResult> {
-  const log = (msg: string) => console.log(`[FeedbackMemoryIntegration] ${msg}`);
+  const log = (msg: string) => logger.info('[FeedbackMemoryIntegration] ${msg}');
 
   const processed = feedbackPipeline.process(feedback.id);
   if (!processed) {
@@ -106,8 +108,8 @@ export async function processAllFeedbackWithMemory(
       try {
         const result = await processFeedbackWithMemory(fb, feedbackPipeline, memoryStore, deps);
         results.push(result);
-      } catch (_err) {
-        console.error(`[FeedbackMemoryIntegration] Error processing feedback ${fb.id}:`, err);
+      } catch (err) {
+        logger.error('Error processing feedback', { feedbackId: fb.id, error: String(err) });
       }
     }
   }

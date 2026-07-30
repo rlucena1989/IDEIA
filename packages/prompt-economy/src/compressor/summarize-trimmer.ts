@@ -1,4 +1,6 @@
 import { ChatMessage, ContextItem } from '../types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('summarize-trimmer');
 
 export interface SummarizeTrimmerConfig {
   maxMessageAgeMs: number;

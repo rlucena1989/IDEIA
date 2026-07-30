@@ -1,5 +1,7 @@
 import { PreferenceProxy } from './types';
+import { createLogger } from '@ideia/logger';
 import { DefaultPreferenceService } from './service';
+const logger = createLogger('proxy');
 
 export function createPreferenceProxy(service: DefaultPreferenceService): PreferenceProxy {
   const cache = new Map<string, unknown>();

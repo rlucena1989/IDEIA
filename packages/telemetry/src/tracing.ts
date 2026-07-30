@@ -1,4 +1,5 @@
 import { performance } from 'node:perf_hooks';
+import { createLogger } from '@ideia/logger';
 import { getTelemetry } from './opentelemetry';
 
 export interface TraceContext {
@@ -52,8 +53,8 @@ export function traceSync<T>(
     telemetry.endSpan(span.spanId, 'ok');
     return result;
   } catch (_error) {
-    telemetry.endSpan(span.spanId, 'error', error instanceof Error ? error.message : String(error));
-    throw error;
+    telemetry.endSpan(span.spanId, 'error', _error instanceof Error ? _error.message : String(_error));
+    throw _error;
   }
 }
 

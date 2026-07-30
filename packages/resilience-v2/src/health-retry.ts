@@ -1,4 +1,5 @@
 import { Emitter, Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { HealthCheck, HealthCheckResult, HealthCheckRegistry, HealthSummary } from './types';
 
 export class DefaultHealthCheckRegistry implements HealthCheckRegistry {

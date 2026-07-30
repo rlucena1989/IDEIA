@@ -1,4 +1,6 @@
 import { PublicationPlan, PublicationPayload } from './publication-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('publication-builder');
 
 export function buildPublicationPlan(
   title: string,

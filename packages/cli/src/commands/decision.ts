@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { ExplanationRegistry } from '../explanation/explanation-registry';
 import { createDecisionTrace } from '../explanation/decision-trace';
 import { explainDecision } from '../explanation/explanation-engine';

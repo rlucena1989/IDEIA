@@ -1,4 +1,6 @@
 import { spawnSync } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('utils.gate.stages');
 import { StageResult } from './checkpoint';
 
 /** Interface que define a estrutura de stage def. */
@@ -42,7 +44,7 @@ export function runStages(stages: StageDef[], cwd: string, onStage?: (result: St
 
   for (const stage of stages) {
     const start = Date.now();
-    console.log(`\n[${stage.name}] Executando: ${stage.command} ${stage.args.join(' ')}...`);
+    logger.info('\n[${stage.name}] Executando: ${stage.command} ${stage.args.join(\' \')}...');
 
     try {
       const result = spawnSync(stage.command, stage.args, {
@@ -63,10 +65,10 @@ export function runStages(stages: StageDef[], cwd: string, onStage?: (result: St
       results.push(stageResult);
 
       if (stageResult.passed) {
-        console.log(`  ✅ Passou (${stageResult.durationMs}ms)`);
+        logger.info('  ✅ Passou (${stageResult.durationMs}ms)');
       } else {
-        console.log(`  ❌ Falhou (${stageResult.durationMs}ms, exit: ${stageResult.exitCode})`);
-        console.log(`  ${result.stderr?.slice(0, 300) || result.stdout?.slice(0, 300) || ''}`);
+        logger.info('  ❌ Falhou (${stageResult.durationMs}ms, exit: ${stageResult.exitCode})');
+        logger.info('  ${result.stderr?.slice(0, 300) || result.stdout?.slice(0, 300) || \'\'}');
       }
 
       if (onStage) onStage(stageResult);
@@ -74,7 +76,7 @@ export function runStages(stages: StageDef[], cwd: string, onStage?: (result: St
       // Stop pipeline if stage failed
       if (!stageResult.passed) break;
 
-    } catch (_err) {
+    } catch (err: unknown) {
       const stageResult: StageResult = {
         stage: stage.name,
         passed: false,

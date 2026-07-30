@@ -1,4 +1,6 @@
 import { GovernancePolicy } from './policy-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('governance-policy');
 
 export const DEFAULT_GOVERNANCE_POLICY: GovernancePolicy = {
   policyId: 'policy-default-governance',

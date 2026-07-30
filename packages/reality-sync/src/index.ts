@@ -32,6 +32,7 @@ export type { ProfilePreset, ProfileLevel, RiskThreshold } from './profiles';
 export type { ConfigValidationResult, ConfigError } from './config-validator';
 
 import * as path from 'node:path';
+import { createLogger } from '@ideia/logger';
 import { SyncConfig } from './types';
 
 export function createDefaultConfig(workspaceRoot: string): SyncConfig {

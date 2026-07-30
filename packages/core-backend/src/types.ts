@@ -1,5 +1,7 @@
 import { Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { ILogger } from '@ideia/backend-logging';
+const logger = createLogger('types');
 
 export interface BackendApplicationConfig {
   port: number;

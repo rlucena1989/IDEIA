@@ -1,0 +1,798 @@
+[
+  {
+    "id": "api-design-rest",
+    "title": "REST API Design Best Practices",
+    "category": "api",
+    "tags": [
+      "rest",
+      "api",
+      "http",
+      "resources",
+      "hateoas"
+    ],
+    "summary": "Boas praticas de design de APIs RESTful incluindo naming, versionamento, paginacao e error handling.",
+    "content": "Recursos no plural (/users, /orders). Metodos HTTP semanticos (GET=ler, POST=criar, PUT=substituir, PATCH=atualizar parcial, DELETE=remover). Status codes corretos (200 OK, 201 Created, 204 No Content, 400 Bad Request, 404 Not Found, 500 Internal Error). Versionamento via URL (/v1/users) ou header (Accept: application/vnd.api+json;version=1). Paginacao com cursor ou page/pageSize. Filtros via query params. HATEOAS opcional.",
+    "when_to_use": [
+      "APIs publicas",
+      "APIs que precisam ser consumidas por multiplos clientes"
+    ],
+    "references": [
+      "Microsoft REST API Guidelines",
+      "JSON:API Specification"
+    ]
+  },
+  {
+    "id": "database-patterns",
+    "title": "Database Patterns ÔÇö Repository, Unit of Work, Data Mapper",
+    "category": "database",
+    "tags": [
+      "repository",
+      "unit-of-work",
+      "data-mapper",
+      "active-record",
+      "orm"
+    ],
+    "summary": "Padroes de acesso a dados que abstraem o banco de dados do codigo de aplicacao.",
+    "content": "Repository: abstrai colecoes de entidades como se estivessem em memoria. Unit of Work: mantem lista de objetos modificados e coordena escrita em transacao. Data Mapper: move dados entre objetos e banco mantendo independencia. Active Record: objeto que wrapa uma linha do banco (mais simples, menos flexivel).",
+    "when_to_use": [
+      "Repository + Unit of Work para sistemas complexos",
+      "Active Record para prototipos e CRUD"
+    ],
+    "references": [
+      "Martin Fowler - Patterns of Enterprise Application Architecture"
+    ]
+  },
+  {
+    "id": "repository-pattern",
+    "title": "Repository Pattern",
+    "category": "database",
+    "tags": [
+      "repository",
+      "persistence",
+      "abstraction",
+      "datalayer"
+    ],
+    "summary": "Repository medeia entre o dominio e a camada de mapeamento de dados, agindo como se fosse uma colecao em memoria.",
+    "content": "Interface: metodos como findById, findAll, save, delete. Implementacao: banco real, API externa, mock. O dominio nao sabe se os dados estao em SQL, NoSQL, ou arquivo.",
+    "when_to_use": [
+      "Acesso a dados em sistemas complexos",
+      "Testabilidade",
+      "Trocar de banco sem alterar dominio"
+    ]
+  },
+  {
+    "id": "circuit-breaker",
+    "title": "Circuit Breaker Pattern",
+    "category": "resilience",
+    "tags": [
+      "circuit-breaker",
+      "resilience",
+      "fault-tolerance",
+      "retry",
+      "timeout"
+    ],
+    "summary": "Circuit Breaker evita chamadas repetidas a um servico com falha, permitindo recuperacao.",
+    "content": "Estados: Closed (normal), Open (falhas > threshold, chamadas bloqueadas), Half-Open (tenta novamente apos timeout). Transicoes: Closed ÔåÆ Open (falhas), Open ÔåÆ Half-Open (timeout), Half-Open ÔåÆ Closed (sucesso) ou Open (falha).",
+    "when_to_use": [
+      "Chamadas remotas",
+      "Microservicos",
+      "APIs de terceiros"
+    ],
+    "references": [
+      "Michael Nygard - Release It!"
+    ]
+  },
+  {
+    "id": "graceful-shutdown",
+    "title": "Graceful Shutdown Pattern",
+    "category": "resilience",
+    "tags": [
+      "graceful-shutdown",
+      "sigterm",
+      "drain",
+      "kubernetes",
+      "health-check"
+    ],
+    "summary": "Graceful Shutdown permite que a aplicacao termine conexoes pendentes antes de desligar ao receber SIGTERM.",
+    "content": "Passos: 1) Remover de load balancer (health check FAIL). 2) Parar de aceitar novas requisicoes. 3) Processar requisicoes em andamento (com timeout). 4) Fechar conexoes (banco, fila, cache). 5) Sair com exit code 0. Em Kubernetes: preStop hook + terminationGracePeriodSeconds.",
+    "when_to_use": [
+      "Aplicacoes em containers",
+      "Kubernetes",
+      "Microservicos"
+    ]
+  },
+  {
+    "id": "retry-pattern",
+    "title": "Retry Pattern with Exponential Backoff",
+    "category": "resilience",
+    "tags": [
+      "retry",
+      "backoff",
+      "jitter",
+      "resilience",
+      "transient-fault"
+    ],
+    "summary": "Retry tenta novamente uma operacao que falhou por erro transit├│rio, com backoff exponencial e jitter.",
+    "content": "Formula: delay = baseDelay * 2^attempt + jitter. Jitter: random(0, delay) evita thundering herd. Max retries: 3-5 normalmente. Quais erros retentar: timeout, 503, 429 (rate limit). Quais nao retentar: 400, 401, 404, 500 (erros permanentes).",
+    "when_to_use": [
+      "Operacoes de rede",
+      "APIs externas",
+      "Banco de dados"
+    ],
+    "references": [
+      "Microsoft - Transient Fault Handling",
+      "AWS - Exponential Backoff"
+    ]
+  },
+  {
+    "id": "idempotency",
+    "title": "Idempotency Pattern",
+    "category": "api",
+    "tags": [
+      "idempotency",
+      "retry",
+      "api",
+      "safety",
+      "post"
+    ],
+    "summary": "Idempotencia garante que multiplas requisicoes identicas tenham o mesmo efeito que uma unica requisicao.",
+    "content": "Metodos seguros: GET, HEAD, OPTIONS, TRACE (sempre idempotentes). PUT, DELETE: idempotentes por definicao. POST: NAO idempotente ÔÇö usar Idempotency-Key header para garantir. Implementacao: cliente gera UUID, servidor armazena em cache, retorna resultado original se mesma key.",
+    "when_to_use": [
+      "APIs de pagamento",
+      "Processamento de pedidos",
+      "Qualquer POST com efeito colateral"
+    ]
+  },
+  {
+    "id": "rate-limiting",
+    "title": "Rate Limiting Patterns",
+    "category": "api",
+    "tags": [
+      "rate-limiting",
+      "throttling",
+      "api",
+      "token-bucket",
+      "leaky-bucket"
+    ],
+    "summary": "Rate limiting protege APIs contra abuso limitando o numero de requisicoes em um intervalo de tempo.",
+    "content": "Algoritmos: Token Bucket (tokens acumulam, burst permitido), Leaky Bucket (fila processa em taxa constante), Fixed Window (contagem reseta a cada X segundos), Sliding Window (janela deslizante mais precisa). Headers: X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset. Resposta: 429 Too Many Requests + Retry-After.",
+    "when_to_use": [
+      "APIs publicas",
+      "Protecao contra DDoS",
+      "Planos com limites diferentes"
+    ]
+  },
+  {
+    "id": "api-versioning",
+    "title": "API Versioning Strategies",
+    "category": "api",
+    "tags": [
+      "api-versioning",
+      "backward-compatibility",
+      "url",
+      "header",
+      "content-negotiation"
+    ],
+    "summary": "Estrategias para versionar APIs mantendo compatibilidade com clientes existentes.",
+    "content": "URL: /v1/users, /v2/users (simples, visivel). Header: Accept: application/vnd.api+json;version=2 (limpo, RESTful). Query param: /users?version=2 (simples). Content Negotiation: diferentes representacoes do mesmo recurso. Deprecation: header Sunset + Warning. Migracao: comunicar com antecedencia, manter versoes antigas por periodo.",
+    "when_to_use": [
+      "APIs publicas",
+      "APIs com multiplos clientes externos"
+    ],
+    "references": [
+      "Microsoft REST API Guidelines"
+    ]
+  },
+  {
+    "id": "migration-database",
+    "title": "Database Migration Patterns",
+    "category": "database",
+    "tags": [
+      "migration",
+      "flyway",
+      "liquibase",
+      "schema-change",
+      "expand-migrate-contract"
+    ],
+    "summary": "Padroes para migrar schemas de banco com zero downtime usando Expand-Migrate-Contract.",
+    "content": "Fases: 1) Expand (adicionar nova coluna/tabela, codigo antigo ainda funciona). 2) Migrate (codigo comeca a usar nova estrutura, dados migrados em background). 3) Contract (remove coluna/tabela antiga). Tools: Flyway, Liquibase, Prisma Migrate. Principios: migrations sao versionadas, imutaveis (nao editar), testadas em staging.",
+    "when_to_use": [
+      "Deploys continuos com banco",
+      "Zero-downtime schema changes"
+    ],
+    "references": [
+      "Sam Newman - Expand-Migrate-Contract"
+    ]
+  },
+  {
+    "id": "cors-pattern",
+    "title": "CORS Configuration Pattern",
+    "category": "api",
+    "tags": [
+      "cors",
+      "security",
+      "api",
+      "cross-origin",
+      "browser"
+    ],
+    "summary": "CORS (Cross-Origin Resource Sharing) controla quais origens podem acessar sua API pelo browser.",
+    "content": "Headers: Access-Control-Allow-Origin (origem ou *), Access-Control-Allow-Methods (GET, POST, etc), Access-Control-Allow-Headers, Access-Control-Max-Age. Preflight: OPTIONS request antes de requests complexos. Seguranca: nao usar * em producao, validar Origin, allowed origins em whitelist.",
+    "when_to_use": [
+      "APIs consumidas por frontend em dominio diferente"
+    ]
+  },
+  {
+    "id": "throttle-pattern",
+    "title": "Backpressure & Throttling",
+    "category": "resilience",
+    "tags": [
+      "backpressure",
+      "throttle",
+      "flow-control",
+      "reactive",
+      "resilience"
+    ],
+    "summary": "Backpressure permite que um componente lento sinalize ao produtor para reduzir a taxa de envio, evitando sobrecarga.",
+    "content": "Estrategias: 1) Buffer (armazena requisicoes em fila, risco de memoria). 2) Drop (descarta requisicoes excessivas, melhor que crash). 3) Throttle (limita taxa de processamento). 4) Backpressure reativa (Reactive Streams, RxJS). Em microservicos: limite de conexoes, pool de threads, circuit breaker.",
+    "when_to_use": [
+      "Sistemas com picos de trafego",
+      "Processamento de streams",
+      "Microservicos com dependencias lentas"
+    ],
+    "references": [
+      "Reactive Manifesto",
+      "Reactive Streams Specification"
+    ]
+  },
+  {
+    "id": "bulkhead",
+    "title": "Bulkhead Pattern",
+    "category": "resilience",
+    "tags": [
+      "bulkhead",
+      "resilience",
+      "isolation",
+      "thread-pool",
+      "circuit-breaker"
+    ],
+    "summary": "Bulkhead isola recursos em pools separados para que uma falha em um componente nao derrube o sistema inteiro.",
+    "content": "Analogia: compartimentos estanques em navios. Se um compartimento enche d'agua, os outros ficam secos. Implementacao: thread pools separados por servico, connection pools separados, filas separadas. Exemplo: pool de 10 threads para servico A, pool de 5 threads para servico B. Se A falhar, B nao e afetado.",
+    "when_to_use": [
+      "Multiplos servicos dependentes",
+      "Protecao contra cascading failures"
+    ],
+    "references": [
+      "Michael Nygard - Release It!"
+    ]
+  },
+  {
+    "id": "timeout-pattern",
+    "title": "Timeout Pattern",
+    "category": "resilience",
+    "tags": [
+      "timeout",
+      "resilience",
+      "fault-tolerance",
+      "connect-timeout",
+      "read-timeout"
+    ],
+    "summary": "Timeouts evitam que operacoes lentas consumam recursos indefinidamente, liberando threads e conexoes.",
+    "content": "Tipos: Connection Timeout (tempo para estabelecer conexao), Read Timeout (tempo para receber resposta), Write Timeout (tempo para enviar dados). Valores tipicos: conexao 5s, leitura 30s, escrita 30s. Separe timeouts por tipo de operacao (banco: 5s, API externa: 10s, cache: 2s).",
+    "when_to_use": [
+      "Toda operacao de I/O",
+      "Chamadas remotas",
+      "Banco de dados"
+    ]
+  },
+  {
+    "id": "graphql",
+    "title": "GraphQL Architecture",
+    "category": "api",
+    "tags": [
+      "graphql",
+      "api",
+      "query-language",
+      "schema",
+      "resolver"
+    ],
+    "summary": "GraphQL e uma linguagem de consulta para APIs que permite aos clientes solicitar exatamente os dados necessarios.",
+    "content": "Schema: define tipos e operacoes (Query, Mutation, Subscription). Resolvers: funcoes que buscam dados para cada campo. Vantagens: dados exatos, sem over/under fetching, schema fortemente tipado, introspection. Desvantagens: caching complexo, N+1 problem (DataLoader), queries pesadas. Ferramentas: Apollo, GraphQL Yoga, Relay.",
+    "when_to_use": [
+      "APIs com dados relacionados complexos",
+      "Clientes moveis (largura de banda limitada)",
+      "Multiplos clientes"
+    ],
+    "references": [
+      "GraphQL Specification",
+      "Apollo GraphQL Docs"
+    ]
+  },
+  {
+    "id": "grpc",
+    "title": "gRPC Pattern",
+    "category": "api",
+    "tags": [
+      "grpc",
+      "api",
+      "protobuf",
+      "http2",
+      "streaming",
+      "rpc"
+    ],
+    "summary": "gRPC e um framework RPC de alto desempenho usando Protocol Buffers e HTTP/2 para comunicacao entre servicos.",
+    "content": "Proto: define servicos e mensagens em .proto files. Tipos: Unary (request-response), Server Streaming, Client Streaming, Bidirectional Streaming. Vantagens: tipado, performatico (binary), streaming nativo, code generation. Ferramentas: protoc, grpc-web, connect-es.",
+    "when_to_use": [
+      "Comunicacao interna entre microservicos",
+      "Streaming de dados",
+      "Alta performance"
+    ],
+    "references": [
+      "gRPC Documentation",
+      "Protocol Buffers"
+    ]
+  },
+  {
+    "id": "websocket",
+    "title": "WebSocket Pattern",
+    "category": "api",
+    "tags": [
+      "websocket",
+      "realtime",
+      "bidirectional",
+      "socket",
+      "event"
+    ],
+    "summary": "WebSocket fornece canal de comunicacao full-duplex sobre TCP para aplicacoes em tempo real.",
+    "content": "Handshake: HTTP upgrade request ÔåÆ 101 Switching Protocols. Mensagens: texto ou binario, full-duplex. Eventos: onopen, onmessage, onclose, onerror. Fallback: polling, SSE (unidirectional). Exemplos: chat, notificacoes, colaboracao em tempo real, jogos multiplayer.",
+    "when_to_use": [
+      "Tempo real",
+      "Notificacoes push",
+      "Colaboracao simultanea"
+    ]
+  },
+  {
+    "id": "webhook",
+    "title": "Webhook Pattern",
+    "category": "api",
+    "tags": [
+      "webhook",
+      "callback",
+      "event",
+      "notification",
+      "push"
+    ],
+    "summary": "Webhook envia dados para uma URL configurada quando um evento ocorre, permitindo notificacoes em tempo real sem polling.",
+    "content": "Evento ÔåÆ servico publica ÔåÆ POST para URL configurada. Retry: em caso de falha, retry com backoff. Seguranca: assinar payload com HMAC (secret), verificar IP, usar HTTPS. Exemplos: pagamentos (Stripe webhook), CI/CD (GitHub webhook), mensageria (Slack webhook).",
+    "when_to_use": [
+      "Notificar sistemas externos de eventos",
+      "Integracoes assincronas",
+      "Automacao"
+    ]
+  },
+  {
+    "id": "openapi",
+    "title": "API Documentation with OpenAPI/Swagger",
+    "category": "api",
+    "tags": [
+      "openapi",
+      "swagger",
+      "documentation",
+      "specification",
+      "api-docs"
+    ],
+    "summary": "OpenAPI Specification descreve APIs REST de forma padronizada, permitindo gerar documentacao, clientes e testes.",
+    "content": "Estrutura: openapi (versao), info (titulo, versao), paths (endpoints), components (schemas reutilizaveis), security. Ferramentas: Swagger UI (documentacao), Swagger Codegen (clientes), Redoc, Stoplight. Beneficios: documentacao automatica, clientes gerados reduzem erros, validacao de contratos.",
+    "when_to_use": [
+      "Toda API publica",
+      "APIs com multiplos consumidores"
+    ]
+  },
+  {
+    "id": "api-composition",
+    "title": "API Composition Pattern",
+    "category": "api",
+    "tags": [
+      "api-composition",
+      "aggregation",
+      "microservices",
+      "gateway",
+      "bff"
+    ],
+    "summary": "API Composition agrega dados de multiplos servicos em uma resposta unificada para evitar multiplas chamadas do cliente.",
+    "content": "Aggregator: servico que chama multiplos servicos internos e combina resultados. BFF: Backend for Frontend, composicao especifica por cliente. GraphQL: composicao natural via resolvers. Cuidados: performance (chamadas paralelas vs seriais), falhas (partial results vs fail fast), caching.",
+    "when_to_use": [
+      "Dashboard que precisa de dados de varios servicos",
+      "Mobile (reduzir chamadas de rede)"
+    ]
+  },
+  {
+    "id": "api-pagination",
+    "title": "API Pagination Strategies",
+    "category": "api",
+    "tags": [
+      "pagination",
+      "api",
+      "cursor",
+      "offset",
+      "performance"
+    ],
+    "summary": "Estrategias de paginacao para APIs que retornam grandes colecoes de dados.",
+    "content": "Offset/Limit: page=2&size=20 (simples, inconsistente se dados mudam). Cursor-based: cursor=abc123&size=20 (consistente, melhor para dados em tempo real). Keyset: after_id=123&size=20 (eficiente em banco, requer chave unica ordenada). Headers de paginacao: X-Total-Count, Link rel=next/prev.",
+    "when_to_use": [
+      "Listas grandes",
+      "APIs de colecoes"
+    ]
+  },
+  {
+    "id": "api-error-format",
+    "title": "API Error Response Format (RFC 7807)",
+    "category": "api",
+    "tags": [
+      "api",
+      "error",
+      "rfc-7807",
+      "problem-details",
+      "standard"
+    ],
+    "summary": "Problem Details (RFC 7807) padroniza o formato de erros HTTP para APIs REST.",
+    "content": "Formato: type (URI do tipo do erro), title (curto, legivel), status (HTTP status), detail (explicacao detalhada), instance (URI que gerou o erro). Extensoes: validation_errors (campos especificos). Exemplo: { \"type\": \"https://api.com/errors/validation\", \"title\": \"Validation Error\", \"status\": 422, \"detail\": \"O campo email e obrigatorio\", \"instance\": \"/users\" }",
+    "when_to_use": [
+      "APIs REST publicas",
+      "APIs que precisam de mensagens de erro consistentes"
+    ]
+  },
+  {
+    "id": "hateoas",
+    "title": "HATEOAS ÔÇö Hypermedia as the Engine of Application State",
+    "category": "api",
+    "tags": [
+      "hateoas",
+      "rest",
+      "hypermedia",
+      "links",
+      "discoverability"
+    ],
+    "summary": "HATEOAS adiciona links navegaveis nas respostas da API, permitindo que clientes descubram acoes disponiveis dinamicamente.",
+    "content": "Respostas incluem array \"links\" com rel (relacao), href (URL), method (HTTP method). Exemplo: /orders/123 retorna links para cancel, pay, track. Beneficio: cliente nao precisa saber URLs de antemao, API auto-descritiva. Desafio: complexidade extra, pouco adotado em APIs modernas.",
+    "when_to_use": [
+      "APIs RESTful puras (nivel 3 Richardson)",
+      "Sistemas com workflows complexos"
+    ],
+    "references": [
+      "Richardson Maturity Model",
+      "RESTful Web APIs"
+    ]
+  },
+  {
+    "id": "rest-vs-graphql",
+    "title": "REST vs GraphQL vs gRPC ÔÇö When to Use What",
+    "category": "api",
+    "tags": [
+      "rest",
+      "graphql",
+      "grpc",
+      "comparison",
+      "api-design"
+    ],
+    "summary": "Comparacao entre REST, GraphQL e gRPC com criterios de escolha baseados no caso de uso.",
+    "content": "REST: simplicidade, caching HTTP, maturidade. Melhor para APIs publicas, CRUD, integracoes simples. GraphQL: flexibilidade, dados exatos, schema forte. Melhor para multiplos clientes, dados relacionais complexos, mobile. gRPC: performance, streaming, tipado. Melhor para comunicacao interna, microservicos, alta throughput.",
+    "when_to_use": [
+      "Ver criterios acima"
+    ]
+  },
+  {
+    "id": "content-negotiation",
+    "title": "Content Negotiation (Accept Header)",
+    "category": "api",
+    "tags": [
+      "content-negotiation",
+      "accept",
+      "content-type",
+      "serialization",
+      "rest"
+    ],
+    "summary": "Content negotiation permite que clientes e servidores negociem o formato de representacao de recursos via headers HTTP.",
+    "content": "Accept: cliente especifica formato desejado (application/json, application/xml, text/csv). Content-Type: especifica formato do payload enviado. Weight: q=0.9 para preferencia. Exemplo: Accept: application/json;q=0.9, application/xml;q=0.5. Vary header: indica que resposta varia por Accept, Cache-Control deve respeitar.",
+    "when_to_use": [
+      "APIs que suportam multiplos formatos",
+      "APIs versionadas por media type"
+    ]
+  },
+  {
+    "id": "database-indexing",
+    "title": "Database Indexing Strategies",
+    "category": "database",
+    "tags": [
+      "indexing",
+      "database",
+      "b-tree",
+      "performance",
+      "query"
+    ],
+    "summary": "Indexacao de banco de dados para acelerar consultas, entendendo tradeoffs entre read e write performance.",
+    "content": "Tipos: B-Tree (default, bom para range/equality), Hash (equality apenas), GiST (full-text search), GIN (arrays/jsonb). Indexes compostos: ordem importa (coluna mais seletiva primeiro). Partial index: WHERE condition (indexa apenas linhas relevantes). Covering index: inclui colunas no index (evita table lookup). Cuidados: indexes desaceleram INSERT/UPDATE/DELETE, monitore unused indexes.",
+    "when_to_use": [
+      "Consultas frequentes com WHERE/JOIN/ORDER BY",
+      "Melhorar performance de queries lentas"
+    ]
+  },
+  {
+    "id": "n-plus-one",
+    "title": "N+1 Query Problem",
+    "category": "database",
+    "tags": [
+      "n-plus-one",
+      "performance",
+      "orm",
+      "eager-loading",
+      "lazy-loading"
+    ],
+    "summary": "N+1 ocorre quando uma consulta carrega N registros e depois faz N consultas adicionais para cada registro.",
+    "content": "Problema: 1 query para lista de usuarios + N queries para pedidos de cada usuario = N+1 queries. Solucoes: Eager Loading (JOIN na query principal, ex: .with(\"orders\") no Prisma/TypeORM), Batch Loading (DataLoader), Select N+1 detection (ferramentas: bullet, n+1 detector). Em GraphQL: DataLoader e essencial para evitar N+1 em resolvers.",
+    "when_to_use": [
+      "ORM queries com relacoes",
+      "GraphQL resolvers",
+      "APIs com listas relacionadas"
+    ]
+  },
+  {
+    "id": "nosql-types",
+    "title": "NoSQL Database Types & Use Cases",
+    "category": "database",
+    "tags": [
+      "nosql",
+      "document",
+      "key-value",
+      "column",
+      "graph"
+    ],
+    "summary": "NoSQL abrange 4 tipos principais de banco, cada um otimizado para cargas de trabalho diferentes.",
+    "content": "Document (MongoDB, Couchbase): dados JSON flexiveis, schema-less. Key-Value (Redis, DynamoDB): simples, ultra-rapido, caching/sessoes. Column (Cassandra, Bigtable): agregacoes em colunas, time-series, grandes volumes. Graph (Neo4j, ArangoDB): relacoes complexas, recomendacao, grafos sociais. Nao existe melhor NoSQL ÔÇö escolha pelo padrao de acesso aos dados.",
+    "when_to_use": [
+      "Document: dados semi-estruturados",
+      "KV: cache/sessao",
+      "Column: analytics/time-series",
+      "Graph: relacionamentos"
+    ]
+  },
+  {
+    "id": "cap-theorem",
+    "title": "CAP Theorem & PACELC",
+    "category": "database",
+    "tags": [
+      "cap",
+      "pacelc",
+      "consistency",
+      "availability",
+      "partition-tolerance"
+    ],
+    "summary": "CAP Theorem afirma que um sistema distribuido so pode garantir 2 de 3: Consistency, Availability ou Partition Tolerance.",
+    "content": "C+A (CP): consistente e disponivel se sem particao (RDBMS tradicional). C+P (CP): consistente mesmo com particao, pode ficar indisponivel (HBase, MongoDB com write concern majority). A+P (AP): disponivel mesmo com particao, consistencia eventual (Cassandra, DynamoDB). PACELC estende: durante particao (P) escolha C ou A; sem particao (E) escolha C (latencia) ou A (disponibilidade).",
+    "when_to_use": [
+      "Entender tradeoffs em sistemas distribuidos"
+    ],
+    "references": [
+      "Eric Brewer - CAP Twelve Years Later",
+      "PACELC - Daniel Abadi"
+    ]
+  },
+  {
+    "id": "sharding",
+    "title": "Database Sharding",
+    "category": "database",
+    "tags": [
+      "sharding",
+      "scalability",
+      "horizontal",
+      "partition"
+    ],
+    "summary": "Sharding divide dados em fragmentos distribuidos em multiplos servidores para escalabilidade horizontal.",
+    "content": "Estrategias: Range-based (por ID range, ex: usuarios 1-10000 no shard A), Hash-based (hash da chave ÔåÆ shard), Directory-based (tabela de lookup). Desafios: queries cross-shard (caras), distribuir dados uniformemente, rebalancear shards, joins sao dificeis. Sharding key: escolha criteriosa (ex: user_id para dados de usuario). Alternativa: partition dentro do mesmo banco (menos complexo).",
+    "when_to_use": [
+      "Volume de dados alem de um servidor",
+      "Write throughput muito alto",
+      "Multi-tenant isolado"
+    ]
+  },
+  {
+    "id": "replication",
+    "title": "Database Replication (Primary-Replica, Multi-Master)",
+    "category": "database",
+    "tags": [
+      "replication",
+      "read-replica",
+      "primary",
+      "high-availability"
+    ],
+    "summary": "Replicacao copia dados de um banco para outro para alta disponibilidade, leitura escalavel e disaster recovery.",
+    "content": "Primary-Replica (Single-Master): escritas no primary, leituras nas replicas. Sincrona: replica confirma antes de commit (consistente, mais lento). Assincrona: primary nao espera replica (rapido, perda possivel em failover). Multi-Master: varios nos aceitam escritas (conflitos possiveis, resolucao de conflitos necessaria). Log Shipping vs Streaming Replication vs Trigger-based.",
+    "when_to_use": [
+      "Escalabilidade de leitura",
+      "Alta disponibilidade",
+      "Disaster recovery"
+    ]
+  },
+  {
+    "id": "multi-tenancy",
+    "title": "Multi-Tenancy Database Strategies",
+    "category": "database",
+    "tags": [
+      "multi-tenancy",
+      "saas",
+      "isolation",
+      "shared-database"
+    ],
+    "summary": "Estrategias para isolar dados de diferentes clientes (tenants) em aplicacoes SaaS.",
+    "content": "Database per Tenant: isolamento maximo, backup individual, mais caro (muitos bancos). Schema per Tenant: mesmo banco, schemas separados, medio isolamento. Shared Table com tenant_id: mais barato, mais simples, risco de vazamento de dados (sempre filtrar WHERE tenant_id = ?). Hybrid: combina estrategias (ex: shared para pequenos tenants, dedicated para grandes). Linhas de defesa: sempre filtrar por tenant_id, RLS (Row Level Security), testes de isolamento.",
+    "when_to_use": [
+      "Aplicacoes SaaS",
+      "Multi-cliente com dados sensiveis"
+    ]
+  },
+  {
+    "id": "polyglot-persistence",
+    "title": "Polyglot Persistence",
+    "category": "database",
+    "tags": [
+      "polyglot",
+      "database",
+      "multi-model",
+      "mixed"
+    ],
+    "summary": "Polyglot Persistence usa diferentes tipos de bancos para diferentes necessidades dentro do mesmo sistema.",
+    "content": "Exemplo: PostgreSQL (dados relacionais, transacoes), Redis (cache, sessao), Elasticsearch (busca full-text), MongoDB (logs, dados semi-estruturados), Neo4j (grafos sociais). Beneficio: cada banco otimizado para seu caso de uso. Custo: complexidade operacional, multiplas linguagens de query, consistencia entre bancos. So adicione quando necessario (comece com um banco relacional).",
+    "when_to_use": [
+      "Sistemas com requisitos de dados variados",
+      "Equipe experiente",
+      "Justificativa clara"
+    ]
+  },
+  {
+    "id": "database-migration-tools",
+    "title": "Database Migration Tools (Flyway, Prisma, TypeORM)",
+    "category": "database",
+    "tags": [
+      "migration",
+      "flyway",
+      "prisma",
+      "typeorm",
+      "schema"
+    ],
+    "summary": "Ferramentas de migracao gerenciam mudancas no schema do banco de forma versionada e reproduzivel.",
+    "content": "Flyway (Java, SQL files versionados): migrations em SQL puro, controle fino. Prisma Migrate (TS/JS): migrations geradas do schema.prisma, integracao com ORM. TypeORM Migrations: geradas de entidades, integracao com decorators. Knex Migrations (JS): SQL + JS, flexivel. Praticas: migrations sao imutaveis (nao editar apos aplicar), sempre testar em staging, ter rollback (down migration).",
+    "when_to_use": [
+      "Toda aplicacao com banco relacional"
+    ]
+  },
+  {
+    "id": "acid-vs-base",
+    "title": "ACID vs BASE Consistency Models",
+    "category": "database",
+    "tags": [
+      "acid",
+      "base",
+      "consistency",
+      "transaction",
+      "nosql"
+    ],
+    "summary": "ACID (relacional) garante transacoes rigidas. BASE (NoSQL) sacrifica consistencia imediata por disponibilidade.",
+    "content": "ACID: Atomicity (tudo ou nada), Consistency (estado valido), Isolation (concorrencia segura), Durability (persistente). Ex: PostgreSQL, MySQL, SQL Server. BASE: Basically Available (sistema responde sempre), Soft state (estado pode mudar sem input), Eventual consistency (dados convergem eventualmente). Ex: Cassandra, DynamoDB, CouchDB. Escolha: ACID para dados financeiros/pedidos, BASE para dados onde consistencia eventual e aceitavel.",
+    "when_to_use": [
+      "ACID: transacoes financeiras, pedidos",
+      "BASE: redes sociais, analytics, logs"
+    ]
+  },
+  {
+    "id": "retry-vs-circuit-breaker",
+    "title": "Retry vs Circuit Breaker vs Timeout ÔÇö When to Use",
+    "category": "resilience",
+    "tags": [
+      "retry",
+      "circuit-breaker",
+      "timeout",
+      "resilience",
+      "choice"
+    ],
+    "summary": "Cada padrao de resiliencia tem proposito especifico: Retry para falhas transitorias, Circuit Breaker para evitar cascata, Timeout para libertar recursos.",
+    "content": "Timeout: sempre (libera recursos, evita operacoes infinitas). Retry: falhas transitorias (timeout de rede, 503). Nao retentar: 400, 401, 404 (erros permanentes). Circuit Breaker: quando retry nao e suficiente (sistema falhando), evita sobrecarga. Bulkhead: isolar recursos por dependencia. Cache de falha: retornar ultima resposta bem-sucedida durante falha (fallback).",
+    "when_to_use": [
+      "Sempre: Timeout",
+      "Falhas transitorias: Retry",
+      "Protecao: Circuit Breaker"
+    ]
+  },
+  {
+    "id": "fallback-pattern",
+    "title": "Fallback Pattern (Graceful Degradation)",
+    "category": "resilience",
+    "tags": [
+      "fallback",
+      "graceful-degradation",
+      "resilience",
+      "degradation"
+    ],
+    "summary": "Fallback fornece uma resposta alternativa quando o servico principal falha, mantendo o sistema operacional.",
+    "content": "Estrategias: Default Value (retornar valor padrao), Cache Stale (usar dados antigos em cache), Simplified Response (versao simplificada), Alternative Service (chamar servico secundario), Local Processing (processar localmente quando remoto falha). Exemplo: recomendacoes ÔåÆ se servico de recomendacao falha, retornar mais vendidos. Importante: fallback deve ser visivelmente diferente para operadores saberem que fallback esta ativo.",
+    "when_to_use": [
+      "Dependencias externas",
+      "Servicos secundarios",
+      "Features nao criticas"
+    ]
+  },
+  {
+    "id": "dead-letter-queue",
+    "title": "Dead Letter Queue (DLQ) Pattern",
+    "category": "resilience",
+    "tags": [
+      "dlq",
+      "dead-letter",
+      "message-queue",
+      "error-handling",
+      "async"
+    ],
+    "summary": "DLQ armazena mensagens que nao puderam ser processadas apos multiplas tentativas, para analise e reprocessamento.",
+    "content": "Funcionamento: consumidor tenta processar mensagem; se falha, retorna para fila com retry count; apos max retries, move para DLQ. DLQ: fila separada onde mensagens falhas sao armazenadas para debug, reprocessamento manual ou automatico. Praticas: alerta quando DLQ recebe mensagem, analise periodica de DLQ, TTL na DLQ (mensagens expiram). Ferramentas: SQS DLQ, RabbitMQ DLX, Kafka DLQ.",
+    "when_to_use": [
+      "Sistemas de mensageria",
+      "Processamento assincrono",
+      "Event-driven"
+    ]
+  },
+  {
+    "id": "health-check-pattern",
+    "title": "Health Check API Pattern",
+    "category": "resilience",
+    "tags": [
+      "health-check",
+      "readiness",
+      "liveness",
+      "kubernetes",
+      "monitoring"
+    ],
+    "summary": "Health checks permitem que orquestradores e load balancers verifiquem a saude da aplicacao.",
+    "content": "Endpoints: /healthz (liveness ÔÇö processo vivo), /readyz (readiness ÔÇö aceita trafego), /startupz (startup ÔÇö inicializacao completa). Liveness: ping simples, se falha K8s reinicia pod. Readiness: verifica dependencias (banco, cache, API externa). Se falha, K8s remove de Service. Startup: similar a readiness mas so roda na inicializacao (evita restart loop). Agregar: /health ÔåÆ verifica tudo, retorna { status, dependencies: { db: \"ok\", redis: \"ok\" } }.",
+    "when_to_use": [
+      "Aplicacoes em Kubernetes",
+      "Load balancers",
+      "Ambientes de producao"
+    ]
+  },
+  {
+    "id": "graceful-shutdown-extended",
+    "title": "Graceful Shutdown & Drain Pattern",
+    "category": "resilience",
+    "tags": [
+      "graceful-shutdown",
+      "drain",
+      "sigterm",
+      "kubernetes",
+      "prestop"
+    ],
+    "summary": "Graceful Shutdown permite que a aplicacao termine requisicoes em andamento antes de desligar.",
+    "content": "Sinais: SIGTERM (K8s envia antes de SIGKILL), SIGINT (Ctrl+C). Passos ao receber: 1) Remover de service endpoints (readiness FAIL, K8s preStop hook). 2) Parar de aceitar novas requisicoes (server.close()). 3) Aguardar requisicoes em andamento (com timeout maximo). 4) Fechar conexoes (banco, fila, cache). 5) Exit code 0. K8s: terminationGracePeriodSeconds (padrao 30s). Implementacao: http.Server.close() + promise + timeout.",
+    "when_to_use": [
+      "Toda aplicacao em producao",
+      "Kubernetes",
+      "Microservicos"
+    ]
+  },
+  {
+    "id": "rate-limiting-resilience",
+    "title": "Client-Side Rate Limiting & Backpressure",
+    "category": "resilience",
+    "tags": [
+      "rate-limit",
+      "backpressure",
+      "client",
+      "throttle",
+      "resilience"
+    ],
+    "summary": "Aplicacoes cliente devem respeitar limites de taxa (rate limits) e aplicar backpressure para nao sobrecarregar servicos.",
+    "content": "Client-Side Rate Limiting: token bucket local, respeitar headers Retry-After e 429 Too Many Requests. Backpressure: se servico esta lento, reduzir taxa de envio. Estrategias: exponential backoff (espera dobra a cada tentativa), jitter (aleatoriedade para evitar thundering herd), queue with bounded size (se fila cheia, descarta ou erro). Implementacao: p-limit, bottleneck, promise-queue.",
+    "when_to_use": [
+      "APIs com rate limits",
+      "Alta concorrencia",
+      "Protecao contra cascading failures"
+    ]
+  }
+]

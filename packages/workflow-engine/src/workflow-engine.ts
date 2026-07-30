@@ -153,7 +153,7 @@ export class WorkflowEngine {
           output: output.trim().slice(0, 500),
           durationMs: Date.now() - gateStart,
         });
-      } catch (_e) {
+      } catch (e) {
         const err = e as { stdout?: string; stderr?: string; message?: string };
         gates.push({
           name: gate.name,

@@ -1,5 +1,7 @@
 import * as fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'node:path';
+const logger = createLogger('usability-profile');
 
 export interface UserProfile {
   preferredLevel: 'passive' | 'assisted' | 'autonomous';

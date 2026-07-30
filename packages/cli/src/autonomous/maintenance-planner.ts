@@ -1,4 +1,6 @@
 import { DriftSignal, TrendSignal } from './autonomous-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('maintenance-planner');
 
 export interface MaintenancePlan {
   planId: string;

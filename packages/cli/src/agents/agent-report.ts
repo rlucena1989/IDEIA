@@ -1,5 +1,7 @@
 import { OperationalAgent } from './agent-types';
+import { createLogger } from '@ideia/logger';
 import { AgentTaskResult } from './agent-types';
+const logger = createLogger('agent-report');
 
 export interface AgentReport {
   generatedAt: string;

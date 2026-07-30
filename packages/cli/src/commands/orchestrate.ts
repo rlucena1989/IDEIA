@@ -1,5 +1,6 @@
 import { Command } from 'commander';
 import _path from 'node:path';
+import { createStructuredLogger } from '@ideia/logger';
 import { createInitialState, orchestrateCycle, advancePhase, resumeFromCheckpoint, PHASE_NAMES } from '../runtime/phase-orchestrator';
 import { createCheckpoint, listCheckpoints, loadLatestCheckpoint } from '../runtime/checkpoint-manager';
 import { buildDecisionRequest, buildDecisionPrompt, resolveDecision, checkDecisionCompleteness } from '../runtime/decision-center';
@@ -8,6 +9,8 @@ import { routeTask, routeBatch } from '../runtime/model-router';
 import { getReadyTasks, getBlockedTasks } from '../runtime/unlock-engine';
 import { getEffectiveAutonomyLevel, buildAutonomySummary } from '../runtime/autonomy-policy';
 import { TaskNode, TaskStatus } from '../runtime/orchestration-types';
+
+const logger = createStructuredLogger('cli:orchestrate');
 
 function getCwd(): string {
   return process.cwd();
@@ -89,10 +92,9 @@ export function orchestrateCommand(): Command {
       }
 
       if (options.json) {
-        console.log(JSON.stringify({
-          state: {
-            currentPhase: state.currentPhase,
-            executionMode: state.executionMode,
+        logger.info('Orchestration state', { state: {
+          currentPhase: state.currentPhase,
+          executionMode: state.executionMode,
             autonomyLevel: state.autonomyLevel,
             confidence: state.confidence,
             phases: state.phases.map(p => ({
@@ -110,24 +112,28 @@ export function orchestrateCommand(): Command {
             subtasks: decomposed.subtasks.length,
             parallelGroups: decomposed.parallelGroups.length,
           },
-        }, null, 2));
+        });
         return;
       }
 
-      console.log(`\n=== Orquestracao Iniciada ===`);
-      console.log(`Fase atual: ${PHASE_NAMES[state.currentPhase]} (${state.currentPhase})`);
-      console.log(`Modo: ${state.executionMode}`);
-      console.log(`Confianca: ${(state.confidence * 100).toFixed(0)}%`);
-      console.log(`${buildAutonomySummary(state.autonomyLevel, state.confidence)}`);
-      console.log(`\nFases:`);
-      for (const p of state.phases) {
-        const icon = p.status === 'completed' ? '✅' : p.status === 'ready' ? '🟢' : p.status === 'running' ? '🔄' : '⏳';
-        const progress = p.totalTasks > 0 ? `${p.completedTasks}/${p.totalTasks}` : '-';
-        console.log(`  ${icon} ${p.name.padEnd(30)} ${progress} (${p.progress}%)`);
-      }
-      console.log(`\nCheckpoints: ${state.checkpoints.length}`);
-      console.log(`Decisoes pendentes: ${state.pendingDecisions.length}`);
-      console.log(`Tarefas decompostas: ${decomposed.subtasks.length} (${decomposed.parallelGroups.length} grupos paralelos)`);
+      logger.info('Orchestration started', { 
+        phase: PHASE_NAMES[state.currentPhase],
+        phaseId: state.currentPhase,
+        mode: state.executionMode,
+        confidence: (state.confidence * 100).toFixed(0) + '%',
+        autonomy: buildAutonomySummary(state.autonomyLevel, state.confidence),
+        checkpoints: state.checkpoints.length,
+        pendingDecisions: state.pendingDecisions.length,
+        subtasks: decomposed.subtasks.length,
+        parallelGroups: decomposed.parallelGroups.length,
+        phases: state.phases.map(p => ({
+          name: p.name,
+          status: p.status,
+          progress: p.progress,
+          completedTasks: p.completedTasks,
+          totalTasks: p.totalTasks
+        }))
+      });
     });
 
   cmd
@@ -139,30 +145,30 @@ export function orchestrateCommand(): Command {
       const latest = loadLatestCheckpoint(cwd);
 
       if (!latest) {
-        console.log('Nenhum checkpoint encontrado. Use `orchestrate start` para iniciar.');
+        logger.warn('No checkpoint found', { message: 'Use `orchestrate start` to initiate' });
         return;
       }
 
       const cps = listCheckpoints(cwd);
 
       if (options.json) {
-        console.log(JSON.stringify({ latestCheckpoint: latest, total: cps.length, checkpoints: cps }, null, 2));
+        logger.info('Checkpoint status', { latestCheckpoint: latest, total: cps.length, checkpoints: cps });
         return;
       }
 
-      console.log(`\n=== Status da Orquestracao ===`);
-      console.log(`Ultimo checkpoint: ${latest.id}`);
-      console.log(`Fase: ${PHASE_NAMES[latest.phase]} (${latest.phase})`);
-      console.log(`Status: ${latest.status}`);
-      console.log(`Total checkpoints: ${cps.length}`);
-      console.log(`\nCheckpoints por fase:`);
       const byPhase = new Map<string, number>();
       for (const cp of cps) {
         byPhase.set(cp.phase, (byPhase.get(cp.phase) ?? 0) + 1);
       }
-      for (const [phase, count] of byPhase) {
-        console.log(`  ${PHASE_NAMES[phase as keyof typeof PHASE_NAMES] ?? phase}: ${count}`);
-      }
+      
+      logger.info('Orchestration status', {
+        latestCheckpoint: latest.id,
+        phase: PHASE_NAMES[latest.phase],
+        phaseId: latest.phase,
+        status: latest.status,
+        totalCheckpoints: cps.length,
+        checkpointsByPhase: Object.fromEntries(byPhase)
+      });
     });
 
   cmd
@@ -174,31 +180,30 @@ export function orchestrateCommand(): Command {
       const state = resumeFromCheckpoint(cwd);
 
       if (!state) {
-        console.log('Nenhum checkpoint encontrado para retomar.');
+        logger.warn('No checkpoint found to resume');
         return;
       }
 
       if (options.json) {
-        console.log(JSON.stringify({
+        logger.info('Resume state', {
           currentPhase: state.currentPhase,
           pendingDecisions: state.pendingDecisions.length,
           checkpoints: state.checkpoints.length,
-        }, null, 2));
+        });
         return;
       }
 
-      console.log(`\n=== Orquestracao Retomada ===`);
-      console.log(`Fase atual: ${PHASE_NAMES[state.currentPhase]} (${state.currentPhase})`);
-      console.log(`Checkpoints: ${state.checkpoints.length}`);
-      console.log(`Decisoes pendentes: ${state.pendingDecisions.length}`);
-
-      if (state.pendingDecisions.length > 0) {
-        console.log(`\nDecisoes pendentes:`);
-        for (const dec of state.pendingDecisions) {
-          console.log(`  [${dec.id}] ${dec.title}`);
-          console.log(`    Motivo: ${dec.reason}`);
-        }
-      }
+      logger.info('Orchestration resumed', {
+        phase: PHASE_NAMES[state.currentPhase],
+        phaseId: state.currentPhase,
+        checkpoints: state.checkpoints.length,
+        pendingDecisions: state.pendingDecisions.length,
+        pendingDecisionsList: state.pendingDecisions.map(dec => ({
+          id: dec.id,
+          title: dec.title,
+          reason: dec.reason
+        }))
+      });
     });
 
   cmd
@@ -217,25 +222,25 @@ export function orchestrateCommand(): Command {
       }
 
       if (cps.length === 0) {
-        console.log('Nenhum checkpoint encontrado.');
+        logger.info('Nenhum checkpoint encontrado.');
         return;
       }
 
-      console.log(`\n=== Checkpoints (${cps.length}) ===`);
+      logger.info('\n=== Checkpoints (${cps.length}) ===');
       for (const cp of cps.slice(0, 20)) {
         const icon = cp.status === 'completed' ? '✅' : cp.status === 'needs-decision' ? '❓' : cp.status === 'failed' ? '❌' : '⏳';
-        console.log(`  ${icon} ${cp.id}`);
-        console.log(`     Fase: ${cp.phase} | Task: ${cp.taskId ?? '-'} | Status: ${cp.status}`);
+        logger.info('  ${icon} ${cp.id}');
+        logger.info('     Fase: ${cp.phase} | Task: ${cp.taskId ?? \'-\'} | Status: ${cp.status}');
         if (cp.metrics) {
           const m = [];
           if (cp.metrics.coverage !== undefined) m.push(`cov:${cp.metrics.coverage}%`);
           if (cp.metrics.scorecard !== undefined) m.push(`score:${cp.metrics.scorecard}`);
           if (cp.metrics.risk !== undefined) m.push(`risk:${cp.metrics.risk}`);
-          if (m.length > 0) console.log(`     Metricas: ${m.join(', ')}`);
+          if (m.length > 0) logger.info('     Metricas: ${m.join(\', \')}');
         }
       }
       if (cps.length > 20) {
-        console.log(`  ... e mais ${cps.length - 20} checkpoints`);
+        logger.info('  ... e mais ${cps.length - 20} checkpoints');
       }
     });
 
@@ -255,10 +260,10 @@ export function orchestrateCommand(): Command {
       if (!pendingCp) {
         const decCp = cps.find(c => c.id === decisionId);
         if (decCp) {
-          console.log(`Checkpoint ${decisionId} ja foi resolvido (status: ${decCp.status}).`);
+          logger.info('Checkpoint ${decisionId} ja foi resolvido (status: ${decCp.status}).');
           return;
         }
-        console.log(`Decisao ${decisionId} nao encontrada.`);
+        logger.info('Decisao ${decisionId} nao encontrada.');
         return;
       }
 
@@ -288,10 +293,10 @@ export function orchestrateCommand(): Command {
       const label = optionId
         ? decReq.options.find(o => o.id === optionId)?.label ?? optionId
         : 'Personalizada';
-      console.log(`\n✅ Decisao registrada:`);
-      console.log(`  Checkpoint: ${pendingCp.id}`);
-      console.log(`  Opcao: ${label}`);
-      console.log(`  Justificativa: ${rationale ?? 'nenhuma'}`);
+      logger.info('\n✅ Decisao registrada:');
+      logger.info('  Checkpoint: ${pendingCp.id}');
+      logger.info('  Opcao: ${label}');
+      logger.info('  Justificativa: ${rationale ?? \'nenhuma\'}');
       console.log(`  Pronto para retomar: use \`orchestrate resume\``);
     });
 
@@ -306,7 +311,7 @@ export function orchestrateCommand(): Command {
       const cp = cps.find(c => c.id === decisionId);
 
       if (!cp) {
-        console.log(`Checkpoint ${decisionId} nao encontrado.`);
+        logger.info('Checkpoint ${decisionId} nao encontrado.');
         return;
       }
 
@@ -346,24 +351,24 @@ export function orchestrateCommand(): Command {
         return;
       }
 
-      console.log(`\n${prompt.formatted}`);
-      console.log(`\n--- Analise de Completeza ---`);
+      logger.info('\n${prompt.formatted}');
+      logger.info('\n--- Analise de Completeza ---');
       if (completeness.complete) {
-        console.log('Decisao em formato 3+1 completo (A, B, C, D).');
+        logger.info('Decisao em formato 3+1 completo (A, B, C, D).');
       } else {
-        console.log(`Itens faltantes: ${completeness.missing.join(', ')}`);
+        logger.info('Itens faltantes: ${completeness.missing.join(\', \')}');
       }
 
       const phaseName = typeof PHASE_NAMES === 'object' && PHASE_NAMES !== null
         ? (PHASE_NAMES as Record<string, string>)[cp.phase] ?? cp.phase
         : cp.phase;
-      console.log(`\n--- Resumo do Checkpoint ---`);
-      console.log(`Fase: ${phaseName}`);
-      console.log(`Task: ${cp.taskId ?? '-'}`);
-      console.log(`Status: ${cp.status}`);
-      console.log(`Proximas acoes: ${cp.nextActions.join(', ') || 'nenhuma'}`);
+      logger.info('\n--- Resumo do Checkpoint ---');
+      logger.info('Fase: ${phaseName}');
+      logger.info('Task: ${cp.taskId ?? \'-\'}');
+      logger.info('Status: ${cp.status}');
+      logger.info('Proximas acoes: ${cp.nextActions.join(\', \') || \'nenhuma\'}');
       if (cp.metrics) {
-        console.log(`Metricas: cobertura=${cp.metrics.coverage ?? '-'}% | scorecard=${cp.metrics.scorecard ?? '-'} | risco=${cp.metrics.risk ?? '-'}`);
+        logger.info('Metricas: cobertura=${cp.metrics.coverage ?? \'-\'}% | scorecard=${cp.metrics.scorecard ?? \'-\'} | risco=${cp.metrics.risk ?? \'-\'}');
       }
     });
 
@@ -390,19 +395,19 @@ export function orchestrateCommand(): Command {
         return;
       }
 
-      console.log(`\n=== Decomposicao: ${taskName} ===`);
-      console.log(`Sub-tarefas: ${decomposed.subtasks.length}`);
-      console.log(`Grupos paralelos: ${decomposed.parallelGroups.length}`);
-      console.log(`Dependencias: ${decomposed.dependencies.length}`);
-      console.log(`\nSub-tarefas:`);
+      logger.info('\n=== Decomposicao: ${taskName} ===');
+      logger.info('Sub-tarefas: ${decomposed.subtasks.length}');
+      logger.info('Grupos paralelos: ${decomposed.parallelGroups.length}');
+      logger.info('Dependencias: ${decomposed.dependencies.length}');
+      logger.info('\nSub-tarefas:');
       for (const st of decomposed.subtasks) {
         const icon = st.isDeterministic ? '⚙️' : '🤖';
         const deps = st.dependsOn.length > 0 ? ` (deps: ${st.dependsOn.join(', ')})` : '';
-        console.log(`  ${icon} ${st.name}${deps}`);
+        logger.info('  ${icon} ${st.name}${deps}');
       }
-      console.log(`\nGrupos paralelos:`);
+      logger.info('\nGrupos paralelos:');
       for (let i = 0; i < decomposed.parallelGroups.length; i++) {
-        console.log(`  Grupo ${i + 1}: ${decomposed.parallelGroups[i]!.join(', ')}`);
+        logger.info('  Grupo ${i + 1}: ${(decomposed.parallelGroups[i] ?? []).join(\', \')}');
       }
     });
 

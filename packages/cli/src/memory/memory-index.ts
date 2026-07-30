@@ -1,4 +1,6 @@
 import type { MemoryRecord } from '@ideia/contracts';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('memory-index');
 
 export function buildMemoryIndex(records: MemoryRecord[]): Record<string, number> {
   const index: Record<string, number> = {};

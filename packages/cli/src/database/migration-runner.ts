@@ -1,4 +1,5 @@
 import { execFile } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -22,7 +23,7 @@ export async function runMigrations(cwd: string, orm: 'prisma' | 'typeorm' | 'dr
     }
     const output = await execFilePromise(cmd, args, cwd);
     return { ok: true, output, durationMs: Date.now() - start };
-  } catch (_err) {
+  } catch (err) {
     return { ok: false, output: String(err), durationMs: Date.now() - start };
   }
 }
@@ -36,7 +37,7 @@ export async function createMigration(cwd: string, name: string, orm: 'prisma' |
       output = await execFilePromise('npx', ['prisma', 'migrate', 'dev', '--name', safeName], cwd);
     }
     return { ok: true, output, durationMs: Date.now() - start };
-  } catch (_err) {
+  } catch (err) {
     return { ok: false, output: String(err), durationMs: Date.now() - start };
   }
 }
@@ -48,7 +49,7 @@ export async function resetDatabase(cwd: string, orm: 'prisma' | 'typeorm' | 'dr
       await execFilePromise('npx', ['prisma', 'migrate', 'reset', '--force'], cwd);
     }
     return { ok: true, output: '', durationMs: Date.now() - start };
-  } catch (_err) {
+  } catch (err) {
     return { ok: false, output: String(err), durationMs: Date.now() - start };
   }
 }

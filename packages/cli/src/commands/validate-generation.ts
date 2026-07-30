@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import * as fs from 'node:fs';
 import { GenerationScope } from '../generation/artifact-types';
 import { runDemandGeneration } from '../generation/generation-context';
@@ -24,7 +25,7 @@ export function validateGenerationCommand(): Command {
 
         const raw = fs.readFileSync(scopeFile, 'utf-8');
         const scope: GenerationScope = JSON.parse(raw);
-        const { _plan, artifacts, validation } = runDemandGeneration(scope);
+        const { artifacts, validation } = runDemandGeneration(scope);
         const output = createOkOutput('validate-generation run', getCliVersion(), {
           validation,
           artifactCount: artifacts.length,

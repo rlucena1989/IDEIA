@@ -1,4 +1,6 @@
 import { GovernancePolicy } from './policy-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('policy-registry');
 
 export class PolicyRegistry {
   private policies: GovernancePolicy[] = [];

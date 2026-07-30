@@ -1,7 +1,9 @@
 import { ConsensusResult, ProviderKind } from './types';
+import { createLogger } from '@ideia/logger';
 import { LLMAdapter, MOCK_ADAPTER } from './llm-adapter';
 import { OPENAI_ADAPTER, ANTHROPIC_ADAPTER, GOOGLE_ADAPTER } from './remote-model-adapter';
 import { OLLAMA_ADAPTER, LOCAL_MOCK_ADAPTER } from './local-model-adapter';
+const logger = createLogger('consensus');
 
 type Vote = {
   provider: ProviderKind;

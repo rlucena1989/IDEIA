@@ -1,6 +1,8 @@
 import { LangGraphStateAnnotation, LangGraphAgentRole } from '../langgraph-graph';
+import { createLogger } from '@ideia/logger';
 import { LangGraphNodeFunction } from '../langgraph-graph';
 import { LLMProvider, ChatMessage } from '@ideia/llm-provider';
+const logger = createLogger('devops-node');
 
 const DEVOPS_PROMPT = `You are a DevOps agent. Configure the deployment pipeline:
 1. Choose deployment strategy (blue-green, canary, rolling)

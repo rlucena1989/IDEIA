@@ -25,11 +25,48 @@ export type {
   PromptEconomyConfig,
 } from './types';
 
+export { TokenAnalyzer } from './analytics/token-analyzer';
+export { CostTracker } from './analytics/cost-tracker';
+export { OptimizationRecommender } from './analytics/optimization-recommender';
+export { AnalyticsDashboard } from './analytics/dashboard';
+
+export type {
+  Provider,
+  TaskType as AnalyticsTaskType,
+  Period,
+  BudgetPriority,
+  RecommendationType,
+  RecommendationPriority,
+  AlertSeverity,
+  AlertType,
+  RefinementTechnique,
+  ContextSource,
+  LLMCallRecord,
+  AnalyticsConfig,
+  AgentBudgetUsage,
+  SourceAnalysis,
+  WasteSource,
+  WasteReport,
+  SourceBreakdown,
+  Recommendation,
+  CompressionSuggestion,
+  CacheSuggestion,
+  ProviderSuggestion,
+  RefinementSuggestion,
+  DashboardSummary,
+  EfficiencyReport,
+  AgentRanking,
+  ProviderComparison,
+  Alert,
+} from './analytics/types-analytics';
+
 import { ContextCompressor } from './compressor/index';
+import { createLogger } from '@ideia/logger';
 import { BudgetManager, BudgetTracker, EarlyExitDecider } from './budget/index';
 import { ComplexityRouter } from './router/index';
 import { LLMCache } from './cache/index';
 import { PromptEconomyConfig, ComplexityLevel, TaskType } from './types';
+const logger = createLogger('index');
 
 export class PromptEconomy {
   readonly compressor: ContextCompressor;

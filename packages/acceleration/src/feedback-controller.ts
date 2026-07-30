@@ -1,4 +1,6 @@
 import { Alert, EngineMode, FeedbackDecision } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('feedback-controller');
 
 export function decideFeedback(
   alerts: Alert[],

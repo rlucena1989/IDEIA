@@ -1,4 +1,6 @@
 import { EvolutionPlan, EvolutionResult } from './evolution-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('reconfiguration-engine');
 
 export function applyReconfiguration(plan: EvolutionPlan): EvolutionResult {
   return {

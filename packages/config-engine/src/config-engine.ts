@@ -28,11 +28,11 @@ function resolveNested(obj: Record<string, unknown>, dottedPath: string): { pare
   let current: unknown = obj;
   for (let i = 0; i < parts.length - 1; i++) {
     if (typeof current !== 'object' || current === null) return undefined;
-    current = (current as Record<string, unknown>)[parts[i]!];
+    current = (current as Record<string, unknown>)[parts[i] ?? ''];
   }
   if (typeof current !== 'object' || current === null) return undefined;
   const parent = current as Record<string, unknown>;
-  const key = parts[parts.length - 1]!;
+  const key = parts[parts.length - 1] ?? '';
   return { parent, key, fullValue: parent[key] };
 }
 
@@ -40,13 +40,13 @@ function setNested(obj: Record<string, unknown>, dottedPath: string, value: unkn
   const parts = dottedPath.split('.');
   let current = obj;
   for (let i = 0; i < parts.length - 1; i++) {
-    const part = parts[i]!;
+    const part = parts[i] ?? '';
     if (!(part in current) || typeof current[part] !== 'object' || current[part] === null) {
       current[part] = {};
     }
     current = current[part] as Record<string, unknown>;
   }
-  current[parts[parts.length - 1]!] = value;
+  current[parts[parts.length - 1] ?? ''] = value;
 }
 
 function deleteNested(obj: Record<string, unknown>, dottedPath: string): boolean {
@@ -143,7 +143,12 @@ export class ConfigEngine {
 
   private ensureLoaded(): void {
     if (!this.loaded) {
-      this.globalConfig = readJsonFile(GLOBAL_CONFIG_PATH);
+      try {
+        const raw = fs.readFileSync(GLOBAL_CONFIG_PATH, 'utf-8');
+        this.globalConfig = JSON.parse(raw);
+      } catch {
+        this.globalConfig = {};
+      }
       try {
         const raw = fs.readFileSync(PROJECT_CONFIG_PATH, 'utf-8');
         this.projectConfig = JSON.parse(raw);
@@ -270,7 +275,7 @@ export class ConfigEngine {
         metadata,
       });
     } catch (_err) {
-      log.error('Audit append failed', { error: String(err) });
+      log.error('Audit append failed', { error: String(_err) });
     }
   }
 }

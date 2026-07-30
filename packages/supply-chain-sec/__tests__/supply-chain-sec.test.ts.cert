@@ -1,0 +1,7 @@
+{
+  "keyId": "ideia-ms727157",
+  "digest": "c125e6f9c3c75786b762cf38199aeb3a3bfb191d46644291be6877617c4ce182",
+  "issuer": "IDEIA Sigstore Signer (ephemeral)",
+  "timestamp": "2026-07-30T05:14:26.063Z",
+  "algorithm": "RSA-PSS-SHA256"
+}

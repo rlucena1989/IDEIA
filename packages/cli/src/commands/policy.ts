@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { PolicyRegistry } from '../governance/policy-registry';
 import { DEFAULT_GOVERNANCE_POLICY } from '../governance/governance-policy';
 import { GovernancePolicy } from '../governance/policy-types';

@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import { createLogger } from '@ideia/logger';
 import type { TemplateContext } from './types';
 
 export interface TemplateHelpers {

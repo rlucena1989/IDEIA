@@ -1,4 +1,6 @@
 import { Command } from "commander";
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.audit');
 import path from "node:path";
 import { AuditTrail } from "@ideia/audit-trail";
 import { PendenciaStore } from "@ideia/audit-trail";
@@ -90,19 +92,19 @@ export function auditCommand(): Command {
         process.exit(ok ? 0 : 1);
       }
 
-      console.log("\nIDEIA Audit\n");
+      logger.info('\nIDEIA Audit\n');
 
       if (findings.length === 0) {
-        console.log("Nenhum problema encontrado.");
+        logger.info('Nenhum problema encontrado.');
         return;
       }
 
       for (const finding of findings) {
         const icons: Record<string, string> = { critical: "🔴", high: "🟠", medium: "🟡", low: "🔵" };
-        console.log(`${icons[finding.severity] || "⚪"} [${finding.severity}] ${finding.title}`);
-        console.log(`   Categoria: ${finding.category}`);
-        console.log(`   ${finding.description}`);
-        console.log(`   Recomendacao: ${finding.recommendation}\n`);
+        logger.info('${icons[finding.severity] || "⚪"} [${finding.severity}] ${finding.title}');
+        logger.info('   Categoria: ${finding.category}');
+        logger.info('   ${finding.description}');
+        logger.info('   Recomendacao: ${finding.recommendation}\n');
       }
 
       if (!options.dryRun) {

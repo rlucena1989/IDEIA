@@ -1,5 +1,7 @@
 import { PredictionResult, ImpactEstimate } from './prediction-types';
+import { createLogger } from '@ideia/logger';
 import { RiskAssessment } from './risk-model';
+const logger = createLogger('prediction-report');
 
 export interface PredictionReport {
   generatedAt: string;

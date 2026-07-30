@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { createLogger } from '@ideia/logger';
 
 export const TaskPrioritySchema = z.enum(['low', 'medium', 'high', 'critical']);
 export type TaskPriority = z.infer<typeof TaskPrioritySchema>;

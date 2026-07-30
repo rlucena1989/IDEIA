@@ -333,8 +333,8 @@ export function classifyByDescription(request: ClassificationRequest): Classific
     };
   }
 
-  const topType = entries[0]![0] as TaskType;
-  const topScore = entries[0]![1];
+  const topType = entries[0][0] as TaskType;
+  const topScore = entries[0][1];
   let totalScore = 0;
   const secondaryTypes: { taskType: TaskType; confidence: number }[] = [];
 
@@ -389,7 +389,7 @@ export function classifyByFiles(files: string[]): TaskType | null {
 
   const entries = Object.entries(scores).sort((a, b) => b[1] - a[1]);
   if (entries.length === 0) return null;
-  return entries[0]![0] as TaskType;
+  return entries[0][0] as TaskType;
 }
 
 /** classify */
@@ -408,7 +408,7 @@ export function classify(request: ClassificationRequest): ClassificationResult {
 
       const existingIdx = descResult.secondaryTypes.findIndex(s => s.taskType === fileType);
       if (existingIdx >= 0) {
-        descResult.secondaryTypes[existingIdx]!.confidence = Math.min(100, descResult.secondaryTypes[existingIdx]!.confidence + 15);
+        descResult.secondaryTypes[existingIdx].confidence = Math.min(100, descResult.secondaryTypes[existingIdx].confidence + 15);
       } else {
         descResult.secondaryTypes.push({ taskType: fileType, confidence: 30 });
       }

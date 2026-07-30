@@ -1,4 +1,6 @@
 import type { CliCommandResult, CommandContext, CommandHandler } from '../types/cli-result';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('command-runner');
 
 export function createCommandRunner<T>(handler: CommandHandler<T>) {
   return async (context: CommandContext): Promise<CliCommandResult<T>> => {

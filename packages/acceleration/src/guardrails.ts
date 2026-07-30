@@ -1,4 +1,6 @@
 import { GuardrailsResult } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('guardrails');
 
 interface GuardrailRule {
   id: string;

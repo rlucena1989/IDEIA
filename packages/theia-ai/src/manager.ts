@@ -1,5 +1,7 @@
 import { Emitter, Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { AiProvider, AiRequest, AiResponse, AiStreamChunk, AiManager } from './types';
+const logger = createLogger('manager');
 
 export class DefaultAiManager implements AiManager {
   private providers = new Map<string, AiProvider>();

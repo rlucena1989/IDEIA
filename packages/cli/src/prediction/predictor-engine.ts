@@ -1,4 +1,6 @@
 import { PredictionInput, PredictionResult } from './prediction-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('predictor-engine');
 
 export function predictRisk(input: PredictionInput): PredictionResult {
   const latestDrift = input.driftScore[input.driftScore.length - 1] ?? 0;

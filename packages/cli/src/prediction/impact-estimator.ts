@@ -1,4 +1,6 @@
 import { ImpactEstimate } from './prediction-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('impact-estimator');
 
 export function estimateImpact(target: string, affectedArea: string, score: number): ImpactEstimate {
   const severity: ImpactEstimate['severity'] =

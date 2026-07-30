@@ -1,4 +1,5 @@
 import { randomUUID as _randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { EventBus } from '@ideia/event-bus';
 import { AuditTrail } from '@ideia/audit-trail';
 import {
@@ -142,7 +143,7 @@ export class SafetyCircuit {
       return this.makeDecision('allow', `Initial coverage: ${coverage}%`, 'info', trigger.type);
     }
 
-    const prev = this.coverageHistory[this.coverageHistory.length - 2]!;
+    const prev = this.coverageHistory[this.coverageHistory.length - 2] ?? 0;
     const drop = prev - coverage;
 
     if (drop > this.REGRESSION_THRESHOLD) {

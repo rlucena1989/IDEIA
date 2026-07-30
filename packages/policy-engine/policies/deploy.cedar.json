@@ -1,0 +1,37 @@
+{
+  "version": "1.0",
+  "policies": [
+    {
+      "id": "dp-001",
+      "description": "Production deployment requires approval",
+      "effect": "forbid",
+      "action": { "type": "deploy" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "eq", "value": "production" }],
+      "priority": 50
+    },
+    {
+      "id": "dp-002",
+      "description": "Staging deploy permitted",
+      "effect": "permit",
+      "action": { "type": "deploy" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "eq", "value": "staging" }],
+      "priority": 10
+    },
+    {
+      "id": "dp-003",
+      "description": "Canary deploy requires high approval",
+      "effect": "forbid",
+      "action": { "type": "deploy" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "matches", "value": "canary|rolling" }],
+      "priority": 50
+    },
+    {
+      "id": "dp-004",
+      "description": "Rollback always permitted",
+      "effect": "permit",
+      "action": { "type": "deploy" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "matches", "value": "rollback|revert" }],
+      "priority": 5
+    }
+  ]
+}

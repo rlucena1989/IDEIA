@@ -1,7 +1,9 @@
 import { OperationalEvent, OperationalPattern } from './pattern-types';
+import { createLogger } from '@ideia/logger';
 import { AdaptiveScores } from './adaptive-score';
 import { Recommendation } from './recommendation-engine';
 import { CycleControlResult } from './cycle-controller';
+const logger = createLogger('adaptive-report');
 
 export interface AdaptiveReport {
   generatedAt: string;

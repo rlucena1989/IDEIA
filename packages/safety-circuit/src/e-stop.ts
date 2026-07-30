@@ -1,4 +1,5 @@
 import { randomUUID as _randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { EventBus } from '@ideia/event-bus';
 import { AuditTrail } from '@ideia/audit-trail';
 import { SafetyStatus, SafetyMode, RecoveryAction, EstopConfig, EstopEvent } from './types';

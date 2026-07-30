@@ -1,0 +1,25 @@
+{
+  "name": "@ideia/manifest-self-description",
+  "private": true,
+  "description": "IDEIA Manifest & Self-Description System — geracao e consumo de manifesto para auto-descricao da plataforma para LLMs externos",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/cli": "*",
+    "@ideia/logger": "*",
+    "@ideia/event-bus": "*",
+    "@ideia/reality-sync": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*",
+    "@types/node": "*"
+  }
+}

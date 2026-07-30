@@ -1,4 +1,6 @@
 import { GateResult, ConfidenceScore, VerificationLayer } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('confidence-scorer');
 
 export interface ConfidenceScoreConfig {
   layerWeights: Record<VerificationLayer, number>;

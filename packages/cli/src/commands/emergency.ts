@@ -1,18 +1,24 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { ControlTower } from '@ideia/control-tower';
-import { SafetyCircuit, createSafetyCircuit } from '@ideia/safety-circuit';
-import { EmergencyStop, createEmergencyStop } from '@ideia/safety-circuit';
-import { createBus } from '@ideia/event-bus';
+import { createSafetyCircuit } from '@ideia/safety-circuit';
+import { createEmergencyStop } from '@ideia/safety-circuit';
+import { createBus, EventBus } from '@ideia/event-bus';
 import { printHeader, printLine, printResult } from '../utils/output';
 
 export function emergencyCommand(): Command {
   const cmd = new Command('emergency')
     .description('Emergency controls: stop, pause, rollback, resume');
 
-  const eventBus = await createBus();
-  const safetyCircuit = createSafetyCircuit(eventBus);
-  const emergencyStop = createEmergencyStop(eventBus);
-  const controlTower = new ControlTower(eventBus, undefined, safetyCircuit, emergencyStop);
+  let _eventBus: EventBus;
+  async function getBus(): Promise<EventBus> {
+    if (!_eventBus) _eventBus = await createBus() as unknown as EventBus;
+    return _eventBus;
+  }
+  async function getTower(): Promise<ControlTower> {
+    const bus = await getBus();
+    return new ControlTower(bus, undefined, createSafetyCircuit(bus), createEmergencyStop(bus));
+  }
 
   cmd
     .command('stop')
@@ -21,8 +27,9 @@ export function emergencyCommand(): Command {
     .option('--json', 'Output as JSON')
     .action(async (opts) => {
       try {
-        await controlTower.emergencyStop(opts.reason || 'User requested emergency stop');
-        const status = controlTower.getStatus();
+        const tower = await getTower();
+        await tower.emergencyStop(opts.reason || 'User requested emergency stop');
+        const status = tower.getStatus();
         if (opts.json) { printLine(JSON.stringify({ status: 'stopped', mode: status.mode, autonomyLevel: status.autonomyLevel }, null, 2)); return; }
         printHeader('Emergency Stop');
         printResult('System halted', true);
@@ -42,8 +49,9 @@ export function emergencyCommand(): Command {
     .option('--json', 'Output as JSON')
     .action(async (opts) => {
       try {
-        await controlTower.emergencyPause(opts.reason || 'User requested pause');
-        const status = controlTower.getStatus();
+        const tower = await getTower();
+        await tower.emergencyPause(opts.reason || 'User requested pause');
+        const status = tower.getStatus();
         if (opts.json) { printLine(JSON.stringify({ status: 'paused', mode: status.mode }, null, 2)); return; }
         printHeader('Emergency Pause');
         printResult('System paused', true);
@@ -61,7 +69,8 @@ export function emergencyCommand(): Command {
     .option('--json', 'Output as JSON')
     .action(async (id, opts) => {
       try {
-        await controlTower.emergencyRollback(id || 'last');
+        const tower = await getTower();
+        await tower.emergencyRollback(id || 'last');
         if (opts.json) { printLine(JSON.stringify({ status: 'rolled-back', id: id || 'last' }, null, 2)); return; }
         printHeader('Emergency Rollback');
         printResult(`Rollback ${id || 'last'} completed`, true);
@@ -78,7 +87,8 @@ export function emergencyCommand(): Command {
     .option('--json', 'Output as JSON')
     .action(async (opts) => {
       try {
-        await controlTower.emergencyResume();
+        const tower = await getTower();
+        await tower.emergencyResume();
         if (opts.json) { printLine(JSON.stringify({ status: 'resumed' }, null, 2)); return; }
         printHeader('Resume');
         printResult('System resumed', true);

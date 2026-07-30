@@ -1,0 +1,24 @@
+{
+  "name": "@ideia/lsp-integration",
+  "description": "LSP Integration — diagnostics emission and storage bridge",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  }
+}

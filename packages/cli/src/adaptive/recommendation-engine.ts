@@ -1,4 +1,6 @@
 import { OperationalPattern } from './pattern-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('recommendation-engine');
 
 export interface Recommendation {
   action: 'generate' | 'repair' | 'sync' | 'review' | 'block' | 'defer';

@@ -1,4 +1,6 @@
 import { Command } from "commander";
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.prove');
 import { spawnSync as spawn, type SpawnSyncOptions } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
@@ -146,7 +148,7 @@ export function proveCommand(): Command {
         writeFileSync: (p, c) => fs.writeFileSync(p, c),
         spawnSync: (cmd, args, opts) => { const r = spawn(cmd, args, opts); return { status: r.status, stdout: String(r.stdout), stderr: String(r.stderr) }; },
         platform: os.platform(),
-        log: (msg) => console.log(msg),
+        log: (msg) => logger.info(msg),
         ledgerAppend,
         getLogFile: () => logFile,
       });

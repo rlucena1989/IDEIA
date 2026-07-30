@@ -1,0 +1,28 @@
+{
+  "name": "@ideia/project-scanner",
+  "description": "Project Scanner — scans project structure, technologies, and size for the Project Panel",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/logger": "*",
+    "@ideia/event-bus": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/bias-detection",
+  "private": true,
+  "description": "IDEIA Bias Detection Module — statistical bias detection for agent outputs: demographic parity, equal opportunity, equalized odds, disparate impact, Theil index with CI/CD integration and SHA-256 audit chain",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*",
+    "@ideia/quality-gates": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*"
+  }
+}

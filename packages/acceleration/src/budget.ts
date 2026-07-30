@@ -1,4 +1,6 @@
 import { Budget } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('budget');
 
 export function estimateBudget(depth: number, estimatedTokens: number): Budget {
   const costPerToken = 0.000003;

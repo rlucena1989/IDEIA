@@ -1,0 +1,1 @@
+{"id":"1785122832837-wvpnw3","timestamp":"2026-07-27T03:27:12.837Z","pluginId":"test-plugin","action":"file-read","resource":"/outside/file.txt","allowed":false,"reason":"Path not in allowlist: F:\\outside\\file.txt"}

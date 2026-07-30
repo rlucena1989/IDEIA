@@ -139,14 +139,39 @@ export class HumanInTheLoop {
   isCriticalAction(type: string): boolean {
     const criticalTypes = [
       'deploy.production',
+      'deploy.staging',
       'policy.modify',
       'data.delete',
       'config.global',
       'user.impersonate',
       'security.override',
       'audit.clear',
+      'secrets.access',
+      'user.create.admin',
     ];
     return criticalTypes.includes(type);
+  }
+
+  enforce(
+    type: string,
+    description: string,
+    options?: { skipApproval?: boolean }
+  ): { requiresApproval: boolean; action?: ActionRequiringApproval; override?: boolean } {
+    if (options?.skipApproval) {
+      return { requiresApproval: false, override: true };
+    }
+    if (this.isCriticalAction(type)) {
+      const action = this.requestApproval(type, description, this.getCriticality(type), 'system');
+      return { requiresApproval: true, action };
+    }
+    return { requiresApproval: false };
+  }
+
+  private getCriticality(type: string): CriticalityLevel {
+    const criticalTypes = ['deploy.production', 'policy.modify', 'data.delete', 'secrets.access', 'user.create.admin'];
+    if (criticalTypes.includes(type)) return 'critical';
+    if (type.startsWith('deploy.') || type.startsWith('config.')) return 'high';
+    return 'low';
   }
 
   clearCompleted(): void {

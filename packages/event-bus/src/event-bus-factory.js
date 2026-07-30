@@ -6,7 +6,8 @@ const logger_1 = require("@ideia/logger");
 const nats_event_bus_1 = require("./nats-event-bus");
 const log = (0, logger_1.createLogger)('event-bus-factory');
 async function createBus(config) {
-    const type = config?.type ?? 'auto';
+    const envType = (typeof process !== 'undefined' ? process.env.EVENT_BUS_TYPE : undefined);
+    const type = config?.type ?? envType ?? 'auto';
     const fallbackLogger = {
         debug: () => { },
         warn: (msg) => log.warn(msg),
@@ -29,8 +30,8 @@ async function createBus(config) {
             await bus.connect();
             return bus;
         }
-        catch (err) {
-            const errMsg = err instanceof Error ? err.message : String(err);
+        catch (_err) {
+            const errMsg = _err instanceof Error ? _err.message : String(_err);
             logger.warn('[EventBusFactory] NATS connection failed, falling back to in-memory: ' + errMsg);
             return (0, event_bus_1.createEventBus)(config?.memory?.maxHistory, config?.auditTrail, logger);
         }

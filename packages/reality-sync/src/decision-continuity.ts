@@ -1,4 +1,6 @@
 import { EventEmitter } from 'node:events';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('decision-continuity');
 
 export type DecisionType = 'plan' | 'execution' | 'policy' | 'security' | 'config';
 export type DecisionStatus = 'pending' | 'auto-approved' | 'escalated' | 'approved' | 'rejected' | 'expired';

@@ -1,5 +1,7 @@
 import { JailbreakDetector } from '../hardening/jailbreak-detector';
+import { createLogger } from '@ideia/logger';
 import { ContentFilter } from './content-filter';
+const logger = createLogger('prompt-guard');
 
 export interface PromptGuardConfig {
   enableJailbreakDetection: boolean;

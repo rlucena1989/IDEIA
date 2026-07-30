@@ -1,5 +1,7 @@
 import { TelemetryEvent, TelemetryMetric, TelemetryAlert } from './telemetry-types';
+import { createLogger } from '@ideia/logger';
 import { TraceSpan } from './telemetry-tracer';
+const logger = createLogger('telemetry-report');
 
 export interface TelemetryReport {
   generatedAt: string;

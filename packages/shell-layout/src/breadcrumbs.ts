@@ -1,5 +1,7 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { IBreadcrumbs, BreadcrumbSegment } from './types';
+const logger = createLogger('breadcrumbs');
 
 export class DefaultBreadcrumbs implements IBreadcrumbs {
   private path: BreadcrumbSegment[] = [];

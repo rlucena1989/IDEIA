@@ -1,4 +1,6 @@
 import { injectable } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('browser.ideia-title-bar-widget');
 import { Widget } from '@theia/core/shared/@lumino/widgets';
 
 @injectable()
@@ -62,9 +64,9 @@ export class IdeiaCustomTitleWidget extends Widget {
       return btn;
     };
 
-    controls.appendChild(makeBtn('─', () => console.log('minimize')));
-    controls.appendChild(makeBtn('□', () => console.log('maximize')));
-    controls.appendChild(makeBtn('✕', () => console.log('close'), '#e81123'));
+    controls.appendChild(makeBtn('─', () => logger.info('minimize')));
+    controls.appendChild(makeBtn('□', () => logger.info('maximize')));
+    controls.appendChild(makeBtn('✕', () => logger.info('close'), '#e81123'));
     this.node.appendChild(controls);
   }
 }

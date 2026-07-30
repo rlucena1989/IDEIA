@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/schema-versioning",
+  "private": true,
+  "description": "Event Schema Versioning & Migration — versionamento de schemas de eventos, migracao backward/forward compatible e registry",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

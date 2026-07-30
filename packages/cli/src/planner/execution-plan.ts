@@ -1,4 +1,6 @@
 import type { ExecutionPlan, ExecutionStep, TaskSpec } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('execution-plan');
 
 export function createExecutionPlan(task: TaskSpec): ExecutionPlan {
   const blocked = task.context.length === 0 || task.expectedOutputs.length === 0;

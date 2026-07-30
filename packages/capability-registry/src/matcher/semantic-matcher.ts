@@ -1,6 +1,8 @@
 import type { CapabilityCategory, CapabilityMatch } from '../types/capability';
+import { createLogger } from '@ideia/logger';
 import type { ICapabilityRegistry } from '../registry/registry.interface';
 import type { ICapabilityMatcher, MatchRequest } from './matcher.interface';
+const logger = createLogger('semantic-matcher');
 
 export class SemanticCapabilityMatcher implements ICapabilityMatcher {
   private readonly WEIGHTS = { semantic: 0.40, tag: 0.25, type: 0.20, version: 0.15 };

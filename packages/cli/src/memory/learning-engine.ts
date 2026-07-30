@@ -1,4 +1,6 @@
 import type { MemoryPattern, LearningRecommendation } from '@ideia/contracts';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('learning-engine');
 
 export function generateRecommendations(patterns: MemoryPattern[]): LearningRecommendation[] {
   return patterns.map(pattern => ({

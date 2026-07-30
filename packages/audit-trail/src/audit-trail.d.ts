@@ -11,6 +11,12 @@ export interface AuditEvent {
     metadata?: Record<string, unknown>;
     previousHash?: string;
 }
+export interface MerkleProof {
+    entryIndex: number;
+    entryHash: string;
+    siblings: string[];
+    rootHash: string;
+}
 export interface ChainVerificationResult {
     valid: boolean;
     totalEvents: number;
@@ -35,6 +41,16 @@ export declare class AuditTrail {
     loadAsync(): Promise<AuditEvent[]>;
     count(): number;
     verifyChain(): ChainVerificationResult;
+    proveEntry(eventId: string): MerkleProof | null;
+    verifyEntryInclusion(proof: MerkleProof): boolean;
+    getMerkleRoot(): string;
+    getChainGaps(): Array<{
+        index: number;
+        eventId: string;
+    }>;
+    scheduleVerification(intervalMs: number): {
+        stop: () => void;
+    };
     getChainTipHash(): string | null;
     private getLastHashSync;
     private rotateIfNeededAsync;

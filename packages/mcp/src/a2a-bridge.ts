@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { createLogger } from '@ideia/logger';
 import type { A2AMessage } from './a2a';
 
 export type BridgeMessageHandler = (message: A2AMessage) => void;

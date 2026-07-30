@@ -1,6 +1,8 @@
 import { LangGraphStateAnnotation, LangGraphAgentRole } from '../langgraph-graph';
+import { createLogger } from '@ideia/logger';
 import { LangGraphNodeFunction } from '../langgraph-graph';
 import { LLMProvider, ChatMessage } from '@ideia/llm-provider';
+const logger = createLogger('tester-node');
 
 const TESTER_PROMPT = `You are a Tester agent. Generate comprehensive tests for the provided implementation:
 1. Unit tests for core logic

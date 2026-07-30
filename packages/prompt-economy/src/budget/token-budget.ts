@@ -1,4 +1,6 @@
 import { TokenBudget, ComplexityLevel, TaskType } from '../types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('token-budget');
 
 const DEFAULT_BUDGET_BY_LEVEL: Record<ComplexityLevel, number> = {
   N0: 500,

@@ -336,7 +336,7 @@ describe('mcpCommand', () => {
     } as any);
     jest.spyOn(process.stdout, 'write').mockReturnValue(true);
     jest.spyOn(process.stderr, 'write').mockReturnValue(true);
-    jest.spyOn(process, 'exit').mockReturnValue(undefined as any);
+    jest.spyOn(process, 'exit').mockReturnValue(undefined as never);
     const cmd = mcpCommand();
     cmd.parse(['node', 'test', 'mcp'], { from: 'user' });
     expect(process.stdin.on).toHaveBeenCalledWith('data', expect.any(Function));

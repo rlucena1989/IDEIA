@@ -1,4 +1,5 @@
 import { ConsensusResult, ConsensusVote, ConsensusProvider } from './types';
+import { createLogger } from '@ideia/logger';
 
 export class ConsensusEngine {
   constructor(private options: { minVotes?: number; maxVariance?: number } = {}) {}

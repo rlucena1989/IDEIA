@@ -84,6 +84,19 @@ export const FRAMEWORKS: FrameworkDefinition[] = [
     ]
   },
   {
+    id: 'eu-ai-act',
+    name: 'EU AI Act',
+    description: 'European Union Artificial Intelligence Act — regulamentacao de IA baseada em risco',
+    requirements: [
+      { id: 'AIA-1', title: 'Risk Classification', description: 'Classificar sistemas de IA por nivel de risco', keywords: ['risco', 'risk', 'classificacao', 'classification', 'ia', 'ai'] },
+      { id: 'AIA-2', title: 'Transparency', description: 'Garantir transparencia dos sistemas de IA', keywords: ['transparencia', 'transparency', 'explicacao', 'explainability', 'ia', 'ai'] },
+      { id: 'AIA-3', title: 'Human Oversight', description: 'Supervisao humana para decisoes de IA', keywords: ['humano', 'human', 'supervisao', 'oversight', 'aprovacao', 'approval'] },
+      { id: 'AIA-4', title: 'Technical Documentation', description: 'Manter documentacao tecnica dos sistemas de IA', keywords: ['documentacao', 'documentation', 'tecnica', 'technical', 'ia', 'ai'] },
+      { id: 'AIA-5', title: 'Accuracy and Robustness', description: 'Garantir acuracia e robustez dos modelos', keywords: ['acuracia', 'accuracy', 'robustez', 'robustness', 'qualidade', 'quality'] },
+      { id: 'AIA-6', title: 'Governance', description: 'Implementar governanca para sistemas de IA', keywords: ['governanca', 'governance', 'politica', 'policy', 'conformidade', 'compliance'] },
+    ]
+  },
+  {
     id: 'hipaa',
     name: 'HIPAA',
     description: 'Health Insurance Portability and Accountability Act — protecao de dados de saude nos EUA',

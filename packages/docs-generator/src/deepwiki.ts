@@ -1,5 +1,7 @@
 import * as fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'path';
+const logger = createLogger('deepwiki');
 
 export interface ExtractedAPI {
   packageName: string;

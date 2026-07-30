@@ -91,7 +91,7 @@ export class ConnectionPool<T> {
       conn.state = 'active';
       conn.lastUsedAt = Date.now();
 
-      const actual = this.connections.get(conn.id) ?? null;
+      const actual = this.connections.get(conn.id)!;
       if (this.validateFn && !this.validateFn(actual)) {
         await this.reconnect(conn);
       }
@@ -106,14 +106,14 @@ export class ConnectionPool<T> {
       conn.state = 'active';
       this.pool.push(conn);
       this.metrics.acquired++;
-      return { conn: this.connections.get(conn.id) ?? null, release: () => this.release(conn) };
+      return { conn: this.connections.get(conn.id)!, release: () => this.release(conn) };
     }
 
     // Wait for a connection to be released
     return new Promise((resolve, reject) => {
       const entry = {
         resolve: (conn: Connection) => {
-          const actual = this.connections.get(conn.id) ?? null;
+          const actual = this.connections.get(conn.id)!;
           this.metrics.acquired++;
           resolve({ conn: actual, release: () => this.release(conn) });
         },
@@ -140,7 +140,7 @@ export class ConnectionPool<T> {
 
     // Fulfill waiting request if any
     if (this.waiting.length > 0) {
-      const entry = this.waiting.shift()!;
+      const entry = this.waiting.shift() as (typeof this.waiting)[number];
       entry.resolve(conn);
     }
   }
@@ -177,7 +177,7 @@ export class ConnectionPool<T> {
     clearInterval(this.cleanupTimer);
     const errors: Error[] = [];
     for (const [, actual] of this.connections) {
-      try { await this.disconnectFn(actual); } catch (_err) { errors.push(err instanceof Error ? err : new Error(String(err))); }
+      try { await this.disconnectFn(actual); } catch (_err) { errors.push(_err instanceof Error ? _err : new Error(String(_err))); }
     }
     this.pool = [];
     this.connections.clear();

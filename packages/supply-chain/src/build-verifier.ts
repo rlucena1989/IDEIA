@@ -1,5 +1,7 @@
 import { BuildReproducibility } from './types';
+import { createLogger } from '@ideia/logger';
 import { createHash } from 'crypto';
+const logger = createLogger('build-verifier');
 
 export class BuildVerifier {
   verify(inputs: Record<string, string>, buildConfig: Record<string, string>, expectedOutputHash: string): BuildReproducibility {

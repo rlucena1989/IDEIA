@@ -1,4 +1,5 @@
 import { spawnSync } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { printLine } from "../utils/output";
 import { getIO } from '../io';

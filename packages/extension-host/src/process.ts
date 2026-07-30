@@ -1,4 +1,5 @@
 import { Emitter, Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { ExtensionHostProcess } from './types';
 
 export class DefaultExtensionHostProcess implements ExtensionHostProcess {

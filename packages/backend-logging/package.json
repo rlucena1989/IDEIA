@@ -4,11 +4,22 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": { "build": "tsc" },
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {},
-  "files": ["dist"],
-  "publishConfig": { "access": "public" },
-  "repository": { "type": "git", "url": "https://github.com/anomalyco/ideia.git" },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
   "homepage": "https://ideia.dev",
-  "bugs": { "url": "https://github.com/anomalyco/ideia/issues" }
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  }
 }

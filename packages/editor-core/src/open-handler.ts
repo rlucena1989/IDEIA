@@ -1,5 +1,7 @@
 import { Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { IEditorWidget } from './types';
+const logger = createLogger('open-handler');
 
 export interface IOpenHandler {
   readonly id: string;

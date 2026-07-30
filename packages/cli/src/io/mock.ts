@@ -1,4 +1,5 @@
 import type { Shell, ShellResult, FileSystem, HttpClient, IOContainer } from './interfaces';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 
 /** Classe responsável por processa shell. */
@@ -140,7 +141,13 @@ export class MockIOContainer implements IOContainer {
   fs: MockFileSystem = new MockFileSystem();
   http: MockHttpClient = new MockHttpClient();
 
-  _reset(): void { this.shell._reset(); this.fs._reset(); this.http._reset(); }
+  _outputData: unknown[] = [];
+  _outputLines: string[] = [];
+
+  output(data: unknown): void { this._outputData.push(data); }
+  outputLines(lines: string[]): void { this._outputLines.push(...lines); }
+
+  _reset(): void { this.shell._reset(); this.fs._reset(); this.http._reset(); this._outputData = []; this._outputLines = []; }
 
   setupProject(name: string = 'test-project'): void {
     const root = process.cwd();

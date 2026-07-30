@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Instruction, InstructionScope, InstructionPriority, InstructionStatus } from './types';

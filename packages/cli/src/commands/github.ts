@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { listIssues, createPR, commentOnPR, addLabels, createIssue } from '../runtime/git-provider';
 import { printLine, printResult, finish } from '../utils/output';
 

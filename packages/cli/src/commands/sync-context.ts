@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { FederationRegistry } from '../federation/federation-registry';
 import { createSyncRequest, SyncDecision } from '../federation/federation-types';
 import { routeSync } from '../federation/federation-router';

@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/langgraph-tracing",
+  "private": true,
+  "description": "LangGraph Observability & Tracing — tracing distribuido para grafos LangGraph, spans, metrics e visualizacao",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

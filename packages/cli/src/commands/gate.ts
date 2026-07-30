@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.gate');
 import { runPipeline, printStatus, listAllCheckpoints } from '../utils/gate/runner';
 
 /**
@@ -17,11 +19,11 @@ export function gateStatusAction(opts: { json?: boolean }): void {
 export function gateCheckpointsAction(): void {
   const cps = listAllCheckpoints(process.cwd());
   if (cps.length === 0) {
-    console.log('Nenhum checkpoint encontrado.');
+    logger.info('Nenhum checkpoint encontrado.');
     return;
   }
-  console.log('Checkpoints disponiveis:');
-  cps.forEach(c => console.log(`  - ${c}`));
+  logger.info('Checkpoints disponiveis:');
+  cps.forEach(c => logger.info('  - ${c}'));
 }
 
 export function gateCommand(): Command {
@@ -50,11 +52,11 @@ export function gateCommand(): Command {
     .action(() => {
       const cps = listAllCheckpoints(process.cwd());
       if (cps.length === 0) {
-        console.log('Nenhum checkpoint encontrado.');
+        logger.info('Nenhum checkpoint encontrado.');
         return;
       }
-      console.log('Checkpoints disponiveis:');
-      cps.forEach(c => console.log(`  - ${c}`));
+      logger.info('Checkpoints disponiveis:');
+      cps.forEach(c => logger.info('  - ${c}'));
     });
 
   return cmd;

@@ -1,27 +1,42 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { EventBus } from '@ideia/event-bus';
 import { IDEIA_DASHBOARD_SERVICE, IDEIA_TASK_SERVICE, IDEIA_AGENT_SERVICE, IDEIA_TaskService, IDEIA_AgentService, IDEIA_DashboardService } from '../common/ideia-protocol';
 import { DashboardMetrics } from '../common/ideia-types';
-import { ServiceCatalog } from '@ideia/cli/src/ecosystem/service-catalog';
-import { SelfAwareness } from '@ideia/cli/src/ecosystem/self-awareness';
-import { TutorialSystem } from '@ideia/cli/src/tutorials/tutorial-system';
 import * as fs from 'fs';
 import * as path from 'path';
+const logger = createLogger('ideia-dashboard-service');
+
+interface CliServices {
+  catalog?: { getServiceCount(): number; getCapabilityCount(): number };
+  tutorials?: { getOverallStats(): { completed: number; totalTutorials: number } };
+}
 
 @injectable()
 export class IDEIA_DashboardBackendService implements IDEIA_DashboardService {
-  private catalog: ServiceCatalog;
-  private awareness: SelfAwareness;
-  private tutorials: TutorialSystem;
+  private cli: CliServices = {};
+  private cliAvailable = false;
 
   constructor(
     @inject(EventBus) private eventBus: EventBus,
     @inject(IDEIA_TASK_SERVICE) private taskService: IDEIA_TaskService,
     @inject(IDEIA_AGENT_SERVICE) private agentService: IDEIA_AgentService,
   ) {
-    this.catalog = new ServiceCatalog();
-    this.awareness = new SelfAwareness(this.catalog);
-    this.tutorials = new TutorialSystem();
+    this.initCli().catch(() => {});
+  }
+
+  private async initCli(): Promise<void> {
+    try {
+      const { ServiceCatalog } = await import('@ideia/cli/src/ecosystem/service-catalog');
+      const { SelfAwareness } = await import('@ideia/cli/src/ecosystem/self-awareness');
+      const { TutorialSystem } = await import('@ideia/cli/src/tutorials/tutorial-system');
+      const catalog = new ServiceCatalog();
+      this.cli.catalog = catalog;
+      this.cli.tutorials = new TutorialSystem();
+      this.cliAvailable = true;
+    } catch {
+      this.cliAvailable = false;
+    }
   }
 
   async getMetrics(): Promise<DashboardMetrics> {
@@ -53,7 +68,9 @@ export class IDEIA_DashboardBackendService implements IDEIA_DashboardService {
       studyScore = studiesCount > 0 ? Math.round((studiesCompleted / studiesCount) * 100) : 0;
     }
 
-    const tutorialStats = this.tutorials.getOverallStats();
+    const servicesCount = this.cli.catalog?.getServiceCount() ?? 0;
+    const capabilitiesCount = this.cli.catalog?.getCapabilityCount() ?? 0;
+    const tutorialStats = this.cli.tutorials?.getOverallStats() ?? { completed: 0, totalTutorials: 0 };
 
     return {
       tasksCompleted: completedTasks,
@@ -63,8 +80,8 @@ export class IDEIA_DashboardBackendService implements IDEIA_DashboardService {
       averageScore,
       violationsActive: 0,
       coveragePercent: 0,
-      servicesCount: this.catalog.getServiceCount(),
-      capabilitiesCount: this.catalog.getCapabilityCount(),
+      servicesCount,
+      capabilitiesCount,
       studiesCount,
       studiesCompleted,
       studyScore,
@@ -76,9 +93,9 @@ export class IDEIA_DashboardBackendService implements IDEIA_DashboardService {
   async getTimeline(hours = 24): Promise<Array<{ timestamp: string; event: string; detail: string }>> {
     const cutoff = Date.now() - hours * 60 * 60 * 1000;
     const history = await this.eventBus.getHistory();
-    const filtered = history.filter(e => new Date(e.timestamp).getTime() > cutoff);
+    const filtered = history.filter((e: any) => new Date(e.timestamp).getTime() > cutoff);
 
-    return filtered.map(e => ({
+    return filtered.map((e: any) => ({
       timestamp: e.timestamp,
       event: e.type,
       detail: JSON.stringify(e.payload || {}),

@@ -1,4 +1,5 @@
 export { NotificationSystem } from './notification-system';
+export { NotificationManager } from './notification-manager';
 export {
   ToastChannel,
   BannerChannel,
@@ -6,6 +7,7 @@ export {
   DesktopChannel,
   WebhookChannel,
   CliChannel,
+  BaseChannel,
 } from './channels';
 export {
   NotificationSeverity,
@@ -32,4 +34,6 @@ export type {
   DesktopConfig,
   WebhookConfig,
   CliConfig,
+  NotificationStats,
+  NotificationFilter,
 } from './types';

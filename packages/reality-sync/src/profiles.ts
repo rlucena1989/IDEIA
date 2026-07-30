@@ -1,4 +1,6 @@
 import * as fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('reality-sync-profiles');
 import * as path from 'node:path';
 
 export type ProfileLevel = 'passive' | 'assisted' | 'autonomous';
@@ -95,7 +97,7 @@ export function applyProfile(name: string, workspaceRoot: string): ProfilePreset
   profiles.active = profile;
   fs.writeFileSync(profilesPath, JSON.stringify(profiles, null, 2), 'utf-8');
 
-  console.log(`✓ Profile '${name}' applied: level=${profile.level}, risk=${profile.riskThreshold}`);
+  logger.info('✓ Profile \'${name}\' applied: level=${profile.level}, risk=${profile.riskThreshold}');
   return profile;
 }
 

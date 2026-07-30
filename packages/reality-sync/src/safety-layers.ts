@@ -1,4 +1,5 @@
 import { EventEmitter } from 'node:events';
+import { createLogger } from '@ideia/logger';
 
 export interface LayerCheckResult {
   layer: LayerName;
@@ -108,7 +109,7 @@ export class SafetyLayers extends EventEmitter {
   bypassAll(action: SafetyAction, reason: string): { ok: boolean; results: LayerCheckResult[] } {
     const layers: LayerName[] = ['L1:RollbackReady', 'L2:AuditTrail', 'L3:ScopeIsolation', 'L4:ContractEnforce', 'L5:AutonomyPolicy', 'L6:SafetyCircuit', 'L7:HumanOverride'];
     const results: LayerCheckResult[] = layers.map(l => {
-      this.layerStatus[l]!.bypassed = true;
+      if (this.layerStatus[l]) this.layerStatus[l].bypassed = true;
       this.bypassReasons.set(l, reason);
       return { layer: l, ok: true, reason: `Bypassed: ${reason}` };
     });
@@ -133,12 +134,12 @@ export class SafetyLayers extends EventEmitter {
     };
 
     const result = await checkMap[layer](action);
-    this.layerStatus[layer]!.lastCheck = Date.now();
+    if (this.layerStatus[layer]) this.layerStatus[layer].lastCheck = Date.now();
     return result;
   }
 
   bypass(layer: LayerName, reason: string): void {
-    this.layerStatus[layer]!.bypassed = true;
+    if (this.layerStatus[layer]) this.layerStatus[layer].bypassed = true;
     this.bypassReasons.set(layer, reason);
     this.emit('safety:layer-bypassed', { layer, reason, timestamp: Date.now() });
   }
@@ -149,7 +150,7 @@ export class SafetyLayers extends EventEmitter {
 
   reset(): void {
     for (const key of Object.keys(this.layerStatus)) {
-      this.layerStatus[key]!.bypassed = false;
+      if (this.layerStatus[key]) this.layerStatus[key].bypassed = false;
     }
     this.bypassReasons.clear();
     this.emit('safety:reset', { timestamp: Date.now() });

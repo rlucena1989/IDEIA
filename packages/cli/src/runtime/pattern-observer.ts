@@ -1,4 +1,5 @@
 import { PatternRegistry, PatternDefinition, PatternCategory, PatternMatch } from './pattern-registry';
+import { createLogger } from '@ideia/logger';
 
 /** Interface que define a estrutura de pattern signal. */
 export interface PatternSignal {
@@ -47,13 +48,14 @@ export class PatternObserver {
       for (let i = 0; i < pattern.examples.length; i++) {
         const example = pattern.examples[i];
         for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
-          if (lines[lineIdx]!.toLowerCase().includes(example.toLowerCase())) {
+          const line = lines[lineIdx] ?? '';
+          if (line.toLowerCase().includes(example.toLowerCase())) {
             const signal: PatternSignal = {
               id: `sig_${pattern.id}_${source}_${lineIdx}`,
               patternId: pattern.id,
               source,
               line: lineIdx + 1,
-              content: lines[lineIdx]!.trim(),
+              content: line.trim(),
               confidence: pattern.confidence,
               timestamp: Date.now(),
             };
@@ -63,7 +65,7 @@ export class PatternObserver {
               source,
               line: lineIdx + 1,
               confidence: pattern.confidence,
-              evidence: lines[lineIdx]!.trim(),
+              evidence: line.trim(),
             });
           }
         }
@@ -118,7 +120,7 @@ export function inferPattern(
     if (!signalByPattern.has(s.patternId)) {
       signalByPattern.set(s.patternId, []);
     }
-    signalByPattern.get(s.patternId) ?? {}.push(s);
+    (signalByPattern.get(s.patternId) ?? []).push(s);
   }
 
   for (const pattern of patterns) {

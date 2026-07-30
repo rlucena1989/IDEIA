@@ -1,4 +1,5 @@
 import type { WsEventType as ContractWsEventType, WsClientEvent, WsServerEvent, WsBroadcastEvent } from '@ideia/contracts';
+import { createLogger } from '@ideia/logger';
 
 export type { WsClientEvent, WsServerEvent, WsBroadcastEvent };
 
@@ -60,7 +61,27 @@ export type EventType =
   // Scope isolation events
   | 'scope.violation.detected'
   | 'scope.access.blocked'
-  | 'scope.access.allowed';
+  | 'scope.access.allowed'
+  // S24 Control & Tuning events
+  | 'control.breaker.tripped'
+  | 'control.breaker.reset'
+  | 'control.breaker.evaluated'
+  | 'control.safety.evaluate'
+  | 'control.safety.report'
+  | 'control.safety.layer-status'
+  | 'control.continuity.paused'
+  | 'control.continuity.resumed'
+  | 'control.continuity.escalated'
+  | 'control.continuity.decision'
+  | 'control.bhp.message'
+  | 'control.bhp.consensus'
+  | 'control.bhp.evaluation'
+  | 'control.bhp.escalated'
+  | 'control.profile.usability-update'
+  | 'control.profile.usability-adapt'
+  | 'control.chaos.test-started'
+  | 'control.chaos.test-completed'
+  | 'control.chaos.test-failed';
 
 export interface EventPayload {
   approved?: boolean;
@@ -89,6 +110,10 @@ export interface EventPayload {
   evolution?: Record<string, unknown>;
   metric?: Record<string, unknown>;
   slo?: Record<string, unknown>;
+  breaker?: Record<string, unknown>;
+  continuity?: Record<string, unknown>;
+  chaos?: Record<string, unknown>;
+  usability?: Record<string, unknown>;
 }
 
 export interface BusEvent {

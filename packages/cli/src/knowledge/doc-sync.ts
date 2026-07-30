@@ -1,4 +1,6 @@
 import { DocumentationArtifact } from './knowledge-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('doc-sync');
 
 export interface SyncResult {
   syncedCount: number;

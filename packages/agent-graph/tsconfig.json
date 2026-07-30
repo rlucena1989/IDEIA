@@ -1,0 +1,42 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
+    "strict": true,
+    "composite": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../agent-runtime"
+    },
+    {
+      "path": "../checkpoint-engine"
+    },
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../data-layer"
+    },
+    {
+      "path": "../memory-store"
+    }
+  ]
+}

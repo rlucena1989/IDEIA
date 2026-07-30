@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { Plan, PlannedStep, DecompositionStrategy, PlanStatus, RiskAssessment, CostEstimate } from './types';
 import { AdaptiveDecomposer } from './decomposer';
 import { DependencyAnalyzer } from './dependency-analyzer';

@@ -1,4 +1,6 @@
 import * as fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('study-scanner');
 import * as path from 'node:path';
 import { EventEmitter } from 'node:events';
 import { StudyIntensifier } from './study-intensifier';
@@ -38,7 +40,7 @@ export class StudyScanner extends EventEmitter {
   }
 
   private log(msg: string): void {
-    if (this.verbose) console.log(`[StudyScanner] ${msg}`);
+    if (this.verbose) logger.info('[StudyScanner] ${msg}');
   }
 
   private findEstudosDir(root: string): string {
@@ -130,8 +132,8 @@ export class StudyScanner extends EventEmitter {
         this.log(`Avg score: ${avgScore}/5 (${scores.length} studies)`);
         this.emit('monitoring:tick', { entry, timestamp: Date.now() });
       } catch (_err) {
-        this.log(`Scan error: ${err instanceof Error ? err.message : String(err)}`);
-        this.emit('monitoring:error', { error: err, timestamp: Date.now() });
+        this.log(`Scan error: ${_err instanceof Error ? _err.message : String(_err)}`);
+        this.emit('monitoring:error', { error: _err, timestamp: Date.now() });
       }
     };
 

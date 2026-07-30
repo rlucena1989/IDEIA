@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/observability",
+  "description": "IDEIA Observability Engine — NATS metrics, SLO monitoring, Prometheus export, and alert management",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-vm-modules ../../node_modules/.bin/jest --config ../../jest.config.js --roots packages/observability"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

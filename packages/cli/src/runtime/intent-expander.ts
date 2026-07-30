@@ -1,4 +1,6 @@
 import { ChangeIntent } from './consistency-engine';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('intent-expander');
 
 /** Interface que define a estrutura de expanded intent. */
 export interface ExpandedIntent {

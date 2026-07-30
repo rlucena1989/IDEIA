@@ -1,4 +1,5 @@
 import { HealthChecker, ComponentHealth, HealthCheckResult, HealthStatus, HealthCheckOptions } from './types';
+import { createLogger } from '@ideia/logger';
 import { SystemChecker, ProcessChecker } from './system';
 
 export class HealthCheckAggregator {
@@ -36,7 +37,7 @@ export class HealthCheckAggregator {
           return {
             name: checker.name,
             status: 'unhealthy' as HealthStatus,
-            message: `Error: ${err instanceof Error ? err.message : String(err)}`,
+            message: `Error: ${_err instanceof Error ? _err.message : String(_err)}`,
             latency: Date.now() - start,
           } as ComponentHealth;
         }

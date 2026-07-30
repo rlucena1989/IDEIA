@@ -96,21 +96,136 @@ describe('initRegistry', () => {
   });
 });
 
-describe('agentsCommand', () => {
-  it('should be defined', () => {
-    expect(agentsCommand).toBeDefined();
+describe('agentsCommand actions', () => {
+  let logSpy: jest.SpyInstance;
+  let errorSpy: jest.SpyInstance;
+  let exitSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    logSpy = jest.spyOn(console, 'log').mockImplementation();
+    errorSpy = jest.spyOn(console, 'error').mockImplementation();
+    exitSpy = jest.spyOn(process, 'exit').mockImplementation((() => { throw new Error('exit'); }) as () => never);
   });
 
-  it('should return a Command object with subcommands', () => {
+  afterEach(() => {
+    logSpy.mockRestore();
+    errorSpy.mockRestore();
+    exitSpy.mockRestore();
+  });
+
+  it('list --json deve retornar JSON', () => {
     const cmd = agentsCommand();
-    expect(cmd.name()).toBe('agents');
-    const subcommands = cmd.commands.map((c: { name: () => string }) => c.name());
-    expect(subcommands).toContain('list');
-    expect(subcommands).toContain('validate');
-    expect(subcommands).toContain('init');
-    expect(subcommands).toContain('show');
-    expect(subcommands).toContain('run');
-    expect(subcommands).toContain('sessions');
-    expect(subcommands).toContain('conversation');
+    cmd.parse(['node', 'test', 'list', '--json']);
+    const json = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(Array.isArray(json)).toBe(true);
+    expect(json.length).toBe(6);
+  });
+
+  it('show deve exibir agente existente', () => {
+    const cmd = agentsCommand();
+    cmd.parse(['node', 'test', 'show', 'engineer']);
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('engineer'));
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('Sim'));
+  });
+
+  it('show deve falhar para agente inexistente', () => {
+    const cmd = agentsCommand();
+    expect(() => cmd.parse(['node', 'test', 'show', 'ghost'])).toThrow('exit');
+    expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('ghost'));
+  });
+
+  it('validate deve falhar quando há violações', () => {
+    (fs.existsSync as jest.Mock).mockReturnValue(true);
+    (fs.readFileSync as jest.Mock).mockReturnValue(
+      'agents:\n  bad:\n    name: bad\n    description: Bad\n    can_write: false\n    context_profile: general\n    read_paths: []\n    write_paths: ["src/**/*"]\n    forbidden_paths: []\n'
+    );
+    const cmd = agentsCommand();
+    expect(() => cmd.parse(['node', 'test', 'validate'])).toThrow('exit');
+    expect(errorSpy).toHaveBeenCalled();
+  });
+
+  it('sessions deve mostrar mensagem quando vazio', () => {
+    const cmd = agentsCommand();
+    cmd.parse(['node', 'test', 'sessions']);
+    expect(logSpy).toHaveBeenCalledWith('No collaboration sessions found.');
+  });
+
+  it('conversation deve falhar para sessão inexistente', () => {
+    const cmd = agentsCommand();
+    expect(() => cmd.parse(['node', 'test', 'conversation', 'missing-id'])).toThrow('exit');
+    expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('missing-id'));
+  });
+
+  it('sessions --json deve retornar array JSON', () => {
+    const cmd = agentsCommand();
+    cmd.parse(['node', 'test', 'sessions', '--json']);
+    const json = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(Array.isArray(json)).toBe(true);
+  });
+
+  it('validate deve exibir sucesso para registry default', () => {
+    (fs.existsSync as jest.Mock).mockReturnValue(false);
+    const cmd = agentsCommand();
+    cmd.parse(['node', 'test', 'validate']);
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('válidas'));
+  });
+
+  it('show com agente existente nao deve lancar erro', () => {
+    const cmd = agentsCommand();
+    expect(() => cmd.parse(['node', 'test', 'show', 'engineer'])).not.toThrow();
+  });
+
+  it('init deve criar registry', () => {
+    const cmd = agentsCommand();
+    cmd.parse(['node', 'test', 'init']);
+    expect(fs.mkdirSync).toHaveBeenCalled();
+    expect(fs.writeFileSync).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('inicializado'));
+  });
+});
+
+describe('validateAgentPermissions - all violation types', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('detecta agente read-only com write_paths', () => {
+    (fs.existsSync as jest.Mock).mockReturnValue(true);
+    (fs.readFileSync as jest.Mock).mockReturnValue(
+      'agents:\n  bad:\n    name: bad\n    description: Bad\n    can_write: false\n    context_profile: general\n    read_paths: []\n    write_paths: ["src/**/*"]\n    forbidden_paths: []\n'
+    );
+    const result = validateAgentPermissions();
+    expect(result.valid).toBe(false);
+    expect(result.violations[0]).toContain('read-only');
+  });
+
+  it('detecta can_write com forbidden_paths **/*', () => {
+    (fs.existsSync as jest.Mock).mockReturnValue(true);
+    (fs.readFileSync as jest.Mock).mockReturnValue(
+      'agents:\n  bad:\n    name: bad\n    description: Bad\n    can_write: true\n    context_profile: general\n    read_paths: ["src/**/*"]\n    write_paths: ["src/**/*"]\n    forbidden_paths: ["**/*"]\n'
+    );
+    const result = validateAgentPermissions();
+    expect(result.valid).toBe(false);
+    expect(result.violations[0]).toContain('**/*');
+  });
+
+  it('detecta leitura global sem forbidden_paths', () => {
+    (fs.existsSync as jest.Mock).mockReturnValue(true);
+    (fs.readFileSync as jest.Mock).mockReturnValue(
+      'agents:\n  bad:\n    name: bad\n    description: Bad\n    can_write: false\n    context_profile: general\n    read_paths: ["**/*"]\n    write_paths: []\n    forbidden_paths: []\n'
+    );
+    const result = validateAgentPermissions();
+    expect(result.valid).toBe(false);
+    expect(result.violations[0]).toContain('leitura global');
+  });
+});
+
+describe('getAgent edge cases', () => {
+  it('deve retornar null para string vazia', () => {
+    expect(getAgent('')).toBeNull();
+  });
+
+  it('deve retornar null para nome com caracteres especiais', () => {
+    expect(getAgent('invalid@agent!')).toBeNull();
   });
 });

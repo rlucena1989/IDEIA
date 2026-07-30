@@ -71,7 +71,7 @@ export class LlmGuard {
         };
       }
     } catch (_err) {
-      log.warn('LLM unavailable, falling back to regex', { error: String(err) });
+      log.warn('LLM unavailable, falling back to regex', { error: String(_err) });
     }
 
     if (this.config.fallbackToRegex) {
@@ -129,7 +129,7 @@ export class LlmGuard {
         };
       }
     } catch (_err) {
-      log.warn('LLM query failed', { error: String(err) });
+      log.warn('LLM query failed', { error: String(_err) });
       return null;
     } finally {
       clearTimeout(timeout);

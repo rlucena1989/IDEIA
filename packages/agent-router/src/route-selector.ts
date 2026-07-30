@@ -1,4 +1,6 @@
 import { ComplexityLevel, RoutePipeline, AgentRole } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('route-selector');
 
 const PIPELINES: Record<ComplexityLevel, RoutePipeline> = {
   N0: { level: 'N0', requiredAgents: [], requirePlan: false, requireVerification: false, requireApproval: false, parallelAgents: false, maxSteps: 1, tokenBudget: 500, stages: ['classify', 'respond'] },

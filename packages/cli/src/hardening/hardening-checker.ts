@@ -1,7 +1,9 @@
 import { ConsistencyReport } from '../state/consistency-types';
+import { createLogger } from '@ideia/logger';
 import { DevkitState } from '../state/state-types';
 import { HardeningWarning } from './warning-contract';
 import { HardeningError } from './error-contract';
+const logger = createLogger('hardening-checker');
 
 export interface HardeningCheckResult {
   ok: boolean;

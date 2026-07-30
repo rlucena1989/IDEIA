@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { Certification, CertificationStatus, ComplianceCheck, TrustReport } from './types';
 export class OrgTrust {
   private certifications: Map<string,Certification> = new Map();

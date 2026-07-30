@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/realtime-collaboration",
+  "private": true,
+  "description": "Real-time Collaboration — edicao colaborativa, CRDT, cursors, operacoes concorrentes e presenca",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

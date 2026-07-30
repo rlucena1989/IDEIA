@@ -31,6 +31,7 @@ export declare class NatsConnectionManager {
     disconnect(): Promise<void>;
     getConnection(): NatsConnection | null;
     isConnected(): Promise<boolean>;
+    hasJetStream(): Promise<boolean>;
     getStringCodec(): import("nats").Codec<string>;
 }
 export declare function createNatsConnectionManager(config?: NatsConnectionConfig): NatsConnectionManager;

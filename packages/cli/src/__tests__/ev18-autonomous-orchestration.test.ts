@@ -3,6 +3,21 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 
+jest.mock('@ideia/logger', () => ({
+  createStructuredLogger: jest.fn().mockReturnValue({
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn(),
+  }),
+  createLogger: jest.fn().mockReturnValue({
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn(),
+  }),
+}));
+
 
 
 const TEST_CWD = path.join(os.tmpdir(), 'ai-devkit-ev18-test');

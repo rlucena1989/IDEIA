@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import * as crypto from 'node:crypto';
 import { TelemetryCollector } from '../telemetry/telemetry-collector';
 import { createTelemetryEvent } from '../telemetry/telemetry-types';

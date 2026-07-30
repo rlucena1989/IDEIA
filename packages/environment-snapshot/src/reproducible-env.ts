@@ -72,7 +72,7 @@ export class ReproducibleEnvironment {
         stderr: '',
         exitCode: 0,
       };
-    } catch (_e) {
+    } catch (e) {
       const err = e as { stdout?: string; stderr?: string; status?: number; message?: string };
       return {
         stdout: (err.stdout ?? '').toString(),

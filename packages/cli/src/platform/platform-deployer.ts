@@ -1,4 +1,6 @@
 import { PlatformPackage } from './platform-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('platform-deployer');
 
 export interface DeployResult {
   deployed: boolean;

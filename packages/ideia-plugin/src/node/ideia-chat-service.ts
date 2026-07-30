@@ -1,4 +1,5 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { v4 as uuid } from 'uuid';
 import { EventBus } from '@ideia/event-bus';
 import { evaluatePolicy } from '@ideia/policy-engine';
@@ -64,7 +65,7 @@ export class IDEIA_ChatBackendService implements IDEIA_ChatService {
     const conversation = this.conversations.get(request.conversationId);
     if (!conversation) throw new Error(`Conversation ${request.conversationId} not found`);
 
-    conversation.messages.push({
+    conversation!.messages.push({
       id: uuid(),
       role: 'user',
       content: request.message,
@@ -82,14 +83,14 @@ export class IDEIA_ChatBackendService implements IDEIA_ChatService {
     let conversation = this.conversations.get(request.conversationId);
     if (!conversation) {
       const id = await this.createConversation();
-      conversation = this.conversations.get(id) ?? null;
+      conversation = this.conversations.get(id) ?? undefined;
     }
 
     const abortController = new AbortController();
-    const streamKey = request.conversationId || conversation.id;
+    const streamKey = request.conversationId || conversation!.id;
     this.activeStreams.set(streamKey, { abortController, conversationId: streamKey });
 
-    conversation.messages.push({
+    conversation!.messages.push({
       id: uuid(),
       role: 'user',
       content: request.message,
@@ -97,7 +98,7 @@ export class IDEIA_ChatBackendService implements IDEIA_ChatService {
     });
 
     const systemPrompt = this.buildSystemPrompt(request);
-    const messages = this.buildLLMMessages(conversation, systemPrompt);
+    const messages = this.buildLLMMessages(conversation as any, systemPrompt);
 
     let eventCount = 0;
 
@@ -155,7 +156,7 @@ export class IDEIA_ChatBackendService implements IDEIA_ChatService {
             tc.status = 'completed';
             tc.result = result;
 
-            conversation.messages.push({
+            conversation!.messages.push({
               id: uuid(),
               role: 'tool',
               content: JSON.stringify(result),
@@ -166,9 +167,9 @@ export class IDEIA_ChatBackendService implements IDEIA_ChatService {
 
           const checkpoints = this.parseCheckpoints(assistantContent);
           for (const cp of checkpoints) {
-            const existing = conversation.checkpoints.find(c => c.id === cp.id);
+            const existing = conversation!.checkpoints.find(c => c.id === cp.id);
             if (!existing) {
-              conversation.checkpoints.push(cp);
+              conversation!.checkpoints.push(cp);
               yield createSSEEvent('checkpoint', cp);
               eventCount++;
             }
@@ -179,7 +180,7 @@ export class IDEIA_ChatBackendService implements IDEIA_ChatService {
       if (checkCancelled()) return;
 
       if (assistantContent) {
-        conversation.messages.push({
+        conversation!.messages.push({
           id: uuid(),
           role: 'assistant',
           content: assistantContent,
@@ -195,7 +196,7 @@ export class IDEIA_ChatBackendService implements IDEIA_ChatService {
         payload: { conversationId: request.conversationId },
       });
     } catch (_err) {
-      yield createSSEEvent('error', err instanceof Error ? err.message : 'Unknown error');
+      yield createSSEEvent('error', _err instanceof Error ? _err.message : 'Unknown error');
     } finally {
       clearInterval(heartbeatInterval);
       this.activeStreams.delete(streamKey);
@@ -287,7 +288,7 @@ export class IDEIA_ChatBackendService implements IDEIA_ChatService {
         try {
           await this.taskRunner.applyChanges([change]);
         } catch (_err) {
-          const msg = err instanceof Error ? err.message : String(err);
+          const msg = _err instanceof Error ? _err.message : String(_err);
           errors.push({ path: change.path, error: msg });
         }
       }
@@ -342,7 +343,7 @@ ${request.context?.selectedText ? `Selected text: ${request.context.selectedText
   private buildLLMMessages(conversation: Conversation, systemPrompt: string): Array<{ role: string; content: string }> {
     return [
       { role: 'system', content: systemPrompt },
-      ...conversation.messages.map(m => ({
+      ...conversation!.messages.map(m => ({
         role: m.role === 'tool' ? 'tool' : m.role,
         content: m.content,
       })),
@@ -393,7 +394,7 @@ ${request.context?.selectedText ? `Selected text: ${request.context.selectedText
       }
     } catch (_err) {
       tc.status = 'failed';
-      tc.error = err instanceof Error ? err.message : String(err);
+      tc.error = _err instanceof Error ? _err.message : String(_err);
       return { error: tc.error };
     }
   }

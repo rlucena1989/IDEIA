@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
 import type {
@@ -40,7 +41,7 @@ export class Scaffolder {
 
     try {
       await fs.mkdir(targetDir, { recursive: true });
-    } catch (_err) {
+    } catch (err) {
       errors.push(`Failed to create target directory: ${(err as Error).message}`);
       return this.errorResult(targetDir, errors, startTime);
     }
@@ -101,7 +102,7 @@ export class Scaffolder {
 
         await fs.writeFile(pkgPath, JSON.stringify(pkgJson, null, 2), 'utf-8');
         filesCreated++;
-      } catch (_err) {
+      } catch (err) {
         errors.push(`Dependency resolution failed: ${(err as Error).message}`);
       }
     }
@@ -120,7 +121,7 @@ export class Scaffolder {
           const written = await this.writeGeneratedFile(cf, targetDir);
           if (written) filesCreated++;
         }
-      } catch (_err) {
+      } catch (err) {
         errors.push(`Contract generation failed: ${(err as Error).message}`);
       }
     }
@@ -135,7 +136,7 @@ export class Scaffolder {
           );
           if (written) filesCreated++;
         }
-      } catch (_err) {
+      } catch (err) {
         errors.push(`ADR generation failed: ${(err as Error).message}`);
       }
     }
@@ -149,7 +150,7 @@ export class Scaffolder {
     if (!options.skipGit) {
       try {
         await this.initGit(targetDir);
-      } catch (_err) {
+      } catch (err) {
         warnings.push(`Git init failed: ${(err as Error).message}`);
       }
     }
@@ -157,7 +158,7 @@ export class Scaffolder {
     if (!options.skipInstall) {
       try {
         await this.installDependencies(targetDir);
-      } catch (_err) {
+      } catch (err) {
         warnings.push(`Dependency installation failed: ${(err as Error).message}`);
       }
     }
@@ -209,13 +210,13 @@ export class Scaffolder {
           await fs.mkdir(path.dirname(fullPath), { recursive: true });
           await fs.writeFile(fullPath, content, 'utf-8');
           created++;
-        } catch (_err) {
+        } catch (err) {
           errors.push(`Failed to render template for "${key}": ${(err as Error).message}`);
         }
       } else {
         try {
           await fs.mkdir(fullPath, { recursive: true });
-        } catch (_err) {
+        } catch (err) {
           errors.push(`Failed to create directory "${resolvedKey}": ${(err as Error).message}`);
         }
       }
@@ -351,7 +352,7 @@ export class Scaffolder {
         if (step.description) {
           process.stdout.write(' done\n');
         }
-      } catch (_err) {
+      } catch (err) {
         warnings.push(`Post-process step "${step.command}" failed: ${(err as Error).message}`);
       }
     }

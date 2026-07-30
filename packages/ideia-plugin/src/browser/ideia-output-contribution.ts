@@ -1,5 +1,7 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { OutputChannelManager } from '@theia/output/lib/browser/output-channel';
+const logger = createLogger('ideia-output-contribution');
 
 @injectable()
 export class IDEIA_OutputContribution {

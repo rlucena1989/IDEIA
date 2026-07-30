@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.consistency');
 import { ConsistencyEngine, classifyIntent, estimateComplexity, calculateRisk } from '../runtime/consistency-engine';
 import { detectEquivalence } from '../runtime/equivalence-detector';
 import { SolutionUpgrader } from '../runtime/solution-upgrader';
@@ -29,12 +31,12 @@ function createConsistencyCommand(): Command {
 
       if (opts.json) { console.log(JSON.stringify(report, null, 2)); return; }
 
-      console.log(`\nConsistencia Engine — "${file}":`);
-      console.log(`  ${report.summary}`);
+      logger.info('\nConsistencia Engine — "${file}":');
+      logger.info('  ${report.summary}');
       for (const d of report.decisions) {
         const icon = d.mode === 'preserve' ? 'P' : d.mode === 'adapt' ? 'A' : d.mode === 'replace' ? 'R' : 'C';
-        console.log(`  [${icon}] ${d.patternId.padEnd(25)} conf:${(d.confidence * 100).toFixed(0)}% — ${d.reason.substring(0, 80)}`);
-        if (d.riskWarning) console.log(`         ⚠ ${d.riskWarning}`);
+        logger.info('  [${icon}] ${d.patternId.padEnd(25)} conf:${(d.confidence * 100).toFixed(0)}% — ${d.reason.substring(0, 80)}');
+        if (d.riskWarning) logger.info('         ⚠ ${d.riskWarning}');
       }
     });
 
@@ -53,17 +55,17 @@ function createConsistencyCommand(): Command {
 
       if (opts.json) { console.log(JSON.stringify({ intent, complexity, risk, expanded, riskAssessment }, null, 2)); return; }
 
-      console.log(`\nClassificacao de "${file}":`);
-      console.log(`  Intencao: ${intent}`);
-      console.log(`  Complexidade: ${complexity}/10`);
-      console.log(`  Risco: ${risk} | Risco pos-mitigacao: ${riskAssessment.mitigatedRisk}`);
-      console.log(`  Escopo: ${expanded.scope}`);
-      console.log(`  Impacto: ${expanded.impactAreas.join(', ')}`);
-      console.log(`\n  Recomendacoes:`);
-      for (const r of expanded.recommendations) console.log(`    - ${r}`);
-      console.log(`\n  Fatores de risco:`);
+      logger.info('\nClassificacao de "${file}":');
+      logger.info('  Intencao: ${intent}');
+      logger.info('  Complexidade: ${complexity}/10');
+      logger.info('  Risco: ${risk} | Risco pos-mitigacao: ${riskAssessment.mitigatedRisk}');
+      logger.info('  Escopo: ${expanded.scope}');
+      logger.info('  Impacto: ${expanded.impactAreas.join(\', \')}');
+      logger.info('\n  Recomendacoes:');
+      for (const r of expanded.recommendations) logger.info('    - ${r}');
+      logger.info('\n  Fatores de risco:');
       for (const f of riskAssessment.factors) {
-        if (f.severity > 0.05) console.log(`    ${f.name}: impacto=${f.impact}, probabilidade=${f.probability}, severidade=${f.severity} — ${f.mitigation}`);
+        if (f.severity > 0.05) logger.info('    ${f.name}: impacto=${f.impact}, probabilidade=${f.probability}, severidade=${f.severity} — ${f.mitigation}');
       }
     });
 
@@ -80,13 +82,13 @@ function createConsistencyCommand(): Command {
 
       if (opts.json) { console.log(JSON.stringify(result, null, 2)); return; }
 
-      console.log(`\nEquivalencia entre "${fileA}" e "${fileB}":`);
-      console.log(`  Similaridade estrutural: ${(result.structuralSimilarity * 100).toFixed(0)}%`);
-      console.log(`  Similaridade semantica: ${(result.semanticSimilarity * 100).toFixed(0)}%`);
-      console.log(`  Similaridade geral: ${(result.overallSimilarity * 100).toFixed(0)}%`);
-      console.log(`  Equivalentes: ${result.equivalent ? 'SIM' : 'NAO'}`);
-      if (result.confidence < 0.95) console.log(`  Confianca: ${(result.confidence * 100).toFixed(0)}%`);
-      for (const d of result.differences) console.log(`  Diferenca: ${d}`);
+      logger.info('\nEquivalencia entre "${fileA}" e "${fileB}":');
+      logger.info('  Similaridade estrutural: ${(result.structuralSimilarity * 100).toFixed(0)}%');
+      logger.info('  Similaridade semantica: ${(result.semanticSimilarity * 100).toFixed(0)}%');
+      logger.info('  Similaridade geral: ${(result.overallSimilarity * 100).toFixed(0)}%');
+      logger.info('  Equivalentes: ${result.equivalent ? \'SIM\' : \'NAO\'}');
+      if (result.confidence < 0.95) logger.info('  Confianca: ${(result.confidence * 100).toFixed(0)}%');
+      for (const d of result.differences) logger.info('  Diferenca: ${d}');
     });
 
   command
@@ -101,12 +103,12 @@ function createConsistencyCommand(): Command {
 
       if (opts.json) { console.log(JSON.stringify(plan, null, 2)); return; }
 
-      console.log(`\nUpgrade Analysis — "${file}":`);
-      console.log(`  ${plan.summary}`);
+      logger.info('\nUpgrade Analysis — "${file}":');
+      logger.info('  ${plan.summary}');
       for (const s of plan.suggestions) {
         const icon = s.breaking ? '!' : ' ';
-        console.log(`  [${icon}] ${s.id.padEnd(25)} ${s.description.padEnd(50)} esforco:${s.effort} risco:${s.risk}`);
-        console.log(`         ${s.oldPattern} → ${s.newPattern.substring(0, 60)}`);
+        logger.info('  [${icon}] ${s.id.padEnd(25)} ${s.description.padEnd(50)} esforco:${s.effort} risco:${s.risk}');
+        logger.info('         ${s.oldPattern} → ${s.newPattern.substring(0, 60)}');
       }
     });
 
@@ -127,17 +129,17 @@ function createConsistencyCommand(): Command {
         return;
       }
 
-      console.log(`\nMatriz de Consistência — ${report.generatedAt}:`);
-      console.log(`  Status geral: ${result.ok ? 'OK' : 'ATENÇÃO'}`);
-      console.log(`  Áreas com atenção: ${result.attentionCount}`);
-      console.log(`  Áreas bloqueadas: ${result.blockedCount}`);
+      logger.info('\nMatriz de Consistência — ${report.generatedAt}:');
+      logger.info('  Status geral: ${result.ok ? \'OK\' : \'ATENÇÃO\'}');
+      logger.info('  Áreas com atenção: ${result.attentionCount}');
+      logger.info('  Áreas bloqueadas: ${result.blockedCount}');
       for (const item of report.items) {
         const icon = item.status === 'ok' ? '✅' : item.status === 'attention' ? '⚠️' : '❌';
-        console.log(`  ${icon} ${item.area}`);
-        console.log(`     docs=${item.docs} code=${item.code} tests=${item.tests} cli=${item.cli} ext=${item.extension}`);
-        for (const note of item.notes) console.log(`     → ${note}`);
+        logger.info('  ${icon} ${item.area}');
+        logger.info('     docs=${item.docs} code=${item.code} tests=${item.tests} cli=${item.cli} ext=${item.extension}');
+        for (const note of item.notes) logger.info('     → ${note}');
       }
-      for (const s of report.summary) console.log(`  ℹ ${s}`);
+      for (const s of report.summary) logger.info('  ℹ ${s}');
     });
 
   return command;

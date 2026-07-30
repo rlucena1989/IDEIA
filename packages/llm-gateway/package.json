@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/llm-gateway",
+  "private": true,
+  "description": "Unified LLM gateway with provider routing, fallback chain, semantic cache, rate limiting, multi-tenancy, model management, circuit breaker, and cost-optimized routing",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*",
+    "@types/node": "*"
+  }
+}

@@ -1,4 +1,6 @@
 import type { MemoryRecord, MemoryPattern } from '@ideia/contracts';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('pattern-detector');
 
 export function detectPatterns(records: MemoryRecord[]): MemoryPattern[] {
   const counts = new Map<string, number>();

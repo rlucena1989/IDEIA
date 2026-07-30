@@ -91,7 +91,7 @@ export function buildCompletionContext(
 
 const KEYWORD_COMPLETIONS: Record<string, CompletionItem[]> = {
   typescript: [
-    { label: 'console.log', kind: 'function', insertText: 'console.log($1)', score: 0.7 },
+    { label: 'console.log', kind: 'function', insertText: 'logger.info($1)', score: 0.7 },
     { label: 'if', kind: 'keyword', insertText: 'if ($1) {\n  $2\n}', score: 0.8 },
     { label: 'for', kind: 'keyword', insertText: 'for (let i = 0; i < $1; i++) {\n  $2\n}', score: 0.7 },
     { label: 'import', kind: 'keyword', insertText: 'import { $1 } from "$2"', score: 0.8 },
@@ -103,7 +103,7 @@ const KEYWORD_COMPLETIONS: Record<string, CompletionItem[]> = {
     { label: 'class', kind: 'keyword', insertText: 'class $1 {\n  constructor($2) {\n    $3\n  }\n}', score: 0.6 },
   ],
   javascript: [
-    { label: 'console.log', kind: 'function', insertText: 'console.log($1)', score: 0.7 },
+    { label: 'console.log', kind: 'function', insertText: 'logger.info($1)', score: 0.7 },
     { label: 'function', kind: 'keyword', insertText: 'function $1($2) {\n  $3\n}', score: 0.7 },
     { label: 'const', kind: 'keyword', insertText: 'const $1 = $2', score: 0.8 },
     { label: 'import', kind: 'keyword', insertText: 'import { $1 } from "$2"', score: 0.8 },

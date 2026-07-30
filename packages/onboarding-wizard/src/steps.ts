@@ -1,4 +1,6 @@
 import type { WizardStep } from './types.js'
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('steps');
 
 export const WIZARD_STEPS: WizardStep[] = [
   {

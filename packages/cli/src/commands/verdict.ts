@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { consolidateSystem } from '../consolidation/consolidation-engine';
 import { createFinalVerdict } from '../consolidation/final-verdict';
 import { resolveAutonomy } from '../consolidation/autonomy-controller';

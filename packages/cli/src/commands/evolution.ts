@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { EvolutionCycle } from '@ideia/autonomous-evolution-engine';
 import { createBus } from '@ideia/event-bus';
 import { AuditTrail } from '@ideia/audit-trail';
@@ -10,8 +11,14 @@ export function evolutionCommand(): Command {
   const cmd = new Command('evolution')
     .description('Autonomous evolution engine: scan, analyze, evolve');
 
-  const _eventBus = await createBus();
-  const _auditTrail = new AuditTrail(path.join(os.tmpdir(), 'ideia-evolution-audit.json'));
+  let _eventBus: any;
+  let _auditTrail: AuditTrail;
+  async function init() {
+    if (!_eventBus) {
+      _eventBus = await createBus();
+      _auditTrail = new AuditTrail(path.join(os.tmpdir(), 'ideia-evolution-audit.json'));
+    }
+  }
 
   cmd
     .command('scan')

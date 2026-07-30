@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { cosineSimilarityDense, normalizeVector } from './embeddings';
 
@@ -265,7 +266,7 @@ export function getVectorStats(root: string): { total: number; dimensions: numbe
   if (docs.length === 0) return { total: 0, dimensions: 0, model: 'none' };
   return {
     total: docs.length,
-    dimensions: docs[0]!.dimensions,
-    model: docs[0]!.model,
+    dimensions: docs[0]?.dimensions ?? 0,
+    model: docs[0]?.model ?? 'none',
   };
 }

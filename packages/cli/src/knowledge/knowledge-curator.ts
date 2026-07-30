@@ -1,4 +1,6 @@
 import { KnowledgeEntry } from './knowledge-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('knowledge-curator');
 
 export function curateKnowledge(entries: KnowledgeEntry[]): KnowledgeEntry[] {
   const seen = new Set<string>();

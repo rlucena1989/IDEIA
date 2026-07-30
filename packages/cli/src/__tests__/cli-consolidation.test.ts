@@ -56,7 +56,8 @@ describe('command-runner', () => {
   });
 
   it('catches non-Error throws', async () => {
-    const handler = async (_ctx: CommandContext) => { throw new Error('string error'); };
+    // eslint-disable-next-line no-throw-literal
+    const handler = async (_ctx: CommandContext) => { throw 'string error'; };
     const runner = createCommandRunner(handler);
     const result = await runner(buildContext(['test']));
     expect(result.ok).toBe(false);

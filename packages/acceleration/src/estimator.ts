@@ -1,4 +1,6 @@
 import { ComplexityLevel } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('estimator');
 
 const TOKENS_PER_CHAR = 0.35;
 const MS_PER_TOKEN_FAST = 2;

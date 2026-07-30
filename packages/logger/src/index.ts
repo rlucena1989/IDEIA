@@ -110,3 +110,5 @@ export function getLogger(): Logger {
 export function createLogger(module = 'root'): Logger {
   return new ConsoleLogger(module);
 }
+
+export { createStructuredLogger, StructuredLogger, type StructuredLoggerOptions, type StructuredLogEntry } from './structured-logger';

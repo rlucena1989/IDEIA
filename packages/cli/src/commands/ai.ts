@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import YAML from 'yaml';
 import { printLine, printResult } from "../utils/output";
@@ -13,6 +14,8 @@ import { listModels, pullModel, removeModel, isModelTrusted, getSecurityAdvisory
 import { getAllProviders, testLatency } from '../local-ai/provider-router';
 import { getIO } from '../io';
 import { CognitiveCoprocessor } from '../cognitive-coprocessor/integration';
+
+const logger = createLogger('cli-ai');
 
 const _coprocessor = new CognitiveCoprocessor();
 
@@ -59,7 +62,7 @@ export async function aiClassifyAction(input: string, options: { model?: string;
 
     printLine(`Classificacao (IA local — ${routeConfig?.model || model}):`);
     printLine(`  Resultado: ${result}`);
-  } catch (_err) {
+  } catch (err) {
     printLine(`IA local indisponivel (${err instanceof Error ? err.message : String(err)}), usando fallback TF-IDF.`);
     const { category, confidence } = tfidfClassify(content);
     printLine(`  Categoria: ${category}`);
@@ -91,7 +94,7 @@ export async function aiSummarizeAction(input: string, options: { profile?: stri
       if (hints.hints.deterministicPaths.length > 0) {
         printLine(`  Caminhos deterministicos: ${hints.hints.deterministicPaths.join(', ')}`);
       }
-      console.log('');
+      logger.info('');
     }
   }
 
@@ -107,7 +110,7 @@ export async function aiSummarizeAction(input: string, options: { profile?: stri
 
     printLine(`Sumario (perfil: ${profile}):`);
     console.log('');
-    console.log(result);
+    logger.info(result);
 
     if (options.coprocess) {
       const validation = coprocessAfter(result, content);
@@ -118,7 +121,7 @@ export async function aiSummarizeAction(input: string, options: { profile?: stri
         }
       }
     }
-  } catch (_err) {
+  } catch (err) {
     printResult(`Erro ao conectar com IA local: ${err instanceof Error ? err.message : 'desconhecido'}`, false);
     printLine('Certifique-se de que o Ollama esteja rodando em http://localhost:11434');
   }
@@ -271,10 +274,10 @@ export function aiCommand(): Command {
     .description('Testa latencia de todos os providers configurados')
     .action(async () => {
       const results = await testLatency(ROOT);
-      console.log('\n=== Latency Test Results ===\n');
+      logger.info('\n=== Latency Test Results ===\n');
       for (const r of results) {
         const status = r.healthy ? `✅ ${r.latencyMs}ms` : '❌ Offline';
-        console.log(`  ${r.provider}: ${status}`);
+        logger.info('  ${r.provider}: ${status}');
       }
     });
 
@@ -286,10 +289,10 @@ export function aiCommand(): Command {
         const routingPath = path.join(ROOT, '.ai', 'local-ai', 'routing.yaml');
         const data = getIO().fs.exists(routingPath) ? YAML.parse(getIO().fs.read(routingPath, 'utf8')) : {};
         if (!data[task]) data[task] = {};
-        data[task]!.provider = provider;
+        if (data[task]) (data[task] as Record<string, unknown>).provider = provider;
         getIO().fs.write(routingPath, YAML.stringify(data));
         printResult(`Rota atualizada: ${task} → ${provider}`, true);
-      } catch (_err) {
+      } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         printResult(`Erro: ${msg}`, false);
       }
@@ -302,13 +305,13 @@ export function aiCommand(): Command {
     .description('Lista provedores de IA configurados e status')
     .action(async () => {
       const providers = getAllProviders();
-      console.log('\n=== AI Providers ===\n');
+      logger.info('\n=== AI Providers ===\n');
       for (const p of providers) {
         const healthy = await p.healthCheck();
         const status = healthy ? '✅ OK' : '⚠️  No API key';
         const models = await p.listModels();
-        console.log(`  ${p.name}: ${status}`);
-        console.log(`    Models: ${models.slice(0, 3).join(', ')}${models.length > 3 ? '...' : ''}`);
+        logger.info('  ${p.name}: ${status}');
+        logger.info('    Models: ${models.slice(0, 3).join(\', \')}${models.length > 3 ? \'...\' : \'\'}');
       }
     });
 
@@ -363,7 +366,7 @@ export function aiCommand(): Command {
           for (const h of hints.hints.hints) {
             printLine(`  [${h.type}] ${h.message}`);
           }
-          console.log('');
+          logger.info('');
         }
       }
       const result = await explainViolation(ROOT, id);

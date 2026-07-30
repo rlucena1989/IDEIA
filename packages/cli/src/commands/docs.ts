@@ -1,4 +1,8 @@
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.docs');
 import { Command } from 'commander';
+
+const log = createLogger('cli:commands:docs');
 import { handleDocResolve, handleDocAudit, handleDocSources, handleDocPolicy, handleDocStatus, DocResolveOutput, DocAuditOutput, DocSourcesOutput, DocPolicyOutput, DocStatusOutput } from '../domain/doc-service';
 import { KnowledgeBase } from '../knowledge/knowledge-base';
 import { createKnowledgeEntry } from '../knowledge/knowledge-types';
@@ -21,27 +25,27 @@ export function docsCommand(): Command {
       const result = handleDocResolve(taskType);
       if (!result.ok) {
         const data = result.error?.details as DocResolveOutput | undefined;
-        console.log(`⚠ Bloqueado: ${result.message}`);
+        logger.info('⚠ Bloqueado: ${result.message}');
         if (data?.fallbacks) {
-          console.log('Fallbacks disponíveis:');
+          logger.info('Fallbacks disponíveis:');
           for (const fb of data.fallbacks as Array<{ id: string; path: string; priority: number }>) {
-            console.log(`  ${fb.id} (${fb.path}) — prioridade ${fb.priority}`);
+            logger.info('  ${fb.id} (${fb.path}) — prioridade ${fb.priority}');
           }
         }
         return;
       }
       const data = result.data as DocResolveOutput;
-      console.log(`✅ ${result.message}`);
+      logger.info('✅ ${result.message}');
       const primary = data.primary as { path: string; category: string; priority: number } | null;
       if (primary) {
-        console.log(`   Caminho: ${primary.path}`);
-        console.log(`   Categoria: ${primary.category}`);
-        console.log(`   Prioridade: ${primary.priority}`);
+        logger.info('   Caminho: ${primary.path}');
+        logger.info('   Categoria: ${primary.category}');
+        logger.info('   Prioridade: ${primary.priority}');
       }
       if (data.fallbacks.length > 0) {
-        console.log('Fallbacks:');
+        logger.info('Fallbacks:');
         for (const fb of data.fallbacks as Array<{ id: string; path: string; priority: number }>) {
-          console.log(`  ${fb.id} (${fb.path}) — prioridade ${fb.priority}`);
+          logger.info('  ${fb.id} (${fb.path}) — prioridade ${fb.priority}');
         }
       }
     });
@@ -59,17 +63,17 @@ export function docsCommand(): Command {
       const data = result.data as DocAuditOutput;
       const conflicts = data.conflicts as Array<{ severity: string; taskType: string; reason: string; documents: string[]; recommendation: string }>;
       const status = data.status;
-      console.log(`Status: ${status === 'clean' ? '✅ Clean' : status === 'warning' ? '⚠ Warning' : '🔴 Blocked'}`);
-      console.log(`${conflicts.length} conflitos encontrados`);
+      logger.info('Status: ${status === \'clean\' ? \'✅ Clean\' : status === \'warning\' ? \'⚠ Warning\' : \'🔴 Blocked\'}');
+      logger.info('${conflicts.length} conflitos encontrados');
       for (const c of conflicts) {
         const icon = c.severity === 'critical' ? '🔴' : c.severity === 'high' ? '🟠' : c.severity === 'medium' ? '🟡' : '🟢';
-        console.log(`\n${icon} [${c.severity.toUpperCase()}] ${c.taskType}`);
-        console.log(`   Motivo: ${c.reason}`);
-        console.log(`   Documentos: ${c.documents.join(', ')}`);
-        console.log(`   Recomendação: ${c.recommendation}`);
+        logger.info('\n${icon} [${c.severity.toUpperCase()}] ${c.taskType}');
+        logger.info('   Motivo: ${c.reason}');
+        logger.info('   Documentos: ${c.documents.join(\', \')}');
+        logger.info('   Recomendação: ${c.recommendation}');
       }
       if (data.status === 'blocked') {
-        console.log('\n🔴 Conflitos críticos bloqueiam execução automática.');
+        logger.info('\n🔴 Conflitos críticos bloqueiam execução automática.');
       }
     });
 
@@ -86,14 +90,14 @@ export function docsCommand(): Command {
       }
       const sourcesData = result.data as DocSourcesOutput;
       const docs = sourcesData.documents as Array<{ id: string; title: string; path: string; category: string; priority: number; tags: string[] }>;
-      console.log(`📚 Fontes de verdade (${docs.length} ativas):\n`);
+      logger.info('📚 Fontes de verdade (${docs.length} ativas):\n');
       for (const doc of docs) {
-        console.log(`  ${doc.id}`);
-        console.log(`    Título: ${doc.title}`);
-        console.log(`    Caminho: ${doc.path}`);
-        console.log(`    Categoria: ${doc.category}`);
-        console.log(`    Prioridade: ${doc.priority}`);
-        console.log(`    Tags: ${doc.tags.join(', ')}`);
+        logger.info('  ${doc.id}');
+        logger.info('    Título: ${doc.title}');
+        logger.info('    Caminho: ${doc.path}');
+        logger.info('    Categoria: ${doc.category}');
+        logger.info('    Prioridade: ${doc.priority}');
+        logger.info('    Tags: ${doc.tags.join(\', \')}');
         console.log('');
       }
     });
@@ -111,23 +115,23 @@ export function docsCommand(): Command {
       const policyData = result.data as DocPolicyOutput;
       const policies = policyData.policies as Array<{ primaryDocument: string; fallbackDocuments?: string[]; conflictRule: string; executionMode: string; requiresApproval: boolean; taskType?: string }>;
       if (policies.length === 0) {
-        console.log(`Nenhuma política encontrada para "${taskType}"`);
+        logger.info('Nenhuma política encontrada para "${taskType}"');
         return;
       }
       if (taskType && policies.length === 1) {
         const p = policies[0];
-        console.log(`Política para "${taskType}":`);
-        console.log(`  Documento primário: ${p.primaryDocument}`);
-        console.log(`  Fallbacks: ${p.fallbackDocuments?.join(', ')}`);
-        console.log(`  Regra de conflito: ${p.conflictRule}`);
-        console.log(`  Modo de execução: ${p.executionMode}`);
-        console.log(`  Requer aprovação: ${p.requiresApproval ? 'Sim' : 'Não'}`);
+        logger.info('Política para "${taskType}":');
+        logger.info('  Documento primário: ${p.primaryDocument}');
+        logger.info('  Fallbacks: ${p.fallbackDocuments?.join(\', \')}');
+        logger.info('  Regra de conflito: ${p.conflictRule}');
+        logger.info('  Modo de execução: ${p.executionMode}');
+        logger.info('  Requer aprovação: ${p.requiresApproval ? \'Sim\' : \'Não\'}');
         return;
       }
-      console.log(`📋 Políticas documentais (${policies.length}):\n`);
+      logger.info('📋 Políticas documentais (${policies.length}):\n');
       for (const p of policies) {
-        console.log(`  ${p.taskType}`);
-        console.log(`    Primário: ${p.primaryDocument} | Regra: ${p.conflictRule} | Modo: ${p.executionMode}`);
+        logger.info('  ${p.taskType}');
+        logger.info('    Primário: ${p.primaryDocument} | Regra: ${p.conflictRule} | Modo: ${p.executionMode}');
         console.log('');
       }
     });
@@ -143,19 +147,19 @@ export function docsCommand(): Command {
         return;
       }
       const data = result.data as DocStatusOutput;
-      console.log('📊 Status da Governança Documental');
-      console.log('═══════════════════════════════════\n');
-      console.log(`Documentos ativos: ${data.totalDocuments}`);
-      console.log(`Políticas definidas: ${data.totalPolicies}`);
-      console.log(`Conflitos detectados: ${data.conflicts}`);
+      logger.info('📊 Status da Governança Documental');
+      logger.info('═══════════════════════════════════\n');
+      logger.info('Documentos ativos: ${data.totalDocuments}');
+      logger.info('Políticas definidas: ${data.totalPolicies}');
+      logger.info('Conflitos detectados: ${data.conflicts}');
       const statusLabel = data.status === 'clean' ? '✅ Clean' : data.status === 'warning' ? '⚠ Warning' : '🔴 Blocked';
-      console.log(`Status da auditoria: ${statusLabel}`);
+      logger.info('Status da auditoria: ${statusLabel}');
       console.log('');
-      console.log('Para detalhes, use:');
-      console.log('  ai-devkit docs sources        — listar fontes');
-      console.log('  ai-devkit docs policy         — listar políticas');
-      console.log('  ai-devkit docs audit          — auditar conflitos');
-      console.log('  ai-devkit docs resolve <type> — resolver documento');
+      logger.info('Para detalhes, use:');
+      logger.info('  ai-devkit docs sources        — listar fontes');
+      logger.info('  ai-devkit docs policy         — listar políticas');
+      logger.info('  ai-devkit docs audit          — auditar conflitos');
+      logger.info('  ai-devkit docs resolve <type> — resolver documento');
     });
 
   cmd
@@ -179,7 +183,7 @@ export function docsCommand(): Command {
         printLine(`  Tamanho: ${artifact.content.length} caracteres`);
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
-        console.error(`Erro na geração: ${message}`);
+        log.error(`Erro na geração: ${message}`);
         process.exit(1);
       }
     });
@@ -205,7 +209,7 @@ export function docsCommand(): Command {
         printLine(`  Timestamp: ${result.timestamp}`);
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
-        console.error(`Erro na sincronização: ${message}`);
+        log.error(`Erro na sincronização: ${message}`);
         process.exit(1);
       }
     });
@@ -232,7 +236,7 @@ export function docsCommand(): Command {
         printLine(`  Tamanho: ${artifact.content.length} caracteres`);
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
-        console.error(`Erro na publicação: ${message}`);
+        log.error(`Erro na publicação: ${message}`);
         process.exit(1);
       }
     });

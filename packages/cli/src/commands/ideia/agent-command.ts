@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.ideia.agent-command');
 import { AgentRegistry } from '../../agents/agent-registry';
 import { createAgent, createTask } from '../../agents/agent-types';
 import { coordinateTasks } from '../../agents/agent-coordinator';
@@ -37,17 +39,17 @@ export function ideiaAgentCommand(): Command {
 
         if (opts.json) { console.log(JSON.stringify(envelope, null, 2)); return; }
 
-        console.log(`\n${'='.repeat(56)}`);
-        console.log('  🤖 IDEIA — Agentes');
-        console.log(`${'='.repeat(56)}\n`);
+        logger.info('\n${\'=\'.repeat(56)}');
+        logger.info('  🤖 IDEIA — Agentes');
+        logger.info('${\'=\'.repeat(56)}\n');
 
         for (const a of agents) {
           const icon = a.status === 'idle' ? '💤' : a.status === 'busy' ? '⚡' : a.status === 'blocked' ? '🔴' : '📴';
-          console.log(`  ${icon} ${a.name} [${a.role}]`);
-          console.log(`     Status: ${a.status} | Capacidades: ${a.capabilities.join(', ')}`);
+          logger.info('  ${icon} ${a.name} [${a.role}]');
+          logger.info('     Status: ${a.status} | Capacidades: ${a.capabilities.join(\', \')}');
           console.log('');
         }
-        console.log(`  Total: ${agents.length} agentes registrados\n`);
+        logger.info('  Total: ${agents.length} agentes registrados\n');
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
         console.error(`\n❌ Erro: ${message}`);
@@ -73,11 +75,11 @@ export function ideiaAgentCommand(): Command {
         if (opts.json) { console.log(JSON.stringify(agent, null, 2)); return; }
 
         const statusIcon = agent.status === 'idle' ? '💤' : agent.status === 'busy' ? '⚡' : agent.status === 'blocked' ? '🔴' : '📴';
-        console.log(`\n  ${statusIcon} ${agent.name}`);
-console.log(`     ID: ${agent.agentId}`);
-console.log(`     Papel: ${agent.role}`);
-        console.log(`     Status: ${agent.status}`);
-        console.log(`     Capacidades: ${agent.capabilities.join(', ')}`);
+        logger.info('\n  ${statusIcon} ${agent.name}');
+logger.info('     ID: ${agent.agentId}');
+logger.info('     Papel: ${agent.role}');
+        logger.info('     Status: ${agent.status}');
+        logger.info('     Capacidades: ${agent.capabilities.join(\', \')}');
         console.log('');
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
@@ -112,9 +114,9 @@ console.log(`     Papel: ${agent.role}`);
         }
 
         if (assigned.length > 0) {
-          console.log(`\n✅ Tarefa atribuída a ${agent.name}: "${taskDescription}"\n`);
+          logger.info('\n✅ Tarefa atribuída a ${agent.name}: "${taskDescription}"\n');
         } else {
-          console.log(`\n❌ Agente ${agent.name} rejeitou a tarefa.\n`);
+          logger.info('\n❌ Agente ${agent.name} rejeitou a tarefa.\n');
         }
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
@@ -135,16 +137,16 @@ console.log(`     Papel: ${agent.role}`);
 
         if (opts.json) { console.log(JSON.stringify(report, null, 2)); return; }
 
-        console.log(`\n${'='.repeat(56)}`);
-        console.log('  📋 IDEIA — Relatório de Agentes');
-        console.log(`${'='.repeat(56)}\n`);
+        logger.info('\n${\'=\'.repeat(56)}');
+        logger.info('  📋 IDEIA — Relatório de Agentes');
+        logger.info('${\'=\'.repeat(56)}\n');
 
-        for (const s of report.summary) console.log(`  ℹ ${s}`);
+        for (const s of report.summary) logger.info('  ℹ ${s}');
 
         const total = agents.length;
         const busy = agents.filter(a => a.status === 'busy').length;
         const idle = agents.filter(a => a.status === 'idle').length;
-        console.log(`\n  Total: ${total} | Ocupados: ${busy} | Ociosos: ${idle}\n`);
+        logger.info('\n  Total: ${total} | Ocupados: ${busy} | Ociosos: ${idle}\n');
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
         console.error(`\n❌ Erro: ${message}`);

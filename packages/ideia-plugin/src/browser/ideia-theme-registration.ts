@@ -1,7 +1,9 @@
 import { injectable } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { ColorContribution } from '@theia/core/lib/browser/color-application-contribution';
 import { ColorRegistry } from '@theia/core/lib/browser/color-registry';
 import { ColorDefinition } from '@theia/core/lib/common/color';
+const logger = createLogger('ideia-theme-registration');
 
 export const IDEIA_DARK_THEME = {
   id: 'ideia-dark',

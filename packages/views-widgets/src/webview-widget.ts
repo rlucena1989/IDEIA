@@ -1,6 +1,8 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { IWebviewWidget, WidgetTitle } from './types';
 import { BaseWidget } from './widget-core';
+const logger = createLogger('webview-widget');
 
 export class WebviewWidget extends BaseWidget implements IWebviewWidget {
   private html = '';

@@ -1,6 +1,8 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { ScopeViolationEvent, Scope } from './types';
 import { ScopeViolationError } from './scope-isolation';
+const logger = createLogger('violation-audit');
 
 export class ViolationAudit {
   private events: ScopeViolationEvent[] = [];
@@ -17,6 +19,17 @@ export class ViolationAudit {
       this.events.shift();
     }
     return full;
+  }
+
+  auditCrossScope(fromScope: Scope, targetScope: Scope, targetPath: string, resolvedPath: string, operation: string): ScopeViolationEvent {
+    return this.record({
+      fromScope,
+      targetPath,
+      resolvedPath,
+      policyAction: 'blocked',
+      reason: `Cross-scope access detected: ${fromScope} → ${targetScope} on ${targetPath} (${operation})`,
+      approvalLevel: 'tech-lead',
+    });
   }
 
   recordFromError(error: ScopeViolationError): ScopeViolationEvent {

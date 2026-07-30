@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('schema');
 
 export const SessionSchema = z.object({
   id: z.string().uuid(),
@@ -87,7 +89,20 @@ const _PG_TYPE_MAP: Record<string, string> = {
   default: 'TEXT',
 };
 
+const VALID_DDL_TABLE_NAMES = new Set([
+  'ideia_audit_log', 'ideia_sessions', 'ideia_memory', 'ideia_decisions',
+  'ideia_metrics', 'ideia_errors', 'ideia_vectors',
+]);
+
+const VALID_TABLE_NAME_RE = /^[a-zA-Z_][a-zA-Z0-9_]{0,63}$/;
+
 export function zodToDDL(tableName: string, schema: z.ZodObject<z.ZodRawShape>, pgvector = false): string {
+  if (!VALID_TABLE_NAME_RE.test(tableName)) {
+    throw new Error(`SQL injection prevention: invalid table name "${tableName}" in DDL generation`);
+  }
+  if (!VALID_DDL_TABLE_NAMES.has(tableName)) {
+    throw new Error(`SQL injection prevention: table "${tableName}" not in DDL allowlist`);
+  }
   const shape = schema.shape;
   const cols: string[] = [];
 

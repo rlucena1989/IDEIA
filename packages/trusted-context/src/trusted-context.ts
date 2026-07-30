@@ -1,4 +1,5 @@
 import * as crypto from 'crypto'; import * as fs from 'fs'; import * as path from 'path';
+import { createLogger } from '@ideia/logger';
 import { ContextSource, ContextValidation, TrustReport } from './types';
 export class TrustedContext {
   private sources: ContextSource[] = [];

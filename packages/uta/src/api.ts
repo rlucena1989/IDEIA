@@ -1,4 +1,5 @@
 import { DiscoveryRegistry, createRegistry } from './registry';
+import { createLogger } from '@ideia/logger';
 import { ToolExecutor } from './executor';
 import { Tool, ToolCall } from './types';
 

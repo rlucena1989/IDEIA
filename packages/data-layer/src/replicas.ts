@@ -1,4 +1,5 @@
 import { DatabaseAdapter, DataLayerConfig, QueryResult } from './types';
+import { createLogger } from '@ideia/logger';
 
 export interface ReplicaConfig {
   replicas: { host: string; port: number; weight: number }[];

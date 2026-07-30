@@ -1,4 +1,5 @@
 import { MemoryGraph } from './graph';
+import { createLogger } from '@ideia/logger';
 import { GraphNode } from './types';
 
 export class GraphCrawler {

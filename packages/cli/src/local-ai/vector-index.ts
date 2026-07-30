@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { cosineSimilarityDense, normalizeVector } from './embeddings';
 import { RAG_DIR } from './vector-store';

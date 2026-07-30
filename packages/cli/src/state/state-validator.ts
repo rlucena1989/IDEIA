@@ -1,4 +1,6 @@
 import { DevkitState } from './state-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('state-validator');
 
 export interface StateValidationResult {
   valid: boolean;

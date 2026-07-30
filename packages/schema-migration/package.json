@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/schema-migration",
+  "private": true,
+  "description": "Schema Migration — Schema registry, upcaster, downcaster, double-write strategy, zero-downtime migration, Protobuf evolution, dual-write migrator, schema compatibility checker",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

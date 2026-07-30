@@ -50,3 +50,48 @@ export interface ImportResult {
 }
 
 export type ContextType = 'production' | 'development' | 'emergency' | 'learning';
+
+export interface SecurityRuleResult {
+  rule: string;
+  description: string;
+  passed: boolean;
+  message?: string;
+}
+
+export interface SecurityCheckResult {
+  passed: boolean;
+  rules: SecurityRuleResult[];
+}
+
+export interface SchemaField {
+  path: string;
+  type?: string;
+  description?: string;
+  required?: boolean;
+  minValue?: number;
+  maxValue?: number;
+  minLength?: number;
+  maxLength?: number;
+  allowedValues?: ConfigValue[];
+  pattern?: RegExp;
+}
+
+export interface ValidationError {
+  field: string;
+  message: string;
+  code: string;
+  severity: 'error' | 'warning';
+}
+
+export interface ValidationWarning {
+  field: string;
+  message: string;
+  code: string;
+  severity: 'warning';
+}
+
+export interface ValidationResult {
+  valid: boolean;
+  errors: ValidationError[];
+  warnings: ValidationWarning[];
+}

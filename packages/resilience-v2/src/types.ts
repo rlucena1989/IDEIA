@@ -1,4 +1,5 @@
 import { Disposable, Event } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 
 export enum CircuitState { CLOSED = 'closed', OPEN = 'open', HALF_OPEN = 'half_open' }
 
@@ -7,6 +8,7 @@ export interface CircuitBreakerConfig {
   failureThreshold: number;
   successThreshold: number;
   timeout: number;
+  halfOpenTimeout: number;
   halfOpenMaxRequests: number;
 }
 
@@ -132,4 +134,19 @@ export interface ShutdownStatus {
   completedServices: string[];
   pendingServices: string[];
   failedServices: string[];
+}
+
+
+export interface EscalationPolicy {
+  id: string;
+  name: string;
+  levels: EscalationLevel[];
+  cooldown: number;
+}
+
+export interface EscalationLevel {
+  level: number;
+  threshold: number;
+  action: string;
+  notifyees: string[];
 }

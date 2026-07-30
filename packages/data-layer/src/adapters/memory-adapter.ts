@@ -1,4 +1,6 @@
 import { DatabaseAdapter, DataLayerConfig, Migration, QueryResult } from '../types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('memory-adapter');
 
 export class MemoryAdapter implements DatabaseAdapter {
   private connected = false;

@@ -1,4 +1,6 @@
 import { ContextNode, SyncRequest } from './federation-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('federation-router');
 
 export function routeSync(nodes: ContextNode[], request: SyncRequest): ContextNode | undefined {
   const candidates = nodes.filter(n =>

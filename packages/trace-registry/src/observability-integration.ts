@@ -1,7 +1,9 @@
 import { TraceRegistry } from './trace-registry';
+import { createLogger } from '@ideia/logger';
 import type { TraceLink } from './types';
 import type { ObservabilityEngine } from '@ideia/observability-engine';
 import type { EventBus } from '@ideia/event-bus';
+const logger = createLogger('trace-registry:observability-integration');
 
 export interface TraceObservabilityConfig {
   durationThresholdMs?: number;
@@ -23,7 +25,7 @@ export function setupTraceObservability(
   },
   config: TraceObservabilityConfig = DEFAULT_CONFIG,
 ): { recordMetrics: () => void; getTraceMetrics: () => TraceMetrics } {
-  const log = (msg: string) => console.log(`[TraceObservability] ${msg}`);
+  const log = (msg: string) => logger.info('[TraceObservability] ${msg}');
 
   const cfg = { ...DEFAULT_CONFIG, ...config };
 
@@ -75,8 +77,8 @@ export function setupTraceObservability(
           observabilityEngine.recordMetric('trace.alert.high_block_rate', failureRate, { alert: 'high_block_rate' });
         }
       }
-    } catch (_err) {
-      console.error('[TraceObservability] Error recording metrics:', err);
+    } catch (err) {
+      logger.error('Error recording metrics', { error: String(err) });
     }
   }
 

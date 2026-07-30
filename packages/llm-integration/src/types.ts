@@ -1,5 +1,7 @@
 import { Disposable, Event } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { AiMessage, AiTool, AiStreamChunk } from '@ideia/theia-ai';
+const logger = createLogger('types');
 
 export interface LlmProviderConfig {
   id: string;

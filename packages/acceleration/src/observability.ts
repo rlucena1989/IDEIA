@@ -1,5 +1,7 @@
 import { Telemetry } from './telemetry';
+import { createLogger } from '@ideia/logger';
 import { MetricsStore } from './metrics-store';
+const logger = createLogger('observability');
 
 export class Observability {
   constructor(

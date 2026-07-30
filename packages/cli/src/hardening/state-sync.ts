@@ -1,4 +1,5 @@
 import * as fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'node:path';
 import { DevkitState } from '../state/state-types';
 import { CommandOutputEnvelope } from './output-contract';
@@ -25,7 +26,7 @@ export function syncStateToFile(state: DevkitState, outputPath: string): SyncRes
     return {
       written: false,
       path: outputPath,
-      error: err instanceof Error ? err.message : String(err),
+      error: _err instanceof Error ? _err.message : String(_err),
     };
   }
 }

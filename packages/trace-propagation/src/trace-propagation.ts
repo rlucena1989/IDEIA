@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto'; import { ServiceMapEdge, ServiceMapNode, Span, TraceContext } from './types';
+import { createLogger } from '@ideia/logger';
 export class TracePropagation {
   private spans: Span[] = []; private maxSpans = 10000;
   createTraceContext(): TraceContext {

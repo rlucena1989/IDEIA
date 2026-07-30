@@ -1,4 +1,6 @@
 import { ConsistencyReport } from './consistency-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('consistency-builder');
 
 export function buildConsistencyReport(): ConsistencyReport {
   return {

@@ -1,4 +1,5 @@
 import { BenchmarkReport, BenchmarkResult, BenchmarkScenario } from './types';
+import { createLogger } from '@ideia/logger';
 export class AgentBenchmark {
   private scenarios: BenchmarkScenario[] = [];
   addScenario(scenario: BenchmarkScenario): void { this.scenarios.push(scenario); }

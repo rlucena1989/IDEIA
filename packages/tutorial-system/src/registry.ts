@@ -1,4 +1,6 @@
 import { Tutorial, TutorialId, Difficulty } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('registry');
 
 export class TutorialRegistry {
   private tutorials: Map<TutorialId, Tutorial> = new Map();

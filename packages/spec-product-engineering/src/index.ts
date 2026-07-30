@@ -1,0 +1,8 @@
+export { AmbiguityDetector } from './ambiguity-detector'
+export { SpecGenerator } from './spec-generator'
+export { SpecValidator } from './spec-validator'
+export { SpecCompiler, SpecLexer, SpecParser } from './spec-compiler'
+export { RequirementGraph, ConflictDetector } from './requirement-graph'
+export { TraceabilityManager, CoverageAnalyzer, ImpactAnalyzer } from './coverage-analyzer'
+export { SpecificationPipeline } from './spec-pipeline'
+export * from './types'

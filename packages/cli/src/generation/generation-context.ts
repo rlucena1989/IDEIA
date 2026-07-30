@@ -1,4 +1,5 @@
 import { GenerationScope, GenerationPlan, PlannedArtifact } from './artifact-types';
+import { createLogger } from '@ideia/logger';
 import { planContent } from './content-planner';
 import { generateArtifacts, GeneratedArtifact, GeneratorContext } from './artifact-generator';
 import { validateGeneration, GenerationValidationResult } from './generation-validator';

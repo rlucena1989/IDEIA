@@ -1,4 +1,6 @@
 import { TelemetryEvent, TelemetryMetric } from './telemetry-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('telemetry-aggregator');
 
 export function aggregateTelemetry(events: TelemetryEvent[]): TelemetryMetric[] {
   const total = events.length;

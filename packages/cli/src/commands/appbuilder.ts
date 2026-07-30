@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { AppBlueprint, AppFeature, AppFramework, AppTemplate, AVAILABLE_TEMPLATES, AVAILABLE_FEATURES } from '../local-ai/appbuilder/types';
 import { generateApp } from '../local-ai/appbuilder/generator';

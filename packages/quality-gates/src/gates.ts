@@ -1,8 +1,10 @@
 import { GateDefinition, GateResult, BarrierDecision, ConfidenceScore, RegressionResult, VerificationLayer, GateSeverity, LayerResult } from './types';
+import { createLogger } from '@ideia/logger';
 import { GateBarrier } from './gate-barrier';
 import { ConfidenceScorer } from './confidence-scorer';
 import { MultiLayerVerifier } from './multi-layer';
 import { RegressionAnalyzer } from './regression-analyzer';
+const logger = createLogger('gates');
 
 export class QualityGateSystem {
   readonly barrier: GateBarrier;

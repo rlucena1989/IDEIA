@@ -1,8 +1,10 @@
 import { OperationalFailure } from './failure-types';
+import { createLogger } from '@ideia/logger';
 import { resolveFallback, FallbackAction } from './fallback-policy';
 import { buildRecoveryPlan, RecoveryPlan } from './recovery-plan';
 import { executeRecovery, RecoveryResult } from './recovery-engine';
 import { CircuitBreakerState, updateCircuitBreaker } from './circuit-breaker';
+const logger = createLogger('repair-coordinator');
 
 export interface RepairCoordinationResult {
   failure: OperationalFailure;

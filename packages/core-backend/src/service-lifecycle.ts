@@ -1,5 +1,7 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { ServiceLifecycle, ServiceState } from './types';
+const logger = createLogger('service-lifecycle');
 
 export abstract class AbstractServiceLifecycle implements ServiceLifecycle {
   protected _state: ServiceState = ServiceState.CREATED;

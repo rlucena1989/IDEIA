@@ -4,9 +4,36 @@
     "outDir": "dist",
     "rootDir": "src",
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
-    "strict": true
+    "strict": true,
+    "composite": true
   },
   "include": [
     "src/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../feedback-pipeline"
+    },
+    {
+      "path": "../memory-store"
+    },
+    {
+      "path": "../verification-layer"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../data-layer"
+    }
   ]
 }

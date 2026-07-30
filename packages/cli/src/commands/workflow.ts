@@ -1,4 +1,7 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+
+const logger = createLogger('cli:workflow');
 
 export function workflowCommand(): Command {
   const cmd = new Command('workflow')
@@ -13,7 +16,7 @@ export function workflowCommand(): Command {
       const root = process.cwd();
       const port = parseInt(options.port, 10);
       const server = await startIdeServer({ port, root, host: '127.0.0.1' });
-      console.log('[workflow] IDE server at ' + server.address);
+      logger.info('IDE server started', { address: server.address });
     });
 
   return cmd;

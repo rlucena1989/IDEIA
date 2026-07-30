@@ -1,5 +1,7 @@
 import { AgentTask, AgentTaskResult, OperationalAgent } from './agent-types';
+import { createLogger } from '@ideia/logger';
 import { canPerform } from './agent-capabilities';
+const logger = createLogger('agent-coordinator');
 
 export function coordinateTasks(
   agents: OperationalAgent[],

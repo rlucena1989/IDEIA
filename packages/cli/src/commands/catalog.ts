@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { ServiceCatalog, type ServiceEntry, type CapabilityEntry } from '../ecosystem/service-catalog';
 import { CapabilityDiscovery } from '../ecosystem/capability-discovery';
 import { SelfAwareness } from '../ecosystem/self-awareness';

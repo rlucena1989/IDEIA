@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
+import { createLogger } from '@ideia/logger';
 import { join, dirname } from 'path';
 import { createHash } from 'crypto';
 import { BumpType, CDCContract, ContractDiff, VersionSuggestion, PactContract, PactInteraction, ConsumerExpectation, ProviderVerificationResult, CompatibilityMatrix, CompatibilityMatrixEntry, PublishedContract, ContractStatus } from './types';
@@ -130,7 +131,8 @@ export class ContractCDC {
       if (!aEndpoints.has(key)) {
         changes.push(`Added endpoint ${eb.method} ${eb.path}`);
       } else {
-        const ea = contractA.endpoints.find(e => e.method === eb.method && e.path === eb.path)!;
+        const ea = contractA.endpoints.find(e => e.method === eb.method && e.path === eb.path);
+        if (!ea) continue;
         const reqKeys = Object.keys(eb.request);
         const resKeys = Object.keys(eb.response);
 

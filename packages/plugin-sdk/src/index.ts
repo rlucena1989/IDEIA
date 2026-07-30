@@ -1,6 +1,9 @@
 import { randomUUID, createHash } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import fs from 'fs';
 import path from 'path';
+
+const logger = createLogger('plugin-sdk');
 
 export interface PluginManifest {
   id: string;
@@ -148,8 +151,8 @@ export class PluginManager {
     try {
       if (hook === 'onActivate') plugin.activate(this.createPluginContext(pluginName));
       if (hook === 'onDeactivate') plugin.deactivate();
-    } catch (_e) {
-      console.error(`[Plugin:${pluginName}] Error in hook ${hook}:`, e);
+    } catch (err) {
+      logger.error(`Error in hook ${hook}`, { pluginName, error: String(err) });
     }
   }
 
@@ -158,10 +161,10 @@ export class PluginManager {
     return {
       eventBus: {
         emit: (event, payload) => {
-          console.log(`[Plugin:${pluginName}] Event bus emit: ${event}`, payload);
+          logger.info(`[Plugin:${pluginName}] Event bus emit: ${event}`, payload as Record<string, unknown> | undefined);
         },
         on: (event, _handler) => {
-          console.log(`[Plugin:${pluginName}] Event bus subscribe: ${event}`);
+          logger.info('[Plugin:${pluginName}] Event bus subscribe: ${event}');
           return () => {};
         },
       },
@@ -173,15 +176,15 @@ export class PluginManager {
           try { fs.mkdirSync(path.dirname(path.resolve(pluginDir, p)), { recursive: true }); fs.writeFileSync(path.resolve(pluginDir, p), c, 'utf-8'); return true; } catch { return false; }
         },
         watch: (_path, _callback) => {
-          console.log(`[Plugin:${pluginName}] File watch: ${_path}`);
+          logger.info('[Plugin:${pluginName}] File watch: ${_path}');
           return () => {};
         },
       },
       logger: {
-        info: (msg) => console.log(`[Plugin:${pluginName}] ℹ️ ${msg}`),
-        warn: (msg) => console.warn(`[Plugin:${pluginName}] ⚠️ ${msg}`),
-        error: (msg) => console.error(`[Plugin:${pluginName}] ❌ ${msg}`),
-        debug: (msg) => console.debug(`[Plugin:${pluginName}] 🔍 ${msg}`),
+        info: (msg) => logger.info(msg),
+        warn: (msg) => logger.warn(msg),
+        error: (msg) => logger.error(msg),
+        debug: (msg) => logger.debug(msg),
       },
       config: {
         get: (key) => {
@@ -218,8 +221,8 @@ export class PluginManager {
     for (const h of handlers) {
       try {
         h.handler(payload);
-      } catch (_e) {
-        console.error(`[PluginManager] Error firing ${hook}:`, e);
+      } catch (err) {
+        logger.error(`Error firing ${hook}`, { error: String(err) });
       }
     }
   }
@@ -246,7 +249,7 @@ export class PluginRegistry {
         if (!fs.existsSync(manifestPath)) continue;
         try {
           const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8')) as PluginManifest;
-          const result = validateManifest(manifest);
+          const result = validateManifest(manifest as unknown as Record<string, unknown>);
           if (result.valid) this.plugins.set(manifest.id, { manifest, api: this.createAPI(manifest), enabled: true, instance: {} });
         } catch {}
       }
@@ -258,7 +261,7 @@ export class PluginRegistry {
     const pluginDir = path.join(this.baseDir, manifest.id);
 
     return {
-      log: (msg) => console.log(`[Plugin:${manifest.id}] ${msg}`),
+      log: (msg) => logger.info('[Plugin:${manifest.id}] ${msg}'),
       readFile: (p) => {
         if (!perms.has('fs.read')) return null;
         const resolved = path.resolve(pluginDir, p.replace(/^\.\//, ''));
@@ -280,7 +283,7 @@ export class PluginRegistry {
         try {
           const response = await globalThis.fetch(url, opts as RequestInit);
           return { ok: response.ok, data: await response.text() };
-        } catch (_e) { return { ok: false, error: String(e) }; }
+        } catch (e) { return { ok: false, error: String(e) }; }
       },
       execCommand: (cmd) => {
         if (!perms.has('shell')) return { stdout: '', stderr: 'Shell access not allowed', code: 1 };
@@ -295,7 +298,7 @@ export class PluginRegistry {
       },
       emitEvent: (type, payload) => {
         if (!perms.has('event.emit')) return;
-        console.log(`[Plugin:${manifest.id}] Event: ${type}`, payload ?? '');
+        logger.info(`[Plugin:${manifest.id}] Event: ${type}`, payload as Record<string, unknown> | undefined);
       },
       getConfig: (key) => {
         try {
@@ -307,7 +310,7 @@ export class PluginRegistry {
   }
 
   install(manifest: PluginManifest, code: string): PluginInstance {
-    const result = validateManifest(manifest);
+    const result = validateManifest(manifest as unknown as Record<string, unknown>);
     if (!result.valid) throw new Error(`Invalid manifest: ${result.errors.join(', ')}`);
 
     const pluginDir = path.join(this.baseDir, manifest.id);

@@ -1,4 +1,6 @@
 import { RestorationPlan } from './legacy-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('restoration-plan');
 
 export function buildRestorationPlan(reason: string, allowed: boolean): RestorationPlan {
   return {

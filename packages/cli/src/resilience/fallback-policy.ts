@@ -1,4 +1,6 @@
 import { OperationalFailure } from './failure-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('fallback-policy');
 
 export interface FallbackAction {
   action: 'retry' | 'skip' | 'degrade' | 'block' | 'switch-target' | 'repair-mode';

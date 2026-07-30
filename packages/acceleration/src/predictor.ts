@@ -1,6 +1,8 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { Forecast } from './types';
+const logger = createLogger('predictor');
 
 function countFilesByExtension(dir: string, ext: string): number {
   let count = 0;

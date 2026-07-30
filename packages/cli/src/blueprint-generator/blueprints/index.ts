@@ -1,6 +1,8 @@
 import type { BlueprintManifest } from '../types';
+import { createLogger } from '@ideia/logger';
 import nodeApiBlueprint from './node-api.yaml';
 import nextFullstackBlueprint from './next-fullstack.yaml';
+const logger = createLogger('index');
 
 function parseYamlBasic(yaml: string): Record<string, unknown> {
   const obj: Record<string, unknown> = {};
@@ -19,7 +21,7 @@ function parseYamlBasic(yaml: string): Record<string, unknown> {
     if (colonIdx === -1) continue;
 
     const key = content.slice(0, colonIdx).trim();
-    const value: unknown = content.slice(colonIdx + 1).trim();
+    const valueRaw = content.slice(colonIdx + 1).trim();
 
     while (stack.length > 1 && indent <= stack[stack.length - 1].indent) {
       stack.pop();
@@ -27,39 +29,39 @@ function parseYamlBasic(yaml: string): Record<string, unknown> {
 
     const currentObj = stack[stack.length - 1].obj;
 
-    if (value === '' || value === '|') {
+    if (valueRaw === '' || valueRaw === '|') {
       const newObj: Record<string, unknown> = {};
       currentObj[key] = newObj;
       stack.push({ indent, key, obj: newObj });
-    } else if (value.startsWith('- ')) {
-      const arr = value.slice(2).trim();
+    } else if (valueRaw.startsWith('- ')) {
+      const arrItem = valueRaw.slice(2).trim();
       if (!currentObj[key]) currentObj[key] = [];
-      (currentObj[key] as unknown[]).push(arr);
-    } else if (value.startsWith('[') && value.endsWith(']')) {
-      currentObj[key] = value.slice(1, -1).split(',').map(s => s.trim().replace(/['"]/g, ''));
-    } else if (value === 'true') {
+      (currentObj[key] as unknown[]).push(arrItem);
+    } else if (valueRaw.startsWith('[') && valueRaw.endsWith(']')) {
+      currentObj[key] = valueRaw.slice(1, -1).split(',').map((s: string) => s.trim().replace(/['"]/g, ''));
+    } else if (valueRaw === 'true') {
       currentObj[key] = true;
-    } else if (value === 'false') {
+    } else if (valueRaw === 'false') {
       currentObj[key] = false;
-    } else if (/^\d+$/.test(value)) {
-      currentObj[key] = parseInt(value as string, 10);
-    } else if (/^\d+\.\d+$/.test(value as string)) {
-      currentObj[key] = parseFloat(value as string);
+    } else if (/^\d+$/.test(valueRaw)) {
+      currentObj[key] = parseInt(valueRaw, 10);
+    } else if (/^\d+\.\d+$/.test(valueRaw)) {
+      currentObj[key] = parseFloat(valueRaw);
     } else {
-      currentObj[key] = (value as string).replace(/^['"]|['"]$/g, '');
+      currentObj[key] = valueRaw.replace(/^['"]|['"]$/g, '');
     }
   }
 
   return obj;
 }
 
-function loadBlueprint(yamlContent: string): BlueprintManifest {
-  const raw = parseYamlBasic(yamlContent) as BlueprintManifest;
-  return raw;
+function loadBlueprint(yamlContent: string | Record<string, unknown>): BlueprintManifest {
+  const raw = typeof yamlContent === "string" ? parseYamlBasic(yamlContent) : yamlContent as unknown as BlueprintManifest;
+  return raw as BlueprintManifest;
 }
 
-const nodeApi = loadBlueprint(nodeApiBlueprint);
-const nextFullstack = loadBlueprint(nextFullstackBlueprint);
+const nodeApi = loadBlueprint(nodeApiBlueprint );
+const nextFullstack = loadBlueprint(nextFullstackBlueprint );
 
 export const builtInBlueprints: Record<string, BlueprintManifest> = {
   'node-api': nodeApi,
@@ -78,3 +80,6 @@ export function listBlueprints(): { name: string; description: string; tags: str
     version: bp.version,
   }));
 }
+
+
+

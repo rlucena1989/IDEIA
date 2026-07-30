@@ -151,3 +151,19 @@ export const SEVERITY_COLOR: Record<NotificationSeverity, string> = {
   [NotificationSeverity.Error]: '\x1b[31m',
   [NotificationSeverity.Critical]: '\x1b[41m\x1b[37m',
 };
+
+export interface NotificationStats {
+  total: number;
+  unread: number;
+  bySeverity: Record<NotificationSeverity, number>;
+  byChannel: Record<ChannelType, number>;
+}
+
+export interface NotificationFilter {
+  severity?: NotificationSeverity;
+  channel?: ChannelType;
+  source?: string;
+  startDate?: Date;
+  endDate?: Date;
+  searchText?: string;
+}

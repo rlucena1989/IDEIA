@@ -1,0 +1,36 @@
+{
+  "name": "@ideia/rag-engine",
+  "description": "IDEIA RAG Engine — document indexing, hybrid search, reranking, citations",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/memory-store": "*",
+    "@ideia/llm-provider": "*",
+    "@ideia/contracts": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false
+}

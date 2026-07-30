@@ -1,4 +1,6 @@
 import type { Capability, CapabilityQuery, RegistryEvent } from '../types/capability';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('registry.interface');
 
 export interface ICapabilityRegistry {
   register(cap: Capability): Promise<RegistryEvent>;

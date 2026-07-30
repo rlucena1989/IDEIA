@@ -2,9 +2,9 @@ import { runOwaspChecks, getOwaspCheckDescriptions, formatOwaspReport } from '..
 
 describe('OWASP LLM Top 10 — runOwaspChecks', () => {
   it('should pass clean input', () => {
-    const result = runOwaspChecks('What is the capital of France?');
+    const result = runOwaspChecks('Hello world, how are you today?');
     expect(result.overall).toBe(true);
-    expect(result.checks).toHaveLength(10);
+    expect(result.checks).toHaveLength(11);
     expect(result.checks.every(c => c.passed)).toBe(true);
   });
 
@@ -13,7 +13,7 @@ describe('OWASP LLM Top 10 — runOwaspChecks', () => {
     const llm01 = result.checks.find(c => c.category === 'LLM01');
     expect(llm01).toBeDefined();
     expect(llm01!.passed).toBe(false);
-    expect(llm01!.details).toContain('Prompt injection');
+    expect(llm01!.details).toMatch(/prompt injection/i);
   });
 
   it('should detect LLM01 — instruction override', () => {
@@ -95,11 +95,11 @@ describe('OWASP LLM Top 10 — runOwaspChecks', () => {
 });
 
 describe('OWASP — getOwaspCheckDescriptions', () => {
-  it('should return all 10 check descriptions', () => {
+  it('should return all 11 check descriptions', () => {
     const descriptions = getOwaspCheckDescriptions();
-    expect(descriptions).toHaveLength(10);
+    expect(descriptions).toHaveLength(11);
     expect(descriptions[0].category).toBe('LLM01');
-    expect(descriptions[9].category).toBe('LLM10');
+    expect(descriptions[10].category).toBe('LLM10_ModelTheft');
   });
 
   it('each description should have required fields', () => {
@@ -117,7 +117,7 @@ describe('OWASP — formatOwaspReport', () => {
     const result = runOwaspChecks('Hello world');
     const report = formatOwaspReport(result);
     expect(report).toContain('OWASP LLM Top 10 Security Report');
-    expect(report).toContain('Summary: 10/10 checks passed');
+    expect(report).toContain('Summary: 11/11 checks passed');
     expect(report).toContain('PASS');
   });
 

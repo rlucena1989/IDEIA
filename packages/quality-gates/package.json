@@ -7,7 +7,12 @@
   "scripts": {
     "build": "tsc -p tsconfig.json"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@ideia/logger": "*",
+    "@ideia/feedback-pipeline": "*",
+    "@ideia/memory-store": "*",
+    "@ideia/verification-layer": "*"
+  },
   "publishConfig": {
     "access": "public"
   },

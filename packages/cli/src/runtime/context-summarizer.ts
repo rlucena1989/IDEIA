@@ -115,12 +115,12 @@ export class DecisionCache {
 
   private recordHit(taskType: string): void {
     if (!this.byType[taskType]) this.byType[taskType] = { hits: 0, misses: 0 };
-    this.byType[taskType]!.hits++;
+    (this.byType[taskType] as { hits: number; misses: number }).hits++;
   }
 
   private recordMiss(taskType: string): void {
     if (!this.byType[taskType]) this.byType[taskType] = { hits: 0, misses: 0 };
-    this.byType[taskType]!.misses++;
+    (this.byType[taskType] as { hits: number; misses: number }).misses++;
   }
 }
 

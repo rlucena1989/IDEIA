@@ -1,4 +1,5 @@
-import type { CacheLayer, CacheEntry, CacheOptions, CacheStats } from './cache-layer';
+import type { CacheLayer, CacheEntry, CacheOptions, CacheStats, BackupEntry } from './cache-layer';
+import { createLogger } from '@ideia/logger';
 
 export class MemoryCache implements CacheLayer {
   private store = new Map<string, CacheEntry<unknown>>();
@@ -91,5 +92,31 @@ export class MemoryCache implements CacheLayer {
       }
     }
     return validKeys;
+  }
+
+  async backup(): Promise<BackupEntry[]> {
+    const entries: BackupEntry[] = [];
+    for (const [key, entry] of this.store) {
+      entries.push({
+        key,
+        value: entry.value,
+        timestamp: entry.createdAt,
+        compressed: false,
+        expiresAt: entry.expiresAt,
+        hits: entry.hits,
+      });
+    }
+    return entries;
+  }
+
+  async restore(entries: BackupEntry[]): Promise<void> {
+    for (const entry of entries) {
+      this.store.set(entry.key, {
+        value: entry.value,
+        expiresAt: entry.expiresAt ?? Date.now() + this.defaultTtlMs,
+        createdAt: entry.timestamp,
+        hits: entry.hits ?? 0,
+      });
+    }
   }
 }

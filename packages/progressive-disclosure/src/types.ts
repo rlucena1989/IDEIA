@@ -2,7 +2,7 @@ export type UserLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert';
 
 export type FeatureId = string;
 
-export type FeatureVisibility = 'hidden' | 'locked' | 'available' | 'discoverable' | 'highlighted';
+export type FeatureVisibility = 'hidden' | 'locked' | 'available' | 'discoverable' | 'highlighted' | 'default';
 
 export interface UnlockCondition {
   type: 'level' | 'tutorial_completed' | 'feature_used' | 'command_run' | 'time_spent_minutes' | 'projects_created' | 'badge_earned';

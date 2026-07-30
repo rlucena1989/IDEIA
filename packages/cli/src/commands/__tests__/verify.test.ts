@@ -1,54 +1,98 @@
-import { Command } from 'commander';
-import { verifyCommand, runVerify, type VerifyDeps } from '../verify';
+import { describe, it, expect, jest, beforeEach, afterEach } from '@jest/globals';
 
-function makeDeps(overrides: Partial<VerifyDeps> = {}): VerifyDeps {
-  return {
-    cwd: '/test',
-    existsSync: () => true,
-    spawnSync: () => ({ status: 0, stdout: '', stderr: '' }),
-    getMode: () => ({ mode: 'development' }),
-    isLLMMode: false,
-    noRecursion: true,
-    ...overrides,
-  };
+jest.mock('../../core/health/required-files', () => ({ REQUIRED_FILE_GROUPS: [{ required: ['file1.md', 'file2.ts'] }] }));
+
+const mockExistsSync = jest.fn();
+const mockSpawnSync = jest.fn();
+const mockGetMode = jest.fn();
+
+function getVerifyDeps(overrides: Record<string, unknown> = {}) {
+  const { runVerify } = require('../verify');
+  const deps: Record<string, unknown> = { cwd: '/test', existsSync: mockExistsSync, spawnSync: mockSpawnSync, getMode: mockGetMode, isLLMMode: true, noRecursion: true, ...overrides };
+  return runVerify(deps);
 }
 
 describe('runVerify', () => {
-  it('returns 0 when all gates pass', () => {
-    const result = runVerify(makeDeps());
-    expect(result).toBe(0);
+  let logSpy: jest.SpiedFunction<typeof console.log>;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    mockExistsSync.mockReturnValue(true);
+    mockSpawnSync.mockReturnValue({ status: 0, stdout: '', stderr: '' });
+    mockGetMode.mockReturnValue({ mode: 'default' });
   });
 
-  it('returns 1 when required files are missing', () => {
-    const deps = makeDeps({ existsSync: () => false });
-    const result = runVerify(deps);
-    expect(result).toBe(1);
+  afterEach(() => { logSpy.mockRestore(); });
+
+  it('returns 0 when all required files exist', () => {
+    expect(getVerifyDeps()).toBe(0);
   });
 
-  it('returns 1 when status check fails', () => {
-    const deps = makeDeps({
-      spawnSync: () => ({ status: 1, stdout: '', stderr: '' }),
-    });
-    const result = runVerify(deps);
-    expect(result).toBe(1);
+  it('returns 1 when a required file is missing', () => {
+    mockExistsSync.mockReturnValue(false);
+    expect(getVerifyDeps()).toBe(1);
   });
 
-  it('handles LLM mode without crashing', () => {
-    const deps = makeDeps({ isLLMMode: true });
-    expect(() => runVerify(deps)).not.toThrow();
+  it('logs missing file message', () => {
+    mockExistsSync.mockReturnValue(false);
+    getVerifyDeps({ isLLMMode: false });
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('Arquivo obrigatorio ausente'));
   });
 
-  it('skips prevention suite in debugging mode', () => {
-    const deps = makeDeps({ getMode: () => ({ mode: 'debugging' }) });
-    const result = runVerify(deps);
-    expect(result).toBe(0);
+  it('logs found file message', () => {
+    getVerifyDeps({ isLLMMode: false });
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('Encontrado'));
+  });
+
+  it('skips status check when files are missing', () => {
+    mockExistsSync.mockReturnValue(false);
+    getVerifyDeps();
+    expect(mockSpawnSync).not.toHaveBeenCalledWith('node', expect.arrayContaining([expect.stringContaining('status')]), expect.any(Object));
+  });
+
+  it('runs status check when all files present', () => {
+    getVerifyDeps();
+    expect(mockSpawnSync).toHaveBeenCalledWith('node', expect.arrayContaining([expect.stringContaining('status')]), expect.any(Object));
+  });
+
+  it('fails when status check fails', () => {
+    mockSpawnSync.mockReturnValue({ status: 1, stdout: '', stderr: 'status error' });
+    expect(getVerifyDeps()).toBe(1);
+  });
+
+  it('calls ledgerAppend when provided', () => {
+    const ledgerAppend = jest.fn();
+    getVerifyDeps({ ledgerAppend });
+    expect(ledgerAppend).toHaveBeenCalledWith('verify', 0, expect.any(String));
+  });
+
+  it('outputs JSON in LLM mode when successful', () => {
+    getVerifyDeps({ isLLMMode: true });
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('"ok": true'));
+  });
+
+  it('outputs JSON in LLM mode when failed', () => {
+    mockExistsSync.mockReturnValue(false);
+    getVerifyDeps({ isLLMMode: true });
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('"ok": false'));
   });
 });
 
 describe('verifyCommand', () => {
-  it('returns a Commander Command with name verify', () => {
+  let exitSpy: jest.SpiedFunction<typeof process.exit>;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    exitSpy = jest.spyOn(process, 'exit').mockImplementation(() => undefined as never);
+  });
+
+  afterEach(() => { exitSpy.mockRestore(); });
+
+  it('returns a Command with name verify', () => {
+    const { verifyCommand } = require('../verify');
     const cmd = verifyCommand();
-    expect(cmd).toBeInstanceOf(Command);
     expect(cmd.name()).toBe('verify');
+    expect(cmd.description()).toContain('quality gates');
   });
 });

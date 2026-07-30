@@ -1,5 +1,7 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { RpcChannel, RpcMessage } from './types';
+const logger = createLogger('channel');
 
 export class DefaultRpcChannel implements RpcChannel {
   readonly id: string;

@@ -1,7 +1,9 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { HistorySummary } from './types';
 export { HistorySummary };
+const logger = createLogger('history-analyzer');
 
 interface ReportFile {
   success: boolean;

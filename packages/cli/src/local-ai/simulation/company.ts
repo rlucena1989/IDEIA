@@ -1,5 +1,7 @@
 import { CompanyProject, SimulationPhase, SimulationRole, COMPANY_ROLES, PHASE_ORDER, PHASE_ROLES } from './types';
+import { createLogger } from '@ideia/logger';
 import { generatePhaseArtifacts } from './artifacts';
+const logger = createLogger('company');
 
 function findRole(name: string): SimulationRole {
   return COMPANY_ROLES.find(r => r.name === name) || COMPANY_ROLES[0];

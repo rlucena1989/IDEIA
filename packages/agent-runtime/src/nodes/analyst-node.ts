@@ -1,6 +1,8 @@
 import { LangGraphStateAnnotation, LangGraphAgentRole } from '../langgraph-graph';
+import { createLogger } from '@ideia/logger';
 import { LangGraphNodeFunction } from '../langgraph-graph';
 import { LLMProvider, ChatMessage } from '@ideia/llm-provider';
+const logger = createLogger('analyst-node');
 
 const ANALYST_PROMPT = `You are an Analyst agent. Analyze the given requirements and produce:
 1. A summary of the key requirements

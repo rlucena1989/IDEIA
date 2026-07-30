@@ -22,6 +22,7 @@ export interface TelemetryAggregate {
 }
 
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 
 const TELEMETRY_DIR = '.ai/reports/telemetry';

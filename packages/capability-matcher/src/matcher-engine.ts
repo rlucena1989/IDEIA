@@ -1,4 +1,6 @@
 import { ProjectNeed, MatchScore, MatchResult, MatchingProfile, MatchingReport, Suggestion } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('matcher-engine');
 
 const STOP_WORDS = new Set([
   'a', 'an', 'the', 'is', 'it', 'to', 'and', 'or', 'of', 'in', 'for', 'on',

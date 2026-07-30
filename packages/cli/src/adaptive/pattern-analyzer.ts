@@ -1,4 +1,6 @@
 import { OperationalEvent, OperationalPattern } from './pattern-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('pattern-analyzer');
 
 export function analyzePatterns(events: OperationalEvent[]): OperationalPattern[] {
   const inconsistentDocs = events.filter(

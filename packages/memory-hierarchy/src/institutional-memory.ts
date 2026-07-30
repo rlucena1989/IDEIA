@@ -1,5 +1,7 @@
 import { MemoryEntry, EntryCategory, RetentionPolicy } from './types';
+import { createLogger } from '@ideia/logger';
 import { randomUUID } from 'crypto';
+const logger = createLogger('institutional-memory');
 
 export class InstitutionalMemory {
   private entries: Map<string, MemoryEntry> = new Map();

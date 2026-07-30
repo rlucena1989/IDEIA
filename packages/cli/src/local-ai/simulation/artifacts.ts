@@ -1,4 +1,5 @@
 import { CompanyProject, SimulationArtifact, SimulationPhase, SimulationRole } from './types';
+import { createLogger } from '@ideia/logger';
 
 function generateId(): string {
   return `art_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;

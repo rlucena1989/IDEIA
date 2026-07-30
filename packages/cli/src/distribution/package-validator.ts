@@ -1,5 +1,7 @@
 import { OperationalPackage } from './package-types';
+import { createLogger } from '@ideia/logger';
 import { computePackageChecksum } from './package-hasher';
+const logger = createLogger('package-validator');
 
 export interface PackageValidationResult {
   ok: boolean;

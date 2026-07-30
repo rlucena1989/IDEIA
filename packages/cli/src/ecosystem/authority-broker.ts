@@ -1,4 +1,6 @@
 import { AuthorityAssignment, DomainNode } from './ecosystem-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('authority-broker');
 
 export function grantAuthority(
   domain: DomainNode,

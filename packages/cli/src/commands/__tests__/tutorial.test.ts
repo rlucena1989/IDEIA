@@ -3,7 +3,17 @@ import { printHeader, printLine, printResult } from '../../utils/output';
 
 jest.mock('../../utils/output');
 jest.mock('../../utils/version');
-jest.mock('../../hardening/output-contract');
+jest.mock('../../hardening/output-contract', () => ({
+  createEnvelope: (params: any) => ({
+    ok: params.ok,
+    command: params.command,
+    version: params.version,
+    generatedAt: '2024-01-01T00:00:00.000Z',
+    requestId: 'test-uuid',
+    data: params.data,
+    errors: params.errors,
+  }),
+}));
 
 const mockTutorial = {
   id: 'zero-to-deploy',
@@ -47,7 +57,7 @@ import { getCliVersion } from '../../utils/version';
 
 beforeEach(() => {
   jest.clearAllMocks();
-  jest.spyOn(process, 'exit').mockImplementation((() => {}) as () => never);
+  jest.spyOn(process, 'exit').mockImplementation((() => { throw new Error('exit'); }) as () => never);
   (getCliVersion as jest.Mock).mockReturnValue('1.0.0');
 });
 
@@ -124,5 +134,120 @@ describe('tutorialStatsAction', () => {
     const { tutorialStatsAction } = await import('../tutorial');
     tutorialStatsAction({});
     expect(printHeader).toHaveBeenCalledWith(expect.stringContaining('Tutorial Stats'));
+  });
+
+  it('should show stats in JSON', async () => {
+    const { tutorialStatsAction } = await import('../tutorial');
+    tutorialStatsAction({ json: true });
+    expect(printLine).toHaveBeenCalledWith(expect.stringContaining('totalTutorials'));
+  });
+});
+
+describe('tutorialListAction', () => {
+  it('should filter by level', async () => {
+    const { tutorialListAction } = await import('../tutorial');
+    tutorialListAction({ level: 'advanced' });
+    expect(printHeader).toHaveBeenCalledWith(expect.stringContaining('Tutorials'));
+  });
+
+  it('should output JSON', async () => {
+    const { tutorialListAction } = await import('../tutorial');
+    tutorialListAction({ json: true });
+    expect(printLine).toHaveBeenCalledWith(expect.stringContaining('command'));
+  });
+});
+
+describe('tutorialShowAction', () => {
+  it('should exit when tutorial not found', async () => {
+    const { tutorialShowAction } = await import('../tutorial');
+    try { tutorialShowAction('nonexistent', {}); } catch { /* expected */ }
+    expect(printResult).toHaveBeenCalledWith('Tutorial not found', false, expect.any(String));
+  });
+
+  it('should show JSON output', async () => {
+    const { tutorialShowAction } = await import('../tutorial');
+    tutorialShowAction('zero-to-deploy', { json: true });
+    expect(printLine).toHaveBeenCalledWith(expect.stringContaining('command'));
+  });
+});
+
+describe('tutorialStartAction', () => {
+  it('should exit when tutorial not found', async () => {
+    const { tutorialStartAction } = await import('../tutorial');
+    try { tutorialStartAction('bad-id', {}); } catch { /* expected */ }
+    expect(printResult).toHaveBeenCalled();
+  });
+
+  it('should output JSON on error', async () => {
+    const { tutorialStartAction } = await import('../tutorial');
+    try { tutorialStartAction('bad-id', { json: true }); } catch { /* expected */ }
+    expect(printLine).toHaveBeenCalledWith(expect.stringContaining('command'));
+  });
+
+  it('should output JSON on success', async () => {
+    const { tutorialStartAction } = await import('../tutorial');
+    tutorialStartAction('zero-to-deploy', { json: true });
+    expect(printLine).toHaveBeenCalledWith(expect.stringContaining('command'));
+  });
+});
+
+describe('tutorialAdvanceAction', () => {
+  it('should handle step advance error', async () => {
+    const { tutorialAdvanceAction } = await import('../tutorial');
+    try { tutorialAdvanceAction('zero-to-deploy', 'bad-step', {}); } catch { /* expected */ }
+    expect(printResult).toHaveBeenCalled();
+  });
+
+  it('should output JSON on error', async () => {
+    const { tutorialAdvanceAction } = await import('../tutorial');
+    try { tutorialAdvanceAction('zero-to-deploy', 'bad-step', { json: true }); } catch { /* expected */ }
+    expect(printLine).toHaveBeenCalledWith(expect.stringContaining('command'));
+  });
+
+  it('should handle --error option', async () => {
+    const { tutorialAdvanceAction } = await import('../tutorial');
+    tutorialAdvanceAction('zero-to-deploy', 'ztd-1', { error: 'Something broke' });
+    expect(printResult).toHaveBeenCalled();
+  });
+
+  it('should show completion and badge', async () => {
+    const { tutorialAdvanceAction } = await import('../tutorial');
+    tutorialAdvanceAction('zero-to-deploy', 'ztd-2', {});
+    expect(printResult).toHaveBeenCalledWith('Tutorial completed!', true, 'zero-to-deploy');
+    expect(printLine).toHaveBeenCalledWith(expect.stringContaining('Badge'));
+  });
+
+  it('should output JSON on advance', async () => {
+    const { tutorialAdvanceAction } = await import('../tutorial');
+    tutorialAdvanceAction('zero-to-deploy', 'ztd-1', { json: true });
+    expect(printLine).toHaveBeenCalledWith(expect.stringContaining('command'));
+  });
+});
+
+describe('tutorialProgressAction', () => {
+  it('should exit when no progress found', async () => {
+    const { tutorialProgressAction } = await import('../tutorial');
+    try { tutorialProgressAction('bad-id', {}); } catch { /* expected */ }
+    expect(printResult).toHaveBeenCalledWith('No progress', false, expect.any(String));
+  });
+
+  it('should output JSON on no progress', async () => {
+    const { tutorialProgressAction } = await import('../tutorial');
+    try { tutorialProgressAction('bad-id', { json: true }); } catch { /* expected */ }
+    expect(printLine).toHaveBeenCalledWith(expect.stringContaining('command'));
+  });
+
+  it('should output JSON on success', async () => {
+    const { tutorialProgressAction } = await import('../tutorial');
+    tutorialProgressAction('zero-to-deploy', { json: true });
+    expect(printLine).toHaveBeenCalledWith(expect.stringContaining('command'));
+  });
+});
+
+describe('tutorialBadgesAction', () => {
+  it('should show badges in JSON', async () => {
+    const { tutorialBadgesAction } = await import('../tutorial');
+    tutorialBadgesAction({ json: true });
+    expect(printLine).toHaveBeenCalledWith(expect.stringContaining('command'));
   });
 });

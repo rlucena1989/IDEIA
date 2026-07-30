@@ -14,7 +14,7 @@ export function mergeContexts(contexts: Array<Record<string, unknown>>, sourceId
   const fields: Record<string, MergedContextField> = {};
 
   for (let i = 0; i < contexts.length; i++) {
-    const context = contexts[i]!;
+    const context = contexts[i] as Record<string, unknown>;
     for (const [key, value] of Object.entries(context)) {
       if (!(key in fields)) {
         fields[key] = {

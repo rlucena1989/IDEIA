@@ -1,4 +1,6 @@
 import { Contribution, Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('types');
 
 export interface WidgetFactory {
   readonly id: string;
@@ -6,7 +8,7 @@ export interface WidgetFactory {
   dispose?(widget: unknown): void;
 }
 
-export interface ViewContribution extends Contribution {
+export interface ViewContribution extends Contribution<unknown> {
   readonly viewId: string;
   readonly label: string;
   readonly iconClass?: string;

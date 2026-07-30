@@ -1,4 +1,5 @@
 import { ComplexityLevel } from './types';
+import { createLogger } from '@ideia/logger';
 import { evaluateSimpleMath, extractNumbers } from './math-parser';
 import { evaluateFormula } from './formula-registry';
 import { summary, median, correlation, linearRegression } from './stats-engine';
@@ -126,7 +127,7 @@ export function executeCalculation(req: CalculationRequest): CalculationResult {
 
     return { success: false, result: null, method: 'none', durationMs: Date.now() - start };
   } catch (_err) {
-    return { success: false, result: String(err), method: 'error', durationMs: Date.now() - start };
+    return { success: false, result: String(_err), method: 'error', durationMs: Date.now() - start };
   }
 }
 

@@ -1,4 +1,6 @@
 import { AiProvider, ProviderConfig, ProviderResponse } from './index';
+import { createLogger } from '@ideia/logger';
+import { ConfigManager } from '@ideia/config-engine';
 import crypto from 'node:crypto';
 
 function sha256(data: string): string {
@@ -27,10 +29,10 @@ export class AwsProvider implements AiProvider {
   }
 
   async query(prompt: string, model: string, config?: ProviderConfig): Promise<ProviderResponse> {
-    const accessKey = process.env.AWS_ACCESS_KEY_ID || '';
-    const secretKey = process.env.AWS_SECRET_ACCESS_KEY || '';
-    const sessionToken = process.env.AWS_SESSION_TOKEN;
-    const region = config?.region || process.env.AWS_REGION || 'us-east-1';
+    const accessKey = (config as any)?.AWS_ACCESS_KEY_ID || '';
+    const secretKey = (config as any)?.AWS_SECRET_ACCESS_KEY || '';
+    const sessionToken = (config as any)?.AWS_SESSION_TOKEN;
+    const region = config?.region || (config as any)?.AWS_REGION || 'us-east-1';
     const host = `bedrock-runtime.${region}.amazonaws.com`;
     const url = `https://${host}/model/${model}/invoke`;
     const start = Date.now();

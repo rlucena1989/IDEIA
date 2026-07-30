@@ -1,4 +1,5 @@
 import { PlannedStep, StepDependency } from './types';
+import { createLogger } from '@ideia/logger';
 
 export class DependencyAnalyzer {
   analyze(steps: PlannedStep[]): {
@@ -92,7 +93,7 @@ export class DependencyAnalyzer {
 
     const topo: string[] = [];
     while (queue.length > 0) {
-      const node = queue.shift()!;
+      const node = queue.shift() as string;
       topo.push(node);
     }
 

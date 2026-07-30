@@ -5,7 +5,9 @@
  */
 
 import { BaseRunner } from './base-runner';
+import { createLogger } from '@ideia/logger';
 import { LanguageId } from '../adapter-contract';
+const logger = createLogger('jvm-runner');
 
 /** Runner JVM (Maven/Gradle). */
 export class JVMRunner extends BaseRunner {

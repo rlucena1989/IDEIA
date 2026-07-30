@@ -18,3 +18,9 @@ export type { ProjectProfile, ProjectDecision, CrossProjectInsight, CrossProject
 
 export { buildChatContext, buildChatContextWithCag } from './chat-integration';
 export type { ChatContext } from './chat-integration';
+
+export { LlmLearningEngine, LearningRecommendation } from './llm-learning-engine';
+export type { LearningEngineConfig } from './llm-learning-engine';
+
+export { LoRAAdapterStore } from './lora-adapter-store';
+export type { LoRAAdapter, AdapterDiff } from './lora-adapter-store';

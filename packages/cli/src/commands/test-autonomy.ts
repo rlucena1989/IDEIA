@@ -1,6 +1,10 @@
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.test-autonomy');
 import { Command } from 'commander';
 import fs from 'node:fs';
 import path from 'node:path';
+
+const log = createLogger('cli:commands:test-autonomy');
 import { execFileSync } from 'node:child_process';
 import { classifyTest, evaluateDirectory, summarizeResults, MAX_SCORE } from '../quality/test-validator';
 
@@ -102,12 +106,12 @@ function mineBehaviors(filePath: string): BehaviorSpec[] {
   const behaviors: BehaviorSpec[] = [];
 
   for (let i = 0; i < lines.length; i++) {
-    const funcMatch = lines[i]!.match(/^export\s+(async\s+)?function\s+(\w+)\s*\(([^)]*)\)/);
+    const funcMatch = lines[i].match(/^export\s+(async\s+)?function\s+(\w+)\s*\(([^)]*)\)/);
     if (funcMatch) {
-      const params = funcMatch[3]!.split(',').map(p => p.trim()).filter(Boolean);
+      const params = (funcMatch[3] ?? '').split(',').map(p => p.trim()).filter(Boolean);
       behaviors.push({ name: funcMatch[2], type: 'function', params, exported: true });
     }
-    const classMatch = lines[i]!.match(/^export\s+(abstract\s+)?class\s+(\w+)/);
+    const classMatch = lines[i].match(/^export\s+(abstract\s+)?class\s+(\w+)/);
     if (classMatch) {
       behaviors.push({ name: classMatch[2], type: 'class', params: [], exported: true });
     }
@@ -187,7 +191,7 @@ function _findWorstFiles(limit: number): string[] {
 
   return Object.entries(covData)
     .filter(([k, v]) => k !== 'total' && v.lines.pct > 0 && v.lines.pct < 15 && !k.includes('__tests__') && !k.includes('node_modules'))
-    .sort((a, b) => a[1]!.lines.pct - b[1]!.lines.pct)
+    .sort((a, b) => a[1].lines.pct - b[1].lines.pct)
     .slice(0, limit)
     .map(([k]) => k
       .replace(/^[A-Z]:/, ROOT.substring(0, 2))
@@ -214,59 +218,59 @@ export function testAutonomyCommand(): Command {
       const limit = parseInt(options.limit || '3', 10);
       const maxIter = parseInt(options.iterations || '3', 10);
 
-      console.log(`\n${'='.repeat(60)}`);
-      console.log('   Test Autonomy Control Plane â€” Pipeline AutÃ´nomo');
-      console.log(`${'='.repeat(60)}\n`);
+      logger.info('\n${\'=\'.repeat(60)}');
+      logger.info('   Test Autonomy Control Plane â€” Pipeline AutÃ´nomo');
+      logger.info('${\'=\'.repeat(60)}\n');
 
       // Step 1: Discover & prioritize targets
-      console.log('[1/7] Descobrindo e priorizando alvos...');
+      logger.info('[1/7] Descobrindo e priorizando alvos...');
       const prioritized = options.target
         ? { selected: [{ file: options.target, linesPct: 0, branchesPct: 0, impact: 0, probability: 0, criticality: 0, coverageAbsent: 0, automationEase: 0, falsePositiveRisk: 0, score: 25, priority: 'critical' as const }], backlog: [], blocked: [] }
         : prioritizeGaps(limit);
       const targets = prioritized.selected.map(g => g.file);
-      if (targets.length === 0) { console.log('  Nenhum alvo prioritÃ¡rio encontrado.\n'); return; }
-      console.log(`  ${targets.length} alvo(s) prioritÃ¡rios:\n`);
+      if (targets.length === 0) { logger.info('  Nenhum alvo prioritÃ¡rio encontrado.\n'); return; }
+      logger.info('  ${targets.length} alvo(s) prioritÃ¡rios:\n');
       for (const g of prioritized.selected) {
-        console.log(`    ${'â˜…'.repeat(Math.ceil(g.score/5))} ${path.basename(g.file)} (score:${g.score}/${g.priority})`);
+        logger.info('    ${\'â˜…\'.repeat(Math.ceil(g.score/5))} ${path.basename(g.file)} (score:${g.score}/${g.priority})');
       }
-      console.log(`\n  Backlog: ${prioritized.backlog.length} gaps, Bloqueados: ${prioritized.blocked.length}\n`);
+      logger.info('\n  Backlog: ${prioritized.backlog.length} gaps, Bloqueados: ${prioritized.blocked.length}\n');
 
       let totalTestsGenerated = 0;
       let totalPassing = 0;
 
       for (const target of targets) {
-        console.log(`\n--- Processando: ${path.basename(target)} ---\n`);
+        log.info(`\n--- Processando: ${path.basename(target)} ---\n`);
 
         // Step 2: Mine behaviors
-        console.log('  [2/7] Minerando comportamentos...');
+        logger.info('  [2/7] Minerando comportamentos...');
         const _task = makeTask(target, 'improve_coverage');
         const behaviors = mineBehaviors(target);
-        if (behaviors.length === 0) { console.log('  Nenhum comportamento detectado, pulando.\n'); continue; }
-        console.log(`  ${behaviors.length} comportamento(s) encontrados.\n`);
+        if (behaviors.length === 0) { logger.info('  Nenhum comportamento detectado, pulando.\n'); continue; }
+        logger.info('  ${behaviors.length} comportamento(s) encontrados.\n');
 
         // Step 3: Plan
-        console.log('  [3/7] Planejando cobertura...');
+        logger.info('  [3/7] Planejando cobertura...');
         const plan: TestPlan = { behaviors, mockStrategy: 'minimal' };
-        console.log(`  EstratÃ©gia de mock: ${plan.mockStrategy}\n`);
+        logger.info('  EstratÃ©gia de mock: ${plan.mockStrategy}\n');
 
         // Step 4: Generate
-        console.log('  [4/7] Gerando testes...');
+        logger.info('  [4/7] Gerando testes...');
         const testContent = composeTest(target, behaviors);
         const testDir = path.join(path.dirname(target), '__tests__');
         const testName = path.basename(target, '.ts') + '.integration.test.ts';
         const testPath = path.join(testDir, testName);
 
         if (fs.existsSync(testPath)) {
-          console.log(`  Teste jÃ¡ existe: ${testName}, pulando geraÃ§Ã£o.\n`);
+          logger.info('  Teste jÃ¡ existe: ${testName}, pulando geraÃ§Ã£o.\n');
         } else {
           fs.mkdirSync(testDir, { recursive: true });
           fs.writeFileSync(testPath, testContent, 'utf8');
-          console.log(`  Generated: ${testName}\n`);
+          logger.info('  Generated: ${testName}\n');
           totalTestsGenerated++;
         }
 
         // Step 5: Execute
-        console.log('  [5/7] Executando testes...');
+        logger.info('  [5/7] Executando testes...');
         for (let iter = 0; iter < maxIter; iter++) {
           try {
             const output = execFileSync(`npx jest --no-coverage -- "${testPath}" 2>&1`, {
@@ -279,38 +283,38 @@ export function testAutonomyCommand(): Command {
             totalPassing += passed;
 
             if (failed === 0) {
-              console.log(`  âœ… ${passed} passed, 0 failed (iter ${iter + 1})\n`);
+              logger.info('  âœ… ${passed} passed, 0 failed (iter ${iter + 1})\n');
               break;
             }
 
             // Step 6: Repair
-            console.log(`  [6/7] Reparando (${failed} falhas, iter ${iter + 1})...`);
+            logger.info('  [6/7] Reparando (${failed} falhas, iter ${iter + 1})...');
             const content = fs.readFileSync(testPath, 'utf8');
             const repaired = content
               .replace(/try\s*\{[^}]+\}\s*catch\s*\{[^}]*\}/g, '/* auto-repaired: removed fragile try/catch */')
               .replace(/expect\(typeof \w+\)\.toBe\('function'\);/g, 'expect(true).toBe(true); // type check bypassed');
             fs.writeFileSync(testPath, repaired, 'utf8');
-            console.log(`  Reparo aplicado.\n`);
-          } catch (_e) {
-            console.log(`  âŒ ExecuÃ§Ã£o falhou na iter ${iter + 1}: ${(e as Error).message?.slice(0, 100)}\n`);
+            logger.info('  Reparo aplicado.\n');
+          } catch (e) {
+            logger.info('  âŒ ExecuÃ§Ã£o falhou na iter ${iter + 1}: ${(e as Error).message?.slice(0, 100)}\n');
             break;
           }
         }
 
         // Step 7: Persist
-        console.log('  [7/7] Persistindo estado...');
+        logger.info('  [7/7] Persistindo estado...');
         const statePath = path.join(ROOT, '.ai/reports/test-autonomy-state.json');
         fs.mkdirSync(path.dirname(statePath), { recursive: true });
         const state = { lastTarget: target, timestamp: new Date().toISOString(), testsGenerated: totalTestsGenerated, passing: totalPassing };
         fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
-        console.log(`  Estado salvo em: .ai/reports/test-autonomy-state.json\n`);
+        logger.info('  Estado salvo em: .ai/reports/test-autonomy-state.json\n');
       }
 
-      console.log(`${'='.repeat(60)}`);
-      console.log(`   Pipeline concluÃ­do.`);
-      console.log(`   Testes gerados: ${totalTestsGenerated}`);
-      console.log(`   Testes passing: ${totalPassing}`);
-      console.log(`${'='.repeat(60)}\n`);
+      logger.info('${\'=\'.repeat(60)}');
+      logger.info('   Pipeline concluÃ­do.');
+      logger.info('   Testes gerados: ${totalTestsGenerated}');
+      logger.info('   Testes passing: ${totalPassing}');
+      logger.info('${\'=\'.repeat(60)}\n');
     });
 
   cmd
@@ -319,16 +323,16 @@ export function testAutonomyCommand(): Command {
     .action(() => {
       const statePath = path.join(ROOT, '.ai/reports/test-autonomy-state.json');
       if (!fs.existsSync(statePath)) {
-        console.log('Nenhum ciclo executado ainda.');
+        log.info('Nenhum ciclo executado ainda.');
         return;
       }
       const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
-      console.log('\n=== Test Autonomy State ===');
-      console.log(`Last target: ${state.lastTarget}`);
-      console.log(`Timestamp:   ${state.timestamp}`);
-      console.log(`Generated:   ${state.testsGenerated} tests`);
-      console.log(`Passing:     ${state.passing} tests`);
-      console.log('===========================\n');
+      logger.info('\n=== Test Autonomy State ===');
+      logger.info('Last target: ${state.lastTarget}');
+      logger.info('Timestamp:   ${state.timestamp}');
+      logger.info('Generated:   ${state.testsGenerated} tests');
+      logger.info('Passing:     ${state.passing} tests');
+      logger.info('===========================\n');
     });
 
   cmd
@@ -340,27 +344,27 @@ export function testAutonomyCommand(): Command {
       const limit = parseInt(options.limit || '10', 10);
       const result = prioritizeGaps(limit);
 
-      console.log(`\n=== Gaps Priorizados ===\n`);
-      console.log(`--- Selecionados (${result.selected.length}) ---`);
+      logger.info('\n=== Gaps Priorizados ===\n');
+      logger.info('--- Selecionados (${result.selected.length}) ---');
       for (const g of result.selected) {
         const stars = 'â˜…'.repeat(Math.min(5, Math.ceil(g.score / 5)));
-        console.log(`  ${stars} ${path.basename(g.file).padEnd(25)} score:${g.score} ${g.priority}`);
-        console.log(`      ${g.file.replace(ROOT, '').replace(/\\/g, '/')}`);
+        logger.info('  ${stars} ${path.basename(g.file).padEnd(25)} score:${g.score} ${g.priority}');
+        logger.info('      ${g.file.replace(ROOT, \'\').replace(/\\/g, \'/\')}');
       }
 
       if (options.all) {
-        console.log(`\n--- Backlog (${result.backlog.length}) ---`);
+        logger.info('\n--- Backlog (${result.backlog.length}) ---');
         for (const g of result.backlog.slice(0, 20)) {
-          console.log(`  Â· ${path.basename(g.file).padEnd(25)} score:${g.score} ${g.priority}`);
+          logger.info('  Â· ${path.basename(g.file).padEnd(25)} score:${g.score} ${g.priority}');
         }
-        console.log(`\n--- Bloqueados (${result.blocked.length}) ---`);
+        logger.info('\n--- Bloqueados (${result.blocked.length}) ---');
         for (const g of result.blocked.slice(0, 10)) {
-          console.log(`  âŠ˜ ${path.basename(g.file).padEnd(25)} score:${g.score}`);
+          logger.info('  âŠ˜ ${path.basename(g.file).padEnd(25)} score:${g.score}');
         }
       }
 
-      console.log(`\nScore = impacto + probabilidade + criticidade + cobertura + automaÃ§Ã£o - falsoPositivo`);
-      console.log(`â‰¥18 critical | â‰¥14 high | â‰¥10 medium | â‰¥5 low | <5 blocked\n`);
+      logger.info('\nScore = impacto + probabilidade + criticidade + cobertura + automaÃ§Ã£o - falsoPositivo');
+      logger.info('â‰¥18 critical | â‰¥14 high | â‰¥10 medium | â‰¥5 low | <5 blocked\n');
     });
 
   cmd
@@ -376,7 +380,7 @@ export function testAutonomyCommand(): Command {
         if (fs.existsSync(options.file)) {
           results.push(classifyTest(options.file));
         } else {
-          console.log(`Arquivo nÃ£o encontrado: ${options.file}`);
+          logger.info('Arquivo nÃ£o encontrado: ${options.file}');
           return;
         }
       } else {
@@ -384,7 +388,7 @@ export function testAutonomyCommand(): Command {
         if (fs.existsSync(testDir)) {
           results.push(...evaluateDirectory(testDir));
         } else {
-          console.log(`DiretÃ³rio nÃ£o encontrado: ${testDir}`);
+          logger.info('DiretÃ³rio nÃ£o encontrado: ${testDir}');
           return;
         }
       }
@@ -395,16 +399,16 @@ export function testAutonomyCommand(): Command {
       }
 
       const summary = summarizeResults(results);
-      console.log(`\n=== Test Autonomy: Validate ===`);
-      console.log(`Total: ${summary.total} | âœ… Valid: ${summary.valid} | âš ï¸ Incomplete: ${summary.incomplete} | âŒ Invalid: ${summary.invalid}`);
-      console.log(`Average Score: ${summary.averageScore}/${MAX_SCORE}\n`);
+      logger.info('\n=== Test Autonomy: Validate ===');
+      logger.info('Total: ${summary.total} | âœ… Valid: ${summary.valid} | âš ï¸ Incomplete: ${summary.incomplete} | âŒ Invalid: ${summary.invalid}');
+      logger.info('Average Score: ${summary.averageScore}/${MAX_SCORE}\n');
 
       for (const r of results) {
         const icon = r.classification === 'valid' ? 'âœ…' : r.classification === 'incomplete' ? 'âš ï¸' : 'âŒ';
-        console.log(`  ${icon} ${r.testId}`);
-        console.log(`     Score: ${r.score}/${r.maxScore} | ${r.classification}`);
+        logger.info('  ${icon} ${r.testId}');
+        logger.info('     Score: ${r.score}/${r.maxScore} | ${r.classification}');
         if (r.blockingFlags.length > 0) {
-          console.log(`     Blocking: ${r.blockingFlags.join(', ')}`);
+          logger.info('     Blocking: ${r.blockingFlags.join(\', \')}');
         }
         console.log('');
       }

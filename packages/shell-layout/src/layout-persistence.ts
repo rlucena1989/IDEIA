@@ -1,4 +1,5 @@
 import { ILayoutPersistence, LayoutState, ShellAreaState } from './types';
+import { createLogger } from '@ideia/logger';
 
 export class DefaultLayoutPersistence implements ILayoutPersistence {
   private storage = new Map<string, LayoutState>();

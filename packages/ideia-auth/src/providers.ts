@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { AuthUser, AuthSession, AuthProvider } from './types';
 
 export class DefaultAuthProvider implements AuthProvider {

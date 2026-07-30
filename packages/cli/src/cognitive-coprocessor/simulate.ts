@@ -1,4 +1,6 @@
 import type { SimulateOutput, Scenario, Outcome, SimConfig } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('simulate');
 
 function deterministicRun(scenario: Scenario): number {
   const vars = scenario.variables;

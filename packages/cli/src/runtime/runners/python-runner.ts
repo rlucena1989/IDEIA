@@ -5,7 +5,9 @@
  */
 
 import { BaseRunner } from './base-runner';
+import { createLogger } from '@ideia/logger';
 import { LanguageId } from '../adapter-contract';
+const logger = createLogger('python-runner');
 
 /** Runner Python. */
 export class PythonRunner extends BaseRunner {

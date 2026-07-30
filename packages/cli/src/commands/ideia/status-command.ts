@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.ideia.status-command');
 import path from 'node:path';
 import fs from 'node:fs';
 import { computeStatus } from '../status';
@@ -78,32 +80,32 @@ export function ideiaStatusCommand(): Command {
           return;
         }
 
-        console.log(`\n${'='.repeat(56)}`);
-        console.log(`  📊 IDEIA — Dashboard: ${status.name}`);
-        console.log(`${'='.repeat(56)}\n`);
+        logger.info('\n${\'=\'.repeat(56)}');
+        logger.info('  📊 IDEIA — Dashboard: ${status.name}');
+        logger.info('${\'=\'.repeat(56)}\n');
 
-        console.log('  🏗️  Stack:');
-        console.log(`     Linguagens: ${status.stack.languages.join(', ') || 'não detectada'}`);
-        console.log(`     Frameworks: ${status.stack.frameworks.join(', ') || 'não detectado'}\n`);
+        logger.info('  🏗️  Stack:');
+        logger.info('     Linguagens: ${status.stack.languages.join(\', \') || \'não detectada\'}');
+        logger.info('     Frameworks: ${status.stack.frameworks.join(\', \') || \'não detectado\'}\n');
 
         const healthIcon = status.health.score >= 85 ? '✅' : status.health.score >= 65 ? '⚠️' : '❌';
-        console.log(`  ${healthIcon} Saúde: ${status.health.score}/100 (${status.health.level})\n`);
+        logger.info('  ${healthIcon} Saúde: ${status.health.score}/100 (${status.health.level})\n');
 
-        console.log('  🤖 Agentes:');
-        console.log(`     Ativos: ${status.agents.active} | Ocupados: ${status.agents.busy} | Ociosos: ${status.agents.idle} | Bloqueados: ${status.agents.blocked}\n`);
+        logger.info('  🤖 Agentes:');
+        logger.info('     Ativos: ${status.agents.active} | Ocupados: ${status.agents.busy} | Ociosos: ${status.agents.idle} | Bloqueados: ${status.agents.blocked}\n');
 
-        console.log('  💡 Ideias:');
-        console.log(`     Total: ${status.ideas.total} | Executando: ${status.ideas.running} | Concluídas: ${status.ideas.completed} | Falhas: ${status.ideas.failed}\n`);
+        logger.info('  💡 Ideias:');
+        logger.info('     Total: ${status.ideas.total} | Executando: ${status.ideas.running} | Concluídas: ${status.ideas.completed} | Falhas: ${status.ideas.failed}\n');
 
-        console.log(`  📋 Qualidade: ${status.quality.overall}/100 (${status.quality.maturity})\n`);
-        console.log(`  📝 Decisões registradas: ${status.decisions}`);
-        console.log(`  🔒 Autonomia: ${status.autonomy}\n`);
+        logger.info('  📋 Qualidade: ${status.quality.overall}/100 (${status.quality.maturity})\n');
+        logger.info('  📝 Decisões registradas: ${status.decisions}');
+        logger.info('  🔒 Autonomia: ${status.autonomy}\n');
 
-        console.log('  Comandos rápidos:');
-        console.log('    ideia quality check   → Verificar quality gates');
-        console.log('    ideia agent list      → Listar agentes');
-        console.log('    ideia memory show     → Ver memória');
-        console.log('    ideia config set autonomy.level N2 → Ajustar autonomia');
+        logger.info('  Comandos rápidos:');
+        logger.info('    ideia quality check   → Verificar quality gates');
+        logger.info('    ideia agent list      → Listar agentes');
+        logger.info('    ideia memory show     → Ver memória');
+        logger.info('    ideia config set autonomy.level N2 → Ajustar autonomia');
         console.log('');
 
       } catch (error: unknown) {

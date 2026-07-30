@@ -1,4 +1,6 @@
 import { VfsUri } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('uri-path');
 
 export class DefaultVfsUri implements VfsUri {
   readonly scheme: string;

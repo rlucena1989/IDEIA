@@ -1,4 +1,6 @@
 import { ITreeNode } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('node-utils');
 
 export function findNodeById(nodes: ITreeNode[], id: string): ITreeNode | undefined {
   for (const node of nodes) {

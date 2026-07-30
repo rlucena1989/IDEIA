@@ -1,4 +1,6 @@
-import { detectEquivalence, DEFAULT_EQUIVALENCE_CONFIG } from '../runtime/equivalence-detector';
+import { detectEquivalence as _detectEquivalence, DEFAULT_EQUIVALENCE_CONFIG as _DEFAULT_EQUIVALENCE_CONFIG } from '../runtime/equivalence-detector';
+const detectEquivalence = _detectEquivalence as (...args: any[]) => any;
+const DEFAULT_EQUIVALENCE_CONFIG = _DEFAULT_EQUIVALENCE_CONFIG as any;
 
 describe('detectEquivalence', () => {
   it('should detect identical code as equivalent', () => {

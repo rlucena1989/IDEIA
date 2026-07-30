@@ -1,4 +1,6 @@
 import { EngineReport } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('delta-engine');
 
 export interface DeltaResult {
   qualityDelta: number;

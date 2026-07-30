@@ -1,9 +1,12 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { execFileSync } from 'node:child_process';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { DeployEntry, DeployEnvironment, DeployStatus, Incident, ReleasePlan, ReviewGateRequest, RollbackStrategy, CheckCommand } from './types';
 import { DEFAULT_QUALITY_GATES } from '@ideia/contracts';
+
+const logger = createLogger('delivery-orchestrator');
 
 type EventBus = { emit(event: { type: string; source: string; payload?: Record<string, unknown> }): Promise<unknown> };
 
@@ -95,11 +98,7 @@ export class DeliveryOrchestrator {
     this.executor = options?.executor ?? createDefaultExecutor(options?.deployDir ?? path.join(options?.cwd ?? process.cwd(), '.deploy'));
     this.cwd = options?.cwd ?? process.cwd();
     this.deployDir = options?.deployDir ?? path.join(this.cwd, '.deploy');
-    this.logger = options?.logger ?? {
-      info: (msg, ...args) => console.log(msg, ...args),
-      error: (msg, ...args) => console.error(msg, ...args),
-      warn: (msg, ...args) => console.warn(msg, ...args),
-    };
+    this.logger = options?.logger ?? logger;
     this.eventBus = options?.eventBus;
   }
 
@@ -188,8 +187,8 @@ export class DeliveryOrchestrator {
         this.logger.info('[Deploy] Health check passed: %o', body);
         return body;
       } catch (_err) {
-        this.logger.warn('[Deploy] Health check failed (non-fatal): %s', err);
-        return { warning: String(err) };
+        this.logger.warn('[Deploy] Health check failed (non-fatal): %s', _err);
+        return { warning: String(_err) };
       }
     });
     steps.push(stepHealth);
@@ -228,7 +227,7 @@ export class DeliveryOrchestrator {
       reviewRequired: false, startedAt, completedAt: report.completedAt,
     };
     this.deploys.set(deployId, entry);
-    (this.deploys.get(deployId) ?? {}).metadata = { report };
+    entry.metadata = { report };
 
     await this.emitEvent('deploy.completed', { deployId, version, environment, status: report.status, steps: report.steps });
 
@@ -297,7 +296,7 @@ export class DeliveryOrchestrator {
       await fn();
       result = { step: name, success: true, durationMs: Date.now() - start };
     } catch (_err) {
-      result = { step: name, success: false, durationMs: Date.now() - start, error: String(err) };
+      result = { step: name, success: false, durationMs: Date.now() - start, error: String(_err) };
     }
     await this.emitEvent(`deploy.step.${name}`, { step: name, success: result.success, durationMs: result.durationMs, error: result.error });
     return result;

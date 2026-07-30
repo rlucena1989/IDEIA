@@ -1,6 +1,8 @@
 import { EngineMode } from './types';
+import { createLogger } from '@ideia/logger';
 import { HistorySummary } from './history-analyzer';
 import { HealthCheckResult } from './types';
+const logger = createLogger('adaptive-scheduler');
 
 export interface ScheduleDecision {
   suggestedMode: EngineMode;

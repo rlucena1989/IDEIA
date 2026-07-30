@@ -7,6 +7,8 @@ export interface SloMetric {
   availability: number
   throughput: number
   errorRate: number
+  name?: string
+  success?: boolean
 }
 
 export interface SloThreshold {

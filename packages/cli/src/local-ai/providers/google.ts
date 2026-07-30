@@ -1,4 +1,5 @@
 import { AiProvider, ProviderConfig, ProviderResponse, getApiKey } from './index';
+import { createLogger } from '@ideia/logger';
 
 /** Classe responsável por processa provider. */
 export class GoogleProvider implements AiProvider {

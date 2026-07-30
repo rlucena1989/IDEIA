@@ -1,4 +1,5 @@
 import { Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 
 export interface Keybinding {
   command: string;

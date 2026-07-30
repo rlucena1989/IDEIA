@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { Command } from 'commander';
 import { printLine } from './output';
@@ -109,7 +110,7 @@ export function withCache<T>(key: string, fn: () => T, ttlMs = 300_000, root?: s
 function _parseArgs(): { command?: string; subcommand?: string } {
   const args = process.argv.slice(2);
   const cmd = args[0];
-  const sub = args[1] && !args[1]!.startsWith('-') ? args[1] : undefined;
+  const sub = args[1] && !((args[1] ?? '').startsWith('-')) ? args[1] : undefined;
   return { command: cmd, subcommand: sub };
 }
 

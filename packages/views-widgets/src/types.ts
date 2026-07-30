@@ -1,4 +1,6 @@
 import { Disposable, Event } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('types');
 
 export interface IWidget {
   readonly id: string;
@@ -119,3 +121,28 @@ export interface IProgressIndicator {
   cancel(): void;
   done(): void;
 }
+
+export interface EmptyStateConfig {
+  icon: string;
+  title: string;
+  description: string;
+  action?: string;
+  actionLabel?: string;
+  secondaryAction?: string;
+  secondaryLabel?: string;
+  tips?: string[];
+}
+
+export interface EmptyStateProvider {
+  getEmptyState(viewId: string, context?: string): EmptyStateConfig;
+}
+
+export interface SkeletonConfig {
+  type: 'text' | 'card' | 'chart' | 'table' | 'avatar' | 'custom';
+  lines?: number;
+  width?: string;
+  height?: string;
+  count?: number;
+}
+
+export type LoadingState = 'loading' | 'loaded' | 'error';

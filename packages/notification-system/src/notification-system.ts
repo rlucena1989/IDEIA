@@ -36,21 +36,28 @@ const SEVERITY_LEVEL_MAP: Record<NotificationLevel, NotificationSeverity[]> = {
   ],
 };
 
+import { NotificationStats, NotificationFilter } from './types';
+
 export class NotificationSystem {
   private channels: Map<ChannelType, NotificationChannel> = new Map();
   private history: Notification[] = [];
   private eventBus?: EventBus;
   private logger?: Logger;
   private maxHistory: number;
+  private level: NotificationLevel = NotificationLevel.All;
+  private dedupWindowMs: number = 5000;
+  private recentMessages: Map<string, number> = new Map();
 
   constructor(
     options?: {
       eventBus?: EventBus;
       logger?: Logger;
       maxHistory?: number;
+      dedupWindowMs?: number;
     },
   ) {
     this.maxHistory = options?.maxHistory ?? 500;
+    this.dedupWindowMs = options?.dedupWindowMs ?? 5000;
     this.eventBus = options?.eventBus;
     this.logger = options?.logger;
 
@@ -69,6 +76,15 @@ export class NotificationSystem {
   private shouldSend(notification: Notification): boolean {
     const severities = SEVERITY_LEVEL_MAP[notification.level] ?? SEVERITY_LEVEL_MAP[NotificationLevel.All];
     return severities.includes(notification.severity);
+  }
+
+  private isDuplicate(notification: Notification, channel: ChannelType): boolean {
+    const key = `${channel}:${notification.message}`;
+    const lastSent = this.recentMessages.get(key);
+    const now = Date.now();
+    if (lastSent && (now - lastSent) < this.dedupWindowMs) return true;
+    this.recentMessages.set(key, now);
+    return false;
   }
 
   async notify(
@@ -93,6 +109,7 @@ export class NotificationSystem {
       targetChannels.map(async (ch) => {
         const channel = this.channels.get(ch);
         if (!channel || !channel.isAvailable()) return;
+        if (this.isDuplicate(full, ch)) return;
         return channel.send(full);
       }),
     );
@@ -142,6 +159,75 @@ export class NotificationSystem {
 
   clearHistory(): void {
     this.history = [];
+  }
+
+  getUnreadCount(): number {
+    return this.history.length;
+  }
+
+  markAllRead(): void {
+    const now = new Date();
+    for (const n of this.history) {
+      n.metadata = { ...n.metadata, readAt: now.toISOString() };
+    }
+  }
+
+  dismiss(id: string): boolean {
+    const idx = this.history.findIndex(n => n.id === id);
+    if (idx !== -1) {
+      this.history.splice(idx, 1);
+      return true;
+    }
+    return false;
+  }
+
+  setLevel(level: NotificationLevel): void {
+    this.level = level;
+  }
+
+  getLevel(): NotificationLevel {
+    return this.level;
+  }
+
+  getStats(): NotificationStats {
+    const bySeverity: Record<NotificationSeverity, number> = {
+      [NotificationSeverity.Info]: 0,
+      [NotificationSeverity.Success]: 0,
+      [NotificationSeverity.Warning]: 0,
+      [NotificationSeverity.Error]: 0,
+      [NotificationSeverity.Critical]: 0,
+    };
+    const byChannel: Record<ChannelType, number> = {
+      [ChannelType.Toast]: 0,
+      [ChannelType.Banner]: 0,
+      [ChannelType.Badge]: 0,
+      [ChannelType.Desktop]: 0,
+      [ChannelType.Webhook]: 0,
+      [ChannelType.Cli]: 0,
+    };
+    for (const n of this.history) {
+      bySeverity[n.severity] = (bySeverity[n.severity] || 0) + 1;
+    }
+    for (const [ch] of this.channels) {
+      byChannel[ch] = this.history.filter(n => n.source?.startsWith(ch)).length;
+    }
+    return {
+      total: this.history.length,
+      unread: this.getUnreadCount(),
+      bySeverity,
+      byChannel,
+    };
+  }
+
+  getFilteredNotifications(filter: NotificationFilter): Notification[] {
+    return this.history.filter(n => {
+      if (filter.severity && n.severity !== filter.severity) return false;
+      if (filter.source && n.source !== filter.source) return false;
+      if (filter.startDate && n.timestamp < filter.startDate) return false;
+      if (filter.endDate && n.timestamp > filter.endDate) return false;
+      if (filter.searchText && !n.message.toLowerCase().includes(filter.searchText.toLowerCase())) return false;
+      return true;
+    });
   }
 
   private addToHistory(notification: Notification): void {

@@ -1,4 +1,6 @@
 import { SystemConsolidation } from './consolidation-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('consolidation-engine');
 
 export function consolidateSystem(input: {
   telemetryCount: number;

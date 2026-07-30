@@ -1,4 +1,6 @@
 import type { MetricsOutput, MetricResult, MetricConfig } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('metrics');
 
 function extractNumericValues(data: unknown): number[] {
   if (Array.isArray(data)) return data.filter((v): v is number => typeof v === 'number' && !isNaN(v));

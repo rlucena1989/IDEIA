@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.hook');
 import path from 'node:path';
 import { getIO } from '../io';
 
@@ -82,9 +84,9 @@ export function hookCommand(): Command {
       }
 
       ioFs.write(hookPath, hookContent());
-      console.log(`[ai-devkit] Pre-commit hook instalado em: ${hookPath}`);
-      console.log('[ai-devkit] Hook executara "ai-devkit verify" antes de cada commit.');
-      console.log('[ai-devkit] Para pular: SKIP_AI_VERIFY=1 git commit');
+      logger.info('[ai-devkit] Pre-commit hook instalado em: ${hookPath}');
+      logger.info('[ai-devkit] Hook executara "ai-devkit verify" antes de cada commit.');
+      logger.info('[ai-devkit] Para pular: SKIP_AI_VERIFY=1 git commit');
     });
 
   cmd
@@ -97,7 +99,7 @@ export function hookCommand(): Command {
       const hookPath = path.join(hooksDir, 'pre-commit');
 
       if (!ioFs.exists(hookPath)) {
-        console.log('[ai-devkit] Nenhum pre-commit hook encontrado.');
+        logger.info('[ai-devkit] Nenhum pre-commit hook encontrado.');
         return;
       }
 
@@ -109,7 +111,7 @@ export function hookCommand(): Command {
       }
 
       ioFs.remove(hookPath);
-      console.log(`[ai-devkit] Pre-commit hook removido: ${hookPath}`);
+      logger.info('[ai-devkit] Pre-commit hook removido: ${hookPath}');
     });
 
   return cmd;

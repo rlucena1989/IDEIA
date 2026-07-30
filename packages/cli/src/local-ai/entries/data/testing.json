@@ -1,0 +1,417 @@
+[
+  {
+    "id": "testing-strategy",
+    "title": "Testing Strategy ÔÇö Piramide de Testes",
+    "category": "testing",
+    "tags": [
+      "testing",
+      "unit",
+      "integration",
+      "e2e",
+      "pyramid"
+    ],
+    "summary": "A Piramide de Testes recomenda muitos testes unitarios, alguns testes de integracao e poucos testes E2E.",
+    "content": "Base: Unit Tests (70%+) ÔÇö testam uma unidade isolada, rapidos, sem IO. Meio: Integration Tests (20%) ÔÇö testam interacao entre camadas, banco real ou mock. Topo: E2E Tests (10%) ÔÇö testam fluxos completos, lentos, frageis. Contrario da piramide invertida (mais E2E que unit) causa suites lentas e instaveis.",
+    "principles": [
+      "Testes rapidos rodam frequentemente",
+      "Testes lentos rodam apenas em CI",
+      "Cobertura minima de 80% nas camadas de dominio"
+    ],
+    "when_to_use": [
+      "Qualquer projeto profissional"
+    ],
+    "references": [
+      "Martin Fowler - TestPyramid",
+      "Kent C. Dodds - Testing Trophy"
+    ]
+  },
+  {
+    "id": "contract-testng",
+    "title": "Consumer-Driven Contract Testing",
+    "category": "testing",
+    "tags": [
+      "contract-testing",
+      "pact",
+      "microservices",
+      "consumer-driven",
+      "integration"
+    ],
+    "summary": "Contract testing verifica que servicos se comunicam conforme o contrato esperado, sem testes E2E pesados.",
+    "content": "Consumer: define contrato (Pact) com expectativas de request/response. Provider: verifica contrato com provider verification. Beneficios: detecta quebras de compatibilidade cedo, sem ambiente E2E. Ferramentas: Pact, Spring Cloud Contract. Diferenca de E2E: testa integracao isolada, nao o sistema todo.",
+    "when_to_use": [
+      "Microservicos com multiplos consumidores",
+      "Equipes independentes"
+    ],
+    "references": [
+      "Martin Fowler - ContractTest",
+      "Pact Documentation"
+    ]
+  },
+  {
+    "id": "tdd",
+    "title": "Test-Driven Development (TDD)",
+    "category": "testing",
+    "tags": [
+      "tdd",
+      "testing",
+      "red-green-refactor",
+      "unittest"
+    ],
+    "summary": "TDD e um processo de desenvolvimento onde os testes sao escritos antes do codigo de producao.",
+    "content": "Ciclo Red-Green-Refactor: 1) Escreva um teste que falha (RED). 2) Escreva codigo minimo para passar (GREEN). 3) Refatore mantendo testes verdes. Beneficios: design emerge naturalmente, cobertura alta, regression safety, documentacao viva. TDD e sobre design, nao apenas sobre testing.",
+    "when_to_use": [
+      "Codigo novo com requisitos claros",
+      "Bug fixes (escreva teste que reproduz o bug primeiro)"
+    ],
+    "references": [
+      "Kent Beck - Test-Driven Development",
+      "Martin Fowler - TDD"
+    ]
+  },
+  {
+    "id": "bdd",
+    "title": "Behavior-Driven Development (BDD)",
+    "category": "testing",
+    "tags": [
+      "bdd",
+      "testing",
+      "cucumber",
+      "gherkin",
+      "acceptance"
+    ],
+    "summary": "BDD estende TDD com linguagem natural (Gherkin) para descrever comportamento esperado em formato Given-When-Then.",
+    "content": "Formato: Given (contexto), When (acao), Then (resultado esperado). Ferramentas: Cucumber, SpecFlow, Jest-Cucumber. Beneficios: legivel por nao-tecnicos, documentacao viva, alinhamento entre stakeholders. Exemplo: Dado que o usuario esta logado, Quando adiciona item ao carrinho, Entao o total deve ser atualizado.",
+    "when_to_use": [
+      "Historias de usuario complexas",
+      "Equipes com PO/product envolvidos",
+      "Acceptance criteria automatizados"
+    ],
+    "references": [
+      "Dan North - BDD",
+      "Cucumber Documentation"
+    ]
+  },
+  {
+    "id": "mutation-testing",
+    "title": "Mutation Testing",
+    "category": "testing",
+    "tags": [
+      "mutation-testing",
+      "coverage",
+      "quality",
+      "stryker"
+    ],
+    "summary": "Mutation testing introduz pequenas modificacoes (mutantes) no codigo para verificar se os testes existentes os detectam.",
+    "content": "Mutacoes: mudar > para >=, true para false, remover chamada de metodo. Se teste passa com mutante = teste nao detectou a mudanca (mutante sobreviveu). Cobertura de mutacao = mutantes mortos / total. Ferramentas: Stryker (JS/TS), PIT (Java). Complementa cobertura de linha: 80% coverage pode ter 40% mutation score.",
+    "when_to_use": [
+      "Codigo critico",
+      "Testes existentes com cobertura alta mas qualidade questionavel"
+    ],
+    "references": [
+      "Stryker Mutator Documentation"
+    ]
+  },
+  {
+    "id": "property-based-testing",
+    "title": "Property-Based Testing",
+    "category": "testing",
+    "tags": [
+      "property-based",
+      "testing",
+      "quickcheck",
+      "hypothesis",
+      "fast-check"
+    ],
+    "summary": "Property-based testing gera automaticamente centenas de entradas para testar propriedades invariantes do codigo.",
+    "content": "Propriedade: afirmacao que deve ser verdadeira para todas as entradas validas. Framework gera inputs aleatorios e verifica a propriedade. Exemplo: \"reverse(reverse(x)) === x\" para qualquer array. Ferramentas: fast-check (JS/TS), Hypothesis (Python), QuickCheck (Haskell). Beneficio: encontra casos limite que exemplos manuais nao cobrem.",
+    "when_to_use": [
+      "Funcoes com entradas bem definidas",
+      "Algoritmos, parsers, validacao",
+      "Complementar tests exemplares"
+    ],
+    "references": [
+      "fast-check Documentation",
+      "John Hughes - Testing the Hard Stuff"
+    ]
+  },
+  {
+    "id": "snapshot-testing",
+    "title": "Snapshot Testing",
+    "category": "testing",
+    "tags": [
+      "snapshot",
+      "testing",
+      "jest",
+      "vitest",
+      "golden-file"
+    ],
+    "summary": "Snapshot testing compara a saida atual de uma funcao com uma versao salva anteriormente (golden file).",
+    "content": "Primeira execucao: salva snapshot como arquivo de referencia. Execucoes seguintes: compara saida com snapshot salvo. Se mudou: ou a mudanca e intencional (atualizar snapshot) ou um bug. Cuidados: snapshots grandes sao dificeis de revisar, falsos positivos (mudancas nao intencionais em componentes). Melhor para: output de componentes, serializacao, mensagens de erro.",
+    "when_to_use": [
+      "Componentes de UI",
+      "Output serializado (JSON, YAML, HTML)",
+      "Detectar mudancas nao intencionais"
+    ]
+  },
+  {
+    "id": "load-testing",
+    "title": "Load & Stress Testing (k6, Artillery)",
+    "category": "testing",
+    "tags": [
+      "load-testing",
+      "stress",
+      "performance",
+      "k6",
+      "artillery"
+    ],
+    "summary": "Load testing simula trafego para medir performance, escalabilidade e confiabilidade do sistema sob carga.",
+    "content": "Tipos: Smoke (carga minima para validar baseline), Load (carga esperada), Stress (carga alem do esperado), Spike (pico repentino), Soak (carga sustentada por horas). Metricas: RPS (requests/sec), latencia (p50, p95, p99), erros (%), throughput. Ferramentas: k6 (JS, Grafana), Artillery (YAML+JS), Locust (Python).",
+    "when_to_use": [
+      "Antes de lancar em producao",
+      "Identificar bottlenecks",
+      "SLA/Limites de capacidade"
+    ],
+    "references": [
+      "k6 Documentation",
+      "Google SRE Book"
+    ]
+  },
+  {
+    "id": "chaos-engineering",
+    "title": "Chaos Engineering",
+    "category": "testing",
+    "tags": [
+      "chaos-engineering",
+      "resilience",
+      "failure-testing",
+      "chaos-monkey",
+      "litmus"
+    ],
+    "summary": "Chaos Engineering testa a resiliencia do sistema introduzindo falhas controladas em producao ou staging.",
+    "content": "Principios: 1) Definir estado normal (baseline). 2) Introduzir falha (kill pod, latencia de rede, CPU alta). 3) Medir impacto. 4) Mitigar e melhorar. Ferramentas: Chaos Monkey (Netflix), Gremlin, Litmus, Chaos Mesh. Exemplos: matar pods aleatorios em Kubernetes, injetar latencia entre servicos, derrubar banco de dados.",
+    "when_to_use": [
+      "Sistemas criticos",
+      "Microservicos em producao",
+      "Validar SLOs e resiliencia"
+    ],
+    "references": [
+      "Principles of Chaos Engineering",
+      "Netflix Tech Blog"
+    ]
+  },
+  {
+    "id": "test-doubles",
+    "title": "Test Doubles ÔÇö Mocks, Stubs, Fakes, Spies, Dummies",
+    "category": "testing",
+    "tags": [
+      "test-doubles",
+      "mock",
+      "stub",
+      "fake",
+      "spy",
+      "dummy"
+    ],
+    "summary": "Test Doubles sao objetos que substituem dependencias reais durante testes, cada um com proposito especifico.",
+    "content": "Dummy: passado mas nunca usado (apenas para preencher parametros). Fake: implementacao simplificada funcional (banco em memoria). Stub: retorna respostas prontas para chamadas especificas. Spy: registra chamadas para verificacao posterior. Mock: objeto pre-programado com expectativas de chamadas (verifica comportamento). Ferramentas: Jest.fn(), Sinon.js, Testify (Go), Mockito (Java).",
+    "when_to_use": [
+      "Isolar unidade de teste",
+      "Controlar dependencias externas",
+      "Verificar interacoes"
+    ],
+    "references": [
+      "Martin Fowler - Mocks Aren't Stubs",
+      "xUnit Test Patterns - Meszaros"
+    ]
+  },
+  {
+    "id": "golden-file-testing",
+    "title": "Golden File / Approval Testing",
+    "category": "testing",
+    "tags": [
+      "golden-file",
+      "approval-testing",
+      "snapshot",
+      "visual-regression"
+    ],
+    "summary": "Approval testing compara a saida de uma funcao com um golden file aprovado previamente, ideal para output complexo.",
+    "content": "Processo: 1) Executar codigo com input de teste. 2) Comparar saida com arquivo .approved. 3) Se diferente (arquivo .received), falha. 4) Revisor humano aprova movendo .received ÔåÆ .approved. Diferenca de Snapshot: approval testing tem fluxo explicito de aprovacao. Exemplo: testar geracao de codigo, documentos, relatorios.",
+    "when_to_use": [
+      "Output complexo (geradores, templates)",
+      "Testes de refactoring (sem mudanca de comportamento)"
+    ],
+    "references": [
+      "ApprovalTests Documentation",
+      "Emily Bache - Approval Testing"
+    ]
+  },
+  {
+    "id": "integration-test-strategies",
+    "title": "Integration Testing Strategies",
+    "category": "testing",
+    "tags": [
+      "integration-testing",
+      "database",
+      "api",
+      "contract",
+      "component"
+    ],
+    "summary": "Integration testing verifica que modulos do sistema funcionam corretamente juntos.",
+    "content": "Tipos: Database Integration (real ou container), API Integration (chamadas HTTP reais), Component Test (testa um componente com dependencias reais), Contract Test (verifica contratos entre servicos). Estrategias: Testcontainers (bancos reais em Docker), banco em memoria (H2, SQLite), API mock (WireMock, MSW). Isolation: cada teste deve deixar estado limpo.",
+    "when_to_use": [
+      "Verificar interacao entre camadas",
+      "Bancos de dados",
+      "APIs externas"
+    ],
+    "references": [
+      "Martin Fowler - IntegrationTest"
+    ]
+  },
+  {
+    "id": "e2e-strategies",
+    "title": "End-to-End Testing Strategies",
+    "category": "testing",
+    "tags": [
+      "e2e",
+      "playwright",
+      "cypress",
+      "selenium",
+      "ui-testing"
+    ],
+    "summary": "E2E testing testa fluxos completos do sistema do inicio ao fim, simulando o usuario real.",
+    "content": "Ferramentas: Playwright (recomendado, multi-browser), Cypress (dev-friendly), Selenium (legado). Boas praticas: Page Object Model (abstrair paginas), dados de teste gerenciados (API calls para setup), independentes (nao depender de ordem), resilientes (esperar elementos, nao usar sleep fixo). Menos e mais: poucos testes E2E que cobrem fluxos criticos.",
+    "when_to_use": [
+      "Fluxos criticos de usuario",
+      "Regression testing",
+      "Validar integracao completa"
+    ],
+    "references": [
+      "Playwright Documentation",
+      "Martin Fowler - E2E Testing"
+    ]
+  },
+  {
+    "id": "coverage-tradeoffs",
+    "title": "Code Coverage ÔÇö Beyond the Percentage",
+    "category": "testing",
+    "tags": [
+      "coverage",
+      "metrics",
+      "quality",
+      "tradeoffs"
+    ],
+    "summary": "Code coverage mede quanto do codigo e executado pelos testes, mas cobertura alta nao garante qualidade.",
+    "content": "Tipos: Line/Statement, Branch (cada if/else), Function, Condition (sub-expressoes). 80% e meta comum, mas: 100% coverage nao significa 0 bugs; coverage alta pode dar falsa seguranca; mutation testing e metricas mais significativas. Pragmatismo: foque cobertura em camada de dominio (regras de negocio), seja menos rigido em UI/BOILERPLATE.",
+    "when_to_use": [
+      "Metrica de qualidade, nao meta cega",
+      "Direcionar esforco de teste"
+    ]
+  },
+  {
+    "id": "visual-regression",
+    "title": "Visual Regression Testing",
+    "category": "testing",
+    "tags": [
+      "visual-regression",
+      "screenshot",
+      "percy",
+      "chromatic",
+      "ui"
+    ],
+    "summary": "Visual regression testing compara screenshots de interfaces para detectar mudancas visuais nao intencionais.",
+    "content": "Processo: 1) Tirar screenshot base (baseline). 2) Alterar codigo. 3) Tirar novo screenshot. 4) Comparar pixel a pixel. 5) Diferencas sao revisadas (aprovadas ou rejeitadas). Ferramentas: Percy (BrowserStack), Chromatic (Storybook), Playwright Visual Comparisons, Loki. Dicas: screenshots em resolucoes padrao, ignorar areas dinamicas (datas, animacoes), testar componentes isoladamente (Storybook) > paginas inteiras.",
+    "when_to_use": [
+      "Bibliotecas de componentes",
+      "Design Systems",
+      "Antes de deploy"
+    ]
+  },
+  {
+    "id": "a11y-testing",
+    "title": "Accessibility (a11y) Testing",
+    "category": "testing",
+    "tags": [
+      "a11y",
+      "accessibility",
+      "axe",
+      "wcag",
+      "inclusive"
+    ],
+    "summary": "Testes de acessibilidade garantem que a aplicacao pode ser usada por pessoas com deficiencias.",
+    "content": "Padroes: WCAG 2.1 (4 principios: Perceivable, Operable, Understandable, Robust), niveis A, AA (minimo legal), AAA. Ferramentas: axe-core (automatizado), Lighthouse a11y, Pa11y, WAVE. Testar: contraste de cores, labels em inputs, hierarquia de headings, navegacao por teclado, ARIA attributes, screen readers (NVDA, VoiceOver). Automatizado detecta ~30% dos problemas, teste manual e necessario.",
+    "when_to_use": [
+      "Obrigatorio para conformidade legal",
+      "Produtos inclusivos"
+    ]
+  },
+  {
+    "id": "api-testing",
+    "title": "API Testing Strategies",
+    "category": "testing",
+    "tags": [
+      "api-testing",
+      "rest",
+      "contract",
+      "supertest",
+      "postman"
+    ],
+    "summary": "Estrategias para testar APIs: functional, contract, performance, security.",
+    "content": "Functional: Supertest (JS/TS), REST Assured (Java), requests (Python). Verificar: status codes, body, headers, schemas. Contract: Pact (consumer-driven), OpenAPI validator. Performance: k6, autocannon, ab. Security: rate limit testing, auth bypass, injection, fuzzing. E2E: Postman/Newman collections, Hoppscotch. Dica: organize tests por recurso, use factories para dados de teste, teste cenarios de erro e edge cases.",
+    "when_to_use": [
+      "Toda API"
+    ]
+  },
+  {
+    "id": "performance-testing",
+    "title": "Performance Testing Types (Load, Stress, Spike, Soak)",
+    "category": "testing",
+    "tags": [
+      "performance-testing",
+      "load",
+      "stress",
+      "spike",
+      "soak"
+    ],
+    "summary": "Diferentes tipos de teste de performance para diferentes objetivos: capacidade, resiliencia, endurance.",
+    "content": "Smoke: carga minima (1-2 usuarios) para validar baseline. Load: carga esperada (ex: 100 RPS) para medir latencia e throughput. Stress: carga alem do esperado (ex: 500 RPS) para identificar ponto de ruptura. Spike: aumento repentino (ex: 0 para 1000 RPS instantaneo) para testar auto-scaling. Soak: carga sustentada por horas para detectar memory leaks e degradacao. Metricas: latencia (p50, p95, p99), erros, throughput, CPU/memoria.",
+    "when_to_use": [
+      "Antes de lancamento",
+      "Validar SLOs",
+      "Capacity planning"
+    ]
+  },
+  {
+    "id": "testability",
+    "title": "Design for Testability",
+    "category": "testing",
+    "tags": [
+      "testability",
+      "design",
+      "di",
+      "seams",
+      "testing"
+    ],
+    "summary": "Projetar codigo para ser testavel: injecao de dependencia, seams, interfaces, pure functions.",
+    "content": "Principios: Injecao de Dependencia (passar dependencias, nao criar), Pure Functions (mesmo input ÔåÆ mesmo output, sem side effects), Seams (lugares onde se pode alterar comportamento sem modificar codigo, ex: interfaces), Avoid Static/Global (dificil de mockar), Single Responsibility (classes pequenas sao faceis de testar), Command-Query Separation (metodos ou alteram estado ou retornam dados). Beneficio: codigo testavel e bem projetado.",
+    "when_to_use": [
+      "Toda arquitetura",
+      "Facilitar TDD"
+    ]
+  },
+  {
+    "id": "test-data-management",
+    "title": "Test Data Management (Fixtures, Factories, Seeds)",
+    "category": "testing",
+    "tags": [
+      "test-data",
+      "fixtures",
+      "factories",
+      "seeds",
+      "data-builders"
+    ],
+    "summary": "Estrategias para gerenciar dados de teste: fixtures estaticas, factories dinamicas, seeds para E2E.",
+    "content": "Fixtures: dados estaticos em JSON/YAML (caminho feliz, erro, edge case). Factories (recomendado): Builder pattern para criar dados com valores default e override. Ex: new UserFactory().withRole('admin').create(). Seeds: dados de setup para testes E2E ou integracao (populam banco antes dos testes). Dica: factories sao mais flexiveis que fixtures, use Faker.js para dados realistas, limpe dados entre testes (transa├º├úo rollback ou truncate).",
+    "when_to_use": [
+      "Qualquer suite de testes"
+    ]
+  }
+]

@@ -11,9 +11,6 @@
       "@ideia/diff-engine/*": [
         "../diff-engine/src/*"
       ],
-      "@ideia/event-bus/integration": [
-        "../event-bus/dist/integration"
-      ],
       "@ideia/trace-registry/observability-integration": [
         "../trace-registry/dist/observability-integration"
       ],
@@ -85,10 +82,11 @@
       ]
     },
     "baseUrl": ".",
-    "strict": true
+    "strict": true,
+    "composite": true
   },
   "include": [
-    "src"
+    "src/**/*.ts"
   ],
   "exclude": [
     "**/__tests__"
@@ -102,9 +100,6 @@
     },
     {
       "path": "../audit-trail"
-    },
-    {
-      "path": "../diff-engine"
     },
     {
       "path": "../memory-store"
@@ -149,6 +144,9 @@
       "path": "../onboarding-wizard"
     },
     {
+      "path": "../privacy-center"
+    },
+    {
       "path": "../self-optimization-panel"
     },
     {
@@ -156,12 +154,6 @@
     },
     {
       "path": "../slo-monitor"
-    },
-    {
-      "path": "../reality-sync"
-    },
-    {
-      "path": "../prompt-security"
     },
     {
       "path": "../trace-registry"
@@ -173,10 +165,31 @@
       "path": "../workflow-engine"
     },
     {
+      "path": "../adapter-base"
+    },
+    {
       "path": "../delivery-orchestrator"
     },
     {
       "path": "../feedback-pipeline"
+    },
+    {
+      "path": "../agent-runtime"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../data-layer"
+    },
+    {
+      "path": "../reality-sync"
+    },
+    {
+      "path": "../prompt-security"
+    },
+    {
+      "path": "../diff-engine"
     }
   ]
 }

@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { buildPlatformState } from '../platform/platform-builder';
 import { verifyPlatform } from '../platform/platform-verifier';
 import { finishPlatform } from '../platform/platform-finish';

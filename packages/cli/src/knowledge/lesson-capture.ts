@@ -1,4 +1,6 @@
 import { LessonLearned } from './knowledge-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('lesson-capture');
 
 export function captureLesson(input: {
   summary: string;

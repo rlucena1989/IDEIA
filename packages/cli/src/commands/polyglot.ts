@@ -8,6 +8,8 @@
  */
 
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.polyglot');
 import { AdapterRuntime, defaultRuntime } from '../runtime/adapter-runtime';
 import { AdapterCommandId, LanguageId, RunStatus } from '../runtime/adapter-contract';
 
@@ -24,11 +26,11 @@ export function polyglotCommand(runtime: AdapterRuntime = defaultRuntime): Comma
     .description('Lista runners registrados e suas linguagens')
     .action(() => {
       const runners = runtime.listRunners();
-      console.log(`Runners registrados (${runners.length}):\n`);
+      logger.info('Runners registrados (${runners.length}):\n');
       for (const r of runners) {
         const cmds = r.commands().map((c) => c.id).join(', ');
-        console.log(`- ${r.name} [${r.language}] aliases: ${r.aliases.join(', ')}`);
-        console.log(`    comandos: ${cmds}`);
+        logger.info('- ${r.name} [${r.language}] aliases: ${r.aliases.join(\', \')}');
+        logger.info('    comandos: ${cmds}');
       }
     });
 
@@ -36,7 +38,7 @@ export function polyglotCommand(runtime: AdapterRuntime = defaultRuntime): Comma
     .command('languages')
     .description('Lista linguagens suportadas (com runner)')
     .action(() => {
-      console.log(runtime.getSupportedLanguages().join(', '));
+      logger.info(runtime.getSupportedLanguages().join(', '));
     });
 
   cmd
@@ -47,7 +49,7 @@ export function polyglotCommand(runtime: AdapterRuntime = defaultRuntime): Comma
       const runners = runtime.getSupportedLanguages();
       for (const lang of all) {
         const tag = runners.includes(lang) ? '' : ' [scaffold-only]';
-        console.log(`  ${lang}${tag}`);
+        logger.info('  ${lang}${tag}');
       }
     });
 
@@ -57,16 +59,16 @@ export function polyglotCommand(runtime: AdapterRuntime = defaultRuntime): Comma
     .argument('[dir]', 'diretório alvo', '.')
     .action((dir: string) => {
       const result = runtime.detect(dir);
-      console.log(`Linguagens detectadas em "${dir}":`);
+      logger.info('Linguagens detectadas em "${dir}":');
       if (result.languages.length === 0) {
-        console.log('  (nenhuma com runner disponível)');
+        logger.info('  (nenhuma com runner disponível)');
       } else {
         for (const lang of result.languages) {
-          console.log(`  - ${lang}${lang === result.primary ? '  [primária]' : ''}`);
+          logger.info('  - ${lang}${lang === result.primary ? \'  [primária]\' : \'\'}');
         }
       }
       if (result.raw.length > 0) {
-        console.log(`Marcadores crus: ${result.raw.join(', ')}`);
+        logger.info('Marcadores crus: ${result.raw.join(\', \')}');
       }
     });
 
@@ -92,8 +94,8 @@ export function polyglotCommand(runtime: AdapterRuntime = defaultRuntime): Comma
       }
       const result = await runtime.execute(lang, commandId, dir, { timeoutMs: Number(options.timeout) });
       const icon = result.status === RunStatus.Success ? '✅' : result.status === RunStatus.Skipped ? '⏭️' : '❌';
-      console.log(`${icon} ${result.status} (${result.durationMs}ms)`);
-      if (result.stdout) console.log(result.stdout);
+      logger.info('${icon} ${result.status} (${result.durationMs}ms)');
+      if (result.stdout) logger.info(result.stdout);
       if (result.stderr) console.error(result.stderr);
       if (result.status === RunStatus.Failure || result.status === RunStatus.Timeout) process.exitCode = 1;
     });
@@ -107,7 +109,7 @@ export function polyglotCommand(runtime: AdapterRuntime = defaultRuntime): Comma
       let failed = 0;
       for (const r of results) {
         const icon = r.status === RunStatus.Success ? '✅' : r.status === RunStatus.Skipped ? '⏭️' : '❌';
-        console.log(`${icon} ${r.language}/${r.command} -> ${r.status} (${r.durationMs}ms)`);
+        logger.info('${icon} ${r.language}/${r.command} -> ${r.status} (${r.durationMs}ms)');
         if (r.status === RunStatus.Failure || r.status === RunStatus.Timeout) failed++;
       }
       if (failed > 0) process.exitCode = 1;
@@ -120,14 +122,14 @@ export function polyglotCommand(runtime: AdapterRuntime = defaultRuntime): Comma
     .action(async (dir: string) => {
       const manifests = await runtime.discoverAdapters(dir);
       const runners = runtime.listRunners().map(r => r.language);
-      console.log(`Adapters scaffold encontrados (${manifests.length}):\n`);
+      logger.info('Adapters scaffold encontrados (${manifests.length}):\n');
       for (const m of manifests) {
         const hasRunner = runners.includes(m.language);
         const tag = hasRunner ? '✅ executável' : '📋 scaffold-only';
-        console.log(`  ${m.id.padEnd(20)} ${m.language.padEnd(14)} ${tag}`);
+        logger.info('  ${m.id.padEnd(20)} ${m.language.padEnd(14)} ${tag}');
       }
       const scaffoldable = manifests.filter(m => !runners.includes(m.language)).length;
-      console.log(`\nResumo: ${manifests.length} scaffold total, ${manifests.length - scaffoldable} executável, ${scaffoldable} scaffold-only`);
+      logger.info('\nResumo: ${manifests.length} scaffold total, ${manifests.length - scaffoldable} executável, ${scaffoldable} scaffold-only');
     });
 
   return cmd;

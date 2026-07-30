@@ -1,14 +1,22 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { NotificationSystem, NotificationSeverity, NotificationLevel } from '@ideia/notification-system';
-import { createBus } from '@ideia/event-bus';
+import { createBus, EventBus } from '@ideia/event-bus';
 import { printHeader, printLine, printResult } from '../utils/output';
 
 export function notifyCommand(): Command {
   const cmd = new Command('notify')
     .description('Notification system: send, configure notifications');
 
-  const eventBus = await createBus();
-  const ns = new NotificationSystem({ eventBus });
+  let _eventBus: EventBus;
+  let _ns: NotificationSystem;
+  async function getNs(): Promise<NotificationSystem> {
+    if (!_ns) {
+      _eventBus = await createBus() as unknown as EventBus;
+      _ns = new NotificationSystem({ eventBus: _eventBus });
+    }
+    return _ns;
+  }
 
   cmd
     .command('send')
@@ -20,6 +28,7 @@ export function notifyCommand(): Command {
     .option('--json', 'Output as JSON')
     .action(async (message, opts) => {
       try {
+        const ns = await getNs();
         const sevMap: Record<string, NotificationSeverity> = {
           info: NotificationSeverity.Info,
           warning: NotificationSeverity.Warning,
@@ -48,6 +57,7 @@ export function notifyCommand(): Command {
     .option('--json', 'Output as JSON')
     .action(async (opts) => {
       try {
+        const ns = await getNs();
         const limit = parseInt(opts.limit || '10', 10);
         const history = ns.getHistory(limit);
         if (opts.json) { printLine(JSON.stringify(history, null, 2)); return; }
@@ -70,6 +80,7 @@ export function notifyCommand(): Command {
     .option('--enabled <bool>', 'Enable/disable channel')
     .action(async (channel, opts) => {
       try {
+        const ns = await getNs();
         ns.configureChannel(channel, { enabled: opts.enabled !== 'false' });
         printResult(`Channel "${channel}" configured`, true);
       } catch (error: unknown) {

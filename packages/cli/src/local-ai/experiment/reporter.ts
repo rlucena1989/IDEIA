@@ -1,4 +1,6 @@
 import { ExperimentRun, ExperimentReport } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('reporter');
 
 /**
  * Constrói report.

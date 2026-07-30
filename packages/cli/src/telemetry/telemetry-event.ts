@@ -1,5 +1,7 @@
 import { TelemetryEvent, createTelemetryEvent } from './telemetry-types';
+import { createLogger } from '@ideia/logger';
 import * as _crypto from 'node:crypto';
+const logger = createLogger('telemetry-event');
 
 export function eventCommandStarted(command: string, requestId: string): TelemetryEvent {
   return createTelemetryEvent({

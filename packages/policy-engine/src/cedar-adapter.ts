@@ -1,4 +1,6 @@
 import { PolicyResult, PolicyInput } from './policy';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('cedar-adapter');
 
 export type CedarEffect = 'permit' | 'forbid';
 export type CedarPrincipal = { type: 'user' | 'ai' | 'system'; id?: string };

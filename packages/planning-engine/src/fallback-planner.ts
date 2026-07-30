@@ -1,4 +1,5 @@
 import { PlannedStep, RiskLevel } from './types';
+import { createLogger } from '@ideia/logger';
 
 export class FallbackPlanner {
   generateFallback(step: PlannedStep): PlannedStep[] {

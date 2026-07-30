@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { IEditorWidget, EditorManager, EditorOpenOptions, EditorWidgetFactory } from './types';
 
 export class DefaultEditorManager implements EditorManager {

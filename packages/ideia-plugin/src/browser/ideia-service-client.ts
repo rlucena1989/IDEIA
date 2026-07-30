@@ -1,4 +1,5 @@
 import { injectable } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import {
   IDEIA_ChatService, IDEIA_TaskService, IDEIA_AgentService,
   IDEIA_MemoryService, IDEIA_DashboardService, ChatRequest,
@@ -6,6 +7,7 @@ import {
   IDEIA_StudiesService, StudyItem,
   IDEIA_SearchService, SearchResult,
   IDEIA_SecurityService, SecurityMetrics, ComplianceReport,
+  IDEIA_ControlTowerService, TowerServiceStatus, TimelineServiceEntry,
 } from '../common/ideia-protocol';
 import { ChatMessage, Checkpoint, TaskSpec, AgentInfo, DashboardMetrics, SSEEvent, ProjectResult } from '../common/ideia-types';
 
@@ -109,7 +111,7 @@ class PersistentJsonRpcClient {
         if (entry) {
           clearTimeout(entry.timeout);
           this.pending.delete(item.id);
-          entry.reject(err instanceof Error ? err : new Error('Connection failed'));
+          entry.reject(_err instanceof Error ? _err : new Error('Connection failed'));
         }
       }
       this.messageQueue = [];
@@ -322,4 +324,17 @@ export class IDEIA_SecurityClient implements IDEIA_SecurityService {
 
   async getSecurityMetrics(): Promise<SecurityMetrics> { return this.rpc.getSecurityMetrics(); }
   async runComplianceCheck(framework?: string): Promise<ComplianceReport[]> { return this.rpc.runComplianceCheck(framework); }
+}
+
+@injectable()
+export class IDEIA_ControlTowerClient implements IDEIA_ControlTowerService {
+  private rpc = createJsonRpcClient<IDEIA_ControlTowerService>('/services/ideia-control-tower');
+
+  async getStatus(): Promise<TowerServiceStatus> { return this.rpc.getStatus(); }
+  async getTimeline(): Promise<TimelineServiceEntry[]> { return this.rpc.getTimeline(); }
+  async emergencyStop(reason: string): Promise<void> { return this.rpc.emergencyStop(reason); }
+  async emergencyPause(reason: string): Promise<void> { return this.rpc.emergencyPause(reason); }
+  async emergencyRollback(id: string): Promise<void> { return this.rpc.emergencyRollback(id); }
+  async emergencyResume(): Promise<void> { return this.rpc.emergencyResume(); }
+  async setAutonomyLevel(level: string): Promise<void> { return this.rpc.setAutonomyLevel(level); }
 }

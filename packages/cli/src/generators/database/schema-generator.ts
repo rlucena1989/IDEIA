@@ -1,4 +1,6 @@
 import { FileEntry, buildVars, generateFiles, GeneratorOptions, printGeneratorResult } from '../engine';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('schema-generator');
 
 /** Interface que define a estrutura de field def. */
 export interface FieldDef {

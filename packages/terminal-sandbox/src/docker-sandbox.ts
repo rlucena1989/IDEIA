@@ -52,7 +52,7 @@ export class DockerSandbox {
       });
       this.available = true;
     } catch (_err) {
-      log.debug('Docker not available', { error: String(err) });
+      log.debug('Docker not available', { error: String(_err) });
       this.available = false;
     }
     return this.available;
@@ -137,7 +137,7 @@ export class DockerSandbox {
     } finally {
       if (files && existsSync(workDir)) {
         try { rmSync(resolve(workDir, '..'), { recursive: true, force: true }); } catch (_err) {
-          log.warn('Failed to clean up sandbox directory', { error: String(err) });
+          log.warn('Failed to clean up sandbox directory', { error: String(_err) });
         }
       }
     }

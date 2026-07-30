@@ -1,5 +1,7 @@
 import { Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { IActivityBar, ActivityBarItem } from './types';
+const logger = createLogger('activity-bar');
 
 export class DefaultActivityBar implements IActivityBar {
   private items = new Map<string, ActivityBarItem>();

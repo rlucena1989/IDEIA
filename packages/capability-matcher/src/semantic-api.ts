@@ -1,5 +1,7 @@
 import { SemanticMatcher } from './semantic-matcher';
+import { createLogger } from '@ideia/logger';
 import { SemanticNeed, SemanticMatchResult, AgentRecommendation, ContextPackRecommendation, WorkflowRecommendation } from './semantic-types';
+const logger = createLogger('semantic-api');
 
 const engine = new SemanticMatcher();
 

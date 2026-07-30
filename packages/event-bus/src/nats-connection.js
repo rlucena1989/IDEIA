@@ -39,8 +39,8 @@ class NatsConnectionManager {
             try {
                 listener(stateSnapshot);
             }
-            catch (err) {
-                log.error(`State change listener error: ${err}`);
+            catch (_err) {
+                log.error(`State change listener error: ${_err}`);
             }
         });
     }
@@ -97,8 +97,8 @@ class NatsConnectionManager {
             });
             return this.nc;
         }
-        catch (err) {
-            const error = err;
+        catch (_err) {
+            const error = _err;
             this.state.lastError = error.message;
             this.state.connected = false;
             this.notifyStateChange();
@@ -118,8 +118,8 @@ class NatsConnectionManager {
             try {
                 await this.connect();
             }
-            catch (err) {
-                log.error(`Reconnect failed: ${err}`);
+            catch (_err) {
+                log.error(`Reconnect failed: ${_err}`);
             }
         }, delay);
     }
@@ -133,8 +133,8 @@ class NatsConnectionManager {
                 await this.nc.close();
                 log.info('Disconnected from NATS');
             }
-            catch (err) {
-                log.error(`Error during disconnect: ${err}`);
+            catch (_err) {
+                log.error(`Error during disconnect: ${_err}`);
             }
         }
         this.nc = null;
@@ -150,6 +150,17 @@ class NatsConnectionManager {
             return false;
         }
         return !this.nc.isClosed();
+    }
+    async hasJetStream() {
+        if (!this.nc || this.nc.isClosed())
+            return false;
+        try {
+            await this.nc.jetstreamManager();
+            return true;
+        }
+        catch {
+            return false;
+        }
     }
     getStringCodec() {
         return (0, nats_1.StringCodec)();

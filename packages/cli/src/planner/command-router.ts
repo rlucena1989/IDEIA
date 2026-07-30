@@ -1,4 +1,6 @@
 import type { TaskSpec } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('command-router');
 
 export function routeCommands(task: TaskSpec): string[] {
   const commands: string[] = [];

@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { freezeLegacy } from '../legacy/freeze-manager';
 import { PreservationVault } from '../legacy/preservation-vault';
 import { buildLegacyReport } from '../legacy/legacy-report';

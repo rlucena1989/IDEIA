@@ -1,4 +1,5 @@
 import { get } from 'node:https';
+import { createLogger } from '@ideia/logger';
 
 export interface BrowserAction {
   type: 'navigate' | 'click' | 'type' | 'extract' | 'screenshot' | 'executeScript';

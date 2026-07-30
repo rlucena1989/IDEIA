@@ -1,4 +1,6 @@
 import { RiskAssessment, RiskLevel, ImpactLevel, ProbabilityLevel, RISK_MATRIX, IMPACT_SCORES, PROBABILITY_SCORES } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('risk-classifier');
 
 export interface RiskClassifierConfig {
   defaultImpact: ImpactLevel;

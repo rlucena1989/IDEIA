@@ -1,39 +1,24 @@
 import * as fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'path';
-import { execSync } from 'child_process';
+import { AdapterBase } from '@ideia/adapter-base';
+import type { InitResult, CommandResult, QualityGateResult } from '@ideia/adapter-base';
 import { scaffoldProject, generateHandler, writeFiles } from './generator';
 
 export interface GoAdapterConfig {
   projectRoot?: string;
 }
 
-export interface InitResult {
-  success: boolean;
-  files: string[];
-}
-
-export interface CommandResult {
-  success: boolean;
-  output: string;
-}
-
-export interface QualityGateResult {
-  passed: boolean;
-  score: number;
-  issues: string[];
-}
-
-export class GoAdapter {
+export class GoAdapter extends AdapterBase {
   readonly name = 'go';
+  readonly language = 'go';
   readonly capabilities = [
     'detect', 'init', 'generateHandler', 'runLint',
     'runTests', 'runBuild', 'qualityGate',
   ];
 
-  private config: GoAdapterConfig;
-
   constructor(config: GoAdapterConfig = {}) {
-    this.config = config;
+    super(config);
   }
 
   detect(projectRoot: string): boolean {
@@ -87,17 +72,17 @@ export class GoAdapter {
 
   runLint(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('go vet ./...', root);
+    return this.exec('go vet ./...', root);
   }
 
   runTests(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('go test ./...', root);
+    return this.exec('go test ./...', root);
   }
 
   runBuild(projectRoot?: string): Promise<CommandResult> {
     const root = projectRoot || this.config.projectRoot || process.cwd();
-    return this.execCommand('go build ./...', root);
+    return this.exec('go build ./...', root);
   }
 
   qualityGate(projectRoot?: string): Promise<QualityGateResult> {
@@ -127,25 +112,14 @@ export class GoAdapter {
     });
   }
 
-  private execCommand(command: string, cwd: string): Promise<CommandResult> {
-    return new Promise((resolve) => {
-      try {
-        const output = execSync(command, { cwd, encoding: 'utf-8', stdio: 'pipe', timeout: 60000 });
-        resolve({ success: true, output: output || 'Command completed' });
-      } catch (_err) {
-        const error = err as { stdout?: string; stderr?: string; message?: string };
-        resolve({
-          success: false,
-          output: error.stdout || error.stderr || error.message || 'Command failed',
-        });
-      }
-    });
-  }
 }
 
 export function createGoAdapter(config?: GoAdapterConfig): GoAdapter {
   return new GoAdapter(config);
 }
+
+export { generateFromSpec } from './generator';
+export type { Spec, SpecComponent, SpecField, GeneratedFile } from './generator';
 
 export const name = 'go';
 export const capabilities = ['detect', 'init', 'generateHandler', 'runLint', 'runTests', 'runBuild', 'qualityGate'];

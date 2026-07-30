@@ -1,4 +1,6 @@
 import type { TaskSpec, ValidationResult } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('task-validator');
 
 export function validateTaskContext(task: TaskSpec): ValidationResult {
   const reasons: string[] = [];

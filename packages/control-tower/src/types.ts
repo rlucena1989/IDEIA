@@ -33,5 +33,5 @@ export interface DecisionLogEntry {
 export interface CliOutput {
   success: boolean;
   message: string;
-  data?: Record<string, unknown>;
+  data?: Record<string, unknown> | TowerStatus | TimelineEntry[] | DecisionLogEntry[];
 }

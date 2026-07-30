@@ -1,4 +1,5 @@
 import type { NormalizedOutput, Anomaly, Feature, Metadata } from './types';
+import { createLogger } from '@ideia/logger';
 
 function detectType(value: unknown): string {
   if (value === null || value === undefined) return 'null';

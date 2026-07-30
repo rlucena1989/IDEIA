@@ -1,4 +1,5 @@
 import * as fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'node:path';
 import { SyncResult, SyncConfig } from './types';
 
@@ -78,7 +79,7 @@ export function syncManifest(config: SyncConfig): SyncResult {
     }
 
   } catch (_err) {
-    errors.push(`Sync manifest error: ${err instanceof Error ? err.message : String(err)}`);
+    errors.push(`Sync manifest error: ${_err instanceof Error ? _err.message : String(_err)}`);
   }
 
   return { ok: errors.length === 0, actions, errors, durationMs: Date.now() - start };

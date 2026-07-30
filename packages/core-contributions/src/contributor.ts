@@ -1,4 +1,5 @@
 import { Disposable } from './types';
+import { createLogger } from '@ideia/logger';
 
 export interface Contributor<T> {
   contribute(registry: T): void;

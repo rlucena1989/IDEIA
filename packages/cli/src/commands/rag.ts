@@ -1,5 +1,9 @@
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.rag');
 import { Command } from 'commander';
 import _path from 'node:path';
+
+const log = createLogger('cli:commands:rag');
 import { ingestDirectory, search, buildRagPrompt, getRagStats } from '../local-ai/rag';
 import { clearVectors, rebuildVectorIndex, loadVectors } from '../local-ai/vector-store';
 
@@ -20,9 +24,9 @@ export function ragCommand(): Command {
     .option('--model <model>', 'Embedding model', 'nomic-embed-text')
     .action(async (options) => {
       const root = process.cwd();
-      console.log('[rag] Ingesting directories:', options.dir.join(', '));
-      console.log('[rag] Chunk size:', options.chunkSize, 'overlap:', options.chunkOverlap);
-      console.log('[rag] Embedding model:', options.model);
+      log.info('[rag] Ingesting directories: ' + options.dir.join(', '));
+      log.info('[rag] Chunk size: ' + options.chunkSize + ', overlap: ' + options.chunkOverlap);
+      log.info('[rag] Embedding model: ' + options.model);
 
       const result = await ingestDirectory(root, options.dir, {
         chunkSize: parseInt(options.chunkSize, 10),
@@ -30,11 +34,11 @@ export function ragCommand(): Command {
         embeddingModel: options.model,
       });
 
-      console.log(`\n[rag] Ingest complete:`);
-      console.log(`  Files processed: ${result.filesProcessed}`);
-      console.log(`  Chunks indexed:  ${result.chunksIndexed}`);
-      console.log(`  Errors:          ${result.errors}`);
-      console.log(`  IVF index:       auto-rebuilt`);
+      log.info(`[rag] Ingest complete:`);
+      logger.info('  Files processed: ${result.filesProcessed}');
+      logger.info('  Chunks indexed:  ${result.chunksIndexed}');
+      logger.info('  Errors:          ${result.errors}');
+      logger.info('  IVF index:       auto-rebuilt');
     });
 
   cmd
@@ -46,7 +50,7 @@ export function ragCommand(): Command {
     .option('--model <model>', 'Embedding model', 'nomic-embed-text')
     .action(async (query, options) => {
       const root = process.cwd();
-      console.log(`[rag] Searching: "${query}"\n`);
+      log.info(`[rag] Searching: "${query}"\n`);
 
       const results = await search(root, query, {
         maxResults: parseInt(options.max, 10),
@@ -55,14 +59,14 @@ export function ragCommand(): Command {
       });
 
       if (results.length === 0) {
-        console.log('No results found.');
+        log.info('No results found.');
         return;
       }
 
       for (const r of results) {
-        console.log(`[${(r.score * 100).toFixed(1)}%] ${r.doc.path}`);
+        logger.info('[${(r.score * 100).toFixed(1)}%] ${r.doc.path}');
         if (r.doc.chunkIndex !== undefined) {
-          console.log(`      Chunk ${r.doc.chunkIndex + 1}/${r.doc.totalChunks}`);
+          logger.info('      Chunk ${r.doc.chunkIndex + 1}/${r.doc.totalChunks}');
         }
         console.log('');
       }
@@ -77,8 +81,8 @@ export function ragCommand(): Command {
     .option('--llm <model>', 'LLM model for answering', 'qwen2:0.5b')
     .action(async (question, options) => {
       const root = process.cwd();
-      console.log(`[rag] Question: "${question}"`);
-      console.log('[rag] Retrieving context...\n');
+      logger.info('[rag] Question: "${question}"');
+      log.info('[rag] Retrieving context...');
 
       const results = await search(root, question, {
         maxResults: parseInt(options.max, 10),
@@ -86,23 +90,23 @@ export function ragCommand(): Command {
       });
 
       if (results.length === 0) {
-        console.log('No relevant context found. Answering without RAG.\n');
+        logger.info('No relevant context found. Answering without RAG.\n');
       } else {
-        console.log(`Found ${results.length} context chunks:\n`);
+        logger.info('Found ${results.length} context chunks:\n');
         for (const r of results) {
-          console.log(`  [${(r.score * 100).toFixed(1)}%] ${r.doc.path} (chunk ${(r.doc.chunkIndex || 0) + 1}/${r.doc.totalChunks || 1})`);
+          logger.info('  [${(r.score * 100).toFixed(1)}%] ${r.doc.path} (chunk ${(r.doc.chunkIndex || 0) + 1}/${r.doc.totalChunks || 1})');
         }
         console.log('');
       }
 
       const prompt = buildRagPrompt(question, results);
 
-      console.log('=== GENERATED PROMPT ===');
-      console.log(prompt);
-      console.log('========================\n');
+      logger.info('=== GENERATED PROMPT ===');
+      logger.info(prompt);
+      logger.info('========================\n');
 
-      console.log('To answer with Ollama, run:');
-      console.log(`  curl http://localhost:11434/api/generate -d '{"model":"${options.llm}","prompt":${JSON.stringify(JSON.stringify(prompt))},"stream":false}'`);
+      logger.info('To answer with Ollama, run:');
+      logger.info('  curl http://localhost:11434/api/generate -d \'{"model":"${options.llm}","prompt":${JSON.stringify(JSON.stringify(prompt))},"stream":false}\'');
     });
 
   cmd
@@ -111,24 +115,24 @@ export function ragCommand(): Command {
     .action(() => {
       const root = process.cwd();
       const stats = getRagStats(root);
-      console.log('RAG Vector Store Status:\n');
-      console.log('Dense embeddings (neural):');
-      console.log(`  Documents: ${stats.dense.total}`);
-      console.log(`  Dimensions: ${stats.dense.dimensions}`);
-      console.log(`  Model: ${stats.dense.model}`);
-      console.log('\nIVF Index (ANN):');
+      logger.info('RAG Vector Store Status:\n');
+      logger.info('Dense embeddings (neural):');
+      logger.info('  Documents: ${stats.dense.total}');
+      logger.info('  Dimensions: ${stats.dense.dimensions}');
+      logger.info('  Model: ${stats.dense.model}');
+      logger.info('\nIVF Index (ANN):');
       if (stats.index.built) {
-        console.log(`  Built: yes`);
-        console.log(`  Clusters: ${stats.index.numClusters}`);
-        console.log(`  Total docs indexed: ${stats.index.totalDocs}`);
-        console.log(`  Avg docs/cluster: ${stats.index.avgDocsPerCluster}`);
-        console.log(`  Built at: ${stats.index.builtAt}`);
+        logger.info('  Built: yes');
+        logger.info('  Clusters: ${stats.index.numClusters}');
+        logger.info('  Total docs indexed: ${stats.index.totalDocs}');
+        logger.info('  Avg docs/cluster: ${stats.index.avgDocsPerCluster}');
+        logger.info('  Built at: ${stats.index.builtAt}');
       } else {
-        console.log(`  Built: no (linear scan fallback)`);
+        logger.info('  Built: no (linear scan fallback)');
       }
-      console.log('\nTF-IDF index (fallback):');
-      console.log(`  Documents: ${stats.tfidf.total}`);
-      console.log(`  Files: ${stats.tfidf.fileCount}`);
+      logger.info('\nTF-IDF index (fallback):');
+      logger.info('  Documents: ${stats.tfidf.total}');
+      logger.info('  Files: ${stats.tfidf.fileCount}');
     });
 
   const indexCmd = cmd.command('index').description('Manage the IVF vector index');
@@ -139,11 +143,11 @@ export function ragCommand(): Command {
       const root = process.cwd();
       const docs = loadVectors(root);
       if (docs.length === 0) {
-        console.log('[rag] No vectors found to index. Run `rag ingest` first.');
+        log.info('[rag] No vectors found to index. Run `rag ingest` first.');
         return;
       }
       rebuildVectorIndex(root);
-      console.log(`[rag] IVF index rebuilt: ${docs.length} vectors across clusters.`);
+      log.info(`[rag] IVF index rebuilt: ${docs.length} vectors across clusters.`);
     });
 
   indexCmd
@@ -152,15 +156,15 @@ export function ragCommand(): Command {
     .action(() => {
       const root = process.cwd();
       const stats = getRagStats(root).index;
-      console.log('IVF Index Status:\n');
+      logger.info('IVF Index Status:\n');
       if (stats.built) {
-        console.log(`  Built:        yes`);
-        console.log(`  Clusters:     ${stats.numClusters}`);
-        console.log(`  Total docs:   ${stats.totalDocs}`);
-        console.log(`  Avg/cluster:  ${stats.avgDocsPerCluster}`);
-        console.log(`  Built at:     ${stats.builtAt}`);
+        logger.info('  Built:        yes');
+        logger.info('  Clusters:     ${stats.numClusters}');
+        logger.info('  Total docs:   ${stats.totalDocs}');
+        logger.info('  Avg/cluster:  ${stats.avgDocsPerCluster}');
+        logger.info('  Built at:     ${stats.builtAt}');
       } else {
-        console.log(`  Built: no`);
+        logger.info('  Built: no');
         console.log(`  Run \`rag ingest\` or \`rag index rebuild\` to build.`);
       }
     });
@@ -171,7 +175,7 @@ export function ragCommand(): Command {
     .action(() => {
       const root = process.cwd();
       clearVectors(root);
-      console.log('[rag] Vector store cleared.');
+      log.info('[rag] Vector store cleared.');
     });
 
   return cmd;

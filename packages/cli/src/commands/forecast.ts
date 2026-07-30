@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { predictRisk } from '../prediction/predictor-engine';
 import { forecastHorizon } from '../prediction/scenario-forecaster';
 import { recommendPrevention } from '../prediction/preventive-recommender';

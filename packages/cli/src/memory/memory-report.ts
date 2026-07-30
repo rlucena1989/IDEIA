@@ -1,6 +1,8 @@
 import type { MemoryRecord, MemoryPattern, LearningRecommendation } from '@ideia/contracts';
+import { createLogger } from '@ideia/logger';
 import { PolicyAdjustment } from './policy-adapter';
 import { HistorySummary } from './history-summarizer';
+const logger = createLogger('memory-report');
 
 export interface MemoryReport {
   generatedAt: string;

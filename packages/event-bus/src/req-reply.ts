@@ -40,7 +40,7 @@ export class RequestReplyManager {
     try {
       await this.connectionManager.connect();
     } catch (_err) {
-      log.info(`Initialized (offline mode): ${err}`);
+      log.info(`Initialized (offline mode): ${_err}`);
       return;
     }
     log.info('Initialized');
@@ -92,7 +92,7 @@ export class RequestReplyManager {
           });
         } catch (_err) {
           await this.publishResponse(request.id, request.subject, {
-            requestId: request.id, data: null, error: String(err), timestamp: Date.now(),
+            requestId: request.id, data: null, error: String(_err), timestamp: Date.now(),
           });
         }
       }

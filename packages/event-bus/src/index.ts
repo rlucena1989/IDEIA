@@ -24,3 +24,11 @@ export { RequestReplyManager, createRequestReplyManager } from './req-reply';
 export type { RequestMessage, ResponseMessage, RequestHandler } from './req-reply';
 export { HealthCheck, createHealthCheck } from './health';
 export type { HealthStatus, ComponentHealth } from './health';
+
+export { AggregateRoot } from './aggregate-root';
+export { InMemoryEventStore } from './event-store';
+export { InMemorySnapshotStore } from './snapshot-store';
+export { ProjectionEngine, AgentSessionProjection } from './projection-engine';
+export type { AgentSessionState } from './projection-engine';
+export { SagaCoordinator } from './saga-coordinator';
+export * from './types-event-sourcing';

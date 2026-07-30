@@ -1,5 +1,7 @@
 import { ContextItem, ScoredContextItem } from './types';
+import { createLogger } from '@ideia/logger';
 import { createHash } from 'crypto';
+const logger = createLogger('deduplicator');
 
 export class ContextDeduplicator {
   private similarityThreshold: number;

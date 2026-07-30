@@ -6,11 +6,83 @@ import {
   QualityReport,
   OptimizationSuggestion,
 } from './types';
+import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
+import { join, resolve } from 'path';
 
 const _log = createLogger('project-panel');
 
 export class ProjectPanel {
+  private scannedDeps: DependencyInfo[] = [];
+  private scannedConfigs: Record<string, unknown> = {};
+
   constructor(private eventBus?: EventBus) {}
+
+  scanProjectConfigs(projectDir?: string): Record<string, unknown> {
+    const dir = resolve(projectDir ?? process.cwd());
+    const configs: Record<string, unknown> = {};
+
+    const pkgPath = join(dir, 'package.json');
+    if (existsSync(pkgPath)) {
+      try {
+        configs.packageJson = JSON.parse(readFileSync(pkgPath, 'utf-8'));
+      } catch { /* ignore */ }
+    }
+
+    const tsconfigPath = join(dir, 'tsconfig.json');
+    if (existsSync(tsconfigPath)) {
+      try {
+        configs.tsconfig = JSON.parse(readFileSync(tsconfigPath, 'utf-8'));
+      } catch { /* ignore */ }
+    }
+
+    this.scannedConfigs = configs;
+    return configs;
+  }
+
+  scanDependencies(projectDir?: string): DependencyInfo[] {
+    const configs = this.scannedConfigs.packageJson
+      ? this.scannedConfigs
+      : this.scanProjectConfigs(projectDir);
+    const pkg = configs.packageJson as Record<string, Record<string, string>> | undefined;
+    if (!pkg) return this.getDependencies();
+
+    const allDeps: DependencyInfo[] = [];
+    const scan = (deps: Record<string, string> | undefined) => {
+      if (!deps) return;
+      for (const [name, version] of Object.entries(deps)) {
+        allDeps.push({
+          name,
+          current: version.replace(/^[\^~]/, ''),
+          latest: version.replace(/^[\^~]/, ''),
+          outdated: false,
+          critical: false,
+        });
+      }
+    };
+    scan(pkg.dependencies);
+    scan(pkg.devDependencies);
+
+    this.scannedDeps = allDeps;
+    return allDeps;
+  }
+
+  generateProjectReport(): ProjectReport {
+    const health = this.getProjectHealth();
+    const deps = this.scannedDeps.length > 0 ? this.scannedDeps : this.getDependencies();
+    const quality = this.getQualityReport();
+    const suggestions = this.generateSuggestions(health, deps, quality);
+
+    return {
+      generatedAt: new Date().toISOString(),
+      health,
+      dependencies: deps,
+      quality,
+      suggestions,
+      totalDeps: deps.length,
+      outdatedDeps: deps.filter(d => d.outdated).length,
+      configs: Object.keys(this.scannedConfigs),
+    };
+  }
 
   getProjectHealth(): ProjectHealth {
     return {
@@ -43,44 +115,84 @@ export class ProjectPanel {
   }
 
   getSuggestions(): OptimizationSuggestion[] {
-    return [
-      {
-        id: 'opt-001',
+    return this.generateSuggestions(
+      this.getProjectHealth(),
+      this.getDependencies(),
+      this.getQualityReport(),
+    );
+  }
+
+  private generateSuggestions(
+    health: ProjectHealth,
+    deps: DependencyInfo[],
+    quality: QualityReport,
+  ): OptimizationSuggestion[] {
+    const suggestions: OptimizationSuggestion[] = [];
+
+    const outdated = deps.filter(d => d.outdated);
+    if (outdated.length > 0) {
+      suggestions.push({
+        id: 'opt-deps',
         category: 'dependencies',
-        description: 'Update TypeScript to latest version for improved type safety',
-        impact: 'medium',
-        effort: 'minutes',
-      },
-      {
-        id: 'opt-002',
-        category: 'test',
-        description: 'Increase test coverage above 80% threshold',
-        impact: 'high',
-        effort: 'days',
-      },
-      {
-        id: 'opt-003',
-        category: 'performance',
-        description: 'Reduce LLM response time with response caching',
-        impact: 'high',
+        description: `${outdated.length} dependencies are outdated (e.g., ${outdated.slice(0, 3).map(d => d.name).join(', ')})`,
+        impact: outdated.some(d => d.critical) ? 'high' : 'medium',
         effort: 'hours',
-      },
-      {
-        id: 'opt-004',
+      });
+    }
+
+    if (health.testHealth < 80) {
+      suggestions.push({
+        id: 'opt-test',
+        category: 'test',
+        description: `Increase test coverage above 80% (current: ${health.testHealth})`,
+        impact: 'high',
+        effort: 'days',
+      });
+    }
+
+    if (quality.complexityScore < 75) {
+      suggestions.push({
+        id: 'opt-complexity',
         category: 'code',
-        description: 'Refactor high-complexity modules to reduce cyclomatic complexity',
+        description: `Refactor high-complexity modules (score: ${quality.complexityScore})`,
         impact: 'medium',
         effort: 'days',
-      },
-      {
-        id: 'opt-005',
+      });
+    }
+
+    if (health.docsHealth < 80) {
+      suggestions.push({
+        id: 'opt-docs',
         category: 'docs',
-        description: 'Add missing JSDoc comments to public API surfaces',
+        description: `Improve documentation (current: ${health.docsHealth})`,
         impact: 'low',
         effort: 'hours',
-      },
-    ];
+      });
+    }
+
+    if (quality.lintScore < 85) {
+      suggestions.push({
+        id: 'opt-lint',
+        category: 'code',
+        description: `Fix lint issues to improve score from ${quality.lintScore}`,
+        impact: 'medium',
+        effort: 'hours',
+      });
+    }
+
+    return suggestions;
   }
+}
+
+export interface ProjectReport {
+  generatedAt: string;
+  health: ProjectHealth;
+  dependencies: DependencyInfo[];
+  quality: QualityReport;
+  suggestions: OptimizationSuggestion[];
+  totalDeps: number;
+  outdatedDeps: number;
+  configs: string[];
 }
 
 export function createProjectPanel(eventBus?: EventBus): ProjectPanel {

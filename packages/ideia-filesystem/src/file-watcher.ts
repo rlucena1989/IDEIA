@@ -1,4 +1,5 @@
 import { Emitter, Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { FileWatcherService, FileChangeEvent, FileChangeType, WatchOptions } from './types';
 
 export class DefaultFileWatcherService implements FileWatcherService {

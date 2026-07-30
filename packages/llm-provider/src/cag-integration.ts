@@ -1,4 +1,6 @@
 import { ProviderRouter, ChatRequest, ChatResponse, type LLMProvider } from './index';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('cag-integration');
 
 export interface CagCacheLike {
   semanticGet(query: string, threshold?: number): Promise<{ response: string; confidence: number } | null>;

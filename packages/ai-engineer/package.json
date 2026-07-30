@@ -1,0 +1,43 @@
+{
+  "name": "@ideia/ai-engineer",
+  "description": "IDEIA AI Engineer — unified AI Engineer that composes AgentCoordinator + LangGraphAgent + capability discovery",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@ideia/agent-runtime": "*",
+    "@ideia/llm-provider": "*",
+    "@ideia/event-bus": "*",
+    "@ideia/logger": "*",
+    "commander": "^12.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false
+}

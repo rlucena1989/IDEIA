@@ -1,4 +1,6 @@
 import { BudgetAllocation, TokenBudget } from '../types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('budget-tracker');
 
 export class BudgetTracker {
   private allocations: Map<string, BudgetAllocation> = new Map();

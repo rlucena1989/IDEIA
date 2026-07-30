@@ -1,4 +1,5 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { EventBus } from '@ideia/event-bus';
 import { IDEIA_SUGGESTIONS_SERVICE, IDEIA_SuggestionsService, SuggestionItem } from '../common/ideia-protocol';
 import * as fs from 'fs';
@@ -7,6 +8,7 @@ import * as path from 'path';
 interface StudyMeta {
   score: number;
   missing: string[];
+  name?: string;
 }
 
 @injectable()
@@ -22,8 +24,8 @@ export class IDEIA_SuggestionsBackendService implements IDEIA_SuggestionsService
     const history = await this.eventBus.getHistory();
     const studiesDir = path.resolve(__dirname, '..', '..', '..', '..', 'docs', 'ESTUDOS');
 
-    const securityEvents = history.filter(e => e.type.includes('security') || e.type.includes('policy'));
-    const perfEvents = history.filter(e => e.type.includes('performance') || e.type.includes('benchmark'));
+    const securityEvents = history.filter((e: any) => e.type.includes('security') || e.type.includes('policy'));
+    const perfEvents = history.filter((e: any) => e.type.includes('performance') || e.type.includes('benchmark'));
     const studyFiles = fs.existsSync(studiesDir)
       ? fs.readdirSync(studiesDir).filter(f => f.endsWith('.md') && !f.startsWith('TEMPLATE'))
       : [];
@@ -104,8 +106,8 @@ export class IDEIA_SuggestionsBackendService implements IDEIA_SuggestionsService
       .catch(() => {});
   }
 
-  private scanStudyScores(dir: string, files: string[]): StudyMeta[] {
-    const result: StudyMeta[] = [];
+  private scanStudyScores(dir: string, files: string[]): any[] {
+    const result: any[] = [];
     for (const file of files) {
       const filePath = path.join(dir, file);
       try {
@@ -123,3 +125,4 @@ export class IDEIA_SuggestionsBackendService implements IDEIA_SuggestionsService
     return result;
   }
 }
+

@@ -1,4 +1,6 @@
 import { DependencyPolicy } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('dependency-policy');
 
 export class DependencyPolicyManager {
   private policies: Map<string, DependencyPolicy> = new Map();

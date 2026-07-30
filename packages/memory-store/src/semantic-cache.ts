@@ -7,6 +7,8 @@
  */
 
 import { randomUUID, createHash } from 'crypto';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('semantic-cache');
 
 export interface CacheEntry {
   key: string;

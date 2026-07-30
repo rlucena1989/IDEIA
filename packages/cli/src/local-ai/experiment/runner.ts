@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
 import { ExperimentRun, ExperimentResult } from './types';
 import { findModelInRegistry } from './registry';
 import { getProvider } from '../provider-router';
@@ -62,7 +63,7 @@ async function querySingleModel(
       tokensIn, tokensOut, costUsd: computeCost(modelId, tokensIn, tokensOut, root),
       status: 'success', qualityScore: computeQualityScore(result.content),
     };
-  } catch (_err) {
+  } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     return { modelId, provider, response: '', latencyMs: Date.now() - start, tokensIn: 0, tokensOut: 0, costUsd: 0, status: 'error', error: msg };
   }
@@ -91,7 +92,7 @@ export async function runExperiment(
   let results: ExperimentResult[];
   if (options.parallel !== false) {
     results = await Promise.allSettled(models.map(query)).then(r =>
-      r.map((res, i) => res.status === 'fulfilled' ? res.value : ({ modelId: models[i]!.modelId, provider: models[i]!.provider, response: '', latencyMs: 0, tokensIn: 0, tokensOut: 0, costUsd: 0, status: 'error', error: res.reason?.message || 'Promise rejected' } as ExperimentResult))
+      r.map((res, i) => res.status === 'fulfilled' ? res.value : ({ modelId: models[i]?.modelId ?? '', provider: models[i]?.provider ?? '', response: '', latencyMs: 0, tokensIn: 0, tokensOut: 0, costUsd: 0, status: 'error', error: res.reason?.message || 'Promise rejected' } as ExperimentResult))
     );
   } else {
     results = [];

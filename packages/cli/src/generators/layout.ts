@@ -1,5 +1,7 @@
 import { FileEntry, buildVars, generateFiles, GeneratorOptions, printGeneratorResult } from './engine';
+import { createLogger } from '@ideia/logger';
 import { BUILT_IN_LAYOUTS } from '../runtime/design-tokens';
+const logger = createLogger('layout');
 
 interface LayoutOptions extends GeneratorOptions {
   stack?: 'react' | 'vue';

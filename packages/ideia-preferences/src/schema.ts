@@ -1,4 +1,5 @@
 import { Emitter, Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { PreferenceProperty, PreferenceSchema, PreferenceSchemaRegistry } from './types';
 
 export class DefaultPreferenceSchemaRegistry implements PreferenceSchemaRegistry {

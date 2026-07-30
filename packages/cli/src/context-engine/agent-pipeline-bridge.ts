@@ -31,9 +31,9 @@ export class AgentPipelineBridge {
   async execute(prompt: string, systemPrompt?: string): Promise<AgentPipelineResult> {
     const start = Date.now();
 
-    const processed = this.pipeline.process({ raw: prompt, system: systemPrompt });
+    const processed = await this.pipeline.process({ raw: prompt, system: systemPrompt });
 
-    if (processed.guardResult.blocked) {
+    if (!processed.guardResult.passed) {
       return {
         prompt: processed,
         finalState: {
@@ -43,7 +43,7 @@ export class AgentPipelineBridge {
           outputs: {},
           decisions: ['BLOCKED by guardrails'],
           artifacts: [],
-          errors: processed.guardResult.violations,
+          errors: processed.guardResult.issues.map(i => i.message),
           completed: true,
           messages: [],
         },
@@ -91,7 +91,7 @@ export class AgentPipelineBridge {
         subgraphUsed,
         success: true,
       };
-    } catch (_err) {
+    } catch (err) {
       log.error(`Pipeline failed: ${err}`);
       return {
         prompt: processed,

@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.knowledge');
 import { getCuratedEntries, searchEntries, getEntry, exportEntries } from '../local-ai/knowledge-base';
 import { generateMarkdownDocs } from '../knowledge/doc-generator';
 import { createEnvelope } from '../hardening/output-contract';
@@ -12,15 +14,15 @@ import { getCliVersion } from '../utils/version';
 export function knowledgeQueryAction(topic: string): void {
   const results = searchEntries(topic);
   if (results.length === 0) {
-    console.log(`Nenhum resultado para "${topic}".`);
+    logger.info('Nenhum resultado para "${topic}".');
     return;
   }
-  console.log(`\n=== Knowledge Base: "${topic}" (${results.length} resultados) ===\n`);
+  logger.info('\n=== Knowledge Base: "${topic}" (${results.length} resultados) ===\n');
   for (const entry of results) {
-    console.log(`  [${entry.category}] ${entry.id}`);
-    console.log(`  Title: ${entry.title}`);
-    console.log(`  Tags: ${entry.tags.join(', ')}`);
-    console.log(`  ${entry.summary.slice(0, 200)}`);
+    logger.info('  [${entry.category}] ${entry.id}');
+    logger.info('  Title: ${entry.title}');
+    logger.info('  Tags: ${entry.tags.join(\', \')}');
+    logger.info('  ${entry.summary.slice(0, 200)}');
     console.log('');
   }
 }
@@ -28,29 +30,29 @@ export function knowledgeQueryAction(topic: string): void {
 export function knowledgeShowAction(id: string): void {
   const entry = getEntry(id);
   if (!entry) {
-    console.log(`Entrada "${id}" nao encontrada.`);
+    logger.info('Entrada "${id}" nao encontrada.');
     return;
   }
-  console.log(`\n=== ${entry.title} ===`);
-  console.log(`Category: ${entry.category}`);
-  console.log(`Tags: ${entry.tags.join(', ')}`);
-  console.log(`\nSummary: ${entry.summary}`);
-  console.log(`\nContent:\n${entry.content}`);
+  logger.info('\n=== ${entry.title} ===');
+  logger.info('Category: ${entry.category}');
+  logger.info('Tags: ${entry.tags.join(\', \')}');
+  logger.info('\nSummary: ${entry.summary}');
+  logger.info('\nContent:\n${entry.content}');
   if (entry.principles && entry.principles.length > 0) {
-    console.log(`\nPrinciples:`);
-    entry.principles.forEach(p => console.log(`  - ${p}`));
+    logger.info('\nPrinciples:');
+    entry.principles.forEach(p => logger.info('  - ${p}'));
   }
   if (entry.when_to_use && entry.when_to_use.length > 0) {
-    console.log(`\nWhen to use:`);
-    entry.when_to_use.forEach(w => console.log(`  - ${w}`));
+    logger.info('\nWhen to use:');
+    entry.when_to_use.forEach(w => logger.info('  - ${w}'));
   }
   if (entry.when_not_to_use && entry.when_not_to_use.length > 0) {
-    console.log(`\nWhen NOT to use:`);
-    entry.when_not_to_use.forEach(w => console.log(`  - ${w}`));
+    logger.info('\nWhen NOT to use:');
+    entry.when_not_to_use.forEach(w => logger.info('  - ${w}'));
   }
   if (entry.references && entry.references.length > 0) {
-    console.log(`\nReferences:`);
-    entry.references.forEach(r => console.log(`  - ${r}`));
+    logger.info('\nReferences:');
+    entry.references.forEach(r => logger.info('  - ${r}'));
   }
 }
 
@@ -59,12 +61,12 @@ export function knowledgeListAction(opts: Record<string, unknown>): void {
   const category = opts.category as string | undefined;
   if (category) entries = entries.filter(e => e.category === category);
   const categories = [...new Set(entries.map(e => e.category))];
-  console.log(`\n=== Knowledge Base (${entries.length} entradas, ${categories.length} categorias) ===\n`);
+  logger.info('\n=== Knowledge Base (${entries.length} entradas, ${categories.length} categorias) ===\n');
   for (const cat of categories) {
     const catEntries = entries.filter(e => e.category === cat);
-    console.log(`\n  [${cat.toUpperCase()}] (${catEntries.length})`);
+    logger.info('\n  [${cat.toUpperCase()}] (${catEntries.length})');
     for (const e of catEntries) {
-      console.log(`    ${e.id} — ${e.title.slice(0, 60)}`);
+      logger.info('    ${e.id} — ${e.title.slice(0, 60)}');
     }
   }
 }
@@ -72,20 +74,20 @@ export function knowledgeListAction(opts: Record<string, unknown>): void {
 export function knowledgeAddAction(id: string): void {
   const cwd = process.cwd();
   exportEntries(cwd, id);
-  console.log(`Entradas exportadas para .ai/knowledge/entries/`);
+  logger.info('Entradas exportadas para .ai/knowledge/entries/');
 }
 
 export function knowledgeStatsAction(): void {
   const entries = getCuratedEntries();
   const categories = [...new Set(entries.map(e => e.category))];
   const totalTags = [...new Set(entries.flatMap(e => e.tags))];
-  console.log(`\n=== Knowledge Base Stats ===`);
-  console.log(`Total entries: ${entries.length}`);
-  console.log(`Categories: ${categories.length}`);
-  console.log(`Unique tags: ${totalTags.length}`);
-  console.log(`\nBy category:`);
+  logger.info('\n=== Knowledge Base Stats ===');
+  logger.info('Total entries: ${entries.length}');
+  logger.info('Categories: ${categories.length}');
+  logger.info('Unique tags: ${totalTags.length}');
+  logger.info('\nBy category:');
   for (const cat of categories) {
-    console.log(`  ${cat}: ${entries.filter(e => e.category === cat).length}`);
+    logger.info('  ${cat}: ${entries.filter(e => e.category === cat).length}');
   }
 }
 

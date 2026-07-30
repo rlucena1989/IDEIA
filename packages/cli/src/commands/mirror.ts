@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.mirror');
 import path from 'node:path';
 import { loadMirrorConfig, saveMirrorConfig, queryEntries, getEntryBySeq, verifyChain, getEntryCount } from '../local-ai/mirror/ledger';
 import { replayEntry, formatReplayResult } from '../local-ai/mirror/replayer';
@@ -104,7 +106,7 @@ export function mirrorCommand(): Command {
         timeoutMs: parseInt(options.timeout || '30000', 10),
       });
 
-      console.log(formatReplayResult(result));
+      logger.info(formatReplayResult(result));
 
       finish({
         checkpoint: 'mirror_replay',
@@ -144,7 +146,7 @@ export function mirrorCommand(): Command {
         getIO().fs.write(path.resolve(options.output), json);
         printResult(`Exportado ${entries.length} entries`, true, options.output);
       } else {
-        console.log(json);
+        logger.info(json);
       }
     });
 

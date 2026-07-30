@@ -1,4 +1,6 @@
 import { TelemetryEvent } from './telemetry-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('telemetry-collector');
 
 export class TelemetryCollector {
   private events: TelemetryEvent[] = [];

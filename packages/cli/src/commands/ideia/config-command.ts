@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.ideia.config-command');
 import path from 'node:path';
 import fs from 'node:fs';
 
@@ -105,10 +107,10 @@ export function ideiaConfigCommand(): Command {
         const config = loadConfig(root);
         const pathParts = key.split('.');
 
-        setNestedValue(config, pathParts, value);
+        setNestedValue(config as unknown as Record<string, unknown>, pathParts, value);
         saveConfig(root, config);
 
-        console.log(`\n✅ Configuração atualizada: ${key} = ${value}\n`);
+        logger.info('\n✅ Configuração atualizada: ${key} = ${value}\n');
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
         console.error(`\n❌ Erro: ${message}`);
@@ -126,7 +128,7 @@ export function ideiaConfigCommand(): Command {
         const root = process.cwd();
         const config = loadConfig(root);
         const pathParts = key.split('.');
-        const value = getNestedValue(config, pathParts);
+        const value = getNestedValue(config as unknown as Record<string, unknown>, pathParts);
 
         if (options.json) {
           console.log(JSON.stringify({ key, value }, null, 2));
@@ -134,9 +136,9 @@ export function ideiaConfigCommand(): Command {
         }
 
         if (value === undefined) {
-          console.log(`\n  Configuração "${key}" não encontrada.\n`);
+          logger.info('\n  Configuração "${key}" não encontrada.\n');
         } else {
-          console.log(`\n  ${key} = ${JSON.stringify(value)}\n`);
+          logger.info('\n  ${key} = ${JSON.stringify(value)}\n');
         }
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
@@ -159,31 +161,31 @@ export function ideiaConfigCommand(): Command {
           return;
         }
 
-        console.log(`\n${'='.repeat(56)}`);
-        console.log('  ⚙️  IDEIA — Configuração');
-        console.log(`${'='.repeat(56)}\n`);
+        logger.info('\n${\'=\'.repeat(56)}');
+        logger.info('  ⚙️  IDEIA — Configuração');
+        logger.info('${\'=\'.repeat(56)}\n');
 
-        console.log('  🔒 Autonomia:');
-        console.log(`     Nível: ${config.ideia.autonomy.level}`);
+        logger.info('  🔒 Autonomia:');
+        logger.info('     Nível: ${config.ideia.autonomy.level}');
         console.log('');
 
-        console.log('  🤖 Provedor:');
-        console.log(`     Modelo Ollama: ${config.ideia.provider.ollama.model}`);
-        console.log(`     Prioridade: ${config.ideia.provider.priority.join(', ')}`);
+        logger.info('  🤖 Provedor:');
+        logger.info('     Modelo Ollama: ${config.ideia.provider.ollama.model}');
+        logger.info('     Prioridade: ${config.ideia.provider.priority.join(\', \')}');
         console.log('');
 
-        console.log('  🧩 Agentes:');
-        console.log(`     Habilitados: ${config.agents.enabled.join(', ')}`);
-        if (config.agents.custom.length > 0) console.log(`     Customizados: ${config.agents.custom.join(', ')}`);
+        logger.info('  🧩 Agentes:');
+        logger.info('     Habilitados: ${config.agents.enabled.join(\', \')}');
+        if (config.agents.custom.length > 0) logger.info('     Customizados: ${config.agents.custom.join(\', \')}');
         console.log('');
 
-        console.log('  ✅ Qualidade:');
-        console.log(`     Cobertura mínima: ${config.quality.minCoverage}%`);
-        console.log(`     Gates: ${config.quality.gates.join(', ')}`);
+        logger.info('  ✅ Qualidade:');
+        logger.info('     Cobertura mínima: ${config.quality.minCoverage}%');
+        logger.info('     Gates: ${config.quality.gates.join(\', \')}');
         console.log('');
 
-        console.log('  Para alterar: ideia config set <key> <value>');
-        console.log('  Exemplo: ideia config set autonomy.level N3');
+        logger.info('  Para alterar: ideia config set <key> <value>');
+        logger.info('  Exemplo: ideia config set autonomy.level N3');
         console.log('');
 
       } catch (error: unknown) {
@@ -200,14 +202,14 @@ export function ideiaConfigCommand(): Command {
     .action((options) => {
       try {
         if (!options.force) {
-          console.log('\n  ⚠ Use --force para resetar as configurações.\n');
+          logger.info('\n  ⚠ Use --force para resetar as configurações.\n');
           return;
         }
 
         const root = process.cwd();
         saveConfig(root, { ...DEFAULT_CONFIG, project: { name: path.basename(root), stack: {} } });
 
-        console.log('\n✅ Configurações resetadas para o padrão.\n');
+        logger.info('\n✅ Configurações resetadas para o padrão.\n');
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
         console.error(`\n❌ Erro: ${message}`);
@@ -217,3 +219,5 @@ export function ideiaConfigCommand(): Command {
 
   return cmd;
 }
+
+

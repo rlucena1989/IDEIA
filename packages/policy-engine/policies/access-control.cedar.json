@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "policies": [
+    {
+      "id": "ac-001",
+      "description": "Permit low-risk file reads by any principal",
+      "effect": "permit",
+      "action": { "type": "file.read" },
+      "conditions": [{ "clause": "if", "match": "riskLevel", "operator": "eq", "value": "low" }],
+      "priority": 10
+    },
+    {
+      "id": "ac-002",
+      "description": "Permit AI non-destructive read operations",
+      "effect": "permit",
+      "principal": { "type": "ai" },
+      "action": { "type": "file.read" },
+      "conditions": [],
+      "priority": 5
+    },
+    {
+      "id": "ac-003",
+      "description": "Forbid file writes outside project scope",
+      "effect": "forbid",
+      "action": { "type": "file.write" },
+      "conditions": [{ "clause": "unless", "match": "resource", "operator": "matches", "value": "^\\.\\/|\\.\\." }],
+      "priority": 100
+    },
+    {
+      "id": "ac-004",
+      "description": "Forbid delete without approval",
+      "effect": "forbid",
+      "action": { "type": "file.delete" },
+      "conditions": [],
+      "priority": 50
+    },
+    {
+      "id": "ac-005",
+      "description": "Permit code analysis tools",
+      "effect": "permit",
+      "action": { "type": "code.analyze" },
+      "conditions": [],
+      "priority": 10
+    },
+    {
+      "id": "ac-006",
+      "description": "Permit code generation",
+      "effect": "permit",
+      "action": { "type": "code.generate" },
+      "conditions": [{ "clause": "unless", "match": "resource", "operator": "matches", "value": ".*\\.(key|pem|secret)$" }],
+      "priority": 10
+    }
+  ]
+}

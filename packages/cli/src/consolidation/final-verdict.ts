@@ -1,4 +1,6 @@
 import { FinalVerdict, SystemConsolidation } from './consolidation-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('final-verdict');
 
 export function createFinalVerdict(consolidation: SystemConsolidation): FinalVerdict {
   if (consolidation.healthStatus === 'blocked') {

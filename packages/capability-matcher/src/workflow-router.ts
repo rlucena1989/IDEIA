@@ -1,4 +1,6 @@
 import { SemanticNeed, WorkflowRecommendation } from './semantic-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('workflow-router');
 
 const WORKFLOW_RULES: Array<{
   workflowId: string;

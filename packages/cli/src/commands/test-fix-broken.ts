@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.test-fix-broken');
 import { Project, SyntaxKind } from 'ts-morph';
 import fs from 'node:fs';
 import _path from 'node:path';
@@ -26,11 +28,11 @@ export function testFixBrokenCommand(): Command {
       } catch { /* jest list failed */ }
 
       if (testFiles.length === 0) {
-        console.log('No test files found via jest --listTests.');
+        logger.info('No test files found via jest --listTests.');
         return;
       }
 
-      console.log(`Test files encontrados: ${testFiles.length}\n`);
+      logger.info('Test files encontrados: ${testFiles.length}\n');
 
       let fixed = 0;
       const patterns = [
@@ -137,7 +139,7 @@ export function testFixBrokenCommand(): Command {
             const newContent = pattern.fix(modified);
             if (newContent !== modified) {
               if (options.dryRun) {
-                console.log(`  [DRY-RUN] ${pattern.name}: ${file}`);
+                logger.info('  [DRY-RUN] ${pattern.name}: ${file}');
               }
               modified = newContent;
               fileFixed = true;
@@ -148,13 +150,13 @@ export function testFixBrokenCommand(): Command {
         if (fileFixed) {
           if (!options.dryRun) {
             fs.writeFileSync(file, modified, 'utf8');
-            console.log(`  [FIXED] ${file}`);
+            logger.info('  [FIXED] ${file}');
             fixed++;
           }
         }
       }
 
-      console.log(`\nArquivos corrigidos: ${fixed}`);
+      logger.info('\nArquivos corrigidos: ${fixed}');
     });
 
   return cmd;

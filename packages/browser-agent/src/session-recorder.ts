@@ -1,4 +1,5 @@
 import type { BrowserAction } from './browser-agent';
+import { createLogger } from '@ideia/logger';
 
 export interface SessionAction {
   action: BrowserAction;

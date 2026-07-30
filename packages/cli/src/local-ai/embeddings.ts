@@ -1,4 +1,5 @@
 import * as crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
 
 /** generateTFIDFVector */
 export function generateTFIDFVector(text: string): Record<string, number> {
@@ -144,9 +145,9 @@ export async function generateBatchEmbeddings(
 export function cosineSimilarityDense(a: number[], b: number[]): number {
   let dot = 0, magA = 0, magB = 0;
   for (let i = 0; i < a.length; i++) {
-    dot += a[i]! * b[i]!;
-    magA += a[i]! * a[i]!;
-    magB += b[i]! * b[i]!;
+    dot += (a[i] ?? 0) * (b[i] ?? 0);
+    magA += (a[i] ?? 0) * (a[i] ?? 0);
+    magB += (b[i] ?? 0) * (b[i] ?? 0);
   }
   const denom = Math.sqrt(magA) * Math.sqrt(magB);
   return denom === 0 ? 0 : dot / denom;

@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.supply-chain');
 import { scan, generateSbom, audit, verifyPackage, printScanReport } from '../utils/supply-chain/index';
 import path from 'node:path';
 import { getIO } from '../io';
@@ -19,8 +21,8 @@ export function supplyChainSbomAction(): void {
   const sbom = generateSbom(cwd);
   const outPath = path.join(cwd, 'sbom.json');
   getIO().fs.write(outPath, JSON.stringify(sbom, null, 2));
-  console.log(`SBOM gerado: ${path.relative(cwd, outPath)}`);
-  console.log(`Componentes: ${(sbom.components as Array<Record<string, unknown>>).length}`);
+  logger.info('SBOM gerado: ${path.relative(cwd, outPath)}');
+  logger.info('Componentes: ${(sbom.components as Array<Record<string, unknown>>).length}');
 }
 
 export function supplyChainAuditAction(opts: Record<string, unknown>): void {
@@ -28,20 +30,20 @@ export function supplyChainAuditAction(opts: Record<string, unknown>): void {
   const result = scan(cwd);
   const diff = audit(result.entries, opts.baseline as string);
   if (diff.changed) {
-    console.log('Mudancas detectadas em relacao ao baseline:');
-    if (diff.added.length > 0) console.log(`  Novas vulnerabilidades: ${diff.added.length}`);
-    if (diff.removed.length > 0) console.log(`  Removidas: ${diff.removed.length}`);
+    logger.info('Mudancas detectadas em relacao ao baseline:');
+    if (diff.added.length > 0) logger.info('  Novas vulnerabilidades: ${diff.added.length}');
+    if (diff.removed.length > 0) logger.info('  Removidas: ${diff.removed.length}');
   } else {
-    console.log('Nenhuma mudanca em relacao ao baseline.');
+    logger.info('Nenhuma mudanca em relacao ao baseline.');
   }
 }
 
 export function supplyChainVerifyAction(pkg: string): void {
   const cwd = process.cwd();
   const result = verifyPackage(pkg, cwd);
-  console.log(`Pacote: ${pkg}`);
-  console.log(`Verificado: ${result.verified}`);
-  if (result.integrity) console.log(`Integridade: ${result.integrity}`);
+  logger.info('Pacote: ${pkg}');
+  logger.info('Verificado: ${result.verified}');
+  if (result.integrity) logger.info('Integridade: ${result.integrity}');
   if (result.error) console.error(`Erro: ${result.error}`);
 }
 

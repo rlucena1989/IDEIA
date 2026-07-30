@@ -1,4 +1,5 @@
 import { MirrorEntry, ReplayResult } from './types';
+import { createLogger } from '@ideia/logger';
 import { getProvider } from '../provider-router';
 
 function cosineSimilarity(a: string, b: string): number {
@@ -48,7 +49,7 @@ export async function replayEntry(
       replayResponse = result.content;
     }
     replayStatus = 'success';
-  } catch (_err) {
+  } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     replayResponse = '';
     replayStatus = 'error';

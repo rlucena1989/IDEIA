@@ -1,4 +1,6 @@
 import { DecisionTrace, Explanation } from './explanation-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('explanation-engine');
 
 export function explainDecision(trace: DecisionTrace): Explanation {
   return {

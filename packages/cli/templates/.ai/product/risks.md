@@ -87,7 +87,7 @@ e os prompts ficam desatualizados — a IA passa a trabalhar com contexto errado
 - CI exibe aviso (não bloqueante) se `ai-handoff.md` não foi atualizado
   há mais de 14 dias.
 - Checklist de fim de sprint em `.ai/checklists/` inclui revisão do handoff.
-- Datas de "última revisão" em PENDING_ACTIONs os arquivos críticos.
+- Datas de "última revisão" em todos os arquivos críticos.
 
 ---
 
@@ -151,7 +151,7 @@ ser mantido, testado e atualizado conforme as ferramentas da linguagem evoluem.
 
 **Mitigações:**
 
-- Design model-agnostic: PENDING_ACTIONs os prompts e arquivos `.ai/` funcionam
+- Design model-agnostic: todos os prompts e arquivos `.ai/` funcionam
   com qualquer LLM.
 - Testar o `ai-handoff.md` com pelo menos 3 modelos diferentes
   (Claude, GPT, Gemini) a cada release.

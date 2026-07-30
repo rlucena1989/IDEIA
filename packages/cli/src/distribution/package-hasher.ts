@@ -1,4 +1,6 @@
 import * as crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('package-hasher');
 
 export function computePackageChecksum(input: string): string {
   let hash = 0;

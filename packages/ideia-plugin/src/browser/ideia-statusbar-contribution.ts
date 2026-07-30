@@ -1,8 +1,10 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { StatusBar, StatusBarAlignment } from '@theia/core/lib/browser/status-bar/status-bar';
 import { FrontendApplicationContribution, FrontendApplication } from '@theia/core/lib/browser';
 import { IDEIA_AGENT_SERVICE, IDEIA_TASK_SERVICE } from '../common/ideia-protocol';
 import { IDEIA_AgentService, IDEIA_TaskService } from '../common/ideia-protocol';
+const logger = createLogger('ideia-statusbar-contribution');
 
 @injectable()
 export class IDEIA_StatusBarContribution implements FrontendApplicationContribution {

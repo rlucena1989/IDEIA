@@ -1,5 +1,7 @@
 import { EngineMode, RouteDecision, HardwareProfile } from './types';
+import { createLogger } from '@ideia/logger';
 import { readHardwareProfile, tierFromHardware } from './hardware-profile';
+const logger = createLogger('optimizer');
 
 export interface OptimizationSuggestion {
   parameter: string;

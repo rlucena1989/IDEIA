@@ -96,3 +96,56 @@ export interface PublishedContract {
   publishedAt: string;
   checksum: string;
 }
+
+export interface PactFileV2 {
+  consumer: {
+    name: string;
+  };
+  provider: {
+    name: string;
+  };
+  interactions: PactInteraction[];
+  metadata?: Record<string, unknown>;
+  version?: string;
+}
+
+export interface MockServerConfig {
+  host: string;
+  port: number;
+  tls?: boolean;
+}
+
+export interface BrokerConfig {
+  url: string;
+  baseUrl?: string;
+  username?: string;
+  password?: string;
+  token?: string;
+  authToken?: string;
+}
+
+export interface BrokerPublishResult {
+  success: boolean;
+  message?: string;
+  error?: string;
+  pactUrl?: string;
+}
+
+export interface BrokerRetrieveResult {
+  success: boolean;
+  pacts?: PactContract[];
+  error?: string;
+}
+
+export interface VerifiedInteractionResult {
+  description: string;
+  success: boolean;
+  passed?: boolean;
+  error?: string;
+  requestMethod?: string;
+  requestPath?: string;
+  expectedStatus?: number;
+  actualStatus?: number;
+  bodyMatch?: boolean;
+}
+

@@ -1,6 +1,9 @@
 import * as fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'node:path';
 import { EventEmitter } from 'node:events';
+
+const logger = createLogger('study-intensifier');
 
 export interface StudyGap {
   study: string;
@@ -58,7 +61,7 @@ export class StudyIntensifier extends EventEmitter {
   }
 
   private log(msg: string): void {
-    if (this.verbose) console.log(`[StudyIntensifier] ${msg}`);
+    if (this.verbose) logger.info('[StudyIntensifier] ${msg}');
   }
 
   scanGaps(): StudyGap[] {
@@ -223,25 +226,25 @@ const studies = ${JSON.stringify(plan.gaps.map(g => ({
     autoFixable: plan.autoFixable.some(a => a.study === g.study)
 })), null, 2)};
 
-console.log('=== IDEIA Study Intensifier Helper ===');
-console.log('Total studies needing improvement: ' + studies.length);
-console.log('');
+logger.info('=== IDEIA Study Intensifier Helper ===');
+logger.info('Total studies needing improvement: ' + studies.length);
+logger.info('');
 
 for (const s of studies) {
-  console.log('Study: ' + s.name);
-  console.log('  Score: ' + s.currentScore + '/5 → ' + s.targetScore + '/5');
-  console.log('  Missing: ' + s.missing.join(', '));
-  console.log('  Auto-fixable: ' + (s.autoFixable ? 'YES' : 'NO (requires human)'));
+  logger.info('Study: ' + s.name);
+  logger.info('  Score: ' + s.currentScore + '/5 → ' + s.targetScore + '/5');
+  logger.info('  Missing: ' + s.missing.join(', '));
+  logger.info('  Auto-fixable: ' + (s.autoFixable ? 'YES' : 'NO (requires human)'));
   if (s.autoFixable) {
-    console.log('  Command: ai-devkit reality-sync intensify');
+    logger.info('  Command: ai-devkit reality-sync intensify');
   }
-  console.log('');
+  logger.info('');
 }
 
 const fixable = studies.filter(s => s.autoFixable).length;
-console.log(fixable + ' studies can be auto-fixed via "ai-devkit reality-sync intensify"');
+logger.info(fixable + ' studies can be auto-fixed via "ai-devkit reality-sync intensify"');
 const human = studies.filter(s => !s.autoFixable).length;
-console.log(human + ' studies require human intervention');
+logger.info(human + ' studies require human intervention');
 `;
     try {
       const dir = path.dirname(outputPath);
@@ -322,7 +325,7 @@ console.log(human + ' studies require human intervention');
           this.emit('intensify:auto', { report, timestamp: Date.now() });
         }
       } catch (_err) {
-        this.log(`Auto-intensify error: ${err instanceof Error ? err.message : String(err)}`);
+        this.log(`Auto-intensify error: ${_err instanceof Error ? _err.message : String(_err)}`);
       }
     };
 
@@ -364,7 +367,7 @@ console.log(human + ' studies require human intervention');
             this.log(`Rolled back auto-fix on ${detail.study}`);
           }
         } catch (_err) {
-          errors.push(`Failed to rollback ${detail.study}: ${err instanceof Error ? err.message : String(err)}`);
+          errors.push(`Failed to rollback ${detail.study}: ${_err instanceof Error ? _err.message : String(_err)}`);
         }
       }
     }

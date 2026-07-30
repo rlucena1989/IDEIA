@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 
 import { generateReleaseNotes, formatReleaseNotes } from '../release/notes';
@@ -159,7 +160,7 @@ export function releaseCommand(): Command {
         const pkg = JSON.parse(getIO().fs.read(path.join(process.cwd(), 'package.json'), 'utf-8'));
         version = pkg.version;
       } catch (_e) {
-        printResult('Erro', false, `Falha ao ler package.json: ${(e as Error).message}`);
+        printResult('Erro', false, `Falha ao ler package.json: ${(_e as Error).message}`);
         finish({ checkpoint: 'release_publish', ok: false, status: 'failed', context_summary: 'Falha ao ler package.json' });
         return;
       }
@@ -273,7 +274,7 @@ export function releaseCommand(): Command {
  * Processa command.
  * @returns O resultado da operação.
  */
-export function pipelineCommand(): Command {
+export function releasePipelineCommand(): Command {
   const cmd = new Command('pipeline')
     .description('Geracao e execucao de pipelines CI/CD');
 

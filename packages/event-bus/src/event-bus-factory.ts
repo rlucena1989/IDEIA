@@ -43,7 +43,7 @@ export async function createBus(config?: EventBusFactoryConfig): Promise<IEventB
       await bus.connect();
       return bus;
     } catch (_err) {
-      const errMsg = err instanceof Error ? err.message : String(err);
+      const errMsg = _err instanceof Error ? _err.message : String(_err);
       logger.warn('[EventBusFactory] NATS connection failed, falling back to in-memory: ' + errMsg);
       return createEventBus(config?.memory?.maxHistory, config?.auditTrail, logger);
     }

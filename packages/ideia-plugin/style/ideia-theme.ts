@@ -1,6 +1,8 @@
 import { ThemeService } from '@theia/core/lib/browser/theming';
+import { createLogger } from '@ideia/logger';
 import { ColorRegistry } from '@theia/core/lib/browser/color-registry';
 import { ColorDefinition } from '@theia/core/lib/common/color';
+const logger = createLogger('ideia-theme');
 
 export const IDEIA_DARK_THEME = {
   id: 'ideia-dark',

@@ -1,7 +1,9 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { PreferenceService, PreferenceScope, PreferenceInspectResult } from './types';
 import { DefaultPreferenceSchemaRegistry } from './schema';
 import { DefaultPreferenceProviderChain } from './providers';
+const logger = createLogger('service');
 
 export class DefaultPreferenceService implements PreferenceService {
   private onChangedEmitter = new Emitter<{ key: string; value: unknown; scope: PreferenceScope }>();

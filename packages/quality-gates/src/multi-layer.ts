@@ -1,4 +1,6 @@
 import { GateDefinition, GateResult, LayerResult, VerificationLayer } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('multi-layer');
 
 const DEFAULT_GATES: GateDefinition[] = [
   { name: 'lint', description: 'Lint sem erros', severity: 'error', layer: 'syntax', timeoutMs: 30000, blocking: true },

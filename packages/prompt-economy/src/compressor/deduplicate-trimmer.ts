@@ -1,5 +1,7 @@
 import { ChatMessage, ContextItem } from '../types';
+import { createLogger } from '@ideia/logger';
 import { createHash } from 'crypto';
+const logger = createLogger('deduplicate-trimmer');
 
 export class DeduplicateTrimmer {
   trim(messages: ChatMessage[], context: ContextItem[]): { messages: ChatMessage[]; context: ContextItem[] } {

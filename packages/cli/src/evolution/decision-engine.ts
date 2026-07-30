@@ -1,5 +1,7 @@
 import { EvolutionDecision, EvolutionDecisionContext } from './decision-types';
+import { createLogger } from '@ideia/logger';
 import { EvolutionPolicy, DEFAULT_EVOLUTION_POLICY } from './evolution-policy';
+const logger = createLogger('decision-engine');
 
 export function decideEvolution(
   ctx: EvolutionDecisionContext,

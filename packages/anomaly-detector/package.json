@@ -1,0 +1,21 @@
+{
+  "name": "@ideia/anomaly-detector",
+  "private": true,
+  "description": "IDEIA Behavioral Anomaly Detection — ensemble of statistical, ML, transformer, causal, and online detectors",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*"
+  }
+}

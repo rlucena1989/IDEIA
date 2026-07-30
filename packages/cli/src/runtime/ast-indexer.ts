@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 
 /** Interface que define a estrutura de symbol entry. */
@@ -72,7 +73,7 @@ function scanFile(filePath: string, baseDir: string): SymbolEntry[] {
         const name = match[2] || match[1];
         if (!name) continue;
         const line = content.substring(0, match.index).split('\n').length;
-        const exported = match[0]!.startsWith('export');
+        const exported = (match[0] ?? '').startsWith('export');
         symbols.push({ name, type: pattern.type, file: relativePath, line, language: lang, exported });
       }
     }
@@ -102,7 +103,7 @@ export function indexWorkspace(rootDir: string): IndexResult {
         else if (entry.isFile()) {
           filesScanned++;
           try { allSymbols.push(...scanFile(full, rootDir)); }
-          catch (_e) { errors.push(`${full}: ${e}`); }
+          catch (e) { errors.push(`${full}: ${e}`); }
         }
       }
     } catch { /* skip */ }

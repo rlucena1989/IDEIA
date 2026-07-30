@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/agent-memory",
+  "private": true,
+  "description": "Agent memory hierarchy L0-L6: working memory, episodic memory, semantic memory, persistent knowledge, coherence management, neural compression, hierarchical attention, and sleep consolidation",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*",
+    "@types/node": "*"
+  }
+}

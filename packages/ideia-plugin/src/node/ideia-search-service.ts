@@ -1,4 +1,5 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { EventBus } from '@ideia/event-bus';
 import { IDEIA_SEARCH_SERVICE, IDEIA_SearchService, SearchResult } from '../common/ideia-protocol';
 import * as fs from 'fs';

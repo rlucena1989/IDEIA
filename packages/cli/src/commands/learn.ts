@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { MemoryStore, createMemoryRecord } from '@ideia/memory-store';
 import { detectPatterns } from '../memory/pattern-detector';
 import { generateRecommendations } from '../memory/learning-engine';

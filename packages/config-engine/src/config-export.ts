@@ -94,6 +94,53 @@ export function exportConfig(
   return JSON.stringify(payload, null, 2);
 }
 
+export async function exportToFile(
+  engine: ConfigEngine,
+  filePath: string,
+  scope: 'global' | 'project' | 'all' = 'all',
+  anonymized = false,
+): Promise<void> {
+  const data = exportConfig(engine, scope, anonymized);
+  const fs = await import('fs');
+  fs.writeFileSync(filePath, data, 'utf-8');
+  _log.info(`Config exported to ${filePath}`);
+}
+
+export function exportWithProfile(
+  engine: ConfigEngine,
+  profileId: string,
+  anonymized = false,
+): string {
+  const config = engine.getFull();
+  let payloadConfig = config;
+  if (anonymized) {
+    payloadConfig = anonymizeConfig(config as Record<string, unknown>) as FullConfig;
+  }
+  const payload: ExportPayload & { profileId: string } = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    scope: 'all',
+    anonymized,
+    config: payloadConfig,
+    profileId,
+    metadata: { profile: profileId },
+  };
+  return JSON.stringify(payload, null, 2);
+}
+
+export function exportSummary(config: FullConfig): { keyCount: number; categories: string[]; sensitiveKeys: number; sizeBytes: number } {
+  const flat = flattenKeys(config as Record<string, unknown>);
+  const sensitiveKeys = ['token', 'secret', 'password', 'key', 'credential', 'apiKey', 'auth'];
+  const sensitiveCount = Object.keys(flat).filter(k => sensitiveKeys.some(sk => k.toLowerCase().includes(sk.toLowerCase()))).length;
+  const categories = [...new Set(Object.keys(flat).map(k => k.split('.')[0]).filter(Boolean))];
+  return {
+    keyCount: Object.keys(flat).length,
+    categories,
+    sensitiveKeys: sensitiveCount,
+    sizeBytes: JSON.stringify(config).length,
+  };
+}
+
 export async function importConfig(
   engine: ConfigEngine,
   data: string,
@@ -113,7 +160,7 @@ export async function importConfig(
   try {
     payload = JSON.parse(data) as ExportPayload;
   } catch (_err) {
-    result.errors.push(`Invalid JSON: ${String(err)}`);
+    result.errors.push(`Invalid JSON: ${String(_err)}`);
     return result;
   }
 
@@ -148,7 +195,7 @@ export async function importConfig(
           }
           result.applied++;
         } catch (_err) {
-          result.errors.push(`Failed to set '${change.path}': ${String(err)}`);
+          result.errors.push(`Failed to set '${change.path}': ${String(_err)}`);
           result.skipped++;
         }
       }
@@ -167,7 +214,7 @@ export async function importConfig(
       await engine.set(change.path, change.newValue ?? '');
       result.applied++;
     } catch (_err) {
-      result.errors.push(`Failed to set '${change.path}': ${String(err)}`);
+      result.errors.push(`Failed to set '${change.path}': ${String(_err)}`);
       result.skipped++;
     }
   }

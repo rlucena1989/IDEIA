@@ -1,4 +1,5 @@
 import { classify, extractRouting, TaskType } from './classifier';
+import { createLogger } from '@ideia/logger';
 import { BudgetConfig, checkBudget, formatBudgetReport } from './budget';
 
 /** Tipo que define pipeline mode. */

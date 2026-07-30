@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/ai-safety",
+  "private": true,
+  "description": "AI safety and alignment: guardrails, alignment validation, bias detection, harmfulness classification, constitutional AI, representation engineering, and scalable oversight",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*",
+    "@types/node": "*"
+  }
+}

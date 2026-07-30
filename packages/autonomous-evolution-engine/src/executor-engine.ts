@@ -4,8 +4,17 @@ import { ScopeIsolation } from '@ideia/scope-isolation';
 import { AutoAdr } from '@ideia/auto-adr';
 import { Logger } from '@ideia/logger';
 import { ExecutionStep, EvolutionPlan } from './types';
+import { RollbackManager } from './rollback-manager';
 import * as fs from 'fs';
 import * as path from 'path';
+
+export interface Checkpoint {
+  id: string;
+  stepId: string;
+  timestamp: number;
+  snapshot: Record<string, unknown>;
+  metrics: Record<string, number>;
+}
 
 export class ExecutorEngine {
   private bus: EventBus;
@@ -13,6 +22,8 @@ export class ExecutorEngine {
   private isolation: ScopeIsolation;
   private adr: AutoAdr;
   private logger: Logger;
+  private rollbackManager: RollbackManager;
+  private checkpoints: Checkpoint[] = [];
 
   constructor(
     bus: EventBus,
@@ -26,6 +37,7 @@ export class ExecutorEngine {
     this.isolation = isolation;
     this.adr = adr;
     this.logger = logger;
+    this.rollbackManager = new RollbackManager();
   }
 
   async execute(plan: EvolutionPlan): Promise<{
@@ -43,6 +55,11 @@ export class ExecutorEngine {
         const backup = await this.createBackup(step);
         step.backupPath = backup;
 
+        await this.apply(step);
+
+        const checkpoint = this.saveCheckpoint(step);
+        this.logger.info(`Checkpoint saved: ${checkpoint.id}`);
+
         const verified = await this.verifyStep(step);
 
         if (!verified) {
@@ -54,7 +71,7 @@ export class ExecutorEngine {
           await this.bus.emit({ type: 'executor.step.completed', source: 'executor-engine', payload: { stepId: step.id } });
         }
       } catch (_err) {
-        const msg = err instanceof Error ? err.message : String(err);
+        const msg = _err instanceof Error ? _err.message : String(_err);
         await this.rollback(step);
         failed++;
         errors.push(msg);
@@ -86,6 +103,29 @@ export class ExecutorEngine {
     return { executed, failed, adrGenerated, errors };
   }
 
+  async apply(step: ExecutionStep): Promise<void> {
+    this.logger.info(`Applying step ${step.id}: ${step.description}`);
+    await this.bus.emit({ type: 'executor.step.executing', source: 'executor-engine', payload: { stepId: step.id } });
+    await this.applyStep(step);
+  }
+
+  saveCheckpoint(step: ExecutionStep): Checkpoint {
+    const cp: Checkpoint = {
+      id: `cp-${step.id}-${Date.now()}`,
+      stepId: step.id,
+      timestamp: Date.now(),
+      snapshot: { step: JSON.parse(JSON.stringify(step)) },
+      metrics: { cpu: process.cpuUsage().user, memory: process.memoryUsage().heapUsed },
+    };
+    this.checkpoints.push(cp);
+    if (this.checkpoints.length > 100) this.checkpoints.shift();
+    return cp;
+  }
+
+  getCheckpoints(): Checkpoint[] {
+    return [...this.checkpoints];
+  }
+
   private async createBackup(step: ExecutionStep): Promise<string> {
     const backupDir = path.join(process.cwd(), '.ai', 'backups');
     if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
@@ -104,9 +144,15 @@ export class ExecutorEngine {
     return true;
   }
 
-  private async rollback(step: ExecutionStep): Promise<void> {
+  async rollback(step: ExecutionStep): Promise<void> {
     if (step.backupPath && fs.existsSync(step.backupPath)) {
       this.logger.warn(`Rolling back step ${step.id}`);
+      const data = JSON.parse(fs.readFileSync(step.backupPath, 'utf-8')) as { step: ExecutionStep; timestamp: number };
+      this.rollbackManager.savePoint(`Rollback of ${step.id}`, data as Record<string, unknown>);
+      const healthOk = this.rollbackManager.checkHealth();
+      if (!healthOk) {
+        this.logger.error(`Health check failed after rollback of ${step.id}`);
+      }
       fs.unlinkSync(step.backupPath);
     }
   }

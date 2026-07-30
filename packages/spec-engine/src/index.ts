@@ -1,0 +1,8 @@
+export { SpecGenerator } from './spec-generator'
+export type { GenerationInput } from './spec-generator'
+export { SteeringFileManager } from './steering-file-manager'
+export { HookEngine } from './hook-engine'
+export type { HookContext, HookResult, HookHandler } from './hook-engine'
+export { SpecDrivenDevelopment, createSpecDrivenDevelopment } from './spec-integration'
+export type { SpecIntegrationConfig } from './spec-integration'
+export * from './types'

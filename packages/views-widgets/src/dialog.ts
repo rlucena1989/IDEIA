@@ -1,4 +1,6 @@
 import { IDialog, DialogResult, DialogButton } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('dialog');
 
 export class ConfirmDialog implements IDialog {
   readonly id: string;

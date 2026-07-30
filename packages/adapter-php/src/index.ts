@@ -1,14 +1,14 @@
 import * as fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'path';
-import { execSync } from 'child_process';
+import { AdapterBase } from '@ideia/adapter-base';
+import type { InitResult, CommandResult, QualityGateResult } from '@ideia/adapter-base';
 import { scaffoldProject, generateController, writeFiles } from './generator';
+const logger = createLogger('index');
 
-export interface InitResult { success: boolean; files: string[] }
-export interface CommandResult { success: boolean; output: string }
-export interface QualityGateResult { passed: boolean; score: number; issues: string[] }
-
-export class PhpAdapter {
+export class PhpAdapter extends AdapterBase {
   readonly name = 'php';
+  readonly language = 'php';
   readonly capabilities = ['detect', 'init', 'generateController', 'runLint', 'runTests', 'runBuild', 'qualityGate'];
 
   detect(projectRoot: string): boolean {
@@ -38,29 +38,17 @@ export class PhpAdapter {
   }
 
   generateTemplate(type: string): Promise<string> { return this.generateController(type); }
-  runLint(root?: string): Promise<CommandResult> { return exec('php vendor/bin/phpcs --standard=PSR12 src/', root); }
-  runTests(root?: string): Promise<CommandResult> { return exec('php vendor/bin/phpunit', root); }
-  runBuild(root?: string): Promise<CommandResult> { return exec('php -l src/', root); }
+  runLint(root?: string): Promise<CommandResult> { return this.exec('php vendor/bin/phpcs --standard=PSR12 src/', root); }
+  runTests(root?: string): Promise<CommandResult> { return this.exec('php vendor/bin/phpunit', root); }
+  runBuild(root?: string): Promise<CommandResult> { return this.exec('php -l src/', root); }
 
   qualityGate(root?: string): Promise<QualityGateResult> {
-    const r = root || process.cwd();
+    const r = root || this.config.projectRoot || process.cwd();
     const issues: string[] = [];
     if (!fs.existsSync(path.join(r, 'composer.json'))) issues.push('composer.json not found');
     if (!fs.existsSync(path.join(r, 'public', 'index.php'))) issues.push('public/index.php not found');
     return Promise.resolve({ passed: issues.length === 0, score: Math.max(0, 100 - issues.length * 50), issues });
   }
-}
-
-function exec(command: string, cwd?: string): Promise<CommandResult> {
-  return new Promise((resolve) => {
-    try {
-      const output = execSync(command, { cwd: cwd || process.cwd(), encoding: 'utf-8', stdio: 'pipe', timeout: 60000 });
-      resolve({ success: true, output: output || '' });
-    } catch (_err) {
-      const e = err as { stdout?: string; stderr?: string; message?: string };
-      resolve({ success: false, output: e.stdout || e.stderr || e.message || '' });
-    }
-  });
 }
 
 export function createPhpAdapter(): PhpAdapter { return new PhpAdapter(); }

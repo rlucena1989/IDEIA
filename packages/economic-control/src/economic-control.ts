@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { BudgetAllocation, BudgetReport, CostEntry } from './types';
 export class EconomicControl {
   private allocations: Map<string, BudgetAllocation> = new Map();

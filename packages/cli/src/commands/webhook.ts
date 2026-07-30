@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.webhook');
 import { NotificationService, createNotificationService, WebhookConfig, NotificationEvent, NotificationSeverity } from '../notifications';
 
 const ALL_EVENTS: NotificationEvent[] = [
@@ -32,14 +34,14 @@ export function webhookCommand(): Command {
         events: [options.event as NotificationEvent],
         timeout: 5000,
       };
-      console.log(`\n🔗 Testando webhook: ${config.url}`);
-      console.log(`   Evento: ${config.events[0]}\n`);
+      logger.info('\n🔗 Testando webhook: ${config.url}');
+      logger.info('   Evento: ${config.events[0]}\n');
 
       const ns = createNotificationService({ webhooks: [config] });
       try {
         await ns.send(config.events[0], '🔔 Teste de Webhook', `Webhook test at ${new Date().toISOString()}`, 'info', { test: true });
-        console.log('✅ Webhook entregue com sucesso\n');
-      } catch (_err) {
+        logger.info('✅ Webhook entregue com sucesso\n');
+      } catch (err) {
         console.error(`❌ Falha na entrega: ${err}\n`);
       }
     });
@@ -48,9 +50,9 @@ export function webhookCommand(): Command {
     .command('list')
     .description('Listar eventos disponíveis para webhook')
     .action(() => {
-      console.log('\n📋 Eventos disponíveis para webhook:\n');
+      logger.info('\n📋 Eventos disponíveis para webhook:\n');
       for (const event of ALL_EVENTS) {
-        console.log(`   • ${event}`);
+        logger.info('   • ${event}');
       }
       console.log('');
     });
@@ -66,12 +68,12 @@ export function webhookCommand(): Command {
       const severity = options.severity as NotificationSeverity;
       const ns = createNotificationService();
       const n = await ns.send(options.event as NotificationEvent, options.title, options.message, severity, { simulated: true });
-      console.log(`\n📨 Notificação enviada:\n`);
-      console.log(`   ID:       ${n.id}`);
-      console.log(`   Evento:   ${n.event}`);
-      console.log(`   Título:   ${n.title}`);
-      console.log(`   Severidade: ${n.severity}`);
-      console.log(`   Timestamp: ${n.timestamp}\n`);
+      logger.info('\n📨 Notificação enviada:\n');
+      logger.info('   ID:       ${n.id}');
+      logger.info('   Evento:   ${n.event}');
+      logger.info('   Título:   ${n.title}');
+      logger.info('   Severidade: ${n.severity}');
+      logger.info('   Timestamp: ${n.timestamp}\n');
     });
 
   return cmd;

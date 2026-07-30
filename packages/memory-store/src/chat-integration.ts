@@ -1,6 +1,8 @@
 import { MemoryStore } from './memory-store';
+import { createLogger } from '@ideia/logger';
 import type { MemoryRecord, MemoryPattern } from '@ideia/contracts';
 import { CagCache } from './cag-cache';
+const logger = createLogger('chat-integration');
 
 export interface ChatContext {
   sessionId: string;

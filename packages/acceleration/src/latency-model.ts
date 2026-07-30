@@ -1,4 +1,6 @@
 import { ProviderKind } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('latency-model');
 
 export interface LatencyEntry {
   provider: ProviderKind;

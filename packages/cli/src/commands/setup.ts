@@ -1,6 +1,7 @@
 import { Command } from 'commander';
-import { Profiles, createProfiles } from '@ideia/profiles';
-import { createBus } from '@ideia/event-bus';
+import { createLogger } from '@ideia/logger';
+import { createProfiles } from '@ideia/profiles';
+import { createBus, EventBus } from '@ideia/event-bus';
 import { AuditTrail } from '@ideia/audit-trail';
 import * as path from 'path';
 import * as os from 'os';
@@ -10,9 +11,15 @@ export function setupCommand(): Command {
   const cmd = new Command('setup')
     .description('Onboarding wizard and setup assistant');
 
-  const eventBus = await createBus();
-  const auditTrail = new AuditTrail(path.join(os.tmpdir(), 'ideia-cli-audit.json'));
-  const profiles = createProfiles(eventBus, auditTrail);
+  let _eventBus: EventBus;
+  let _profiles: ReturnType<typeof createProfiles>;
+  async function getProfiles() {
+    if (!_profiles) {
+      _eventBus = await createBus() as unknown as EventBus;
+      _profiles = createProfiles(_eventBus, new AuditTrail(path.join(os.tmpdir(), 'ideia-cli-audit.json')));
+    }
+    return _profiles;
+  }
 
   cmd
     .command('wizard')
@@ -22,6 +29,7 @@ export function setupCommand(): Command {
     .option('--json', 'Output as JSON')
     .action(async (opts) => {
       try {
+        const profiles = await getProfiles();
         printHeader('IDEIA Setup Wizard');
         const mode = opts.expert ? 'expert' : opts.quick ? 'quick' : 'standard';
         printLine(`Starting in ${mode} mode...\n`);
@@ -48,6 +56,7 @@ export function setupCommand(): Command {
     .option('--json', 'Output as JSON')
     .action(async (opts) => {
       try {
+        const profiles = await getProfiles();
         const list = profiles.list();
         const status = {
           configured: list.length > 0,

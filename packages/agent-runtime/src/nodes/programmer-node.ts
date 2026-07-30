@@ -1,6 +1,8 @@
 import { LangGraphStateAnnotation, LangGraphAgentRole } from '../langgraph-graph';
+import { createLogger } from '@ideia/logger';
 import { LangGraphNodeFunction } from '../langgraph-graph';
 import { LLMProvider, ChatMessage } from '@ideia/llm-provider';
+const logger = createLogger('programmer-node');
 
 const PROGRAMMER_PROMPT = `You are a Programmer agent. Implement the solution based on the architectural design:
 1. Write clean, well-structured code following best practices

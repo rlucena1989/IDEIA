@@ -2,10 +2,39 @@
  * @deprecated Use `packages/diff-engine` — consolidated import.
  * Text diff and template generation.
  */
-import { diffText } from '@ideia/diff-engine';
 
-export const generatePreview = diffText;
-export type { TextDiff as PreviewDiff } from '@ideia/diff-engine';
+export interface PreviewDiff {
+  added: number;
+  removed: number;
+  hunks: Array<{ oldStart: number; oldLines: number; newStart: number; newLines: number; lines: string[] }>;
+}
+
+function simpleDiff(oldText: string, newText: string): PreviewDiff {
+  const oldLines = oldText.split('\n');
+  const newLines = newText.split('\n');
+  let added = 0;
+  let removed = 0;
+  const hunks: PreviewDiff['hunks'] = [];
+  let hunk: PreviewDiff['hunks'][0] | null = null;
+
+  const maxLen = Math.max(oldLines.length, newLines.length);
+  for (let i = 0; i < maxLen; i++) {
+    if (oldLines[i] !== newLines[i]) {
+      if (!hunk) {
+        hunk = { oldStart: i + 1, oldLines: 0, newStart: i + 1, newLines: 0, lines: [] };
+        hunks.push(hunk);
+      }
+      if (oldLines[i] !== undefined) { removed++; hunk.oldLines++; hunk.lines.push(`- ${oldLines[i]}`); }
+      if (newLines[i] !== undefined) { added++; hunk.newLines++; hunk.lines.push(`+ ${newLines[i]}`); }
+    } else if (hunk) {
+      hunk = null;
+    }
+  }
+
+  return { added, removed, hunks };
+}
+
+export const generatePreview = simpleDiff;
 
 /**
  * Gera frontend template.

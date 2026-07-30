@@ -1,0 +1,26 @@
+{
+  "name": "@ideia/devx-metrics",
+  "description": "Developer experience metrics collector with DORA, SPACE framework, surveys and trend analysis",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  }
+}

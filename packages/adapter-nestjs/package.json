@@ -5,10 +5,12 @@
   "main": "index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest"
   },
   "dependencies": {
     "ts-morph": "^28.0.0",
+    "@ideia/adapter-base": "*",
     "@ideia/contracts": "*"
   },
   "publishConfig": {

@@ -64,7 +64,7 @@ export class IDEIA_FileWidget extends BaseWidget {
             existing = { name: part, path: currentPath, type: 'directory', children: [] };
             current.push(existing);
           }
-          current = existing.children!;
+          current = existing.children ?? [];
         }
       }
     }

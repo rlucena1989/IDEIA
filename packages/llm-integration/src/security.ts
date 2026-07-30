@@ -1,5 +1,7 @@
 import { AiMessage } from '@ideia/theia-ai';
+import { createLogger } from '@ideia/logger';
 import { ChatResponse, SecurityPipeline } from './types';
+const logger = createLogger('security');
 
 export class DefaultSecurityPipeline implements SecurityPipeline {
   private piiPatterns = [

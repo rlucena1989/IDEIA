@@ -1,4 +1,6 @@
 import type { TaskSpec, PlannerTaskType } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('task-spec');
 
 export function inferTaskType(input: string): PlannerTaskType {
   const value = input.toLowerCase();

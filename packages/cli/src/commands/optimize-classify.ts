@@ -1,4 +1,6 @@
 import path from 'node:path';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.optimize-classify');
 import { printHeader, printLine, finish } from "../utils/output";
 import { classify, classifyAndExplain, TASK_TYPE_LABELS, extractRouting } from '../runtime/classifier';
 import { readRequestJson } from './optimize-pipeline';
@@ -28,7 +30,7 @@ export function handleOptimizeClassify(
       console.log(JSON.stringify({ result, explanation }, null, 2));
     } else {
       printHeader('Classificacao de Tarefa');
-      console.log(explanation);
+      logger.info(explanation);
     }
     finish({ checkpoint: 'classify', ok: true, status: 'passed', context_summary: `Classificado como ${result.taskType} (${result.confidence}%)` });
     return;

@@ -1,4 +1,5 @@
 import { ClassificationResult } from './types';
+import { createLogger } from '@ideia/logger';
 
 const DOMAIN_KEYWORDS: Record<string, string[]> = {
   'web-development': ['react', 'vue', 'angular', 'html', 'css', 'http', 'rest', 'api', 'endpoint'],

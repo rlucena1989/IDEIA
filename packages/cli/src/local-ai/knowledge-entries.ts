@@ -12,6 +12,7 @@
 }
 
 import { ENTRIES as architectureEntries } from './entries/architecture';
+import { createLogger } from '@ideia/logger';
 import { ENTRIES as backendEntries } from './entries/backend';
 import { ENTRIES as frontendEntries } from './entries/frontend';
 import { ENTRIES as securityEntries } from './entries/security';
@@ -19,6 +20,7 @@ import { ENTRIES as testingEntries } from './entries/testing';
 import { ENTRIES as devopsEntries } from './entries/devops';
 import { ENTRIES as ai_mlEntries } from './entries/ai-ml';
 import { ENTRIES as patternsEntries } from './entries/patterns';
+const logger = createLogger('knowledge-entries');
 
 export const CURATED_ENTRIES: KnowledgeEntry[] = [
   ...architectureEntries,

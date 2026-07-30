@@ -1,4 +1,6 @@
 import { PlatformState, PlatformVerification } from './platform-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('platform-verifier');
 
 export function verifyPlatform(state: PlatformState): PlatformVerification {
   const issues: string[] = [];

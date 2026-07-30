@@ -1,4 +1,5 @@
 import { evaluatePolicy } from '@ideia/policy-engine';
+import { createLogger } from '@ideia/logger';
 import type { AuditTrail, AuditEvent } from '@ideia/audit-trail';
 import type { EventBus } from '@ideia/event-bus';
 import type { RiskLevel, Decision } from '@ideia/contracts';
@@ -37,10 +38,12 @@ function createAuditEvent(
   return { actor, eventType, target, decision, result, metadata };
 }
 
+const internalLogger = createLogger('policy-integration');
+
 const defaultLogger: Logger = {
-  warn: (msg, ...args) => console.warn(msg, ...args),
-  error: (msg, ...args) => console.error(msg, ...args),
-  info: (msg, ...args) => console.info(msg, ...args),
+  warn: (msg, ...args) => internalLogger.warn(msg, args.length > 0 ? { args } as Record<string, unknown> : undefined),
+  error: (msg, ...args) => internalLogger.error(msg, args.length > 0 ? { args } as Record<string, unknown> : undefined),
+  info: (msg, ...args) => internalLogger.info(msg, args.length > 0 ? { args } as Record<string, unknown> : undefined),
 };
 
 export async function executeWithPolicy<T>(

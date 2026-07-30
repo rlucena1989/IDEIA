@@ -1,4 +1,7 @@
 import { BulkheadConfig, DegradationAction, DegradationMode, ResiliencePolicy, ResilienceReport as _ResilienceReport } from './types';
+import { createLogger } from '@ideia/logger';
+
+export { DegradationMode };
 const MODE_ACTIONS: Record<DegradationMode, DegradationAction> = {
   normal: { mode: 'normal', disableFeatures: [], reduceConcurrency: 0, readOnly: false, notify: false },
   degraded: { mode: 'degraded', disableFeatures: ['chat_history', 'analytics'], reduceConcurrency: 0.5, readOnly: false, notify: true },
@@ -37,13 +40,13 @@ export class Bulkhead {
         fn(),
         new Promise<T>((_, rej) => setTimeout(() => rej(new Error(`Bulkhead ${this.config.name} timeout`)), this.config.timeoutMs)),
       ]);
-    } catch (_e) {
+    } catch (e) {
       error = e;
     } finally {
       this.active--;
     }
     if (this.queue.length > 0) {
-      const next = this.queue.shift()!;
+      const next = this.queue.shift() as QueueItem;
       if (Date.now() - next.enqueuedAt > this.ttlMs) {
         next.reject(new Error(`Bulkhead ${this.config.name} queue item expired`));
         return this.run(fn);
@@ -80,7 +83,7 @@ export function executeWithPolicy<T>(fn: () => Promise<T>, policy: ResiliencePol
     try {
       if (bulkhead) return await bulkhead.run(fn);
       return await fn();
-    } catch (_e) {
+    } catch (e) {
       if (attempt >= policy.maxRetries) throw e;
       const delay = policy.baseDelayMs * Math.pow(2, attempt);
       await new Promise(r => setTimeout(r, Math.min(delay, 30000)));

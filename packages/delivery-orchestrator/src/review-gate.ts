@@ -1,4 +1,5 @@
 import { NotificationManager } from './notifications';
+import { createLogger } from '@ideia/logger';
 import { WebhookManager } from './webhook';
 import { DeliveryOrchestrator } from './delivery-orchestrator';
 import { DeployEnvironment, ReviewGateRequest } from './types';
@@ -204,7 +205,8 @@ export class ReviewGateManager {
   private clearTimers(deployId: string): void {
     for (const key of this.timers.keys()) {
       if (key.startsWith(deployId)) {
-        clearTimeout(this.timers.get(key) ?? null);
+        const timer = this.timers.get(key);
+        if (timer) clearTimeout(timer);
         this.timers.delete(key);
       }
     }

@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.pr-review');
 
 import path from 'node:path';
 import { antiSlop, securityScan, performanceCheck, regressionCheck, ReviewFinding } from '../utils/review/index';
@@ -192,7 +194,7 @@ export function runPRReview(
   }
 
   const sourceFiles = changedFiles.filter((f) => checkFileExtension(f.file));
-  console.log(`[pr-review] ${changedFiles.length} files changed, ${sourceFiles.length} reviewable`);
+  logger.info('[pr-review] ${changedFiles.length} files changed, ${sourceFiles.length} reviewable');
 
   const findings: ReviewFinding[] = [];
 
@@ -231,11 +233,11 @@ export function runPRReview(
   getIO().fs.mkDir(path.dirname(outputPath), true);
   getIO().fs.write(outputPath, JSON.stringify(report, null, 2));
 
-  console.log(`\n📋 PR Review Report`);
-  console.log(`   Files changed: ${summary.filesChanged}`);
-  console.log(`   Findings: ${summary.findings}`);
-  console.log(`   Score: ${score}/100`);
-  console.log(`   Saved: ${path.relative(root, outputPath)}`);
+  logger.info('\n📋 PR Review Report');
+  logger.info('   Files changed: ${summary.filesChanged}');
+  logger.info('   Findings: ${summary.findings}');
+  logger.info('   Score: ${score}/100');
+  logger.info('   Saved: ${path.relative(root, outputPath)}');
 
   return report;
 }
@@ -313,7 +315,7 @@ export function prReviewCommand(): Command {
       });
 
       if (options.markdown) {
-        console.log(formatPRReview(report));
+        logger.info(formatPRReview(report));
       }
 
       if (report.summary.score < 50) {
@@ -328,7 +330,7 @@ export function prReviewCommand(): Command {
     .action((options) => {
       const diff = getGitDiff(options.base);
       if (diff) {
-        console.log(diff);
+        logger.info(diff);
       } else {
         console.log('No diff found against', options.base);
       }
@@ -350,14 +352,14 @@ export function prReviewCommand(): Command {
 
       if (options.format === 'github') {
         for (const sug of report.inlineSuggestions) {
-          console.log(`::set-output name=review::${JSON.stringify({
+          logger.info(`::set-output name=review::${JSON.stringify({
             path: sug.file,
             line: sug.line,
             body: sug.body,
           })}`);
         }
       } else {
-        console.log(formatPRReview(report));
+        logger.info(formatPRReview(report));
       }
     });
 

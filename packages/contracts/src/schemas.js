@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdapterResultSchema = exports.AdapterConfigSchema = exports.BusEventSchema = exports.AgentIdentitySchema = exports.FeedbackEventSchema = exports.Contract = exports.TraceLinkSchema = exports.WorkflowTaskSchema = exports.RequirementSchema = void 0;
 exports.validateAdapter = validateAdapter;
 const zod_1 = require("zod");
+const logger_1 = require("@ideia/logger");
+const logger = (0, logger_1.createLogger)('schemas');
 exports.RequirementSchema = zod_1.z.object({
     id: zod_1.z.string().uuid(),
     title: zod_1.z.string().min(1).max(200),

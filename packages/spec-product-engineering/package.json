@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/spec-product-engineering",
+  "private": true,
+  "description": "Specification-Driven Product Engineering — transforma intencoes vagas em especificacoes formais com deteccao de ambiguidade, DSL compiler e pipeline de especificacao",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*",
+    "@types/node": "*"
+  }
+}

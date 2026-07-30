@@ -1,0 +1,29 @@
+{
+  "name": "@ideia/adapter-typescript",
+  "description": "TypeScript code generator adapter for IDEIA",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "adapter",
+    "typescript",
+    "code-generation",
+    "ideia"
+  ],
+  "author": "IDEIA",
+  "license": "MIT",
+  "dependencies": {
+    "@ideia/adapter-base": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.0"
+  }
+}

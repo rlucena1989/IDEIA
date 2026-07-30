@@ -1,4 +1,5 @@
 import { A2AProtocol, createA2AProtocol, AgentCard, A2AMessage } from '@ideia/mcp';
+import { createLogger } from '@ideia/logger';
 import { MCPRegistry, createMCPRegistry, createFileSystemTools } from '@ideia/mcp';
 import { LangGraphAgent, LangGraphAgentRole, LangGraphStateAnnotation, LangGraphNodeFunction, createLangGraphAgent } from './langgraph-graph';
 import { createAnalystNode } from './nodes/analyst-node';
@@ -11,6 +12,7 @@ import { createSupervisorNode } from './nodes/supervisor-node';
 import { createDefaultEdgeConditions } from './edges';
 import { createReviewerTesterParallelNode } from './parallel';
 import { AgentRuntime, ExecutableStep } from './agent-runtime';
+import { HandoffFileManager, HandoffPayload } from './handoff-file';
 
 export class AgentOrchestrator {
   private a2a: A2AProtocol;
@@ -99,6 +101,17 @@ export class AgentOrchestrator {
   getMCP(): MCPRegistry { return this.mcp; }
 
   async runPipeline(input: string): Promise<{ state: LangGraphStateAnnotation; steps: ExecutableStep[] }> {
+    const handoff = new HandoffFileManager((this.runtime as unknown as Record<string, string>)['workspace'] || '.')
+    const taskId = `task-${Date.now()}`
+
+    const planPayload: HandoffPayload = {
+      taskId, from: 'orchestrator', to: 'analyst', phase: 'orchestrator',
+      input: { spec: input, context: {}, constraints: [] },
+      metadata: { createdAt: new Date().toISOString() },
+      status: 'pending',
+    }
+    await handoff.save(planPayload)
+
     const result = await this.mainGraph.invoke(input);
     const state = result.finalState;
 
@@ -109,6 +122,14 @@ export class AgentOrchestrator {
     });
 
     state.outputs.analyst = JSON.stringify(planResponse.payload);
+
+    const execPayload: HandoffPayload = {
+      taskId, from: 'analyst', to: 'build', phase: 'build',
+      input: { spec: input, context: { analysis: planResponse.payload }, constraints: [] },
+      metadata: { createdAt: new Date().toISOString() },
+      status: 'in-progress',
+    }
+    await handoff.save(execPayload)
 
     const steps: ExecutableStep[] = [
       { type: 'interpret', description: `Interpret: ${input}`, params: { input } },

@@ -1,4 +1,6 @@
 import type { Capability } from '../types/capability';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('resolver.interface');
 
 export interface DependencyGraph {
   nodes: Map<string, Capability>;

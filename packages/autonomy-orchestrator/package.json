@@ -1,0 +1,32 @@
+{
+  "name": "@ideia/autonomy-orchestrator",
+  "description": "IDEIA Autonomy Orchestrator — manages autonomy levels, auto-suggests changes based on system metrics",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/logger": "*",
+    "@ideia/contracts": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false
+}

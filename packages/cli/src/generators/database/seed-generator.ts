@@ -1,4 +1,5 @@
 import { FileEntry, buildVars, generateFiles, GeneratorOptions, printGeneratorResult } from '../engine';
+import { createLogger } from '@ideia/logger';
 
 interface SeedOptions extends GeneratorOptions {
   count?: string;
@@ -33,7 +34,7 @@ ${fields.map(f => `  ${f}: string;`).join('\n')}
 }
 
 async function main() {
-  console.log('Seeding ${count} ${vars.name_kebab}...');
+  logger.info('Seeding ${count} ${vars.name_kebab}...');
 
   const data: ${vars.Name}Seed[] = Array.from({ length: ${count} }, () => ({
 ${fieldEntries}
@@ -43,7 +44,7 @@ ${fieldEntries}
     await prisma.${vars.name_kebab}.create({ data: item });
   }
 
-  console.log('Done.');
+  logger.info('Done.');
 }
 
 main()

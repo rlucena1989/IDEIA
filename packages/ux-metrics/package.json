@@ -1,0 +1,16 @@
+{
+  "name": "@ideia/ux-metrics",
+  "description": "UX Metrics — NPS, SUS, CES, time-to-task tracking, a11y auditing",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,5 +1,7 @@
 import { DomainNode } from './ecosystem-types';
+import { createLogger } from '@ideia/logger';
 import { AuditEntry } from './federation-auditor';
+const logger = createLogger('ecosystem-report');
 
 export interface EcosystemReport {
   generatedAt: string;

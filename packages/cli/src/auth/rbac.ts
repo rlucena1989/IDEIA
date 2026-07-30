@@ -151,7 +151,7 @@ function evaluateCondition(condition: ABACCondition, context: ABACContext): bool
 
 function resolveAttribute(attribute: string, context: ABACContext): unknown {
   const parts = attribute.split('.');
-  let current: Record<string, unknown> = context as Record<string, unknown>;
+  let current: Record<string, unknown> = context as unknown as Record<string, unknown>;
 
   for (const part of parts) {
     if (current && typeof current === 'object' && part in current) {

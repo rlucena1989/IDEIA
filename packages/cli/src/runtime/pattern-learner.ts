@@ -1,85 +1,8 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-
-/** Interface que define a estrutura de dir pattern. */
-export interface DirPattern {
-  path: string;
-  depth: number;
-  childCount: number;
-  namingConvention: 'camelCase' | 'kebab-case' | 'PascalCase' | 'snake_case' | 'mixed';
-  commonPrefix: string;
-}
-
-/** Interface que define a estrutura de naming convention. */
-export interface NamingConvention {
-  type: 'camelCase' | 'kebab-case' | 'PascalCase' | 'snake_case';
-  extension: string;
-  count: number;
-  examples: string[];
-}
-
-/** Interface que define a estrutura de component pattern. */
-export interface ComponentPattern {
-  name: string;
-  hasProps: boolean;
-  hasHooks: boolean;
-  hasStyles: boolean;
-  hasTests: boolean;
-  file: string;
-}
-
-/** Interface que define a estrutura de commit pattern. */
-export interface CommitPattern {
-  conventionalType: string;
-  scope: string;
-  count: number;
-  examples: string[];
-}
-
-/** Interface que define a estrutura de test pattern. */
-export interface TestPattern {
-  framework: 'jest' | 'vitest' | 'mocha' | 'unknown';
-  location: 'co-located' | '__tests__' | 'dist';
-  naming: '*.test.ts' | '*.spec.ts' | '*.test.tsx' | '*.spec.tsx';
-  coverageStrategy: 'unit' | 'integration' | 'e2e';
-}
-
-/** Interface que define a estrutura de api pattern. */
-export interface ApiPattern {
-  name: string;
-  method: string;
-  path: string;
-  file: string;
-  hasAuth: boolean;
-  hasValidation: boolean;
-}
-
-/** Interface que define a estrutura de repo patterns. */
-export interface RepoPatterns {
-  directory: DirPattern[];
-  naming: NamingConvention[];
-  components: ComponentPattern[];
-  commits: CommitPattern[];
-  tests: TestPattern[];
-  apis: ApiPattern[];
-  summary: {
-    totalFiles: number;
-    totalDirs: number;
-    srcDirs: number;
-    componentCount: number;
-    testCount: number;
-    commitCount: number;
-    apiCount: number;
-  };
-  suggestions: string[];
-}
-
-interface ScanOptions {
-  rootDir: string;
-  maxDepth?: number;
-  maxCommits?: number;
-}
+import { DirPattern, NamingConvention, ComponentPattern, CommitPattern, TestPattern, ApiPattern, RepoPatterns, ScanOptions } from './pattern-types';
 
 function collectDirs(rootDir: string, maxDepth: number): DirPattern[] {
   const dirs: DirPattern[] = [];
@@ -89,34 +12,17 @@ function collectDirs(rootDir: string, maxDepth: number): DirPattern[] {
       const entries = fs.readdirSync(dir, { withFileTypes: true });
       const subDirs = entries.filter(e => e.isDirectory() && !e.name.startsWith('.') && e.name !== 'node_modules');
       const files = entries.filter(e => e.isFile());
-
       if (files.length > 0 || subDirs.length > 0) {
         const names = files.map(f => f.name);
-        const convention = detectNamingConvention(names);
-        const commonPrefix = findCommonPrefix(names);
-        dirs.push({
-          path: path.relative(rootDir, dir) || '.',
-          depth,
-          childCount: files.length + subDirs.length,
-          namingConvention: convention,
-          commonPrefix,
-        });
+        dirs.push({ path: path.relative(rootDir, dir) || '.', depth, childCount: files.length + subDirs.length, namingConvention: detectNamingConvention(names), commonPrefix: findCommonPrefix(names) });
       }
-
-      for (const d of subDirs) {
-        walk(path.join(dir, d.name), depth + 1);
-      }
+      for (const d of subDirs) walk(path.join(dir, d.name), depth + 1);
     } catch { /* skip unreadable */ }
   };
   walk(rootDir, 0);
   return dirs;
 }
 
-/**
- * Detecta naming convention.
- * @param names - Valor names.
- * @returns O resultado da operaÃ§Ã£o.
- */
 export function detectNamingConvention(names: string[]): DirPattern['namingConvention'] {
   if (names.length === 0) return 'mixed';
   let camel = 0, kebab = 0, pascal = 0, snake = 0;
@@ -135,225 +41,148 @@ export function detectNamingConvention(names: string[]): DirPattern['namingConve
   return 'snake_case';
 }
 
-/**
- * Busca common prefix.
- * @param names - Valor names.
- * @returns O resultado da operaÃ§Ã£o.
- */
 export function findCommonPrefix(names: string[]): string {
   if (names.length < 2) return '';
   let prefix = names[0];
   for (let i = 1; i < names.length; i++) {
-      while ((names[i] ?? '').indexOf(prefix) !== 0) {
-      prefix = prefix.slice(0, -1);
-      if (!prefix) return '';
-    }
+    while ((names[i] ?? '').indexOf(prefix) !== 0) prefix = prefix.slice(0, -1);
+    if (!prefix) return '';
   }
   return prefix;
 }
 
 function collectNamingConventions(rootDir: string): NamingConvention[] {
-  const counters = new Map<string, { camel: number; kebab: number; pascal: number; snake: number; examples: string[] }>();
-
+  const conventions: Map<string, NamingConvention> = new Map();
   const walk = (dir: string) => {
     try {
-      const entries = fs.readdirSync(dir, { withFileTypes: true });
-      for (const e of entries) {
-        if (e.isDirectory() && !e.name.startsWith('.') && e.name !== 'node_modules') {
-          walk(path.join(dir, e.name));
-        } else if (e.isFile()) {
-          const ext = path.extname(e.name);
-          const base = e.name.replace(/\.[^.]+$/, '');
-          if (!counters.has(ext)) counters.set(ext, { camel: 0, kebab: 0, pascal: 0, snake: 0, examples: [] });
-          const c = counters.get(ext) ?? { camel: 0, kebab: 0, pascal: 0, snake: 0, examples: [] };
-          if (c.examples.length < 3) c.examples.push(e.name);
-          if (/^[a-z][a-zA-Z0-9]*$/.test(base)) c.camel++;
-          else if (/^[a-z][a-z0-9-]*$/.test(base)) c.kebab++;
-          else if (/^[A-Z][a-zA-Z0-9]*$/.test(base)) c.pascal++;
-          else if (/^[a-z][a-z0-9_]*$/.test(base)) c.snake++;
-        }
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        if (entry.isFile() && (entry.name.endsWith('.ts') || entry.name.endsWith('.tsx') || entry.name.endsWith('.js') || entry.name.endsWith('.jsx') || entry.name.endsWith('.css') || entry.name.endsWith('.json'))) {
+          const ext = path.extname(entry.name);
+          const base = entry.name.replace(ext, '');
+          let type: NamingConvention['type'] = 'camelCase';
+          if (/^[a-z][a-zA-Z0-9]*$/.test(base)) type = 'camelCase';
+          else if (/^[a-z][a-z0-9-]*$/.test(base)) type = 'kebab-case';
+          else if (/^[A-Z][a-zA-Z0-9]*$/.test(base)) type = 'PascalCase';
+          else if (/^[a-z][a-z0-9_]*$/.test(base)) type = 'snake_case';
+          const key = `${type}:${ext}`;
+          if (!conventions.has(key)) conventions.set(key, { type, extension: ext, count: 0, examples: [] });
+          const conv = conventions.get(key)!;
+          conv.count++;
+          if (conv.examples.length < 3) conv.examples.push(entry.name);
+        } else if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules' && entry.name !== 'dist') walk(path.join(dir, entry.name));
       }
-    } catch { /* skip */ }
+    } catch { /* skip unreadable */ }
   };
   walk(rootDir);
-
-  const result: NamingConvention[] = [];
-  for (const [ext, data] of counters) {
-    const max = Math.max(data.camel, data.kebab, data.pascal, data.snake);
-    if (max === 0) continue;
-    let type: NamingConvention['type'] = 'camelCase';
-    if (max === data.camel) type = 'camelCase';
-    else if (max === data.kebab) type = 'kebab-case';
-    else if (max === data.pascal) type = 'PascalCase';
-    else if (max === data.snake) type = 'snake_case';
-    result.push({ type, extension: ext, count: max, examples: data.examples });
-  }
-  return result.sort((a, b) => b.count - a.count).slice(0, 20);
+  return Array.from(conventions.values()).sort((a, b) => b.count - a.count);
 }
 
 function collectComponents(rootDir: string): ComponentPattern[] {
   const components: ComponentPattern[] = [];
-
   const walk = (dir: string) => {
     try {
-      const entries = fs.readdirSync(dir, { withFileTypes: true });
-      for (const e of entries) {
-        if (e.isDirectory() && !e.name.startsWith('.') && e.name !== 'node_modules') {
-          walk(path.join(dir, e.name));
-        } else if (e.isFile() && /\.(tsx?|jsx?)$/i.test(e.name)) {
-          const filePath = path.join(dir, e.name);
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules' && entry.name !== 'dist') walk(fullPath);
+        else if (entry.isFile() && (entry.name.endsWith('.tsx') || entry.name.endsWith('.jsx'))) {
           try {
-            const content = fs.readFileSync(filePath, 'utf8');
-            const name = e.name.replace(/\.[^.]+$/, '');
-            const hasProps = /interface\s+\w+Props|type\s+\w+Props\s*=|Props\s*[:=]/.test(content);
-            const hasHooks = /useEffect|useState|useCallback|useMemo|useRef|useContext/.test(content);
-            const hasStyles = /import.*\.(css|scss|less|styled)/.test(content) || /css`|styles\./ .test(content);
-            const testFile = findTestFile(dir, name);
-            components.push({
-              name,
-              hasProps,
-              hasHooks,
-              hasStyles,
-              hasTests: testFile !== null,
-              file: path.relative(rootDir, filePath),
-            });
+            const content = fs.readFileSync(fullPath, 'utf8');
+            components.push({ name: entry.name.replace(/\.(tsx|jsx)$/, ''), hasProps: /\binterface\s+\w+Props\b/.test(content) || /type\s+\w+Props\s*=/.test(content), hasHooks: /\buse[A-Z]\w+\b/.test(content), hasStyles: content.includes('.css') || content.includes('.module.') || content.includes('styled.'), hasTests: findTestFile(dir, entry.name) !== null, file: path.relative(rootDir, fullPath) });
           } catch { /* skip unreadable */ }
         }
       }
-    } catch { /* skip */ }
+    } catch { /* skip unreadable */ }
   };
   walk(rootDir);
-  return components.slice(0, 100);
+  return components;
 }
 
 function findTestFile(dir: string, name: string): string | null {
-  const patterns = [`${name}.test.ts`, `${name}.test.tsx`, `${name}.spec.ts`, `${name}.spec.tsx`, `__tests__/${name}.test.ts`, `__tests__/${name}.spec.ts`];
-  for (const p of patterns) {
-    const fp = path.join(dir, p);
-    if (fs.existsSync(fp)) return fp;
+  const base = name.replace(/\.(tsx|jsx)$/, '');
+  const patterns = [`${base}.test.tsx`, `${base}.test.ts`, `${base}.spec.tsx`, `${base}.spec.ts`, `${base}.test.tsx`, `${base}.test.ts`];
+  for (const pattern of patterns) {
+    const testPath = path.join(dir, pattern);
+    if (fs.existsSync(testPath)) return pattern;
   }
-  const parentDir = path.dirname(dir);
-  for (const p of patterns) {
-    const fp = path.join(parentDir, '__tests__', p.replace(/^.*[/\\]/, ''));
-    if (fs.existsSync(fp)) return fp;
+  const testDir = path.join(dir, '__tests__');
+  if (fs.existsSync(testDir)) {
+    for (const pattern of patterns) {
+      const testPath = path.join(testDir, pattern);
+      if (fs.existsSync(testPath)) return path.join('__tests__', pattern);
+    }
   }
   return null;
 }
 
 function collectCommits(rootDir: string, maxCommits: number): CommitPattern[] {
   try {
-    const raw = execFileSync(`git log --format="%s" --max-count=${maxCommits}`, { cwd: rootDir, encoding: 'utf8', timeout: 10000 });
-    const lines = raw.trim().split('\n').filter(Boolean);
-    const counts = new Map<string, { scope: string; count: number; examples: string[] }>();
-
-    for (const line of lines) {
-      const m = line.match(/^(\w+)(\([^)]+\))?:/);
-      if (m) {
-        const type = m[1];
-        const scope = (m[2] || '').replace(/[()]/g, '') || 'global';
-        const key = `${type}:${scope}`;
-        if (!counts.has(key)) counts.set(key, { scope, count: 0, examples: [] });
-        const entry = counts.get(key) ?? { scope, count: 0, examples: [] };
+    const raw = execFileSync('git', ['log', `--max-count=${maxCommits}`, '--format=%s'], { cwd: rootDir, encoding: 'utf8', timeout: 10000 });
+    const messages = raw.split('\n').filter(Boolean);
+    const types: Map<string, { count: number; scopes: Map<string, number>; examples: string[] }> = new Map();
+    const conventionalRegex = /^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(([^)]+)\))?:\s(.+)$/;
+    for (const msg of messages) {
+      const match = msg.match(conventionalRegex);
+      if (match) {
+        const type = match[1] ?? 'other';
+        const scope = match[3] || 'general';
+        if (!types.has(type)) types.set(type, { count: 0, scopes: new Map(), examples: [] });
+        const entry = types.get(type)!;
         entry.count++;
-        if (entry.examples.length < 3) entry.examples.push(line);
+        entry.scopes.set(scope, (entry.scopes.get(scope) || 0) + 1);
+        if (entry.examples.length < 3) entry.examples.push(msg);
       }
     }
-
-    return Array.from(counts.entries())
-      .map(([key, data]) => {
-        const type = key.split(':')[0];
-        return { conventionalType: type, scope: data.scope, count: data.count, examples: data.examples };
-      })
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 15);
+    return Array.from(types.entries()).map(([type, data]) => ({
+      conventionalType: type, scope: Array.from(data.scopes.entries()).sort((a, b) => b[1] - a[1]).map(([s]) => s).slice(0, 3).join(', '), count: data.count, examples: data.examples,
+    })).sort((a, b) => b.count - a.count);
   } catch { return []; }
 }
 
 function collectTestPatterns(rootDir: string): TestPattern[] {
-  const patterns: TestPattern[] = [];
-  let jestCount = 0, vitestCount = 0, mochaCount = 0;
-  let coLocated = 0, inTestsDir = 0;
-  let testTsCount = 0, specTsCount = 0;
+  const testDir = path.join(rootDir, '__tests__');
+  const srcTestDir = path.join(rootDir, 'src', '__tests__');
+  const results: TestPattern[] = [];
 
-  const walk = (dir: string) => {
+  for (const dir of [testDir, srcTestDir]) {
+    if (!fs.existsSync(dir)) continue;
     try {
-      const entries = fs.readdirSync(dir, { withFileTypes: true });
-      for (const e of entries) {
-        if (e.isDirectory() && !e.name.startsWith('.') && e.name !== 'node_modules') {
-          walk(path.join(dir, e.name));
-        } else if (e.isFile() && /\.(test|spec)\.(ts|tsx|js|jsx)$/i.test(e.name)) {
-          const lowerDir = dir.toLowerCase();
-          if (lowerDir.includes('__tests__') || lowerDir.includes('__test__')) inTestsDir++;
-          else coLocated++;
-          if (/\.test\./.test(e.name)) testTsCount++;
-          if (/\.spec\./.test(e.name)) specTsCount++;
-        }
-      }
+      const files = fs.readdirSync(dir).filter((f: string) => f.endsWith('.test.ts') || f.endsWith('.test.tsx') || f.endsWith('.spec.ts') || f.endsWith('.spec.tsx'));
+      if (files.length === 0) continue;
+      const naming = files.some((f: string) => f.includes('.spec.')) ? '*.spec.ts' : '*.test.ts';
+      const packageJson = findPackageJson(rootDir);
+      results.push({
+        framework: (packageJson?.devDependencies as Record<string, unknown>)?.jest ? 'jest' : (packageJson?.devDependencies as Record<string, unknown>)?.vitest ? 'vitest' : 'unknown',
+        location: dir.includes('src') ? 'co-located' : '__tests__', naming, coverageStrategy: 'unit',
+      });
     } catch { /* skip */ }
-  };
-  walk(rootDir);
-
-  const pkg = findPackageJson(rootDir);
-  if (pkg) {
-    const devDeps = JSON.stringify(pkg.devDependencies || {}).toLowerCase();
-    if (devDeps.includes('jest')) jestCount++;
-    if (devDeps.includes('vitest')) vitestCount++;
-    if (devDeps.includes('mocha')) mochaCount++;
   }
 
-  const total = coLocated + inTestsDir;
-  if (total === 0) return patterns;
+  if (results.length === 0 && fs.existsSync(path.join(rootDir, 'jest.config.js'))) {
+    results.push({ framework: 'jest', location: '__tests__', naming: '*.test.ts', coverageStrategy: 'unit' });
+  }
 
-  let framework: TestPattern['framework'] = 'unknown';
-  if (jestCount > vitestCount && jestCount > mochaCount) framework = 'jest';
-  else if (vitestCount > mochaCount) framework = 'vitest';
-  else if (mochaCount > 0) framework = 'mocha';
-
-  patterns.push({
-    framework,
-    location: inTestsDir > coLocated ? '__tests__' : 'co-located',
-    naming: testTsCount >= specTsCount ? '*.test.ts' : '*.spec.ts',
-    coverageStrategy: 'unit',
-  });
-
-  return patterns;
+  return results;
 }
 
 function findPackageJson(rootDir: string): Record<string, unknown> | null {
-  try {
-    return JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'), 'utf8'));
-  } catch { return null; }
+  const p = path.join(rootDir, 'package.json');
+  try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; }
 }
 
 function collectApiPatterns(rootDir: string): ApiPattern[] {
   const apis: ApiPattern[] = [];
-
   const walk = (dir: string) => {
     try {
-      const entries = fs.readdirSync(dir, { withFileTypes: true });
-      for (const e of entries) {
-        if (e.isDirectory() && !e.name.startsWith('.') && e.name !== 'node_modules') {
-          walk(path.join(dir, e.name));
-        } else if (e.isFile() && /\.ts$/i.test(e.name)) {
-          const filePath = path.join(dir, e.name);
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules' && entry.name !== 'dist') walk(full);
+        else if (entry.isFile() && (entry.name.endsWith('.ts') || entry.name.endsWith('.js'))) {
           try {
-            const content = fs.readFileSync(filePath, 'utf8');
-            const routePattern = /(?:router|route|app)\s*\.\s*(get|post|put|delete|patch|options)\s*\(\s*['"]([^'"]+)['"]/gi;
-            let match: RegExpExecArray | null;
-            while ((match = routePattern.exec(content)) !== null) {
-              const method = match[1].toUpperCase();
-              const routePath = match[2];
-              const hasAuth = /auth|jwt|token|middleware|authenticate/i.test(content.slice(Math.max(0, match.index - 200), match.index + 200));
-              const hasValidation = /validate|schema|zod|yup|joi|class-validator/i.test(content.slice(Math.max(0, match.index - 200), match.index + 200));
-              apis.push({
-                name: routePath.split('/').filter(Boolean).pop() || routePath,
-                method,
-                path: routePath,
-                file: path.relative(rootDir, filePath),
-                hasAuth,
-                hasValidation,
-              });
-              if (apis.length >= 50) return;
+            const content = fs.readFileSync(full, 'utf8');
+            const routeRegex = /(?:app|router|route)\.(get|post|put|delete|patch)\s*\(\s*['"]([^'"]+)['"]/gi;
+            let match;
+            while ((match = routeRegex.exec(content)) !== null) {
+              apis.push({ name: match[2]?.replace(/[^a-zA-Z0-9]/g, '_') || 'unknown', method: (match[1] ?? 'GET').toUpperCase(), path: match[2] || '/', file: path.relative(rootDir, full), hasAuth: content.includes('authenticate') || content.includes('authorize') || content.includes('auth.'), hasValidation: content.includes('validate') || content.includes('zod') || content.includes('Joi') || content.includes('yup') });
             }
           } catch { /* skip */ }
         }
@@ -365,211 +194,88 @@ function collectApiPatterns(rootDir: string): ApiPattern[] {
 }
 
 function generateSuggestions(patterns: RepoPatterns): string[] {
-  const suggestions: string[] = [];
-
-  if (patterns.naming.length > 0) {
-    const topNaming = patterns.naming[0];
-    suggestions.push(`Usar convenÃ§Ã£o ${topNaming.type} para arquivos .${topNaming.extension} (${topNaming.count} ocorrÃªncias)`);
-  }
-
-  const compCount = patterns.components.length;
-  const withProps = patterns.components.filter(c => c.hasProps).length;
-  const withHooks = patterns.components.filter(c => c.hasHooks).length;
-  const withStyles = patterns.components.filter(c => c.hasStyles).length;
-  const withTests = patterns.components.filter(c => c.hasTests).length;
-
-  if (compCount > 0) {
-    if (withProps / compCount > 0.5) suggestions.push(`Definir interface Props para componentes (${Math.round(withProps / compCount * 100)}% dos componentes)`);
-    if (withHooks / compCount > 0.3) suggestions.push(`Usar hooks (useState/useEffect) em componentes (${Math.round(withHooks / compCount * 100)}%)`);
-    if (withTests / compCount < 0.3) suggestions.push(`Aumentar cobertura de testes em componentes (apenas ${Math.round(withTests / compCount * 100)}% tÃªm testes)`);
-    if (withStyles / compCount > 0.5) suggestions.push(`Manter arquivos de estilo separados para componentes (${Math.round(withStyles / compCount * 100)}%)`);
-  }
-
-  if (patterns.commits.length > 0) {
-    const topCommit = patterns.commits[0];
-    suggestions.push(`Manter padrÃ£o conventional commits: tipo "${topCommit.conventionalType}" mais frequente (${topCommit.count} commits)`);
-  }
-
-  if (patterns.tests.length > 0) {
-    const t = patterns.tests[0];
-    suggestions.push(`Testes em formato ${t.naming}, localizaÃ§Ã£o: ${t.location}, framework: ${t.framework}`);
-  }
-
-  if (patterns.apis.length > 0) {
-    const withAuth = patterns.apis.filter(a => a.hasAuth).length;
-    const withVal = patterns.apis.filter(a => a.hasValidation).length;
-    if (withAuth / patterns.apis.length < 0.3) suggestions.push('Adicionar autenticaÃ§Ã£o a mais rotas de API');
-    if (withVal / patterns.apis.length > 0.5) suggestions.push(`Manter validaÃ§Ã£o de entrada nas APIs (${Math.round(withVal / patterns.apis.length * 100)}% das rotas)`);
-  }
-
-  const dirsWithManyChildren = patterns.directory.filter(d => d.childCount > 10);
-  if (dirsWithManyChildren.length > 0) {
-    suggestions.push(`Considerar dividir diretÃ³rios com muitos arquivos: ${dirsWithManyChildren.slice(0, 3).map(d => d.path).join(', ')}`);
-  }
-
-  return suggestions;
+  const s: string[] = [];
+  const extCounts: Map<string, number> = new Map();
+  for (const n of patterns.naming) extCounts.set(n.extension, (extCounts.get(n.extension) || 0) + n.count);
+  const topExts = Array.from(extCounts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([ext]) => ext);
+  if (topExts.length > 0) s.push(`Arquivos mais comuns: ${topExts.join(', ')}`);
+  if (patterns.commits.length > 0) s.push(`Commits mais frequentes: ${patterns.commits[0].conventionalType} (${patterns.commits[0].count}x)`);
+  if (patterns.components.length > 0) { const withTests = patterns.components.filter(c => c.hasTests).length; s.push(`Componentes: ${patterns.components.length} (${withTests} com teste, ${Math.round(withTests / patterns.components.length * 100)}%)`); }
+  if (patterns.tests.length > 0) s.push(`Framework de teste: ${patterns.tests[0].framework} (${patterns.tests[0].location})`);
+  if (patterns.apis.length > 0) { const authed = patterns.apis.filter(a => a.hasAuth).length; s.push(`APIs: ${patterns.apis.length} (${authed} com auth, ${Math.round(authed / patterns.apis.length * 100)}%)`); }
+  return s;
 }
 
-/**
- * Processa repository.
- * @param opts - Valor opts.
- * @returns O resultado da operaÃ§Ã£o.
- */
 export function scanRepository(opts?: Partial<ScanOptions>): RepoPatterns {
   const rootDir = opts?.rootDir || process.cwd();
-  const maxDepth = opts?.maxDepth || 8;
-  const maxCommits = opts?.maxCommits || 200;
+  const maxDepth = opts?.maxDepth ?? 5;
+  const maxCommits = opts?.maxCommits ?? 50;
 
   const dirs = collectDirs(rootDir, maxDepth);
-  const srcDirs = dirs.filter(d => d.path.includes('src') || d.path.includes('packages'));
-  let totalFiles = 0, totalDirs = 0;
-  const countEntries = (dir: string) => {
-    try {
-      const entries = fs.readdirSync(dir, { withFileTypes: true });
-      for (const e of entries) {
-        if (e.isDirectory() && !e.name.startsWith('.') && e.name !== 'node_modules') {
-          totalDirs++;
-          countEntries(path.join(dir, e.name));
-        } else if (e.isFile()) {
-          totalFiles++;
-        }
-      }
-    } catch { /* skip */ }
-  };
-  countEntries(rootDir);
-
   const naming = collectNamingConventions(rootDir);
   const components = collectComponents(rootDir);
   const commits = collectCommits(rootDir, maxCommits);
   const tests = collectTestPatterns(rootDir);
   const apis = collectApiPatterns(rootDir);
 
-  const patterns: RepoPatterns = {
-    directory: dirs,
-    naming,
-    components,
-    commits,
-    tests,
-    apis,
-    summary: {
-      totalFiles,
-      totalDirs,
-      srcDirs: srcDirs.length,
-      componentCount: components.length,
-      testCount: tests.length > 0 ? (tests[0]?.naming === '*.test.ts' || tests[0]?.naming === '*.test.tsx' ? 1 : 1) : 0,
-      commitCount: commits.reduce((s, c) => s + c.count, 0),
-      apiCount: apis.length,
-    },
-    suggestions: [],
-  };
+  const totalFiles = naming.reduce((s, n) => s + n.count, 0);
+  const srcDirs = dirs.filter(d => d.path.includes('src')).length;
+
+  const patterns: RepoPatterns = { directory: dirs, naming, components, commits, tests, apis, summary: { totalFiles, totalDirs: dirs.length, srcDirs, componentCount: components.length, testCount: tests.length, commitCount: commits.length, apiCount: apis.length }, suggestions: [] };
   patterns.suggestions = generateSuggestions(patterns);
   return patterns;
 }
 
-/**
- * Formata pattern report.
- * @param patterns - Valor patterns.
- * @returns O resultado da operaÃ§Ã£o.
- */
 export function formatPatternReport(patterns: RepoPatterns): string {
-  const lines: string[] = [];
-  lines.push('=== Repositorio: Padroes Detectados ===');
-  lines.push(`Arquivos: ${patterns.summary.totalFiles} | Diretorios: ${patterns.summary.totalDirs}`);
-  lines.push('');
+  const lines: string[] = ['# Relatório de Padrões do Repositório', '', '## Resumo'];
+  lines.push(`- Arquivos escaneados: ${patterns.summary.totalFiles}`);
+  lines.push(`- Diretórios: ${patterns.summary.totalDirs} (${patterns.summary.srcDirs} src/)`);
+  lines.push(`- Componentes: ${patterns.summary.componentCount}`);
+  lines.push(`- Testes: ${patterns.summary.testCount}`);
+  lines.push(`- Commits analisados: ${patterns.summary.commitCount}`);
+  lines.push(`- APIs: ${patterns.summary.apiCount}`);
 
   if (patterns.naming.length > 0) {
-    lines.push('[CONVENCOES] Convencoes de Nomenclatura:');
-    for (const n of patterns.naming.slice(0, 10)) {
-      lines.push(`  .${n.extension}: ${n.type} (${n.count} arquivos)`);
-    }
-    lines.push('');
+    lines.push('', '## Convenções de Nomenclatura');
+    for (const n of patterns.naming.slice(0, 5)) lines.push(`- ${n.type}: ${n.count} arquivos .${n.extension} (ex: ${n.examples.join(', ')})`);
   }
 
   if (patterns.components.length > 0) {
-    lines.push('[COMPONENTES] Componentes:');
-    const withProps = patterns.components.filter(c => c.hasProps).length;
-    const withTests = patterns.components.filter(c => c.hasTests).length;
-    const withHooks = patterns.components.filter(c => c.hasHooks).length;
-    lines.push(`  Total: ${patterns.components.length} componentes`);
-    lines.push(`  Com Props: ${withProps} (${Math.round(withProps / patterns.components.length * 100)}%)`);
-    lines.push(`  Com Hooks: ${withHooks} (${Math.round(withHooks / patterns.components.length * 100)}%)`);
-    lines.push(`  Com Testes: ${withTests} (${Math.round(withTests / patterns.components.length * 100)}%)`);
-    lines.push('');
+    lines.push('', `## Componentes (${patterns.components.length})`);
+    for (const c of patterns.components.slice(0, 5)) lines.push(`- ${c.name} ${c.hasProps ? '[props]' : ''} ${c.hasHooks ? '[hooks]' : ''} ${c.hasTests ? '[test]' : ''}`);
   }
 
   if (patterns.commits.length > 0) {
-    lines.push('[COMMITS] Commits:');
-    for (const c of patterns.commits.slice(0, 5)) {
-      lines.push(`  ${c.conventionalType}(${c.scope}): ${c.count} ocorrencias`);
-    }
-    lines.push('');
-  }
-
-  if (patterns.tests.length > 0) {
-    const t = patterns.tests[0];
-    lines.push('[TESTES] Testes:');
-    lines.push(`  Framework: ${t.framework}`);
-    lines.push(`  Localizacao: ${t.location}`);
-    lines.push(`  Nomenclatura: ${t.naming}`);
-    lines.push('');
-  }
-
-  if (patterns.apis.length > 0) {
-    lines.push('[APIS] APIs:');
-    lines.push(`  Total de rotas: ${patterns.apis.length}`);
-    lines.push(`  Com auth: ${patterns.apis.filter(a => a.hasAuth).length}`);
-    lines.push(`  Com validacao: ${patterns.apis.filter(a => a.hasValidation).length}`);
-    lines.push('');
+    lines.push('', '## Commits Convencionais');
+    for (const c of patterns.commits.slice(0, 5)) lines.push(`- ${c.conventionalType}: ${c.count} (ex: ${c.examples[0] || ''})`);
   }
 
   if (patterns.suggestions.length > 0) {
-    lines.push('[SUGESTOES] Sugestoes:');
-    for (const s of patterns.suggestions) {
-      lines.push(`  => ${s}`);
-    }
-    lines.push('');
+    lines.push('', '## Sugestões', ...patterns.suggestions.map(s => `- ${s}`));
   }
 
   return lines.join('\n');
 }
 
-/**
- * Processa for context.
- * @param patterns - Valor patterns.
- * @param context - Valor context.
- * @returns O resultado da operaÃ§Ã£o.
- */
 export function suggestForContext(patterns: RepoPatterns, context: string): string[] {
   const lowerContext = context.toLowerCase();
   const suggestions: string[] = [];
 
   if (lowerContext.includes('component') || lowerContext.includes('componente')) {
-    const withProps = patterns.components.filter(c => c.hasProps).length;
-    const withHooks = patterns.components.filter(c => c.hasHooks).length;
-    const compPct = patterns.components.length > 0 ? Math.round(withProps / patterns.components.length * 100) : 0;
-    if (compPct > 50) suggestions.push(`Criar interface Props (${compPct}% dos componentes existentes usam Props)`);
-    if (withHooks > 0) suggestions.push('Usar hooks (useState/useEffect) seguindo padrÃ£o existente');
-    if (patterns.naming.length > 0) {
-      const tsxConv = patterns.naming.find(n => n.extension === '.tsx');
-      if (tsxConv) suggestions.push(`Nomear arquivo seguindo convenÃ§Ã£o ${tsxConv.type} (padrÃ£o do repositÃ³rio)`);
+    if (patterns.components.length > 0) {
+      const withTests = patterns.components.filter(c => c.hasTests).length;
+      suggestions.push(`Criar componente no mesmo padrão: ${patterns.components[0].hasProps ? 'com Props tipadas' : 'sem Props'}, ${patterns.components[0].hasHooks ? 'com hooks' : 'sem hooks'}, ${withTests > 0 ? 'com teste' : 'sem teste'}`);
     }
   }
 
-  if (lowerContext.includes('api') || lowerContext.includes('route') || lowerContext.includes('rota')) {
-    const withAuth = patterns.apis.filter(a => a.hasAuth).length;
-    const withVal = patterns.apis.filter(a => a.hasValidation).length;
-    if (withAuth > 0) suggestions.push(`Incluir middleware de autenticaÃ§Ã£o (${Math.round(withAuth / Math.max(1, patterns.apis.length) * 100)}% das rotas existentes tÃªm auth)`);
-    if (withVal > 0) suggestions.push('Adicionar validaÃ§Ã£o de entrada com schema');
-    if (patterns.commits.length > 0) {
-      const apiCommits = patterns.commits.filter(c => c.scope === 'api' || c.scope === 'backend');
-      if (apiCommits.length > 0) suggestions.push(`Prefixar commit com "${apiCommits[0]?.conventionalType ?? 'feat'}(api):" seguindo padrÃ£o`);
-    }
+  if (lowerContext.includes('api') || lowerContext.includes('rota') || lowerContext.includes('route')) {
+    if (patterns.apis.length > 0) suggestions.push(`Criar API seguindo o padrão: ${patterns.apis[0].method} ${patterns.apis[0].path}`);
   }
 
   if (lowerContext.includes('test') || lowerContext.includes('teste')) {
     if (patterns.tests.length > 0) {
       const t = patterns.tests[0];
-      suggestions.push(`Localizar teste em diretÃ³rio ${t.location === 'co-located' ? 'ao lado do arquivo' : '__tests__/'}`);
+      suggestions.push(`Localizar teste em diretório ${t.location === 'co-located' ? 'ao lado do arquivo' : '__tests__/'}`);
       suggestions.push(`Nomear arquivo como ${t.naming}`);
     }
   }
@@ -582,34 +288,22 @@ export function suggestForContext(patterns: RepoPatterns, context: string): stri
   return suggestions;
 }
 
-/**
- * Persiste patterns.
- * @param patterns - Valor patterns.
- * @param rootDir - Valor dir.
- * @returns O resultado da operaÃ§Ã£o.
- */
 export function savePatterns(patterns: RepoPatterns, rootDir?: string): string {
   const dir = rootDir || process.cwd();
   const memoryDir = path.join(dir, '.ai/memory');
   if (!fs.existsSync(memoryDir)) fs.mkdirSync(memoryDir, { recursive: true });
 
   const output: Record<string, unknown> = {
-    extracted_at: new Date().toISOString(),
-    summary: patterns.summary,
+    extracted_at: new Date().toISOString(), summary: patterns.summary,
     naming_conventions: patterns.naming.map(n => ({ extension: n.extension, convention: n.type, count: n.count })),
     directory_patterns: patterns.directory.filter(d => d.childCount > 1).map(d => ({ path: d.path, naming: d.namingConvention, files: d.childCount })),
     testing: patterns.tests.length > 0 ? { framework: patterns.tests[0]?.framework ?? 'unknown', location: patterns.tests[0]?.location ?? 'co-located', naming: patterns.tests[0]?.naming ?? '*.test.ts' } : null,
-    api_patterns: {
-      total: patterns.apis.length,
-      auth_percent: patterns.apis.length > 0 ? Math.round(patterns.apis.filter(a => a.hasAuth).length / patterns.apis.length * 100) : 0,
-      validation_percent: patterns.apis.length > 0 ? Math.round(patterns.apis.filter(a => a.hasValidation).length / patterns.apis.length * 100) : 0,
-    },
+    api_patterns: { total: patterns.apis.length, auth_percent: patterns.apis.length > 0 ? Math.round(patterns.apis.filter(a => a.hasAuth).length / patterns.apis.length * 100) : 0, validation_percent: patterns.apis.length > 0 ? Math.round(patterns.apis.filter(a => a.hasValidation).length / patterns.apis.length * 100) : 0 },
     suggestions: patterns.suggestions,
   };
 
   const filePath = path.join(memoryDir, 'patterns.yaml');
-  const yamlContent = toYaml(output);
-  fs.writeFileSync(filePath, yamlContent, 'utf8');
+  fs.writeFileSync(filePath, toYaml(output), 'utf8');
   return filePath;
 }
 
@@ -617,28 +311,19 @@ function toYaml(obj: Record<string, unknown>, indent = 0): string {
   const prefix = '  '.repeat(indent);
   const lines: string[] = [];
   for (const [key, value] of Object.entries(obj)) {
-    if (value === null || value === undefined) {
-      lines.push(`${prefix}${key}: null`);
-    } else if (Array.isArray(value)) {
+    if (value === null || value === undefined) lines.push(`${prefix}${key}: null`);
+    else if (Array.isArray(value)) {
       lines.push(`${prefix}${key}:`);
       for (const item of value) {
         if (typeof item === 'object' && item !== null) {
           lines.push(`${prefix}-`);
-          for (const [k, v] of Object.entries(item as Record<string, unknown>)) {
-            lines.push(`${prefix}  ${k}: ${typeof v === 'string' ? v : JSON.stringify(v)}`);
-          }
-        } else {
-          lines.push(`${prefix}- ${item}`);
-        }
+          for (const [k, v] of Object.entries(item as Record<string, unknown>)) lines.push(`${prefix}  ${k}: ${typeof v === 'string' ? v : JSON.stringify(v)}`);
+        } else lines.push(`${prefix}- ${item}`);
       }
     } else if (typeof value === 'object' && value !== null) {
       lines.push(`${prefix}${key}:`);
-      for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
-        lines.push(`${prefix}  ${k}: ${v}`);
-      }
-    } else {
-      lines.push(`${prefix}${key}: ${value}`);
-    }
+      for (const [k, v] of Object.entries(value as Record<string, unknown>)) lines.push(`${prefix}  ${k}: ${v}`);
+    } else lines.push(`${prefix}${key}: ${value}`);
   }
   return lines.join('\n');
 }

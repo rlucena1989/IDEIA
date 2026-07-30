@@ -1,4 +1,5 @@
 import { Emitter, Disposable, DisposableCollection } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { IWidget } from '@ideia/views-widgets';
 import { IShellLayout, IShellArea, ShellArea, ShellWidgetOptions, ShellAreaState } from './types';
 
@@ -104,9 +105,9 @@ export class DefaultShellLayout implements IShellLayout {
 
   removeWidget(id: string): void {
     for (const [areaKey, area] of Object.entries(this.areas)) {
-      const widget = area.getWidget(id);
+      const widget = (area as any).getWidget(id);
       if (widget) {
-        area.removeWidget(id);
+        (area as any).removeWidget(id);
         this.onWidgetRemovedEmitter.fire({ area: areaKey as ShellArea, widgetId: id });
         this.onLayoutChangedEmitter.fire(void 0);
         return;

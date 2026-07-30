@@ -1,4 +1,6 @@
 import { ComplexityLevel, ComplexityClassification, PipelineConfig, TaskType } from '../types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('complexity-router');
 
 export interface ComplexityCriteria {
   fileCount: number;

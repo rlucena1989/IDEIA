@@ -1,0 +1,21 @@
+{
+  "name": "@ideia/usability-profile",
+  "description": "Usability Profile Engine — tracks user behavior patterns and adapts UI/UX",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/event-bus": "*",
+    "@ideia/audit-trail": "*",
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

@@ -1,5 +1,7 @@
 import { BaseRunner } from './base-runner';
+import { createLogger } from '@ideia/logger';
 import { LanguageId } from '../adapter-contract';
+const logger = createLogger('php-runner');
 
 /** Classe responsável por processa h p runner. */
 export class PHPRunner extends BaseRunner {

@@ -1,4 +1,6 @@
 import { Command } from "commander";
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.init');
 import fs from "node:fs";
 import path from "node:path";
 import { findTemplateAiDir } from "../utils/template";
@@ -78,7 +80,7 @@ function realDeps(): InitDeps {
     pathRelative: (f, t) => path.relative(f, t),
     cwd: process.cwd(),
     __dirname: __dirname,
-    log: (msg) => console.log(msg),
+    log: (msg) => logger.info(msg),
     error: (msg) => console.error(msg),
     detectStack,
   };
@@ -222,12 +224,12 @@ export function initCommand(): Command {
       if (options.wizard) {
         const isPiped = !process.stdin.isTTY;
         if (isPiped) {
-          console.log('[ai-devkit] Modo wizard requer terminal interativo. Use "ai-devkit init" sem --wizard.');
+          logger.info('[ai-devkit] Modo wizard requer terminal interativo. Use "ai-devkit init" sem --wizard.');
           process.exit(1);
         }
         const answers = await runWizard(targetDir);
-        console.log(`\n🚀 Initializing AI-Devkit in: ${targetDir}`);
-        console.log(`📦 Flavor: ${answers.framework} (via wizard)`);
+        logger.info('\n🚀 Initializing AI-Devkit in: ${targetDir}');
+        logger.info('📦 Flavor: ${answers.framework} (via wizard)');
         options.flavor = answers.framework;
       }
 
@@ -243,11 +245,11 @@ export function initCommand(): Command {
       if (options.flavor) validateFlavor(flavor);
       const mode: CopyMode = options.dryRun ? "dry-run" : options.force ? "force" : "safe";
       
-      console.log(`\n🚀 Initializing AI-Devkit in: ${targetDir}`);
-      if (options.flavor) console.log(`📦 Flavor: ${flavor}`);
-      if (options.template) console.log(`📦 Template: ${options.template}`);
-      console.log(`⚙️  Mode: ${mode}`);
-      console.log(`📋 Install mode: ${installMode}\n`);
+      logger.info('\n🚀 Initializing AI-Devkit in: ${targetDir}');
+      if (options.flavor) logger.info('📦 Flavor: ${flavor}');
+      if (options.template) logger.info('📦 Template: ${options.template}');
+      logger.info('⚙️  Mode: ${mode}');
+      logger.info('📋 Install mode: ${installMode}\n');
 
       const sourceAiDir = findTemplateAiDir();
       const aiDir = path.join(targetDir, ".ai");
@@ -262,15 +264,15 @@ export function initCommand(): Command {
           throw new Error(`Invalid template "${options.template}". Allowed templates: ${TEMPLATES.join(", ")}`);
         }
         const projectNameSafe = path.basename(targetDir);
-        console.log(`📂 Scaffolding template: ${options.template}`);
+        logger.info('📂 Scaffolding template: ${options.template}');
         const templateDir = findProjectTemplateDir(options.template, ideps);
         const scaffoldResult = scaffoldFromTemplate(templateDir, targetDir, projectNameSafe, mode, ideps);
-        console.log(`   Created: ${scaffoldResult.copied.length} files`);
-        if (scaffoldResult.skipped.length > 0) console.log(`   Skipped: ${scaffoldResult.skipped.length} files (use --force to overwrite)`);
+        logger.info('   Created: ${scaffoldResult.copied.length} files');
+        if (scaffoldResult.skipped.length > 0) logger.info('   Skipped: ${scaffoldResult.skipped.length} files (use --force to overwrite)');
         if (scaffoldResult.errors.length > 0) console.error(`   Errors: ${scaffoldResult.errors.join(", ")}`);
       }
 
-      console.log("📡 Cloning AI-Devkit governance matrix...");
+      logger.info('📡 Cloning AI-Devkit governance matrix...');
       const copyResult = copyTemplateDirectory(sourceAiDir, aiDir, mode, (relativePath) => shouldCopyFile(relativePath, installMode));
 
       const manifestPath = path.join(aiDir, "project-manifest.yaml");
@@ -290,32 +292,32 @@ export function initCommand(): Command {
       generateSetupReport(targetDir, options, copyResult, scriptResult, sourceAiDir || "unknown");
 
       if (options.dryRun) {
-        console.log("\n[DRY-RUN] Planned actions\n");
-        console.log("Files to create:");
-        copyResult.copied.forEach((f: string) => console.log(`- ${path.relative(process.cwd(), f)}`));
-        console.log("\nFiles to skip:");
-        copyResult.skipped.forEach((f: string) => console.log(`- ${path.relative(process.cwd(), f)}`));
-        console.log("\nFiles that would be overwritten with --force:");
-        copyResult.overwritten.forEach((f: string) => console.log(`- ${path.relative(process.cwd(), f)}`));
-        console.log("\nPackage scripts to add:");
-        scriptResult.added.forEach((s: string) => console.log(`- ${s}`));
-        console.log("\nPackage scripts to preserve:");
-        scriptResult.preserved.forEach((s: string) => console.log(`- ${s}`));
-        console.log("\nBackups that would be created with --force:");
+        logger.info('\n[DRY-RUN] Planned actions\n');
+        logger.info('Files to create:');
+        copyResult.copied.forEach((f: string) => logger.info('- ${path.relative(process.cwd(), f)}'));
+        logger.info('\nFiles to skip:');
+        copyResult.skipped.forEach((f: string) => logger.info('- ${path.relative(process.cwd(), f)}'));
+        logger.info('\nFiles that would be overwritten with --force:');
+        copyResult.overwritten.forEach((f: string) => logger.info('- ${path.relative(process.cwd(), f)}'));
+        logger.info('\nPackage scripts to add:');
+        scriptResult.added.forEach((s: string) => logger.info('- ${s}'));
+        logger.info('\nPackage scripts to preserve:');
+        scriptResult.preserved.forEach((s: string) => logger.info('- ${s}'));
+        logger.info('\nBackups that would be created with --force:');
         if (copyResult.overwritten.length > 0) {
-            console.log(`- .ai/backups/setup/<timestamp>/`);
+            logger.info('- .ai/backups/setup/<timestamp>/');
         } else {
-            console.log(`None`);
+            logger.info('None');
         }
         return;
       }
 
-      console.log("\n✅ AI-Devkit successfully installed.");
-      console.log(`\nNext steps:`);
+      logger.info('\n✅ AI-Devkit successfully installed.');
+      logger.info('\nNext steps:');
       if (projectName !== ".") {
-        console.log(`  cd ${projectName}`);
+        logger.info('  cd ${projectName}');
       }
-      console.log(`  npm run ai:doctor\n  npm run ai:verify\n`);
+      logger.info('  npm run ai:doctor\n  npm run ai:verify\n');
 
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);

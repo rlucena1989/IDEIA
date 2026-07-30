@@ -1,0 +1,10 @@
+export { IDPOrchestrator } from './idp-orchestrator';
+export { ServiceCatalog } from './service-catalog';
+export { GoldenPathEngine } from './golden-path-engine';
+export { ScorecardManager } from './scorecard-manager';
+export { TemplateRegistry } from './template-registry';
+export { SelfServiceActions } from './self-service-actions';
+export { DeveloperDashboard } from './developer-dashboard';
+export { BackstageCompatibilityBridge } from './backstage-compatibility-bridge';
+export type { DashboardOverview } from './developer-dashboard';
+export * from './types';

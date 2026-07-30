@@ -1,4 +1,6 @@
 import { ApiProxy } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('proxy');
 
 export class DefaultApiProxy implements ApiProxy {
   private apis = new Map<string, unknown>();

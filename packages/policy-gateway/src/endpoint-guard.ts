@@ -1,4 +1,6 @@
 import { PolicyGateway, GatewayRequest, GatewayResponse } from './gateway';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('endpoint-guard');
 
 export type MutationAction = 'write' | 'delete' | 'rename' | 'create' | 'shell';
 

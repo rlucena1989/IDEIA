@@ -1,4 +1,5 @@
 import * as fs from 'fs'; import * as path from 'path'; import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { diffLines } from 'diff';
 import { DiffLine, EditRequest, EditResult, EditSafety, SafetyRule } from './types';
 const DEFAULT_BACKUP_DIR = '.ai-devkit/backups';
@@ -32,7 +33,7 @@ export class AutonomousEditor {
         case 'rename': return this.handleRename(fullPath, request, safety, backupPath);
         default: return { applied: false, safety, reason: `Unknown operation: ${request.operation}`, diff: undefined, backupPath };
       }
-    } catch (_e) {
+    } catch (e) {
       return { applied: false, safety, reason: `Edit error: ${e}`, diff: undefined, backupPath };
     }
   }

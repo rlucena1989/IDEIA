@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { VectorSearch } from './vector-search';
 
 export interface CagEntry {
@@ -40,15 +41,15 @@ function levenshtein(a: string, b: string): number {
   const dp: number[] = new Array(n + 1).fill(0);
   for (let j = 0; j <= n; j++) dp[j] = j;
   for (let i = 1; i <= m; i++) {
-    let prev = dp[0]!;
+    let prev = dp[0] ?? 0;
     dp[0] = i;
     for (let j = 1; j <= n; j++) {
-      const temp = dp[j]!;
-      dp[j] = a.charAt(i - 1) === b.charAt(j - 1) ? prev : 1 + Math.min(prev, dp[j]!, dp[j - 1]!);
+      const temp = dp[j] ?? 0;
+      dp[j] = a.charAt(i - 1) === b.charAt(j - 1) ? prev : 1 + Math.min(prev, dp[j] ?? 0, dp[j - 1] ?? 0);
       prev = temp;
     }
   }
-  return dp[n]!;
+  return dp[n] ?? 0;
 }
 
 const DEFAULT_TTL_MS = 5 * 60 * 1000;

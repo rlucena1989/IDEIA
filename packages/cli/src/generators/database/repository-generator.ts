@@ -1,4 +1,6 @@
 import { FileEntry, buildVars, generateFiles, GeneratorOptions, printGeneratorResult } from '../engine';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('repository-generator');
 
 interface RepoOptions extends GeneratorOptions {
   orm?: 'prisma' | 'typeorm' | 'drizzle';

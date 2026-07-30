@@ -1,4 +1,6 @@
 import { PlannedStep, CostEstimate } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('cost-estimator');
 
 export interface CostEstimatorConfig {
   tokensPerSecond: number;

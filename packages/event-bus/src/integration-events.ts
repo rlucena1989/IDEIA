@@ -1,8 +1,10 @@
 import type { EventBus } from './event-bus';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('integration-events');
 
 export function emitMemoryUpdated(eventBus: EventBus, memoryId: string, category: string, summary: string): void {
   eventBus.emit({
-    type: 'memory.updated',
+    type: 'memory:update',
     source: 'memory-store',
     payload: { code: { memoryId, category, summary } as Record<string, unknown> },
   }).catch(() => {});

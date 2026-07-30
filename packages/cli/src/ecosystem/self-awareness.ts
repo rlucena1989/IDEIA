@@ -1,5 +1,7 @@
 import { ServiceCatalog } from './service-catalog';
+import { createLogger } from '@ideia/logger';
 import { CapabilityDiscovery } from './capability-discovery';
+const logger = createLogger('self-awareness');
 
 export interface SystemArchitecture {
   layers: ArchitectureLayer[];

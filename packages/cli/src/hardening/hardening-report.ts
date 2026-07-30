@@ -1,4 +1,5 @@
 import { DevkitState } from '../state/state-types';
+import { createLogger } from '@ideia/logger';
 import { ConsistencyReport } from '../state/consistency-types';
 import { ConsistencyCheckResult } from './consistency-checker';
 import { DevkitStateMetric } from '../state/state-types';

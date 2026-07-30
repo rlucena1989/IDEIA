@@ -1,4 +1,5 @@
 import { spawnSync } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { LoadedPlugin } from './loader';
 

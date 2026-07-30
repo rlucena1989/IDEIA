@@ -1,5 +1,7 @@
 import { ProductScope } from './product-model';
+import { createLogger } from '@ideia/logger';
 import { GenerationScope } from './artifact-types';
+const logger = createLogger('scope-interpreter');
 
 export function interpretScope(source: GenerationScope): ProductScope {
   return {

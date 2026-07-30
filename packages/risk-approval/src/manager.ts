@@ -1,4 +1,5 @@
 import { RiskClassifier } from './risk-classifier';
+import { createLogger } from '@ideia/logger';
 import { ApprovalMatrix } from './approval-matrix';
 import { RiskAssessment, ApprovalRequest, RiskLevel, ImpactLevel, ProbabilityLevel, ApprovalLevel } from './types';
 

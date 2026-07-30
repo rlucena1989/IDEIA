@@ -1,4 +1,6 @@
 import { FileChange } from '../common/ideia-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('output-validator');
 
 export interface ValidationResult {
   valid: boolean;

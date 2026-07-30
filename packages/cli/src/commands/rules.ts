@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import YAML from 'yaml';
 import { printLine, printResult } from "../utils/output";
@@ -115,9 +116,10 @@ function rulesCreateAction(name: string): void {
 }
 
 function rulesValidateAction(name?: string): void {
-  const packs = name
-    ? [{ manifest: findPack(name)!, dir: '' }].filter(p => p.manifest)
-    : listInstalledPacks(ROOT);
+    const pack = name ? findPack(name) : null
+    const packs = pack
+      ? [{ manifest: pack, dir: '' }].filter(p => p.manifest)
+      : listInstalledPacks(ROOT);
 
   if (name && !findPack(name)) {
     printResult(`Pacote "${name}" nao encontrado.`, false);
@@ -139,7 +141,7 @@ function rulesValidateAction(name?: string): void {
     if (!Array.isArray(m.rules)) errors.push('rules deve ser um array');
     else {
       for (let i = 0; i < m.rules.length; i++) {
-        const r = m.rules[i]!;
+        const r = m.rules[i] as NonNullable<typeof m.rules[0]>;
         if (!r.id) errors.push(`rules[${i}]: id obrigatorio`);
         if (!r.title) errors.push(`rules[${i}]: title obrigatorio`);
       }

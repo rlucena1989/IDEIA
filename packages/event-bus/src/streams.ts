@@ -42,7 +42,7 @@ export class NatsStreamManager {
     try {
       await this.connectionManager.connect();
     } catch (_err) {
-      log.info(`Initialized (offline mode): ${err}`);
+      log.info(`Initialized (offline mode): ${_err}`);
       return;
     }
     const nc = this.connectionManager.getConnection();
@@ -67,7 +67,7 @@ export class NatsStreamManager {
             name: this.toStreamName(eventType),
             subjects: [this.getSubject(eventType)],
             storage: StorageType.File,
-            max_age: DEFAULT_STREAM_CONFIG.maxAge! * 1_000_000,
+            max_age: (DEFAULT_STREAM_CONFIG.maxAge ?? 86400000) * 1_000_000,
             max_bytes: DEFAULT_STREAM_CONFIG.maxBytes,
             max_msgs: DEFAULT_STREAM_CONFIG.maxMsgs,
           });
@@ -144,7 +144,8 @@ export class NatsStreamManager {
 
     if (this.jetstreamEnabled && this.connectionManager.getConnection()) {
       try {
-        const nc = this.connectionManager.getConnection()!;
+        const nc = this.connectionManager.getConnection()
+        if (!nc) return
         const sc = this.connectionManager.getStringCodec();
         nc.publish(this.getSubject(eventType), sc.encode(JSON.stringify(data)));
       } catch { /* publish failed, in memory */ }

@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.retrospective');
 import path from 'node:path';
 
 import { printHeader, printLine } from "../utils/output";
@@ -217,7 +219,7 @@ ${data.improvements.map(i => `- ${i}`).join('\n') || '- Nenhuma sugestao no mome
 ${JSON.stringify(data, null, 2)}
 `;
       getIO().fs.write(filePath, report);
-      console.log(`[ai-devkit] Relatorio gerado: ${filePath}`);
+      logger.info('[ai-devkit] Relatorio gerado: ${filePath}');
     });
 
   cmd

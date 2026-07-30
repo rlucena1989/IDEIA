@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import _fs from 'node:fs';
 import path from 'node:path';
 import readline from 'node:readline';
@@ -39,8 +40,8 @@ async function askOptions(rl: readline.Interface, question: string, options: str
   options.forEach((opt, i) => printLine(`  ${i + 1}) ${opt}`));
   const answer = await ask(rl, `Escolha (1-${options.length}):`);
   const idx = parseInt(answer, 10) - 1;
-  if (idx >= 0 && idx < options.length) return options[idx] ?? options[0]!;
-  return options[0]!;
+  if (idx >= 0 && idx < options.length) return options[idx] ?? options[0] as string;
+  return options[0] as string;
 }
 
 async function goalNewProject(rl: readline.Interface, root: string): Promise<Record<string, string>> {
@@ -220,7 +221,7 @@ export function wizardCommand(): Command {
         printLine('');
         printLine('✅ Wizard concluído com sucesso.');
         process.exit(0);
-      } catch (_error) {
+      } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         console.error(`\n❌ Erro no wizard: ${message}`);
         process.exit(1);

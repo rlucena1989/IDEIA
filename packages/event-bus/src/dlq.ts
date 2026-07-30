@@ -43,7 +43,7 @@ export class DeadLetterQueue {
       await this.connectionManager.connect();
       log.info('Initialized');
     } catch (_err) {
-      log.info(`Initialized (offline mode): ${err}`);
+      log.info(`Initialized (offline mode): ${_err}`);
     }
   }
 

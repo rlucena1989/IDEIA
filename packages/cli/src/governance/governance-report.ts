@@ -1,6 +1,8 @@
 import { GovernancePolicy } from './policy-types';
+import { createLogger } from '@ideia/logger';
 import { GovernanceAuditEntry } from './governance-audit';
 import { GovernanceContext } from './governance-context';
+const logger = createLogger('governance-report');
 
 export interface GovernanceReport {
   generatedAt: string;

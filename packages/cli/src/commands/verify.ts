@@ -1,4 +1,6 @@
 import { Command } from "commander";
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.verify');
 import { spawnSync, type SpawnSyncOptions } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
@@ -25,7 +27,7 @@ export function runVerify(deps: VerifyDeps): number {
   const { mode } = deps.getMode(deps.cwd);
   let exitCode = 0;
   const output: string[] = [];
-  const log = (msg: string) => { output.push(msg); if (!deps.isLLMMode) console.log(msg); };
+  const log = (msg: string) => { output.push(msg); if (!deps.isLLMMode) logger.info(msg); };
   const fullOutput = () => output.join("\n");
 
   log(`Modo de sessao: ${mode}`);
@@ -56,7 +58,7 @@ export function runVerify(deps: VerifyDeps): number {
     if (deps.existsSync(preventionSuite)) {
       log("\nExecutando prevention suite...");
       const result = deps.spawnSync("node", [preventionSuite], { stdio: "pipe", cwd: deps.cwd, encoding: 'utf8' });
-      if (!deps.isLLMMode && result.stdout) console.log(result.stdout);
+      if (!deps.isLLMMode && result.stdout) logger.info(result.stdout);
       if (!deps.isLLMMode && result.stderr) console.error(result.stderr);
       if (result.status !== 0) {
         log("\n❌ Prevention suite falhou.");
@@ -73,7 +75,7 @@ export function runVerify(deps: VerifyDeps): number {
     if (deps.existsSync(qgPath)) {
       log("\nExecutando quality-agent...");
       const result = deps.spawnSync("node", [qgPath], { stdio: "pipe", cwd: deps.cwd, encoding: 'utf8' });
-      if (!deps.isLLMMode && result.stdout) console.log(result.stdout);
+      if (!deps.isLLMMode && result.stdout) logger.info(result.stdout);
       if (!deps.isLLMMode && result.stderr) console.error(result.stderr);
       if (result.status !== 0) {
         log("\n❌ Quality gates falharam.");

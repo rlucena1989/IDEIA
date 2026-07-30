@@ -1,4 +1,6 @@
 import { ScoredContextItem, ComposedContext } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('serializer');
 
 export type SerializationFormat = 'compact' | 'full' | 'minimal';
 

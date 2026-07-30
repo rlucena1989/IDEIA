@@ -1,7 +1,9 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import URI from '@theia/core/lib/common/uri';
 import { MarkerManager } from '@theia/markers/lib/browser/marker-manager';
 import { Marker } from '@theia/markers/lib/common/marker';
+const logger = createLogger('ideia-marker-contribution');
 
 @injectable()
 export class IDEIA_MarkerContribution {

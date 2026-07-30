@@ -1,6 +1,8 @@
 import fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import path from 'path';
 import crypto from 'crypto';
+const logger = createLogger('pendencia-store');
 
 export interface Pendencia {
   id: string;

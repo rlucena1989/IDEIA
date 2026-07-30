@@ -1,4 +1,6 @@
 import { TargetState } from './target-state';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('gap-analyzer');
 
 export interface GapItem {
   gapId: string;

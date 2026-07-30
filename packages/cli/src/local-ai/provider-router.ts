@@ -1,4 +1,5 @@
 import { AiProvider, ProviderConfig, ProviderResponse } from './providers/index';
+import { createLogger } from '@ideia/logger';
 import { OpenAiProvider } from './providers/openai';
 import { OpenRouterProvider } from './providers/openrouter';
 import { AnthropicProvider } from './providers/anthropic';
@@ -107,7 +108,7 @@ export async function queryProvider(
     recordCall(safePrompt, result.content, safeModel, safeProvider, latencyMs, tokensIn, tokensOut, 0, 'provider-query', 'success').catch(() => {});
 
     return result;
-  } catch (_err) {
+  } catch (err) {
     const latencyMs = Date.now() - start;
     const msg = err instanceof Error ? err.message : String(err);
     recordCall(safePrompt, '', safeModel, safeProvider, latencyMs, tokensIn, 0, 0, 'provider-query', 'error', msg).catch(() => {});

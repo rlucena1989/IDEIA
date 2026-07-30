@@ -164,7 +164,7 @@ export class TerminalBridge extends EventEmitter {
       const session: PtySession = { id, cwd: cwd || this.cwd, process: proc, startedAt: new Date().toISOString() };
       this.ptySessions.set(id, session);
       return session;
-    } catch (_err) {
+    } catch (err) {
       log.error('Failed to open PTY', { id, error: String(err) });
       return null;
     }

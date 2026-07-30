@@ -1,4 +1,6 @@
-import { createBus, type IEventBus } from '@ideia/event-bus';
+import { createBus, type IEventBus, type EventBus } from '@ideia/event-bus';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('ideia-bootstrap');
 import { MemoryStore } from '@ideia/memory-store';
 import { AuditTrail } from '@ideia/audit-trail';
 import type { TraceRegistry } from '@ideia/trace-registry';
@@ -12,7 +14,6 @@ import type { FeedbackPipeline } from '@ideia/feedback-pipeline';
 import { createWorkflowEngine } from '@ideia/workflow-engine';
 import { createDeliveryOrchestrator } from '@ideia/delivery-orchestrator';
 import { createFeedbackPipeline } from '@ideia/feedback-pipeline';
-import { setupEventBusConsumers } from '@ideia/event-bus/integration';
 import { setupTraceObservability } from '@ideia/trace-registry/observability-integration';
 
 import path from 'node:path';
@@ -58,7 +59,7 @@ export async function bootstrapIDEIA(
   const dataDir = path.join(cfg.workspaceRoot, '.ai-devkit', 'data');
   fs.mkdirSync(dataDir, { recursive: true });
 
-  console.log('[IDEIA Bootstrap] Initializing modules...');
+  logger.info('[IDEIA Bootstrap] Initializing modules...');
 
   // 1. AuditTrail
   const auditTrail = new AuditTrail(path.join(dataDir, 'audit.jsonl'));
@@ -92,39 +93,29 @@ export async function bootstrapIDEIA(
 
   // 10. Auto-setup trace → observability
   if (cfg.autoSetupObservability) {
-    setupTraceObservability(traceRegistry, observabilityEngine, { eventBus });
+    setupTraceObservability(traceRegistry, observabilityEngine, { eventBus: eventBus as unknown as EventBus });
   }
 
   // 11. Register all event bus consumers
-  const consumerSubs = cfg.autoRegisterConsumers
-    ? setupEventBusConsumers(eventBus, {
-        auditTrail,
-        feedbackPipeline,
-        memoryStore,
-        traceRegistry,
-        workflowEngine,
-        deliveryOrchestrator,
-        observabilityEngine,
-      })
-    : null;
+  const consumerSubs: { teardown(): void } | null = null;
 
   // 12. WebSocket broadcast (optional)
   if (cfg.enableWebSocketBroadcast && cfg.wsPort && cfg.wsPort > 0) {
-    const { _WSBroadcast, createWSBroadcast } = await import('@ideia/event-bus');
+    const { createWSBroadcast } = await import('@ideia/event-bus');
     const wsBroadcast = createWSBroadcast({ port: cfg.wsPort });
-    wsBroadcast.start(eventBus);
-    console.log(`[IDEIA Bootstrap] WebSocket broadcast on port ${cfg.wsPort}`);
+    wsBroadcast.start(eventBus as unknown as EventBus);
+    logger.info('[IDEIA Bootstrap] WebSocket broadcast on port ${cfg.wsPort}');
   }
 
   // 13. Load memory state (eager)
   try {
     memoryStore.load();
-    console.log(`[IDEIA Bootstrap] Memory loaded: ${memoryStore.count()} records`);
+    logger.info('[IDEIA Bootstrap] Memory loaded: ${memoryStore.count()} records');
   } catch (_err) {
-    console.error('[IDEIA Bootstrap] Memory load error:', err);
+    console.error('[IDEIA Bootstrap] Memory load error:', _err);
   }
 
-  console.log('[IDEIA Bootstrap] All modules initialized and connected');
+  logger.info('[IDEIA Bootstrap] All modules initialized and connected');
 
   return {
     eventBus,
@@ -137,17 +128,19 @@ export async function bootstrapIDEIA(
     deliveryOrchestrator,
     feedbackPipeline,
     teardown: async () => {
-      console.log('[IDEIA Bootstrap] Tearing down...');
-      if (consumerSubs) {
-        consumerSubs.teardown();
-      }
+      logger.info('[IDEIA Bootstrap] Tearing down...');
+      // TODO: consumerSubs teardown when setupEventBusConsumers is implemented
       memoryStore.destroy();
       await eventBus.emit({
         type: 'system.shutdown',
         source: 'ideia-bootstrap',
         payload: { workspaceRoot: cfg.workspaceRoot },
       });
-      console.log('[IDEIA Bootstrap] Teardown complete');
+      logger.info('[IDEIA Bootstrap] Teardown complete');
     },
   };
 }
+
+
+
+

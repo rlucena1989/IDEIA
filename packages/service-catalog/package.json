@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/service-catalog",
+  "description": "Internal Developer Platform — Service Catalog, Golden Paths, Scorecards, Self-Service Actions",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev"
+}

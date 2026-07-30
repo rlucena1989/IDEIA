@@ -15,28 +15,28 @@ export declare const RequirementSchema: z.ZodObject<{
     dependsOn: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
 }, "strip", z.ZodTypeAny, {
     id: string;
-    createdAt: string;
-    updatedAt: string;
-    status: "approved" | "rejected" | "draft" | "review" | "implemented" | "verified";
-    category: "functional" | "performance" | "security" | "non_functional" | "compliance" | "ux";
     title: string;
-    priority: "low" | "medium" | "high" | "critical";
+    priority: "critical" | "high" | "medium" | "low";
+    status: "draft" | "review" | "approved" | "implemented" | "verified" | "rejected";
+    category: "functional" | "non_functional" | "security" | "performance" | "compliance" | "ux";
     acceptanceCriteria: string[];
     tags: string[];
+    createdAt: string;
+    updatedAt: string;
     dependsOn: string[];
     description?: string | undefined;
     source?: string | undefined;
     owner?: string | undefined;
 }, {
     id: string;
+    title: string;
+    category: "functional" | "non_functional" | "security" | "performance" | "compliance" | "ux";
     createdAt: string;
     updatedAt: string;
-    category: "functional" | "performance" | "security" | "non_functional" | "compliance" | "ux";
-    title: string;
     description?: string | undefined;
+    priority?: "critical" | "high" | "medium" | "low" | undefined;
+    status?: "draft" | "review" | "approved" | "implemented" | "verified" | "rejected" | undefined;
     source?: string | undefined;
-    status?: "approved" | "rejected" | "draft" | "review" | "implemented" | "verified" | undefined;
-    priority?: "low" | "medium" | "high" | "critical" | undefined;
     acceptanceCriteria?: string[] | undefined;
     tags?: string[] | undefined;
     owner?: string | undefined;
@@ -59,16 +59,16 @@ export declare const WorkflowTaskSchema: z.ZodObject<{
     completedAt: z.ZodOptional<z.ZodString>;
     metadata: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
 }, "strip", z.ZodTypeAny, {
-    dependencies: string[];
-    metadata: Record<string, unknown>;
     id: string;
+    title: string;
+    priority: "critical" | "high" | "medium" | "low";
+    status: "pending" | "blocked" | "in_progress" | "completed" | "cancelled";
+    type: "review" | "feature" | "bug" | "refactor" | "docs" | "chore" | "research";
     createdAt: string;
     updatedAt: string;
-    type: "docs" | "refactor" | "review" | "feature" | "bug" | "chore" | "research";
-    status: "pending" | "blocked" | "in_progress" | "completed" | "cancelled";
-    title: string;
-    priority: "low" | "medium" | "high" | "critical";
     phase: number;
+    dependencies: string[];
+    metadata: Record<string, unknown>;
     description?: string | undefined;
     agent?: string | undefined;
     complexity?: "trivial" | "simple" | "moderate" | "hard" | "extreme" | undefined;
@@ -76,20 +76,20 @@ export declare const WorkflowTaskSchema: z.ZodObject<{
     completedAt?: string | undefined;
 }, {
     id: string;
+    title: string;
+    type: "review" | "feature" | "bug" | "refactor" | "docs" | "chore" | "research";
     createdAt: string;
     updatedAt: string;
-    type: "docs" | "refactor" | "review" | "feature" | "bug" | "chore" | "research";
-    title: string;
-    dependencies?: string[] | undefined;
-    metadata?: Record<string, unknown> | undefined;
     description?: string | undefined;
+    priority?: "critical" | "high" | "medium" | "low" | undefined;
     status?: "pending" | "blocked" | "in_progress" | "completed" | "cancelled" | undefined;
-    priority?: "low" | "medium" | "high" | "critical" | undefined;
     phase?: number | undefined;
     agent?: string | undefined;
+    dependencies?: string[] | undefined;
     complexity?: "trivial" | "simple" | "moderate" | "hard" | "extreme" | undefined;
     effort?: number | undefined;
     completedAt?: string | undefined;
+    metadata?: Record<string, unknown> | undefined;
 }>;
 export declare const TraceLinkSchema: z.ZodObject<{
     id: z.ZodString;
@@ -103,9 +103,9 @@ export declare const TraceLinkSchema: z.ZodObject<{
     createdBy: z.ZodOptional<z.ZodString>;
     metadata: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
 }, "strip", z.ZodTypeAny, {
-    metadata: Record<string, unknown>;
     id: string;
     createdAt: string;
+    metadata: Record<string, unknown>;
     sourceType: "requirement" | "workflow_task" | "feedback_event" | "code_file" | "test_file" | "commit" | "agent_action";
     sourceId: string;
     targetType: "requirement" | "workflow_task" | "feedback_event" | "code_file" | "test_file" | "commit" | "agent_action";
@@ -141,29 +141,29 @@ export declare const FeedbackEventSchema: z.ZodObject<{
     createdBy: z.ZodOptional<z.ZodString>;
     tags: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
 }, "strip", z.ZodTypeAny, {
-    decision: "approved" | "rejected" | "pending";
     id: string;
-    createdAt: string;
     type: "approval" | "rejection" | "suggestion" | "question" | "comment" | "issue";
-    source: "system" | "user" | "ai" | "ci" | "reviewer";
-    severity: "error" | "warning" | "info" | "critical";
+    source: "user" | "system" | "ai" | "reviewer" | "ci";
     tags: string[];
+    createdAt: string;
     targetType: "requirement" | "workflow_task" | "agent_action" | "code_block" | "policy_rule" | "report";
     targetId: string;
     content: string;
+    severity: "critical" | "info" | "warning" | "error";
+    decision: "approved" | "rejected" | "pending";
     createdBy?: string | undefined;
 }, {
     id: string;
-    createdAt: string;
     type: "approval" | "rejection" | "suggestion" | "question" | "comment" | "issue";
-    source: "system" | "user" | "ai" | "ci" | "reviewer";
+    source: "user" | "system" | "ai" | "reviewer" | "ci";
+    createdAt: string;
     targetType: "requirement" | "workflow_task" | "agent_action" | "code_block" | "policy_rule" | "report";
     targetId: string;
     content: string;
-    decision?: "approved" | "rejected" | "pending" | undefined;
-    severity?: "error" | "warning" | "info" | "critical" | undefined;
     tags?: string[] | undefined;
     createdBy?: string | undefined;
+    severity?: "critical" | "info" | "warning" | "error" | undefined;
+    decision?: "approved" | "rejected" | "pending" | undefined;
 }>;
 export declare const AgentIdentitySchema: z.ZodObject<{
     id: z.ZodString;
@@ -195,12 +195,12 @@ export declare const AgentIdentitySchema: z.ZodObject<{
     lastRunAt: z.ZodOptional<z.ZodString>;
     metadata: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
 }, "strip", z.ZodTypeAny, {
-    metadata: Record<string, unknown>;
     id: string;
-    name: string;
+    status: "blocked" | "completed" | "error" | "idle" | "running";
     createdAt: string;
-    status: "error" | "blocked" | "completed" | "idle" | "running";
-    role: "docs" | "security" | "reviewer" | "planner" | "engineer" | "qa" | "architect" | "operator";
+    metadata: Record<string, unknown>;
+    name: string;
+    role: "security" | "docs" | "reviewer" | "planner" | "engineer" | "qa" | "architect" | "operator";
     permissions: {
         readPaths: string[];
         writePaths: string[];
@@ -208,16 +208,16 @@ export declare const AgentIdentitySchema: z.ZodObject<{
         maxConcurrency: number;
         allowShell: boolean;
     };
-    mode: "auto" | "manual" | "semi";
+    mode: "auto" | "semi" | "manual";
     model?: string | undefined;
     lastRunAt?: string | undefined;
 }, {
     id: string;
-    name: string;
     createdAt: string;
-    role: "docs" | "security" | "reviewer" | "planner" | "engineer" | "qa" | "architect" | "operator";
+    name: string;
+    role: "security" | "docs" | "reviewer" | "planner" | "engineer" | "qa" | "architect" | "operator";
+    status?: "blocked" | "completed" | "error" | "idle" | "running" | undefined;
     metadata?: Record<string, unknown> | undefined;
-    status?: "error" | "blocked" | "completed" | "idle" | "running" | undefined;
     permissions?: {
         readPaths?: string[] | undefined;
         writePaths?: string[] | undefined;
@@ -226,7 +226,7 @@ export declare const AgentIdentitySchema: z.ZodObject<{
         allowShell?: boolean | undefined;
     } | undefined;
     model?: string | undefined;
-    mode?: "auto" | "manual" | "semi" | undefined;
+    mode?: "auto" | "semi" | "manual" | undefined;
     lastRunAt?: string | undefined;
 }>;
 export declare const BusEventSchema: z.ZodObject<{
@@ -237,17 +237,17 @@ export declare const BusEventSchema: z.ZodObject<{
     payload: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
     metadata: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
 }, "strip", z.ZodTypeAny, {
-    timestamp: string;
     id: string;
     type: string;
     source: string;
+    timestamp: string;
     metadata?: Record<string, unknown> | undefined;
     payload?: Record<string, unknown> | undefined;
 }, {
-    timestamp: string;
     id: string;
     type: string;
     source: string;
+    timestamp: string;
     metadata?: Record<string, unknown> | undefined;
     payload?: Record<string, unknown> | undefined;
 }>;
@@ -283,14 +283,31 @@ export type AdapterConfig = z.infer<typeof AdapterConfigSchema>;
 export type AdapterResult = z.infer<typeof AdapterResultSchema>;
 export interface AdapterInterface {
     name: string;
+    language: string;
     capabilities: string[];
     detect(projectRoot: string): boolean;
-    init(projectRoot: string): boolean;
-    generateTemplate(pkgName: string): string;
-    runLint(projectRoot: string): boolean;
-    runTests(projectRoot: string): boolean;
-    runBuild(projectRoot: string): boolean;
-    qualityGate(projectRoot: string): boolean;
+    init(projectName: string, options?: Record<string, unknown>): Promise<{
+        success: boolean;
+        files: string[];
+    }>;
+    generateTemplate(type: string): Promise<string>;
+    runLint(projectRoot?: string): Promise<{
+        success: boolean;
+        output: string;
+    }>;
+    runTests(projectRoot?: string): Promise<{
+        success: boolean;
+        output: string;
+    }>;
+    runBuild(projectRoot?: string): Promise<{
+        success: boolean;
+        output: string;
+    }>;
+    qualityGate(projectRoot?: string): Promise<{
+        passed: boolean;
+        score: number;
+        issues: string[];
+    }>;
 }
 export declare function validateAdapter(config: unknown): AdapterConfig;
 export type BusEvent = z.infer<typeof BusEventSchema>;

@@ -1,5 +1,7 @@
 import { GeneratedDocument } from './artifact-content-generator';
+import { createLogger } from '@ideia/logger';
 import { ProductPlan } from './product-model';
+const logger = createLogger('completeness-validator');
 
 export interface CompletenessCheck {
   ok: boolean;

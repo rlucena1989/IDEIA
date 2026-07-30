@@ -1,4 +1,5 @@
 import { Emitter, Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { IViewContainer, IWidget, ViewWidgetOptions, WidgetTitle } from './types';
 import { BaseWidget } from './widget-core';
 

@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid';
+import { createLogger } from '@ideia/logger';
 import { GraphNode, GraphEdge, GraphPath } from './types';
 
 export class MemoryGraph {
@@ -32,7 +33,7 @@ export class MemoryGraph {
       results = results.filter(n => n.type === filters.type);
     }
     if (filters.tag) {
-      results = results.filter(n => n.tags.includes(filters.tag!));
+      if (filters.tag) results = results.filter(n => n.tags.includes(filters.tag!));
     }
     if (filters.search) {
       const q = filters.search.toLowerCase();

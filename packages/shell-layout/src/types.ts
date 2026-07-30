@@ -1,4 +1,5 @@
 import { Disposable, Event } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { IWidget, WidgetTitle } from '@ideia/views-widgets';
 
 export type ShellArea = 'main' | 'left' | 'right' | 'bottom' | 'top';
@@ -24,6 +25,11 @@ export interface IShellArea {
   hide(): void;
   toggle(): void;
   setSize(size: number): void;
+  addWidget(widget: IWidget): void;
+  removeWidget(id: string): void;
+  getWidget(id: string): IWidget | undefined;
+  setActiveWidget(id: string): void;
+  getActiveWidget(): IWidget | undefined;
   serialize(): ShellAreaState;
   deserialize(state: ShellAreaState): void;
 }

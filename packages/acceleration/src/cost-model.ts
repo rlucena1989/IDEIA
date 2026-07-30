@@ -1,4 +1,6 @@
 import { ProviderKind } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('cost-model');
 
 export interface CostEntry {
   provider: ProviderKind;

@@ -1,4 +1,6 @@
 import type { EngineReport, EngineState, EngineMode } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('acceleration-utils');
 
 export async function sendWebhookAlerts(
   alerts: { level: string; message: string }[],
@@ -63,15 +65,15 @@ export function buildPreviousReport(
 }
 
 export function printEngineSummary(report: EngineReport): void {
-  console.log(`\n[engine] === CYCLE COMPLETE ===`);
-  console.log(`[engine] Mode: ${report.mode}`);
-  console.log(`[engine] Scorecard: ${report.scorecard.score}/100 (${report.scorecard.status})`);
-  console.log(`[engine] Coverage: ${report.coverage.total}% (lines=${report.coverage.lines}%, branches=${report.coverage.branches}%)`);
-  console.log(`[engine] Maturity: ${report.maturity.score} (${report.maturity.level})`);
-  console.log(`[engine] Gaps: ${report.gaps.length}`);
-  console.log(`[engine] Quality: ${report.quality.score}/100 (${report.quality.approved ? 'APPROVED' : 'REJECTED'})`);
-  console.log(`[engine] Duration: ${report.totalDurationMs}ms`);
-  console.log(`[engine] Success: ${report.success}`);
-  console.log(`[engine] Precision: confidence=${report.precision.confidence}, variance=${report.precision.variance}, stable=${report.precision.stable}`);
-  console.log(`[engine] Feedback: ${report.mode}\n`);
+  logger.info('\n[engine] === CYCLE COMPLETE ===');
+  logger.info('[engine] Mode: ${report.mode}');
+  logger.info('[engine] Scorecard: ${report.scorecard.score}/100 (${report.scorecard.status})');
+  logger.info('[engine] Coverage: ${report.coverage.total}% (lines=${report.coverage.lines}%, branches=${report.coverage.branches}%)');
+  logger.info('[engine] Maturity: ${report.maturity.score} (${report.maturity.level})');
+  logger.info('[engine] Gaps: ${report.gaps.length}');
+  logger.info('[engine] Quality: ${report.quality.score}/100 (${report.quality.approved ? \'APPROVED\' : \'REJECTED\'})');
+  logger.info('[engine] Duration: ${report.totalDurationMs}ms');
+  logger.info('[engine] Success: ${report.success}');
+  logger.info('[engine] Precision: confidence=${report.precision.confidence}, variance=${report.precision.variance}, stable=${report.precision.stable}');
+  logger.info('[engine] Feedback: ${report.mode}\n');
 }

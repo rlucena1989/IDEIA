@@ -1,4 +1,6 @@
 import { TrendSignal } from './autonomous-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('trend-analyzer');
 
 export function analyzeTrend(values: number[], dimension: string): TrendSignal {
   const first = values[0] ?? 0;

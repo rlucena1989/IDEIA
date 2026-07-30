@@ -1,4 +1,4 @@
-import { EventBus } from './event-bus';
+import type { IEventBus } from './types';
 export interface WSBroadcastConfig {
     port: number;
     host?: string;
@@ -11,8 +11,8 @@ export declare class WSBroadcast {
     private subscriptionId;
     private eventBus;
     constructor(config: WSBroadcastConfig);
-    start(eventBus: EventBus): boolean;
-    stop(): void;
+    start(eventBus: IEventBus): Promise<boolean>;
+    stop(): Promise<void>;
     getClientCount(): number;
     isRunning(): boolean;
 }

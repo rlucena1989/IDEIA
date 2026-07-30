@@ -9,7 +9,9 @@
  */
 
 import { defaultRuntime } from '../adapter-runtime';
+import { createLogger } from '@ideia/logger';
 import { LangRunner, LanguageId } from '../adapter-contract';
+const logger = createLogger('runner');
 
 export { AdapterRuntime, defaultRuntime, DetectionResult } from '../adapter-runtime';
 export { NodeRunner } from './node-runner';

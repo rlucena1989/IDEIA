@@ -6,6 +6,7 @@
  */
 
 import { readFileSync, existsSync } from 'fs';
+import { createLogger } from '@ideia/logger';
 import { extname } from 'path';
 
 export interface CodeChunk {
@@ -106,9 +107,10 @@ export class AstChunker {
             language: 'python',
           });
         }
+        const blockMatch = (funcMatch || classMatch) as RegExpExecArray;
         current = {
           type: funcMatch ? 'function' : 'class',
-          name: (funcMatch || classMatch)![1],
+          name: blockMatch[1],
           start: i,
           content: [line],
         };

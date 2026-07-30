@@ -16,8 +16,8 @@ class RequestReplyManager {
         try {
             await this.connectionManager.connect();
         }
-        catch (err) {
-            log.info(`Initialized (offline mode): ${err}`);
+        catch (_err) {
+            log.info(`Initialized (offline mode): ${_err}`);
             return;
         }
         log.info('Initialized');
@@ -63,15 +63,15 @@ class RequestReplyManager {
                         requestId: request.id, data: result, timestamp: Date.now(),
                     });
                 }
-                catch (err) {
+                catch (_err) {
                     await this.publishResponse(request.id, request.subject, {
-                        requestId: request.id, data: null, error: String(err), timestamp: Date.now(),
+                        requestId: request.id, data: null, error: String(_err), timestamp: Date.now(),
                     });
                 }
             }
         }
-        catch {
-            // Ignore parse errors
+        catch (_err) {
+            // Log silenciado propositalmente — falha nao bloqueia fluxo
         }
     }
     async handleIncomingResponse(responseJson) {
@@ -89,8 +89,8 @@ class RequestReplyManager {
                 }
             }
         }
-        catch {
-            // Ignore parse errors
+        catch (_err) {
+            // Log silenciado propositalmente — falha nao bloqueia fluxo
         }
     }
     generateRequestId() {

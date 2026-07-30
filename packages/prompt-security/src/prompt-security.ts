@@ -1,4 +1,6 @@
 import { RateLimitConfig, SanitizationAction as _SanitizationAction, ScanResult, SecurityRule, SecurityIssue, SeverityLevel } from './types';
+import { createLogger } from '@ideia/logger';
+import { PiiOutputValidator } from './pii-output-validator';
 
 const DEFAULT_RULES: SecurityRule[] = [
   { pattern: /(?:sk-[a-zA-Z0-9]{20,})/g, action: 'block', severity: 'critical', category: 'api-key', description: 'API key detected' },
@@ -126,12 +128,14 @@ export class PromptSecurity {
   private codeRules: SecurityRule[];
   private jailbreakRules: SecurityRule[];
   private rateLimitMap: Map<string, { count: number; windowStart: number }> = new Map();
+  private piiValidator: PiiOutputValidator;
 
   constructor(customRules?: SecurityRule[]) {
     this.rules = [...DEFAULT_RULES, ...(customRules || [])];
     this.outputRules = OUTPUT_RULES;
     this.codeRules = CODE_VULNERABILITY_RULES;
     this.jailbreakRules = JAILBREAK_RULES;
+    this.piiValidator = new PiiOutputValidator();
   }
 
   scan(prompt: string): ScanResult {
@@ -181,6 +185,9 @@ export class PromptSecurity {
         });
       }
     }
+
+    const piiResult = this.piiValidator.validate(output);
+    issues.push(...piiResult.issues);
 
     const hasBlocking = issues.some(i => i.action === 'block');
     const hasWarnings = issues.some(i => i.action === 'warn');

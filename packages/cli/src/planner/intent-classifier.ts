@@ -12,6 +12,7 @@
  */
 
 import type { PlannerTaskType } from './types';
+import { createLogger } from '@ideia/logger';
 
 export interface IntentResult {
   primary: PlannerTaskType;
@@ -130,7 +131,7 @@ export class IntentClassifier {
 
     return {
       primary: primaryType as PlannerTaskType,
-      confidence: sorted[0] ? sorted[0]![1] / total : 0.3,
+      confidence: sorted[0] ? sorted[0][1] / total : 0.3,
       alternatives,
       entities,
       method: 'keyword',

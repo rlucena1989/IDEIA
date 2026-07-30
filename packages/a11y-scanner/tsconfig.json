@@ -3,12 +3,30 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "strict": true
+    "strict": true,
+    "composite": true
   },
   "include": [
-    "src"
+    "src/**/*.ts"
   ],
   "exclude": [
     "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../data-layer"
+    }
   ]
 }

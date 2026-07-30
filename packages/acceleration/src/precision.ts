@@ -1,5 +1,7 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import { PrecisionReport } from './types';
+const logger = createLogger('precision');
 
 function computeHistoricalPrecision(): { confidence: number; variance: number } {
   try {

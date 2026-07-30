@@ -1,0 +1,42 @@
+{
+  "name": "@ideia/api-server",
+  "description": "IDEIA API Server — Fastify HTTP server for CLI command execution and plan management",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "ideia-api-server": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@ideia/contracts": "*",
+    "@ideia/event-bus": "*",
+    "@ideia/health-check": "*",
+    "@ideia/logger": "*",
+    "fastify": "^5.0.0",
+    "@fastify/cors": "^10.0.0",
+    "@fastify/helmet": "^12.0.0",
+    "@fastify/rate-limit": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false
+}

@@ -1,5 +1,7 @@
-import { WebhookManager, WebhookPayload } from './webhook';
+import { WebhookManager, WebhookPayload, WebhookEvent } from './webhook';
+import { createLogger } from '@ideia/logger';
 import { DeployEnvironment } from './types';
+const logger = createLogger('delivery-orchestrator');
 
 export type NotificationEvent =
   | 'deploy.started'
@@ -84,8 +86,8 @@ export class NotificationManager {
 
     if (this.webhookManager) {
       const webhookEvent = params.event;
-      await this.webhookManager.dispatch(webhookEvent, {
-        event: webhookEvent,
+      await this.webhookManager.dispatch(webhookEvent as any, {
+        event: webhookEvent as any,
         version: params.version,
         environment: params.environment,
         deployId: params.deployId,
@@ -190,7 +192,7 @@ export class NotificationManager {
   private async sendToChannel(channel: NotificationChannel, message: NotificationMessage): Promise<void> {
     if (channel.type === 'log') {
       const prefix = `[${message.severity.toUpperCase()}]`;
-      console.log(`${prefix} ${message.title}: ${message.message}`);
+      logger.info('${prefix} ${message.title}: ${message.message}');
     }
   }
 }

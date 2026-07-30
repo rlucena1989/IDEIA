@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 
 import path from 'node:path';
 import { printHeader, printLine, finish } from "../utils/output";
@@ -89,7 +90,7 @@ export function designComponentsAction(options: { search?: string }): void {
     return;
   }
   const filtered = options.search
-    ? components.filter(c => c.toLowerCase().includes(options.search.toLowerCase()))
+    ? components.filter(c => c.toLowerCase().includes(options.search!.toLowerCase()))
     : components;
   printLine(`Components (${filtered.length}/${components.length}):`);
   for (const c of filtered) printLine(`  - ${c}`);
@@ -139,3 +140,4 @@ export function designCommand(): Command {
 
   return cmd;
 }
+

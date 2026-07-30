@@ -1,4 +1,6 @@
 import * as crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('self-correction-engine');
 
 export interface SelfCorrectionAction {
   actionId: string;

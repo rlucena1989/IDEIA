@@ -1,4 +1,5 @@
 import { injectable } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { AbstractViewContribution } from '@theia/core/lib/browser/shell/view-contribution';
 import { IDEIA_DashboardWidget } from './ideia-dashboard-widget';
 import { IDEIA_ApprovalWidget } from './ideia-approval-widget';
@@ -6,6 +7,7 @@ import { IDEIA_DiffWidget } from './ideia-diff-widget';
 import { IDEIA_StudiesWidget } from './ideia-studies-widget';
 import { IDEIA_SuggestionsWidget } from './ideia-suggestions-widget';
 import { IDEIA_SecurityWidget } from './ideia-security-widget';
+const logger = createLogger('ideia-views-contribution');
 
 @injectable()
 export class IDEIA_DashboardViewContribution extends AbstractViewContribution<IDEIA_DashboardWidget> {

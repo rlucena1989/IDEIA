@@ -1,6 +1,8 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import crypto from 'node:crypto';
+const logger = createLogger('fingerprint');
 
 const EXCLUDED_DIRS = new Set(['node_modules', 'dist', 'coverage', '.git', '.ai-devkit']);
 

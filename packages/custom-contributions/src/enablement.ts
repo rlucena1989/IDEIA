@@ -1,5 +1,7 @@
 import { Emitter, Disposable, DisposableCollection } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { EnablementRule, EnablementService } from './types';
+const logger = createLogger('enablement');
 
 export class DefaultEnablementService implements EnablementService {
   private rules: EnablementRule[] = [];

@@ -1,0 +1,1 @@
+{"id":"1785122512698-7bomnz","timestamp":"2026-07-27T03:21:52.697Z","pluginId":"test-plugin","action":"file-write","resource":"/outside/file.txt","allowed":false,"reason":"Path not in allowlist: F:\\outside\\file.txt"}

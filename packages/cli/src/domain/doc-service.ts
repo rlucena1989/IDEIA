@@ -1,4 +1,5 @@
 import type { CliCommandResult, CommandContext } from '../types/cli-result';
+import { createLogger } from '@ideia/logger';
 import { success, failure } from '../types/cli-result';
 import { resolveDocument, resolveByTags } from '../governance/doc-resolver';
 import { listActiveDocuments, findDocumentsByCategory, findDocumentByPath } from '../governance/document-registry';

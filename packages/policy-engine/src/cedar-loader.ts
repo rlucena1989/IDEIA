@@ -1,6 +1,8 @@
 import fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import path from 'path';
 import { CedarPolicySet } from './cedar-adapter';
+const logger = createLogger('cedar-loader');
 
 const DEFAULT_CEDAR_DIR = path.resolve(process.cwd(), 'policies');
 
@@ -22,9 +24,9 @@ export function loadCedarPolicyDirectory(dirPath: string = DEFAULT_CEDAR_DIR): C
   for (const file of files) {
     try {
       sets.push(loadCedarPolicyFile(path.join(dirPath, file)));
-    } catch (_err) {
+    } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      console.warn(`[CedarLoader] Skipping ${file}: ${msg}`);
+      logger.warn(`Skipping ${file}: ${msg}`);
     }
   }
 

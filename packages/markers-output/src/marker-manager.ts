@@ -1,4 +1,5 @@
 import { Emitter, Event } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { Marker, MarkerCollection, MarkerFilter, MarkerManager, MarkerSeverity } from './types';
 
 class DefaultMarkerCollection<T> implements MarkerCollection<T> {
@@ -41,13 +42,15 @@ class DefaultMarkerCollection<T> implements MarkerCollection<T> {
       results = results.filter(m => m.severity === filter.severity);
     }
     if (filter.message) {
-      results = results.filter(m => m.message.includes(filter.message!));
+      const msg = filter.message;
+      results = results.filter(m => m.message.includes(msg));
     }
     if (filter.source) {
       results = results.filter(m => m.source === filter.source);
     }
     if (filter.predicate) {
-      results = results.filter(m => filter.predicate!(m));
+      const predicate = filter.predicate;
+      results = results.filter(m => predicate(m));
     }
     return results;
   }
@@ -76,7 +79,7 @@ export class DefaultMarkerManager implements MarkerManager {
     for (const [, collection] of this.collections) {
       results.push(...(filter
         ? (collection as DefaultMarkerCollection<T>).findMarkers(filter)
-        : collection.getMarkers()
+        : (collection.getMarkers() as Marker<T>[])
       ));
     }
     return results;

@@ -1,5 +1,7 @@
 import * as crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
 import { OperationalContext } from './context-types';
+const logger = createLogger('context-registry');
 
 export class ContextRegistry {
   private contexts: OperationalContext[] = [];

@@ -1,4 +1,6 @@
 import { SimulationResult } from './simulation-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('simulation-validator');
 
 export interface ValidationResult {
   valid: boolean;

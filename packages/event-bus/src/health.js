@@ -40,8 +40,8 @@ class HealthCheck {
                 ? { status: 'healthy', message: 'Connected' }
                 : { status: 'degraded', message: 'Not connected' };
         }
-        catch (err) {
-            return { status: 'unhealthy', message: String(err) };
+        catch (_err) {
+            return { status: 'unhealthy', message: String(_err) };
         }
     }
     async checkStreams() {
@@ -51,8 +51,8 @@ class HealthCheck {
             const streams = await this.streamManager.listStreams();
             return { status: 'healthy', message: `${streams.length} streams active` };
         }
-        catch (err) {
-            return { status: 'unhealthy', message: String(err) };
+        catch (_err) {
+            return { status: 'unhealthy', message: String(_err) };
         }
     }
     async checkDLQ() {
@@ -62,8 +62,8 @@ class HealthCheck {
             const stats = await this.dlq.getStats();
             return { status: 'healthy', details: stats };
         }
-        catch (err) {
-            return { status: 'unhealthy', message: String(err) };
+        catch (_err) {
+            return { status: 'unhealthy', message: String(_err) };
         }
     }
     async checkConsumers() {
@@ -73,8 +73,8 @@ class HealthCheck {
             const groups = this.consumerGroupManager.listGroups();
             return { status: 'healthy', message: `${groups.length} consumer groups` };
         }
-        catch (err) {
-            return { status: 'unhealthy', message: String(err) };
+        catch (_err) {
+            return { status: 'unhealthy', message: String(_err) };
         }
     }
     async checkKV() {
@@ -84,8 +84,8 @@ class HealthCheck {
             const stats = await this.kvStore.getStats();
             return { status: 'healthy', details: stats };
         }
-        catch (err) {
-            return { status: 'unhealthy', message: String(err) };
+        catch (_err) {
+            return { status: 'unhealthy', message: String(_err) };
         }
     }
     async checkObjectStore() {
@@ -95,8 +95,8 @@ class HealthCheck {
             const stats = await this.objectStore.getStats();
             return { status: 'healthy', details: stats };
         }
-        catch (err) {
-            return { status: 'unhealthy', message: String(err) };
+        catch (_err) {
+            return { status: 'unhealthy', message: String(_err) };
         }
     }
     async checkReqReply() {
@@ -106,8 +106,8 @@ class HealthCheck {
             const handlers = this.reqReplyManager.getRegisteredHandlers();
             return { status: 'healthy', message: `${handlers.length} handlers registered` };
         }
-        catch (err) {
-            return { status: 'unhealthy', message: String(err) };
+        catch (_err) {
+            return { status: 'unhealthy', message: String(_err) };
         }
     }
     calculateOverallStatus(components) {

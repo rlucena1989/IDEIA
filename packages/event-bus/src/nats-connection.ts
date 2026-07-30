@@ -60,7 +60,7 @@ export class NatsConnectionManager {
       try {
         listener(stateSnapshot);
       } catch (_err) {
-        log.error(`State change listener error: ${err}`);
+        log.error(`State change listener error: ${_err}`);
       }
     });
   }
@@ -127,7 +127,7 @@ export class NatsConnectionManager {
 
       return this.nc;
     } catch (_err) {
-      const error = err as Error;
+      const error = _err as Error;
       this.state.lastError = error.message;
       this.state.connected = false;
       this.notifyStateChange();
@@ -151,7 +151,7 @@ export class NatsConnectionManager {
       try {
         await this.connect();
       } catch (_err) {
-        log.error(`Reconnect failed: ${err}`);
+        log.error(`Reconnect failed: ${_err}`);
       }
     }, delay);
   }
@@ -167,7 +167,7 @@ export class NatsConnectionManager {
         await this.nc.close();
         log.info('Disconnected from NATS');
       } catch (_err) {
-        log.error(`Error during disconnect: ${err}`);
+        log.error(`Error during disconnect: ${_err}`);
       }
     }
 

@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { createLogger } from '@ideia/logger';
 
 export type AgentRole = 'analyst' | 'architect' | 'programmer' | 'reviewer' | 'tester' | 'devops';
 
@@ -113,7 +114,7 @@ export class AgentSupervisor {
     };
 
     for (const task of sorted) {
-      const deps = task.dependencies.map(d => taskMap.get(d)).filter(Boolean);
+      const deps = task.dependencies.map(d => taskMap.get(d)).filter((d): d is NonNullable<typeof d> => Boolean(d));
       const failedDep = deps.find(d => d.status === 'failed');
       if (failedDep) {
         task.status = 'failed';
@@ -164,7 +165,7 @@ export class AgentSupervisor {
         });
         report.completed++;
         this.onProgress?.({ role: task.role, taskId: task.id, title: task.title, status: 'completed', durationMs, output });
-      } catch (_err) {
+      } catch (err) {
         task.status = 'failed';
         task.completedAt = new Date().toISOString();
         task.error = err instanceof Error ? err.message : String(err);
@@ -204,7 +205,7 @@ export class AgentSupervisor {
       title: `${role}: ${description.slice(0, 60)}`,
       description,
       input: { description },
-      dependencies: ROLE_DEPENDENCIES[role]!.map(d => id(d)),
+      dependencies: (ROLE_DEPENDENCIES[role] ?? []).map(d => id(d)),
       status: 'pending' as const,
     }));
   }
@@ -231,3 +232,4 @@ export class AgentSupervisor {
     return result;
   }
 }
+

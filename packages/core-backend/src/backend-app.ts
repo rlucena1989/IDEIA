@@ -1,4 +1,5 @@
 import { Disposable, Emitter, DisposableCollection } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { DefaultLogger } from '@ideia/backend-logging';
 import {
   BackendApplication, BackendApplicationConfig,

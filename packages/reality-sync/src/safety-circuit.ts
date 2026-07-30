@@ -1,4 +1,6 @@
 import { EventEmitter } from 'node:events';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('safety-circuit');
 
 export interface TriggerStatus {
   loopDetection: { active: boolean; count: number; lastTriggered: number | null };
@@ -31,7 +33,7 @@ export class SafetyCircuit extends EventEmitter {
   private stopped = false;
 
   private log(msg: string): void {
-    console.log(`[SafetyCircuit] ${msg}`);
+    logger.info('[SafetyCircuit] ${msg}');
   }
 
   check(): { tripped: boolean; activeTriggers: TriggerName[] } {

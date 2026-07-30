@@ -1,5 +1,7 @@
 import { ContextNode, SyncDecision } from './federation-types';
+import { createLogger } from '@ideia/logger';
 import { ConflictResolution } from './conflict-resolver';
+const logger = createLogger('federation-telemetry');
 
 export interface FederationTelemetrySnapshot {
   takenAt: string;

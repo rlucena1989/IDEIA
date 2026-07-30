@@ -1,5 +1,7 @@
-ï»¿import { Command } from 'commander';
+import { Command } from 'commander';
 import { normalizeRequest, formatRequestOverview } from '../runtime/request-normalizer';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.multimodal');
 import { detectAmbiguity } from '../runtime/ambiguity-detector';
 import { detectStack } from '../runtime/stack-detector';
 import { analyzeLayout } from '../runtime/layout-analyzer';
@@ -8,11 +10,11 @@ import * as fs from 'fs';
 
 /**
  * Cria multimodal command.
- * @returns O resultado da operaÃ§Ã£o.
+ * @returns O resultado da operação.
  */
 function createMultimodalCommand(): Command {
   const command = new Command('multimodal')
-    .description('Entrada Multimodal e Design-to-Code â€” Fase 10');
+    .description('Entrada Multimodal e Design-to-Code — Fase 10');
 
   command
     .command('normalize <text>')
@@ -22,7 +24,7 @@ function createMultimodalCommand(): Command {
     .action((text, opts) => {
       const req = normalizeRequest({ source: opts.source, content: text });
       if (opts.json) { console.log(JSON.stringify(req, null, 2)); return; }
-      console.log(formatRequestOverview(req));
+      logger.info(formatRequestOverview(req));
     });
 
   command
@@ -34,14 +36,14 @@ function createMultimodalCommand(): Command {
       const content = fs.readFileSync(file, 'utf-8');
       const report = detectAmbiguity(content);
       if (opts.json) { console.log(JSON.stringify(report, null, 2)); return; }
-      console.log('\\nAnalise de Ambiguidade:');
+      logger.info('\\nAnalise de Ambiguidade:');
       console.log('  Nivel:', report.overallAmbiguity);
       console.log('  Sinais:', report.total);
       for (const s of report.signals) {
         console.log('  [' + s.severity.toUpperCase() + ']', s.suggestion);
       }
       if (report.suggestions.length > 0) {
-        console.log('\\nSugestoes de enriquecimento:');
+        logger.info('\\nSugestoes de enriquecimento:');
         for (const sug of report.suggestions) {
           console.log('  -', sug.field + ':', sug.value);
         }
@@ -55,7 +57,7 @@ function createMultimodalCommand(): Command {
     .action((rootDir, opts) => {
       const stack = detectStack(rootDir || undefined);
       if (opts.json) { console.log(JSON.stringify(stack, null, 2)); return; }
-      console.log('\\nStack Detectada:');
+      logger.info('\\nStack Detectada:');
       console.log('  Linguagem:', stack.language);
       console.log('  Framework:', stack.framework);
       console.log('  Package Manager:', stack.packageManager);
@@ -76,7 +78,7 @@ function createMultimodalCommand(): Command {
       const content = fs.readFileSync(file, 'utf-8');
       const report = analyzeLayout(content, file);
       if (opts.json) { console.log(JSON.stringify(report, null, 2)); return; }
-      console.log('\\nAnalise de Layout:');
+      logger.info('\\nAnalise de Layout:');
       console.log('  Framework:', report.framework);
       console.log('  Tipo:', report.layoutType);
       console.log('  Regioes:', report.totalRegions);
@@ -96,11 +98,11 @@ function createMultimodalCommand(): Command {
       const content = fs.readFileSync(file, 'utf-8');
       const report = analyzeUX(content, file);
       if (opts.json) { console.log(JSON.stringify(report, null, 2)); return; }
-      console.log('\\nAnalise de UX:');
+      logger.info('\\nAnalise de UX:');
       console.log('  ' + report.summary);
       for (const f of report.findings) {
         const icon = f.severity === 'error' ? 'E' : f.severity === 'warning' ? 'W' : 'I';
-        console.log('  [' + icon + '] L' + f.line + ': ' + f.issue + ' â€” ' + f.suggestion);
+        console.log('  [' + icon + '] L' + f.line + ': ' + f.issue + ' — ' + f.suggestion);
       }
     });
 

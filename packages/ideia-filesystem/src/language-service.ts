@@ -1,4 +1,5 @@
 import { LanguageService } from './types';
+import { createLogger } from '@ideia/logger';
 
 const EXTENSION_MAP: Record<string, string> = {
   '.ts': 'typescript',

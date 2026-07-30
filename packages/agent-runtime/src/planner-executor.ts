@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { AgentCoordinator } from './agent-coordinator';
 
 export interface PlannedStep {

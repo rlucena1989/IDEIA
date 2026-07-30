@@ -1,4 +1,6 @@
 import type { CapabilityMatch } from '../types/capability';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('matcher.interface');
 
 export interface MatchRequest {
   text: string;

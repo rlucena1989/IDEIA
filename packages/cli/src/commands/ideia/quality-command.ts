@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.ideia.quality-command');
 import { computeScorecard } from '../scorecard';
 import { runPipeline, listAllCheckpoints, printStatus } from '../../utils/gate/runner';
 import { printHeader, printLine } from '../../utils/output';
@@ -26,9 +28,9 @@ export function ideiaQualityCommand(): Command {
     .action((options) => {
       try {
         const cwd = process.cwd();
-        console.log(`\n${'='.repeat(56)}`);
-        console.log('  ✅ IDEIA — Quality Gates');
-        console.log(`${'='.repeat(56)}\n`);
+        logger.info('\n${\'=\'.repeat(56)}');
+        logger.info('  ✅ IDEIA — Quality Gates');
+        logger.info('${\'=\'.repeat(56)}\n');
 
         runPipeline(cwd, options.stage as string, !!options.resume, !!options.json);
       } catch (error: unknown) {
@@ -54,43 +56,43 @@ export function ideiaQualityCommand(): Command {
           return;
         }
 
-        console.log(`\n${'='.repeat(56)}`);
-        console.log('  📊 IDEIA — Scorecard');
-        console.log(`${'='.repeat(56)}\n`);
+        logger.info('\n${\'=\'.repeat(56)}');
+        logger.info('  📊 IDEIA — Scorecard');
+        logger.info('${\'=\'.repeat(56)}\n');
 
-        console.log(`  Overall: ${result.overallScore}/100`);
-        console.log(`  Maturidade: ${result.maturityLevel}`);
-        console.log(`  Categorias: ${result.evolution.categories} | Itens: ${result.evolution.items}`);
+        logger.info('  Overall: ${result.overallScore}/100');
+        logger.info('  Maturidade: ${result.maturityLevel}');
+        logger.info('  Categorias: ${result.evolution.categories} | Itens: ${result.evolution.items}');
         console.log('');
 
         for (const cat of result.categories.slice(0, 10)) {
           const icon = cat.score >= 85 ? '✅' : cat.score >= 65 ? '⚠️' : '❌';
           const bar = '█'.repeat(Math.round(cat.score / 5));
-          console.log(`  ${icon} ${cat.name.padEnd(20)} ${Math.round(cat.score)}/100 ${bar}`);
+          logger.info('  ${icon} ${cat.name.padEnd(20)} ${Math.round(cat.score)}/100 ${bar}');
         }
 
         if (result.recommendations.length > 0) {
-          console.log('\n  💡 Recomendações:\n');
+          logger.info('\n  💡 Recomendações:\n');
           for (const rec of result.recommendations.slice(0, 5)) {
-            console.log(`  • ${rec.text}`);
+            logger.info('  • ${rec.text}');
           }
         }
 
         console.log('');
 
         if (options.trends && result.trends.length > 0) {
-          console.log('  📈 Tendência:\n');
+          logger.info('  📈 Tendência:\n');
           for (const t of result.trends.slice(-10)) {
-            console.log(`  ${t.timestamp.slice(0, 10)}: ${t.overallScore}/100`);
+            logger.info('  ${t.timestamp.slice(0, 10)}: ${t.overallScore}/100');
           }
           console.log('');
         }
 
         if (options.forecast && result.forecast) {
-          console.log('  🔮 Previsão 30 dias:\n');
-          console.log(`  Score previsto: ${result.forecast.forecast}/100`);
-          console.log(`  Confiança: ${result.forecast.confidence}`);
-          console.log(`  Tendência: ${result.forecast.trend}`);
+          logger.info('  🔮 Previsão 30 dias:\n');
+          logger.info('  Score previsto: ${result.forecast.forecast}/100');
+          logger.info('  Confiança: ${result.forecast.confidence}');
+          logger.info('  Tendência: ${result.forecast.trend}');
           console.log('');
         }
 
@@ -115,17 +117,17 @@ export function ideiaQualityCommand(): Command {
           return;
         }
 
-        console.log(`\n${'='.repeat(56)}`);
-        console.log('  ⚙️  IDEIA — Quality Gates Disponíveis');
-        console.log(`${'='.repeat(56)}\n`);
+        logger.info('\n${\'=\'.repeat(56)}');
+        logger.info('  ⚙️  IDEIA — Quality Gates Disponíveis');
+        logger.info('${\'=\'.repeat(56)}\n');
 
         if (checkpoints.length === 0) {
-          console.log('  Nenhum quality gate definido.\n');
+          logger.info('  Nenhum quality gate definido.\n');
           return;
         }
 
         for (const cp of checkpoints) {
-          console.log(`  • ${cp}`);
+          logger.info('  • ${cp}');
         }
         console.log('');
       } catch (error: unknown) {

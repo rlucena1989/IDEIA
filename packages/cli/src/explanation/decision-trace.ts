@@ -1,4 +1,6 @@
 import { DecisionTrace } from './explanation-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('decision-trace');
 
 export function createDecisionTrace(input: {
   decisionType: string;

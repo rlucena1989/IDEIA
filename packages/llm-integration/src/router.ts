@@ -1,6 +1,8 @@
 import { Emitter, Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { AiMessage } from '@ideia/theia-ai';
 import { RouterEngine, RouterConstraints, LlmProvider, ChatOptions, ChatResponse, FallbackChain } from './types';
+const logger = createLogger('llm-integration:router');
 
 export class DefaultRouterEngine implements RouterEngine {
   private providers = new Map<string, LlmProvider>();
@@ -65,7 +67,7 @@ export class DefaultFallbackChain implements FallbackChain {
         return await provider.chat(model, messages, options);
       } catch (err) {
         lastError = err as Error;
-        console.warn(`Fallback: provider ${providerId} failed: ${(err as Error).message}`);
+        logger.warn(`Fallback: provider ${providerId} failed`, { error: (err as Error).message });
       }
     }
 

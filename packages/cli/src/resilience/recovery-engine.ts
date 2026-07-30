@@ -1,4 +1,6 @@
 import { RecoveryPlan } from './recovery-plan';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('recovery-engine');
 
 export interface RecoveryResult {
   ok: boolean;

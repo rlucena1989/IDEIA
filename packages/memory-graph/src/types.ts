@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { createLogger } from '@ideia/logger';
 
 export const GraphNodeSchema = z.object({
   id: z.string(),
@@ -36,3 +37,12 @@ export const GraphPathSchema = z.object({
   score: z.number(),
 });
 export type GraphPath = z.infer<typeof GraphPathSchema>;
+
+
+export const GraphSnapshotSchema = z.object({
+  nodes: z.array(GraphNodeSchema),
+  edges: z.array(GraphEdgeSchema),
+  timestamp: z.string(),
+  version: z.string(),
+});
+export type GraphSnapshot = z.infer<typeof GraphSnapshotSchema>;

@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/gan-adversarial",
+  "private": true,
+  "description": "GAN Adversarial Attack Generation — WGAN attack generator, discriminator, wasserstein loss, ensemble defense, evolutionary GAN, conditional GAN, StyleGAN attack mixer, GAN-RL hybrid",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

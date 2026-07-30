@@ -1,4 +1,6 @@
 import { LanguageModel, UserRequest, LanguageModelResponse } from '@theia/ai-core/lib/common/language-model';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('language-model-config');
 
 interface TheiaMessage {
   actor?: string;

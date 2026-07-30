@@ -1,5 +1,7 @@
 import { Emitter, Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { EditorWidgetFactory } from './types';
+const logger = createLogger('editor-registry');
 
 export interface EditorRegistry {
   registerFactory(factory: EditorWidgetFactory): Disposable;

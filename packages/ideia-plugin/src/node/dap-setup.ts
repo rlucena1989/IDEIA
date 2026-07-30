@@ -19,7 +19,7 @@ export function setupDAP(wss: WebSocketServer): void {
         const msg = JSON.parse(data.toString());
         log.info(`Command: ${msg.command}`);
       } catch (_err) {
-        log.error(`Invalid message: ${err}`);
+        log.error(`Invalid message: ${_err}`);
       }
     });
 

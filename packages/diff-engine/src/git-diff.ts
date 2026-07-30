@@ -1,4 +1,5 @@
 import { execFile } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
 
 export interface GitDiffHunk {
   header: string;

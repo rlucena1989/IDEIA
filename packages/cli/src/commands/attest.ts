@@ -1,8 +1,11 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { printLine, printResult } from "../utils/output";
 import { createAttestation, loadChain, validateChain, revokeAttestation, Attestation } from '../attestations/chain';
 
 const ROOT = process.cwd();
+
+const logger = createLogger('cli-attest');
 
 export function attestVerifyAction(checkType: string, options: { result?: string; details?: string }): void {
   const result = (options.result || 'pass') as 'pass' | 'fail' | 'warn';
@@ -40,7 +43,7 @@ export function attestExportAction(): void {
     printLine('Nenhuma atestacao para exportar.');
     return;
   }
-  console.log(JSON.stringify(chain, null, 2));
+  logger.info(JSON.stringify(chain, null, 2));
 }
 
 export function attestChainAction(): void {

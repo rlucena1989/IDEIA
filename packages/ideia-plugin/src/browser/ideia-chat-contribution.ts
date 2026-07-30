@@ -1,10 +1,12 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { Command, CommandContribution, CommandRegistry } from '@theia/core/lib/common/command';
 import { KeybindingContribution, KeybindingRegistry } from '@theia/core/lib/browser/keybinding';
 import { MenuContribution, MenuModelRegistry, MenuPath } from '@theia/core/lib/common/menu';
 import { AbstractViewContribution } from '@theia/core/lib/browser/shell/view-contribution';
 import { IDEIA_ChatWidget } from './ideia-chat-widget';
 import { IDEIA_SearchOverlay } from './ideia-search-overlay';
+const logger = createLogger('ideia-chat-contribution');
 
 export const IDEIA_CHAT_COMMAND: Command = {
   id: 'ideia:chat',

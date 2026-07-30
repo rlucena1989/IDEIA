@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { createLogger } from '@ideia/logger';
 
 export const ToolParamSchema = z.object({
   name: z.string(),

@@ -1,4 +1,6 @@
 import { StateDelta, StateChange } from './delta-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('delta-engine');
 
 function classifyImpact(kind: StateChange['kind'], reason: string): StateChange['impact'] {
   if (kind === 'removed') return 'high';

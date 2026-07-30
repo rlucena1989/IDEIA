@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/human-in-the-loop",
+  "private": true,
+  "description": "Human-in-the-Loop for agents — approval gates, escalation policies, notification strategies, timeout handling",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

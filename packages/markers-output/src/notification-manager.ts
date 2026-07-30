@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { NotificationItem, NotificationManager, MessageAction } from './types';
 
 export class DefaultNotificationManager implements NotificationManager {

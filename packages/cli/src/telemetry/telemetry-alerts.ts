@@ -1,4 +1,6 @@
 import { TelemetryAlert, TelemetryEvent } from './telemetry-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('telemetry-alerts');
 
 export function detectTelemetryAlerts(events: TelemetryEvent[]): TelemetryAlert[] {
   const criticalCount = events.filter(e => e.severity === 'critical').length;

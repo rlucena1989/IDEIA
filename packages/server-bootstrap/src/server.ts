@@ -1,5 +1,7 @@
 import { BackendApplication } from '@ideia/core-backend';
+import { createLogger } from '@ideia/logger';
 import { IServer, ServerConfig, RouteHandler, MiddlewareHandler } from './types';
+const logger = createLogger('server');
 
 export class DefaultServer implements IServer {
   readonly config: ServerConfig;

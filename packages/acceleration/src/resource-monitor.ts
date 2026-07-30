@@ -1,5 +1,7 @@
 import { readHardwareProfile } from './hardware-profile';
+import { createLogger } from '@ideia/logger';
 import { HardwareProfile } from './types';
+const logger = createLogger('resource-monitor');
 
 export class ResourceMonitor {
   private samples: HardwareProfile[] = [];

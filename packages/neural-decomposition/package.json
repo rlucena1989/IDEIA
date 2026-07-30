@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/neural-decomposition",
+  "private": true,
+  "description": "Neural Decomposition & RL Planning — decomposicao neural de tarefas com aprendizado por reforco e otimizacao de estrategias de planejamento",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*",
+    "@types/node": "*"
+  }
+}

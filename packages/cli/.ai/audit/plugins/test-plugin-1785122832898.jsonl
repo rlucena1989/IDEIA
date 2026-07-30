@@ -1,0 +1,2 @@
+{"id":"1785122832899-ejj1je","timestamp":"2026-07-27T03:27:12.899Z","pluginId":"test-plugin","action":"file-read","resource":"F:\\PROJETOS\\ai-devkit-workspace\\IDEIA\\packages\\cli\\test.txt","allowed":true}
+{"id":"1785122832899-fleg0n","timestamp":"2026-07-27T03:27:12.899Z","pluginId":"test-plugin","action":"file-write","resource":"F:\\PROJETOS\\ai-devkit-workspace\\IDEIA\\packages\\cli\\out.txt","allowed":true}

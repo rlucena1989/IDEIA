@@ -76,3 +76,48 @@ export interface OptimizationSuggestion {
   impact: 'low' | 'medium' | 'high';
   effort: 'minutes' | 'hours' | 'days';
 }
+
+export interface AutonomyLevelCard {
+  current: string;
+  level: number;
+  maxLevel: number;
+  progress: number;
+  nextLevel: string | null;
+}
+
+export interface MetricCard {
+  label: string;
+  value: number;
+  change: number;
+  trend: 'up' | 'down' | 'stable';
+  unit?: string;
+}
+
+export interface ChartDataPoint {
+  timestamp: string;
+  value: number;
+  label?: string;
+}
+
+export interface ChartSeries {
+  name: string;
+  data: ChartDataPoint[];
+  color?: string;
+}
+
+export interface ChartConfig {
+  type: 'line' | 'bar' | 'area' | 'pie';
+  title: string;
+  series: ChartSeries[];
+}
+
+export interface DashboardWidget {
+  id: string;
+  type: 'health' | 'metrics' | 'chart' | 'activity' | 'tech-radar' | 'adr' | 'gap' | 'autonomy' | 'optimization';
+  title: string;
+  size: 'small' | 'medium' | 'large' | 'full';
+  data: unknown;
+  category?: string;
+  trend?: 'improving' | 'worsening' | 'stable';
+  sparklineData?: number[];
+}

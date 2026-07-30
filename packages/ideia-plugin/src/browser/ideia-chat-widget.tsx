@@ -4,7 +4,7 @@ import { injectable, inject, postConstruct } from '@theia/core/shared/inversify'
 import { FixedSizeList as List } from 'react-window';
 import { BaseWidget } from '@theia/core/lib/browser';
 import { MessageService } from '@theia/core/lib/common/message-service';
-import { IDEIA_CHAT_SERVICE, _IDEIA_TASK_PATH, IDEIA_ChatService } from '../common/ideia-protocol';
+import { IDEIA_CHAT_SERVICE, IDEIA_TASK_PATH, IDEIA_ChatService } from '../common/ideia-protocol';
 import { ChatMessage, ToolCall, Checkpoint, FileChange, SSEEvent } from '../common/ideia-types';
 
 interface MessagesState {

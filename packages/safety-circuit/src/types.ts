@@ -54,3 +54,49 @@ export interface EstopEvent {
   timestamp: string;
   triggeredBy?: string;
 }
+
+export type BreakerType = 'error-rate' | 'throughput' | 'latency' | 'memory' | 'rollback-rate';
+
+export type BreakerAction = 'alert' | 'throttle' | 'stop' | 'degraded';
+
+export interface BreakerConfig {
+  type: BreakerType;
+  enabled: boolean;
+  threshold: number;
+  cooldownMs: number;
+  action: BreakerAction;
+}
+
+export interface BreakerState {
+  type: BreakerType;
+  tripped: boolean;
+  trippedAt: number | null;
+  currentValue: number;
+  threshold: number;
+  cooldownUntil: number | null;
+  action: BreakerAction;
+}
+
+export type SafetyLayer = 'input-validation' | 'policy-engine' | 'sandbox' | 'circuit-breaker' | 'output-validation' | 'audit-trail' | 'emergency-stop';
+
+export interface SafetyLayerStatus {
+  layer: SafetyLayer;
+  enabled: boolean;
+  status: 'healthy' | 'degraded' | 'failed';
+  lastCheck: string;
+  metrics: Record<string, number>;
+}
+
+export interface RollbackCheckpoint {
+  id: string;
+  timestamp: number;
+  label: string;
+  snapshot: Record<string, unknown>;
+}
+
+export interface RollbackResult {
+  success: boolean;
+  checkpointId: string;
+  restoredAt: string;
+  errors: string[];
+}

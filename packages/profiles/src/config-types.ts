@@ -1,4 +1,5 @@
 import type { AutonomyLevel, RiskThreshold, SandboxLevel, TelemetryLevel, ContinuityStrategy, CheckpointStrategy, AdaptationStyle, ThemeMode, LayoutMode, NotificationChannel, LogLevel } from './types';
+import { createLogger } from '@ideia/logger';
 
 export interface AutonomyConfig {
   level: AutonomyLevel;

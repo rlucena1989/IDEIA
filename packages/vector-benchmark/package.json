@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/vector-benchmark",
+  "private": true,
+  "description": "IDEIA Vector Index Benchmark — HNSW, IVFFlat, IVF-PQ, DiskANN, FreshQNN, Adaptive Index Selector",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*",
+    "@types/node": "*"
+  }
+}

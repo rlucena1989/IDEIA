@@ -20,7 +20,7 @@ export interface SecurityViolation {
 export class SecurityMiddleware {
   private requests: Map<string, { count: number; resetAt: number }> = new Map();
   private violations: SecurityViolation[] = [];
-  private config!: SecurityConfig;
+  private config: SecurityConfig;
 
   constructor(config?: SecurityConfig) {
     this.config = {

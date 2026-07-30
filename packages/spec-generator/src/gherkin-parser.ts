@@ -1,4 +1,6 @@
 import { GherkinFeature, GherkinScenario, GherkinStep } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('gherkin-parser');
 
 export class GherkinParser {
   parse(content: string): GherkinFeature {

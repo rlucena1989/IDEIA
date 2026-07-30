@@ -1,7 +1,9 @@
 import { ProviderKind, RouteDecision, ComplexityLevel, Budget, HardwareProfile } from './types';
+import { createLogger } from '@ideia/logger';
 import { listModels } from './cost-model';
 import { estimateLatencyMs } from './latency-model';
 import { tierFromHardware } from './hardware-profile';
+const logger = createLogger('provider-router');
 
 interface RouteOption {
   provider: ProviderKind;

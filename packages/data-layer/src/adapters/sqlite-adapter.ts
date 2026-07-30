@@ -1,4 +1,5 @@
 import { DatabaseAdapter, DataLayerConfig, Migration, QueryResult } from '../types';
+import { createLogger } from '@ideia/logger';
 
 type DatabaseInstance = {
   exec: (sql: string) => void;

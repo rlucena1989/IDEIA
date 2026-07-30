@@ -1,4 +1,6 @@
 import { KnowledgeEntry } from './knowledge-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('knowledge-base');
 
 export class KnowledgeBase {
   private entries: KnowledgeEntry[] = [];

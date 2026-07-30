@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { printHeader, printLine, finish } from "../utils/output";
 import { getIO } from '../io';
@@ -186,8 +187,8 @@ export function generateSnapshot(root: string): SnapshotData {
       has_amazon_q: fileExists(root, '.amazonq', 'rules', 'governance.md'), has_codex: fileExists(root, 'AGENTS.md'),
     },
     drift: {
-      status: (() => { const d = path.join(root, '.ai', 'reports', 'drift'); if (!getIO().fs.exists(d)) return 'unknown'; const f = getIO().fs.readDir(d).filter((x: string) => x.endsWith('.json')); if (f.length === 0) return 'unknown'; const lastFile = f[f.length - 1]!; const r = readJsonSafe(root, '.ai', 'reports', 'drift', lastFile); return (r as { drifted?: unknown })?.drifted ? 'drifted' : 'synced'; })(),
-      last_check: (() => { const d = path.join(root, '.ai', 'reports', 'drift'); if (!getIO().fs.exists(d)) return null; const f = getIO().fs.readDir(d).filter((x: string) => x.endsWith('.json')); return f.length === 0 ? null : f[f.length - 1]!.replace('.json', ''); })(),
+      status: (() => { const d = path.join(root, '.ai', 'reports', 'drift'); if (!getIO().fs.exists(d)) return 'unknown'; const f = getIO().fs.readDir(d).filter((x: string) => x.endsWith('.json')); if (f.length === 0) return 'unknown'; const lastFile = f[f.length - 1] as string; const r = readJsonSafe(root, '.ai', 'reports', 'drift', lastFile); return (r as { drifted?: unknown })?.drifted ? 'drifted' : 'synced'; })(),
+      last_check: (() => { const d = path.join(root, '.ai', 'reports', 'drift'); if (!getIO().fs.exists(d)) return null; const f = getIO().fs.readDir(d).filter((x: string) => x.endsWith('.json')); return f.length === 0 ? null : (f[f.length - 1] as string).replace('.json', ''); })(),
     },
     last_session: (() => { const sf = path.join(root, '.ai', 'session-mode.json'); if (!getIO().fs.exists(sf)) return { timestamp: null, mode: null, summary: null }; try { const s = JSON.parse(getIO().fs.read(sf, 'utf8')); return { timestamp: s.timestamp || null, mode: s.mode || null, summary: s.summary || null }; } catch { return { timestamp: null, mode: null, summary: null }; } })(),
     tasks: (() => { const td = path.join(root, '.ai', 'tasks'); if (!getIO().fs.exists(td)) return { total: 0, completed: 0, pending: 0, in_progress: 0 }; const files = getIO().fs.readDir(td).filter((x: string) => x.endsWith('.md')); let t = 0, c = 0, p = 0, ip = 0; for (const f of files) { try { const content = getIO().fs.read(path.join(td, f), 'utf8'); const tasks = content.match(/- \[([ x~])\]/g) || []; for (const tk of tasks) { t++; if (tk === '- [x]') c++; else if (tk === '- [~]') ip++; else p++; } } catch {} } return { total: t, completed: c, pending: p, in_progress: ip }; })(),
@@ -226,7 +227,7 @@ export function snapshotCommand(): Command {
         printLine(`🔧 Frameworks: ${snapshot.project.frameworks.join(', ') || 'none'}`);
         printLine(`📝 Tasks: ${snapshot.tasks.completed}/${snapshot.tasks.total} completed`);
       }
-      finish({ checkpoint: 'snapshot', ok: true, status: 'passed', context_summary: `Snapshot generated in ${elapsed}ms`, data: snapshot });
+      finish({ checkpoint: 'snapshot', ok: true, status: 'passed', context_summary: `Snapshot generated in ${elapsed}ms`, data: snapshot as unknown as Record<string, unknown> });
     });
 
   cmd

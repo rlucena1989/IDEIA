@@ -1,5 +1,7 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { TextModelService, ITextModel } from './types';
+const logger = createLogger('text-model');
 
 class DefaultTextModel implements ITextModel {
   readonly uri: string;
@@ -23,8 +25,7 @@ class DefaultTextModel implements ITextModel {
   }
 
   getLineCount(): number {
-    if (!this.content) return 0;
-    return this.content.split('\n').length;
+    return this.content?.split('\n').length ?? 0;
   }
 
   getLineContent(line: number): string {

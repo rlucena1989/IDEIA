@@ -13,6 +13,12 @@ import {
   AutonomyLevel,
   EvolutionReport,
   ScanResult,
+  AutonomyLevelProgress,
+  autonomyLevelToNumber,
+  autonomyLevelToLabel,
+  AnalyzedResult,
+  EvolutionPlan,
+  PrioritizedRecommendation,
 } from './types';
 
 export class EvolutionCycle {
@@ -33,7 +39,7 @@ export class EvolutionCycle {
     adr: AutoAdr,
     logger: Logger,
     metrics: MetricsStore,
-    autonomyLevel: AutonomyLevel = 'assisted',
+    autonomyLevel: AutonomyLevel = 'N1',
     scannerConfigs?: ScannerConfig[]
   ) {
     this.bus = bus;
@@ -52,13 +58,14 @@ export class EvolutionCycle {
     const cycleId = `cycle-${start}`;
     const errors: string[] = [];
 
-    await this.bus.emit({ type: 'evolution.cycle.start', source: 'evolution-cycle', payload: { cycleId } });
-    this.audit.append({ actor: 'system', eventType: 'evolution.cycle', target: cycleId, decision: 'approved', result: 'success', metadata: { phase: 'start' } });
+    const autonomyNumber = autonomyLevelToNumber(this.autonomyLevel);
+    await this.bus.emit({ type: 'evolution.cycle.start', source: 'evolution-cycle', payload: { cycleId, autonomyLevel: this.autonomyLevel } });
+    this.audit.append({ actor: 'system', eventType: 'evolution.cycle', target: cycleId, decision: 'approved', result: 'success', metadata: { phase: 'start', autonomyLevel: this.autonomyLevel } });
     await this.metrics.record('evolution', 'cycle_started', 1, { cycleId });
 
     try {
       // SCAN
-      this.logger.info(`[${cycleId}] Phase: SCAN`);
+      this.logger.info(`[${cycleId}] Phase: SCAN (autonomy: ${this.autonomyLevel})`);
       const scanResults = await this.scanner.scanAll();
       await this.metrics.record('evolution', 'scans_completed', scanResults.length, { cycleId });
 
@@ -67,22 +74,30 @@ export class EvolutionCycle {
       const analyzed = this.analyzer.analyze(scanResults);
       await this.metrics.record('evolution', 'health_score', analyzed.overallHealth, { cycleId });
 
-      if (this.autonomyLevel === 'passive') {
+      if (autonomyNumber < 1) {
         return this.buildReport(cycleId, scanResults, analyzed, start, errors);
       }
 
-      // DECIDE + PLAN (assisted / autonomous)
+      // DECIDE + PLAN
       this.logger.info(`[${cycleId}] Phase: PLAN`);
       const recommendations = await this.filterByAutonomy(analyzed.recommendations);
       const plan = this.planner.createPlan(recommendations);
       await this.metrics.record('evolution', 'plan_steps', plan.steps.length, { cycleId });
 
-      if (this.autonomyLevel === 'assisted') {
-        await this.bus.emit({ type: 'evolution.awaiting.approval', source: 'evolution-cycle', payload: { cycleId, plan } });
-        const approved = await this.requestApproval(plan);
+      if (autonomyNumber < 2) {
+        await this.bus.emit({ type: 'evolution.awaiting.approval', source: 'evolution-cycle', payload: { cycleId, planId: plan.id, steps: plan.steps } as Record<string, unknown> });
+        const approved = await this.requestApproval(plan as unknown as Record<string, unknown>);
         if (!approved) {
-          return this.buildReport(cycleId, scanResults, analyzed, start, errors, plan, 0, 0, false);
+          const report = this.buildReport(cycleId, scanResults, analyzed, start, errors, plan, 0, 0, false);
+          report.levelProgress = this.computeLevelProgress();
+          return report;
         }
+      }
+
+      // N2+ auto-execute low-risk
+      if (autonomyNumber >= 4) {
+        this.logger.info(`[${cycleId}] Proactive mode: scanning ahead`);
+        await this.scanner.scanAll();
       }
 
       // EXECUTE
@@ -94,6 +109,7 @@ export class EvolutionCycle {
       await this.metrics.record('evolution', 'steps_executed', result.executed, { cycleId });
       await this.metrics.record('evolution', 'steps_failed', result.failed, { cycleId });
 
+      const levelProgress = this.computeLevelProgress();
       const report = this.buildReport(
         cycleId,
         scanResults,
@@ -103,24 +119,42 @@ export class EvolutionCycle {
         plan,
         result.executed,
         result.failed,
-        result.adrGenerated
+        result.adrGenerated,
+        levelProgress,
       );
 
-      await this.bus.emit({ type: 'evolution.cycle.complete', source: 'evolution-cycle', payload: { cycleId, success: report.success } });
+      await this.bus.emit({ type: 'evolution.cycle.complete', source: 'evolution-cycle', payload: { cycleId, success: report.success, autonomyLevel: this.autonomyLevel } });
       this.audit.append({ actor: 'system', eventType: 'evolution.cycle', target: cycleId, decision: 'approved', result: 'success', metadata: { phase: 'complete', success: report.success } });
 
       return report;
     } catch (_err) {
-      const msg = err instanceof Error ? err.message : String(err);
+      const msg = _err instanceof Error ? _err.message : String(_err);
       errors.push(msg);
       await this.bus.emit({ type: 'evolution.cycle.failed', source: 'evolution-cycle', payload: { cycleId, error: msg } });
       return this.buildReport(cycleId, [], { trends: [], recommendations: [], overallHealth: 0, timestamp: Date.now() }, start, errors);
     }
   }
 
-  private async filterByAutonomy(recommendations: { priority: number }[]): Promise<{ priority: number }[]> {
-    if (this.autonomyLevel === 'autonomous') return recommendations;
-    return recommendations.filter(r => r.priority <= 2);
+  private async filterByAutonomy(recommendations: PrioritizedRecommendation[]): Promise<PrioritizedRecommendation[]> {
+    const num = autonomyLevelToNumber(this.autonomyLevel);
+    if (num >= 3) return recommendations;
+    if (num >= 2) return recommendations.filter(r => r.priority <= 2);
+    return recommendations.filter(r => r.priority <= 1);
+  }
+
+  private computeLevelProgress(): AutonomyLevelProgress {
+    const num = autonomyLevelToNumber(this.autonomyLevel);
+    const levels: AutonomyLevel[] = ['N0', 'N1', 'N2', 'N3', 'N4', 'N5'];
+    const nextLevel = num < 5 ? levels[num + 1] : null;
+    const criteria = [
+      { name: 'Scan tests pass', met: true, weight: 0.2 },
+      { name: 'Plans executed', met: num >= 2, weight: 0.2 },
+      { name: 'Auto-approval active', met: num >= 3, weight: 0.2 },
+      { name: 'Proactive scanning', met: num >= 4, weight: 0.2 },
+      { name: 'Self-evolution active', met: num >= 5, weight: 0.2 },
+    ];
+    const score = criteria.reduce((s, c) => s + (c.met ? c.weight : 0), 0) * 100;
+    return { currentLevel: this.autonomyLevel, nextLevel, score: Math.round(score), criteria };
   }
 
   private async requestApproval(plan: Record<string, unknown>): Promise<boolean> {
@@ -139,13 +173,14 @@ export class EvolutionCycle {
   private buildReport(
     cycleId: string,
     scanResults: ScanResult[],
-    analyzed: Record<string, unknown>,
+    analyzed: AnalyzedResult,
     start: number,
     errors: string[],
-    plan?: Record<string, unknown>,
+    plan?: EvolutionPlan,
     executed = 0,
     failed = 0,
-    adrGenerated = false
+    adrGenerated = false,
+    levelProgress?: AutonomyLevelProgress,
   ): EvolutionReport {
     return {
       cycleId,
@@ -159,6 +194,7 @@ export class EvolutionCycle {
       duration: Date.now() - start,
       success: failed === 0 && errors.length === 0,
       errors,
+      levelProgress,
     };
   }
 }

@@ -1,7 +1,9 @@
 import { RiskLevel } from '@ideia/contracts';
+import { createLogger } from '@ideia/logger';
 import { evaluatePolicy, PolicyResult, PolicyInput } from './policy';
 import { CedarPolicySet, CedarPolicy as _CedarPolicy, evaluateCedarPolicy } from './cedar-adapter';
 import { loadPolicyDirectory, PolicyRule as _PolicyRule, PolicyDocument as _PolicyDocument } from './policy-loader';
+const logger = createLogger('audit-policies');
 
 export interface PolicyAuditEntry {
   ruleId: string;

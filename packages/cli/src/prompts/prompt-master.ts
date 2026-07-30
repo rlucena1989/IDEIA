@@ -1,4 +1,6 @@
 import { PromptDefinition } from './prompt-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('prompt-master');
 
 export const MASTER_PROMPT: PromptDefinition = {
   id: 'ai-devkit-master',

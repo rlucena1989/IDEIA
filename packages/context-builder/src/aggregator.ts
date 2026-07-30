@@ -1,4 +1,6 @@
 import { ContextItem, ContextSource, TaskProfile, ContextAggregatorResult } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('aggregator');
 
 export type SourceProvider = (profile: TaskProfile, source: ContextSource) => Promise<ContextItem[]>;
 

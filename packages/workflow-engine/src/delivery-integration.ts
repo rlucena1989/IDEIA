@@ -48,7 +48,7 @@ async function _runQualityGate(name: string, command: string, cwd: string, timeo
   try {
     const output = execFileSync('npx', command.split(' '), { cwd, encoding: 'utf-8', timeout, stdio: 'pipe' });
     return { name, passed: true, output: output.trim().slice(0, 500) };
-  } catch (_e) {
+  } catch (e) {
     const err = e as { stdout?: string; stderr?: string; message?: string };
     return { name, passed: false, error: err.stderr?.toString().trim().slice(0, 500) || err.message || String(e) };
   }
@@ -75,7 +75,7 @@ export async function runAllQualityGates(
           output: output.trim().slice(0, 500),
           durationMs: Date.now() - start,
         } as GateResult;
-      } catch (_e) {
+      } catch (e) {
         const err = e as { stdout?: string; stderr?: string; message?: string };
         return {
           name: gate.name,

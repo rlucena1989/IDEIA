@@ -1,4 +1,5 @@
 import type { KnowledgeEntry } from '../knowledge-entries';
+import { createLogger } from '@ideia/logger';
 
 export const ENTRIES: KnowledgeEntry[] = [
 {

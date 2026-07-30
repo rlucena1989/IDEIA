@@ -1,0 +1,7 @@
+{
+  "name": "typescript",
+  "language": "typescript",
+  "version": "0.0.0",
+  "capabilities": ["detect", "init", "generateEntity", "runLint", "runTests", "runBuild", "qualityGate"],
+  "description": "TypeScript code generator adapter with full project scaffolding, entity generation, and testing support"
+}

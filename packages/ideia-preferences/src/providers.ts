@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { PreferenceProvider, PreferenceScope } from './types';
 
 export class DefaultPreferenceProvider implements PreferenceProvider {
@@ -72,7 +73,10 @@ export class DefaultPreferenceProviderChain {
       }
     }
     return {
-      ...result as any,
+      default: result.default,
+      user: result.user,
+      workspace: result.workspace,
+      folder: result.folder,
       effective: this.get<T>(key),
     };
   }

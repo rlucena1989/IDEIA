@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { DeployEnvironment } from './types';
 
 export type CanaryStep = 'verify' | '10_percent' | '50_percent' | '100_percent';
@@ -153,7 +154,7 @@ export class CanaryDeployer {
     } catch (_err) {
       return {
         step, weight, status: 'failed', durationMs: Date.now() - start,
-        error: String(err), startedAt, completedAt: new Date().toISOString(),
+        error: String(_err), startedAt, completedAt: new Date().toISOString(),
       };
     }
   }

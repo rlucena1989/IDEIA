@@ -108,6 +108,7 @@ export interface DashboardMetrics {
   studyScore: number;
   tutorialsCompleted: number;
   tutorialsTotal: number;
+  memoryUsageMB?: number;
 }
 
 export interface IdeaRequest {

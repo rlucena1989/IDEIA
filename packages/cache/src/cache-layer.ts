@@ -27,4 +27,23 @@ export interface CacheLayer {
   clear(): Promise<void>;
   stats(): Promise<CacheStats>;
   keys(): Promise<string[]>;
+  warmup?(dataSource: () => Promise<WarmupEntry[]> | WarmupEntry[]): Promise<number>;
+  backup?(): Promise<BackupEntry[]>;
+  restore?(entries: BackupEntry[]): Promise<void>;
+}
+
+export interface WarmupEntry {
+  key: string;
+  value: unknown;
+  priority: number;
+  ttlMs?: number;
+}
+
+export interface BackupEntry {
+  key: string;
+  value: unknown;
+  timestamp: number;
+  compressed: boolean;
+  expiresAt?: number;
+  hits?: number;
 }

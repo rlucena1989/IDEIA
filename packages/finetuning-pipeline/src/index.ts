@@ -1,0 +1,13 @@
+export { DataCollector } from './data-collector';
+export type { InteractionData, CodeChangePair, FeedbackData, CollectorStats } from './data-collector';
+export { FinetuningJobManager } from './finetuning-job';
+export type { JobSubmission, JobFilter } from './finetuning-job';
+export { ModelRegistry } from './model-registry';
+export type { ModelMetadata, ActiveModelEntry, ActivationScope } from './model-registry';
+export { PEFTExecutor } from './peft-executor';
+export type { PEFTConfig, PEFTMethod, TrainingRun, TrainingHyperparameters } from './peft-executor';
+export { TrainingConnector } from './training-connector';
+export type { TrainingBackend } from './training-connector';
+export { ContinuousFinetuning } from './continuous-finetuning';
+export type { ContinuousFTConfig, DriftSignal } from './continuous-finetuning';
+export * from './types';

@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.coverage');
 import { handleCoverageAudit, handleCoverageGaps, handleCoverageRepair, handleCoverageStatus, CoverageRepairOutput, CoverageStatusOutput } from '../domain/coverage-service';
 
 export function coverageCommand(): Command {
@@ -12,7 +14,7 @@ export function coverageCommand(): Command {
     .action((options: { json?: boolean }) => {
       const result = handleCoverageAudit();
       if (!result.ok) {
-        console.log(`⚠ ${result.message}`);
+        logger.info('⚠ ${result.message}');
         return;
       }
       if (!result.data) return;
@@ -21,13 +23,13 @@ export function coverageCommand(): Command {
         console.log(JSON.stringify(data, null, 2));
         return;
       }
-      console.log(`📊 Cobertura geral: ${data.average}%`);
-      console.log(`   Lines: ${data.overall.lines}%`);
-      console.log(`   Branches: ${data.overall.branches}%`);
-      console.log(`   Functions: ${data.overall.functions}%`);
-      console.log(`   Statements: ${data.overall.statements}%`);
-      console.log(`\n📁 Arquivos: ${data.fileCount}`);
-      console.log(`🔴 Gaps encontrados: ${data.gaps.length}\n`);
+      logger.info('📊 Cobertura geral: ${data.average}%');
+      logger.info('   Lines: ${data.overall.lines}%');
+      logger.info('   Branches: ${data.overall.branches}%');
+      logger.info('   Functions: ${data.overall.functions}%');
+      logger.info('   Statements: ${data.overall.statements}%');
+      logger.info('\n📁 Arquivos: ${data.fileCount}');
+      logger.info('🔴 Gaps encontrados: ${data.gaps.length}\n');
 
       if (data.gaps.length > 0) {
         const ranked: Record<string, typeof data.gaps> = { critical: [], important: [], optional: [], cosmetic: [] };
@@ -35,11 +37,11 @@ export function coverageCommand(): Command {
         for (const [severity, items] of Object.entries(ranked)) {
           if (items.length > 0) {
             const icon = severity === 'critical' ? '🔴' : severity === 'important' ? '🟠' : severity === 'optional' ? '🟡' : '🟢';
-            console.log(`${icon} ${severity.toUpperCase()}: ${items.length}`);
+            logger.info('${icon} ${severity.toUpperCase()}: ${items.length}');
             for (const g of items.slice(0, 3)) {
-              console.log(`     ${g.file} — ${g.reason.substring(0, 80)}`);
+              logger.info('     ${g.file} — ${g.reason.substring(0, 80)}');
             }
-            if (items.length > 3) console.log(`     ... e mais ${items.length - 3} gaps`);
+            if (items.length > 3) logger.info('     ... e mais ${items.length - 3} gaps');
           }
         }
       }
@@ -53,7 +55,7 @@ export function coverageCommand(): Command {
     .action((options: { json?: boolean; severity?: string }) => {
       const result = handleCoverageGaps(options.severity);
       if (!result.ok) {
-        console.log(`⚠ ${result.message}`);
+        logger.info('⚠ ${result.message}');
         return;
       }
       if (!result.data) return;
@@ -63,15 +65,15 @@ export function coverageCommand(): Command {
         return;
       }
       if (data.gaps.length === 0) {
-        console.log('✅ Nenhum gap encontrado. Cobertura está dentro da meta.');
+        logger.info('✅ Nenhum gap encontrado. Cobertura está dentro da meta.');
         return;
       }
-      console.log(`📋 Gaps priorizados (${data.total}):\n`);
+      logger.info('📋 Gaps priorizados (${data.total}):\n');
       for (const g of data.gaps) {
         const icon = g.severity === 'critical' ? '🔴' : g.severity === 'important' ? '🟠' : g.severity === 'optional' ? '🟡' : '🟢';
-        console.log(`${icon} [${g.severity.toUpperCase()}] ${g.file}`);
-        console.log(`   ${g.reason.substring(0, 100)}`);
-        console.log(`   Recomendação: ${g.recommendation}`);
+        logger.info('${icon} [${g.severity.toUpperCase()}] ${g.file}');
+        logger.info('   ${g.reason.substring(0, 100)}');
+        logger.info('   Recomendação: ${g.recommendation}');
         console.log();
       }
     });
@@ -85,7 +87,7 @@ export function coverageCommand(): Command {
       const maxIter = parseInt(options.max ?? '3', 10);
       const result = handleCoverageRepair(maxIter);
       if (!result.ok) {
-        console.log(`⚠ ${result.message}`);
+        logger.info('⚠ ${result.message}');
         return;
       }
       if (!result.data) return;
@@ -95,13 +97,13 @@ export function coverageCommand(): Command {
         return;
       }
       const repairStatus = data.status as { gapsFound: number; currentFocus?: string; nextAction: string; blocked: boolean };
-      console.log(`🔧 Ciclo de reparo concluído`);
-      console.log(`   Gaps encontrados: ${repairStatus.gapsFound}`);
-      console.log(`   Gaps reparados: ${data.repaired.length}`);
-      console.log(`   Cobertura atual: ${data.coverage}%`);
-      console.log(`   Foco atual: ${repairStatus.currentFocus ?? 'N/A'}`);
-      console.log(`   Próxima ação: ${repairStatus.nextAction}`);
-      console.log(`   Bloqueado: ${repairStatus.blocked ? 'Sim' : 'Não'}`);
+      logger.info('🔧 Ciclo de reparo concluído');
+      logger.info('   Gaps encontrados: ${repairStatus.gapsFound}');
+      logger.info('   Gaps reparados: ${data.repaired.length}');
+      logger.info('   Cobertura atual: ${data.coverage}%');
+      logger.info('   Foco atual: ${repairStatus.currentFocus ?? \'N/A\'}');
+      logger.info('   Próxima ação: ${repairStatus.nextAction}');
+      logger.info('   Bloqueado: ${repairStatus.blocked ? \'Sim\' : \'Não\'}');
     });
 
   cmd
@@ -116,23 +118,23 @@ export function coverageCommand(): Command {
       }
       const data = result.data;
       if (!data) return;
-      console.log('📊 Status da Autonomia de Testes');
-      console.log('═══════════════════════════════════');
-      console.log(`   Cobertura atual: ${data.current}%`);
-      console.log(`   Gaps: ${data.gaps}`);
-      console.log(`   Alvo: ${data.target}%`);
+      logger.info('📊 Status da Autonomia de Testes');
+      logger.info('═══════════════════════════════════');
+      logger.info('   Cobertura atual: ${data.current}%');
+      logger.info('   Gaps: ${data.gaps}');
+      logger.info('   Alvo: ${data.target}%');
 
       const persisted = data.persisted as { lastRunAt?: string; gapsResolved: number; currentFocus?: string; nextAction?: string; blocked: boolean; reason?: string } | null;
       if (persisted) {
-        console.log(`\n   Último ciclo: ${persisted.lastRunAt ?? 'N/A'}`);
-        console.log(`   Gaps resolvidos: ${persisted.gapsResolved}`);
-        console.log(`   Foco: ${persisted.currentFocus ?? 'N/A'}`);
-        console.log(`   Próximo: ${persisted.nextAction ?? 'N/A'}`);
-        console.log(`   Bloqueado: ${persisted.blocked ? '🔴 Sim' : '✅ Não'}`);
-        if (persisted.reason) console.log(`   Razão: ${persisted.reason}`);
+        logger.info('\n   Último ciclo: ${persisted.lastRunAt ?? \'N/A\'}');
+        logger.info('   Gaps resolvidos: ${persisted.gapsResolved}');
+        logger.info('   Foco: ${persisted.currentFocus ?? \'N/A\'}');
+        logger.info('   Próximo: ${persisted.nextAction ?? \'N/A\'}');
+        logger.info('   Bloqueado: ${persisted.blocked ? \'🔴 Sim\' : \'✅ Não\'}');
+        if (persisted.reason) logger.info('   Razão: ${persisted.reason}');
       } else {
-        console.log('\n   ⚠ Nenhum ciclo de reparo foi executado ainda.');
-        console.log('   Execute: ai-devkit coverage repair');
+        logger.info('\n   ⚠ Nenhum ciclo de reparo foi executado ainda.');
+        logger.info('   Execute: ai-devkit coverage repair');
       }
     });
 

@@ -14,7 +14,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createHealthCheck = exports.HealthCheck = exports.createRequestReplyManager = exports.RequestReplyManager = exports.createObjectStore = exports.ObjectStore = exports.createKVStore = exports.KVStore = exports.createConsumerGroupManager = exports.ConsumerGroupManager = exports.createDeadLetterQueue = exports.DeadLetterQueue = exports.EVENT_STREAMS = exports.createNatsStreamManager = exports.NatsStreamManager = exports.createNatsConnectionManager = exports.NatsConnectionManager = exports.createWSBroadcast = exports.WSBroadcast = exports.createBus = exports.createNatsEventBus = exports.NatsEventBus = exports.createEventBus = exports.EventBus = void 0;
+exports.SagaCoordinator = exports.AgentSessionProjection = exports.ProjectionEngine = exports.InMemorySnapshotStore = exports.InMemoryEventStore = exports.AggregateRoot = exports.createHealthCheck = exports.HealthCheck = exports.createRequestReplyManager = exports.RequestReplyManager = exports.createObjectStore = exports.ObjectStore = exports.createKVStore = exports.KVStore = exports.createConsumerGroupManager = exports.ConsumerGroupManager = exports.createDeadLetterQueue = exports.DeadLetterQueue = exports.EVENT_STREAMS = exports.createNatsStreamManager = exports.NatsStreamManager = exports.createNatsConnectionManager = exports.NatsConnectionManager = exports.createWSBroadcast = exports.WSBroadcast = exports.createBus = exports.createNatsEventBus = exports.NatsEventBus = exports.createEventBus = exports.EventBus = void 0;
 var event_bus_1 = require("./event-bus");
 Object.defineProperty(exports, "EventBus", { enumerable: true, get: function () { return event_bus_1.EventBus; } });
 Object.defineProperty(exports, "createEventBus", { enumerable: true, get: function () { return event_bus_1.createEventBus; } });
@@ -52,4 +52,16 @@ Object.defineProperty(exports, "createRequestReplyManager", { enumerable: true, 
 var health_1 = require("./health");
 Object.defineProperty(exports, "HealthCheck", { enumerable: true, get: function () { return health_1.HealthCheck; } });
 Object.defineProperty(exports, "createHealthCheck", { enumerable: true, get: function () { return health_1.createHealthCheck; } });
+var aggregate_root_1 = require("./aggregate-root");
+Object.defineProperty(exports, "AggregateRoot", { enumerable: true, get: function () { return aggregate_root_1.AggregateRoot; } });
+var event_store_1 = require("./event-store");
+Object.defineProperty(exports, "InMemoryEventStore", { enumerable: true, get: function () { return event_store_1.InMemoryEventStore; } });
+var snapshot_store_1 = require("./snapshot-store");
+Object.defineProperty(exports, "InMemorySnapshotStore", { enumerable: true, get: function () { return snapshot_store_1.InMemorySnapshotStore; } });
+var projection_engine_1 = require("./projection-engine");
+Object.defineProperty(exports, "ProjectionEngine", { enumerable: true, get: function () { return projection_engine_1.ProjectionEngine; } });
+Object.defineProperty(exports, "AgentSessionProjection", { enumerable: true, get: function () { return projection_engine_1.AgentSessionProjection; } });
+var saga_coordinator_1 = require("./saga-coordinator");
+Object.defineProperty(exports, "SagaCoordinator", { enumerable: true, get: function () { return saga_coordinator_1.SagaCoordinator; } });
+__exportStar(require("./types-event-sourcing"), exports);
 //# sourceMappingURL=index.js.map

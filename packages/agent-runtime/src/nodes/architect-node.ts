@@ -1,6 +1,8 @@
 import { LangGraphStateAnnotation, LangGraphAgentRole } from '../langgraph-graph';
+import { createLogger } from '@ideia/logger';
 import { LangGraphNodeFunction } from '../langgraph-graph';
 import { LLMProvider, ChatMessage } from '@ideia/llm-provider';
+const logger = createLogger('architect-node');
 
 const ARCHITECT_PROMPT = `You are an Architect agent. Based on the requirements analysis, design a solution architecture:
 1. Choose the appropriate architectural pattern

@@ -1,4 +1,5 @@
 import { TaskNode, DecomposedTask, PhaseId, RiskLevel } from './orchestration-types';
+import { createLogger } from '@ideia/logger';
 
 /** Interface que define a estrutura de decomposition input. */
 export interface DecompositionInput {

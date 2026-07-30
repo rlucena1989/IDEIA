@@ -1,6 +1,6 @@
-import { EventBus } from './event-bus';
 import { type Logger } from '@ideia/logger';
-import { NatsEventBus, NatsEventBusConfig } from './nats-event-bus';
+import { NatsEventBusConfig } from './nats-event-bus';
+import { IEventBus } from './types';
 import { AuditTrail } from '@ideia/audit-trail';
 export type BusType = 'memory' | 'nats' | 'auto';
 export interface EventBusFactoryConfig {
@@ -12,5 +12,5 @@ export interface EventBusFactoryConfig {
     auditTrail?: AuditTrail;
     logger?: Logger;
 }
-export declare function createBus(config?: EventBusFactoryConfig): Promise<EventBus | NatsEventBus>;
+export declare function createBus(config?: EventBusFactoryConfig): Promise<IEventBus>;
 //# sourceMappingURL=event-bus-factory.d.ts.map

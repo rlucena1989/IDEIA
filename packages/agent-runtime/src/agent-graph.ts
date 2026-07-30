@@ -1,4 +1,5 @@
 import { LangGraphAgent, LangGraphAgentRole, LangGraphStateAnnotation, LangGraphNodeFunction, LangGraphNodeTiming, LangGraphExecutionSummary, LangGraphConfig, createLangGraphAgent } from './langgraph-graph';
+import { createLogger } from '@ideia/logger';
 
 /**
  * @deprecated Use {@link LangGraphAgent} directly. This class delegates to LangGraphAgent for backwards compatibility.

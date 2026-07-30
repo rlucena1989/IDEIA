@@ -1,5 +1,7 @@
 import * as crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
 import type { ApprovalRequest, ApprovalResult } from '@ideia/contracts';
+const logger = createLogger('approval-flow');
 
 export type { ApprovalRequest, ApprovalResult };
 

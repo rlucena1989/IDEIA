@@ -1,5 +1,7 @@
 import { LegacyState, ArchiveBundle, RestorationPlan } from './legacy-types';
+import { createLogger } from '@ideia/logger';
 import { FinalAuditEntry } from './final-audit';
+const logger = createLogger('legacy-report');
 
 export interface LegacyReport {
   generatedAt: string;

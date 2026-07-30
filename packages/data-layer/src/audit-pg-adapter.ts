@@ -1,5 +1,7 @@
 import { DatabaseAdapter } from './types';
+import { createLogger } from '@ideia/logger';
 import { AuditRepository } from './repositories/audit-repo';
+const logger = createLogger('audit-pg-adapter');
 
 export class AuditPgAdapter {
   private adapter: DatabaseAdapter;

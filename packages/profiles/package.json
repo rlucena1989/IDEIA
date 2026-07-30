@@ -1,6 +1,6 @@
 {
   "name": "@ideia/profiles",
-  "description": "IDEIA Profile System Ã¢â‚¬â€ 5 presets (solo-dev, tech-lead, automator, enterprise, custom) with full config tree",
+  "description": "IDEIA Profile System Ã¢â‚¬â€ 7 presets (solo-dev, tech-lead, automator, enterprise, custom, student, reviewer) with full config tree",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

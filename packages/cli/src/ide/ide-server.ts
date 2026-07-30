@@ -17,7 +17,9 @@
  */
 
 import http from 'node:http';
-import _fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('ide.ide-server');
+import https from 'node:https';
 import path from 'node:path';
 import url from 'node:url';
 import { WebSocketServer, WebSocket as WsWebSocket } from 'ws';
@@ -33,12 +35,14 @@ import type { EventType } from '@ideia/event-bus';
 import { createChatHandler } from './chat-bridge';
 import { LspBridge } from './lsp-bridge';
 import { SecurityMiddleware, createSecurityMiddleware } from './security-middleware';
+import { loadTlsOptions } from '../utils/crypto-utils';
 
 export interface IdeServerOptions {
   port: number;
   root: string;
   host?: string;
   staticDir?: string;
+  tls?: boolean;
 }
 
 export interface IdeServerInstance {
@@ -113,11 +117,20 @@ export async function startIdeServer(opts: IdeServerOptions): Promise<IdeServerI
   const chatHandler = createChatHandler(auditTrail, path.join(root, '.ai', 'ide', 'chat-memory.json'), root, agentRuntime);
   const security = createSecurityMiddleware();
 
-  // Servidor HTTP
-  const server = http.createServer((req, res) => {
-    // Security headers
-    security.setSecurityHeaders(res);
+  // TLS auto-detect
+  const tlsEnabled = opts.tls !== false;
+  const tlsOpts = tlsEnabled ? loadTlsOptions(path.join(root, 'certs')) : null;
+  const server = tlsOpts
+    ? https.createServer(tlsOpts, (req, res) => {
+        security.setSecurityHeaders(res);
+        handleRequest(req, res);
+      })
+    : http.createServer((req, res) => {
+        security.setSecurityHeaders(res);
+        handleRequest(req, res);
+      });
 
+  function handleRequest(req: http.IncomingMessage, res: http.ServerResponse): void {
     // CORS - validate Origin header
     const allowedOrigins = [`http://${host}:${port}`, 'http://localhost:3000', 'http://127.0.0.1:3000'];
     const origin = req.headers['origin'] || '';
@@ -158,7 +171,7 @@ export async function startIdeServer(opts: IdeServerOptions): Promise<IdeServerI
               res.end(JSON.stringify({ ok: false, error: e.message }));
             });
           }
-        } catch (_e) {
+        } catch (e) {
           res.writeHead(500, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ ok: false, error: (e as Error).message }));
         }
@@ -176,7 +189,7 @@ export async function startIdeServer(opts: IdeServerOptions): Promise<IdeServerI
       docs: 'https://ideia.dev/docs',
       endpoints: Object.keys(apiRoutes),
     }));
-  });
+  }
 
   // WebSocket
   const wss = new WebSocketServer({ server, path: '/ws' });
@@ -184,7 +197,7 @@ export async function startIdeServer(opts: IdeServerOptions): Promise<IdeServerI
   const clientSubs = new WeakMap<WsWebSocket, Set<string>>();
 
   wss.on('connection', (ws: WsWebSocket) => {
-    console.log('[IDE] WebSocket client connected');
+    logger.info('[IDE] WebSocket client connected');
     const subs = new Set<string>(['file:change', 'terminal:execution']);
     clientSubs.set(ws, subs);
 
@@ -215,7 +228,7 @@ export async function startIdeServer(opts: IdeServerOptions): Promise<IdeServerI
       },
     }));
 
-    ws.on('close', () => console.log('[IDE] WebSocket client disconnected'));
+    ws.on('close', () => logger.info('[IDE] WebSocket client disconnected'));
   });
 
   function broadcast(type: string, data: unknown): void {
@@ -236,7 +249,7 @@ export async function startIdeServer(opts: IdeServerOptions): Promise<IdeServerI
   console.warn('[IDE] LSP WebSocket exposed at /lsp without authentication — only use in trusted networks');
   lspWss.on('connection', (ws: WsWebSocket) => {
     const session = lspBridge.spawnServer(root);
-    console.log(`[IDE] LSP session started: ${session.id}`);
+    logger.info('[IDE] LSP session started: ${session.id}');
 
     ws.on('message', (data: Buffer) => {
       lspBridge.sendMessage(session.id, data.toString());
@@ -256,7 +269,7 @@ export async function startIdeServer(opts: IdeServerOptions): Promise<IdeServerI
 
     ws.on('close', () => {
       lspBridge.kill(session.id);
-      console.log(`[IDE] LSP session closed: ${session.id}`);
+      logger.info('[IDE] LSP session closed: ${session.id}');
     });
   });
 
@@ -323,11 +336,13 @@ export async function startIdeServer(opts: IdeServerOptions): Promise<IdeServerI
 
   return new Promise((resolve) => {
     server.listen(port, host, () => {
-      const addr = `http://${host}:${port}`;
-      console.log(`[IDE] Server running at ${addr}`);
-      console.log(`[IDE] Workspace root: ${root}`);
-      console.log(`[IDE] WebSocket at ws://${host}:${port}/ws`);
-      if (staticDir) console.log(`[IDE] Static files: ${staticDir}`);
+      const proto = tlsOpts ? 'https' : 'http';
+      const addr = `${proto}://${host}:${port}`;
+      logger.info('[IDE] Server running at ${addr}');
+      if (tlsOpts) logger.info('[IDE] TLS 1.3 enabled (AES-256-GCM + CHACHA20-POLY1305)');
+      logger.info('[IDE] Workspace root: ${root}');
+      logger.info('[IDE] WebSocket at ${proto === \'https\' ? \'wss\' : \'ws\'}://${host}:${port}/ws');
+      if (staticDir) logger.info('[IDE] Static files: ${staticDir}');
       resolve({
         server,
         wss,

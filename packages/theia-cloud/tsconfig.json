@@ -1,0 +1,38 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "composite": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../server-bootstrap"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../data-layer"
+    },
+    {
+      "path": "../memory-store"
+    }
+  ]
+}

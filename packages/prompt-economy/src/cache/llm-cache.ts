@@ -1,5 +1,7 @@
 import { CacheEntry, CacheHit, LLMCacheConfig } from '../types';
+import { createLogger } from '@ideia/logger';
 import { createHash } from 'crypto';
+const logger = createLogger('llm-cache');
 
 const DEFAULT_CONFIG: LLMCacheConfig = {
   planCacheTtlMs: 3600000,

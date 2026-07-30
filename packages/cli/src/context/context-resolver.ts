@@ -1,4 +1,6 @@
 import { OperationalContext } from './context-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('context-resolver');
 
 export function resolveActiveContext(contexts: OperationalContext[]): OperationalContext | undefined {
   return [...contexts]

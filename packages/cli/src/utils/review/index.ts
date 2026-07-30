@@ -1,5 +1,8 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
+
+const logger = createLogger('cli-review');
 
 /** Interface que define a estrutura de review finding. */
 export interface ReviewFinding {
@@ -60,7 +63,7 @@ export const antiSlop = (cwd: string): ReviewFinding[] => {
     // Detect duplicate lines (>80% similar within 50 lines)
     for (let i = 0; i < lines.length - 1; i++) {
       for (let j = i + 1; j < Math.min(i + 50, lines.length); j++) {
-        if (lines[i]!.trim() && lines[i] === lines[j] && lines[i]!.length > 20) {
+        if (lines[i].trim() && lines[i] === lines[j] && lines[i].length > 20) {
           findings.push({ type: 'anti-slop', severity: 'medium', file: path.relative(cwd, file), line: j + 1, message: 'Linha duplicada', suggestion: 'Extraia para funcao ou variavel' });
           break;
         }
@@ -80,14 +83,16 @@ export const regressionCheck = (cwd: string): ReviewFinding[] => {
     const exportRegex = /^export\s+(interface|type|class|function|const|enum|abstract\s+class)\s+(\w+)/gm;
     let match;
     while ((match = exportRegex.exec(content)) !== null) {
-      const name = match[2]!;
+      const name = match[2] ?? '';
       if (!exports.has(name)) exports.set(name, []);
-      exports.get(name) ?? {}.push({ file: rel, line: content.slice(0, match.index).split('\n').length });
+      const locs = exports.get(name) ?? [];
+      locs.push({ file: rel, line: content.slice(0, match.index).split('\n').length });
+      exports.set(name, locs);
     }
   }
   for (const [name, locations] of exports) {
     if (locations.length > 1) {
-      findings.push({ type: 'regression', severity: 'medium', file: locations[0]!.file, line: locations[0]!.line, message: `Export "${name}" definido em ${locations.length} lugares — possivel conflito`, suggestion: 'Renomeie exports duplicados' });
+      findings.push({ type: 'regression', severity: 'medium', file: locations[0].file, line: locations[0].line, message: `Export "${name}" definido em ${locations.length} lugares — possivel conflito`, suggestion: 'Renomeie exports duplicados' });
     }
   }
   return findings;
@@ -108,7 +113,7 @@ export const securityScan = (cwd: string): ReviewFinding[] => {
     for (const sp of secretPatterns) {
       const lines = content.split('\n');
       for (let i = 0; i < lines.length; i++) {
-        if (lines[i] && sp.pattern.test(lines[i]!)) {
+        if (lines[i] && sp.pattern.test(lines[i])) {
           findings.push({ type: 'security', severity: sp.severity, file: path.relative(cwd, file), line: i + 1, message: sp.msg, suggestion: sp.suggestion });
         }
       }
@@ -125,7 +130,7 @@ export const performanceCheck = (cwd: string): ReviewFinding[] => {
   for (const [file, content] of files) {
     const lines = content.split('\n');
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i]!;
+      const line = lines[i];
       // N+1 query detection: for loop with await inside
       if (/(for|while)\s*\(/.test(line) && /await/.test(line)) {
         findings.push({ type: 'performance', severity: 'high', file: path.relative(cwd, file), line: i + 1, message: 'Possivel N+1: await dentro de loop', suggestion: 'Use Promise.all() ou batch query' });
@@ -163,7 +168,7 @@ export function runReview(checks: string[], cwd: string, json?: boolean): { find
   const summary = summarize(allFindings);
 
   if (json) {
-    console.log(JSON.stringify({ findings: allFindings, summary }, null, 2));
+    logger.info(JSON.stringify({ findings: allFindings, summary }, null, 2));
   } else {
     const report = [`# Adversarial Review Report\n`, `Date: ${new Date().toISOString()}\n`, `Checks: ${checks.join(', ')}\n`];
     report.push(`\n## Summary\n| Severity | Count |\n|----------|-------|\n`);
@@ -178,8 +183,8 @@ export function runReview(checks: string[], cwd: string, json?: boolean): { find
     fs.mkdirSync(reportDir, { recursive: true });
     const reportFile = path.join(reportDir, `review-${Date.now()}.md`);
     fs.writeFileSync(reportFile, reportStr, 'utf-8');
-    console.log(reportStr);
-    console.log(`\nRelatorio salvo: ${path.relative(cwd, reportFile)}`);
+    logger.info(reportStr);
+    logger.info('\nRelatorio salvo: ${path.relative(cwd, reportFile)}');
   }
 
   return { findings: allFindings, summary };

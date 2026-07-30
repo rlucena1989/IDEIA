@@ -1,6 +1,8 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { EngineConfig, EngineReport } from './types';
+const logger = createLogger('reporter');
 
 export function writeReport(config: EngineConfig, report: EngineReport) {
   fs.mkdirSync(config.reportDir, { recursive: true });

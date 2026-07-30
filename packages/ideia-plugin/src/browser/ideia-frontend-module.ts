@@ -1,4 +1,5 @@
 import { ContainerModule } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { bindViewContribution } from '@theia/core/lib/browser';
 import { WidgetFactory } from '@theia/core/lib/browser/widget-manager';
 import { FrontendApplicationContribution } from '@theia/core/lib/browser';
@@ -21,7 +22,7 @@ import { IDEIA_MarkerContribution } from './ideia-marker-contribution';
 import { IDEIA_OutputContribution } from './ideia-output-contribution';
 import { IDEIA_StatusBarContribution } from './ideia-statusbar-contribution';
 import { IDEIA_ProgressContribution } from './ideia-progress-contribution';
-import { IDEIA_CHAT_SERVICE, IDEIA_TASK_SERVICE, IDEIA_AGENT_SERVICE, IDEIA_MEMORY_SERVICE, IDEIA_DASHBOARD_SERVICE, IDEIA_SUGGESTIONS_SERVICE, IDEIA_STUDIES_SERVICE, IDEIA_SEARCH_SERVICE, IDEIA_SECURITY_SERVICE } from '../common/ideia-protocol';
+import { IDEIA_CHAT_SERVICE, IDEIA_TASK_SERVICE, IDEIA_AGENT_SERVICE, IDEIA_MEMORY_SERVICE, IDEIA_DASHBOARD_SERVICE, IDEIA_SUGGESTIONS_SERVICE, IDEIA_STUDIES_SERVICE, IDEIA_SEARCH_SERVICE, IDEIA_SECURITY_SERVICE, IDEIA_CONTROL_TOWER_SERVICE } from '../common/ideia-protocol';
 import {
   IDEIA_ChatClient,
   IDEIA_TaskClient,
@@ -32,7 +33,16 @@ import {
   IDEIA_StudiesClient,
   IDEIA_SearchClient,
   IDEIA_SecurityClient,
+  IDEIA_ControlTowerClient,
 } from './ideia-service-client';
+import { IDEIA_ControlTowerWidget } from './ideia-control-tower-widget';
+import { IDEIA_ControlTowerViewContribution } from './ideia-control-tower-contribution';
+import { IDEIA_CockpitWidget } from './ideia-cockpit-widget';
+import { IDEIA_CockpitViewContribution } from './ideia-cockpit-contribution';
+import { IDEIA_BacklogWidget } from './ideia-backlog-widget';
+import { IDEIA_BacklogViewContribution } from './ideia-backlog-contribution';
+import { IDEIA_MetricsView } from './ideia-metrics-view';
+import { IDEIA_MetricsViewContribution } from './ideia-metrics-contribution';
 import { IdeiaCustomTitleWidget } from './ideia-title-bar-widget';
 import { IdeiaStylingParticipant } from './ideia-styles';
 import { IDEIA_PreferenceSchema } from './ideia-preferences-contribution';
@@ -107,6 +117,35 @@ export default new ContainerModule(bind => {
   bind(IDEIA_STUDIES_SERVICE).to(IDEIA_StudiesClient).inSingletonScope();
   bind(IDEIA_SEARCH_SERVICE).to(IDEIA_SearchClient).inSingletonScope();
   bind(IDEIA_SECURITY_SERVICE).to(IDEIA_SecurityClient).inSingletonScope();
+  bind(IDEIA_CONTROL_TOWER_SERVICE).to(IDEIA_ControlTowerClient).inSingletonScope();
+
+  bindViewContribution(bind, IDEIA_ControlTowerViewContribution);
+  bind(IDEIA_ControlTowerWidget).toSelf().inSingletonScope();
+  bind(WidgetFactory).toDynamicValue(ctx => ({
+    id: IDEIA_ControlTowerWidget.ID,
+    createWidget: () => ctx.container.get(IDEIA_ControlTowerWidget),
+  }));
+
+  bindViewContribution(bind, IDEIA_CockpitViewContribution);
+  bind(IDEIA_CockpitWidget).toSelf().inSingletonScope();
+  bind(WidgetFactory).toDynamicValue(ctx => ({
+    id: IDEIA_CockpitWidget.ID,
+    createWidget: () => ctx.container.get(IDEIA_CockpitWidget),
+  }));
+
+  bindViewContribution(bind, IDEIA_BacklogViewContribution);
+  bind(IDEIA_BacklogWidget).toSelf().inSingletonScope();
+  bind(WidgetFactory).toDynamicValue(ctx => ({
+    id: IDEIA_BacklogWidget.ID,
+    createWidget: () => ctx.container.get(IDEIA_BacklogWidget),
+  }));
+
+  bindViewContribution(bind, IDEIA_MetricsViewContribution);
+  bind(IDEIA_MetricsView).toSelf().inSingletonScope();
+  bind(WidgetFactory).toDynamicValue(ctx => ({
+    id: IDEIA_MetricsView.ID,
+    createWidget: () => ctx.container.get(IDEIA_MetricsView),
+  }));
 
   bind(IDEIA_MarkerContribution).toSelf().inSingletonScope();
   bind(IDEIA_OutputContribution).toSelf().inSingletonScope();

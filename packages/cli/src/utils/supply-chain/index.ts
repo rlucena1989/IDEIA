@@ -40,11 +40,11 @@ export function scan(cwd: string): ScanResult {
               });
             }
           }
-        } catch (_err) {
+        } catch (err) {
           log.warn('Failed to parse npm audit output', { error: String(err) });
         }
       }
-    } catch (_err) {
+    } catch (err) {
       log.warn('npm audit failed', { error: String(err) });
     }
   }
@@ -67,12 +67,12 @@ export function scan(cwd: string): ScanResult {
                 fixVersion: data.data?.advisory?.patched_versions,
               });
             }
-          } catch (_err) {
+          } catch (err) {
             log.warn('Failed to parse yarn audit line', { error: String(err) });
           }
         }
       }
-    } catch (_err) {
+    } catch (err) {
       log.warn('yarn audit failed', { error: String(err) });
     }
   }
@@ -104,7 +104,7 @@ export function generateSbom(cwd: string): Record<string, unknown> {
         version: (version as string).replace(/^\^|~/, ''),
         purl: `pkg:npm/${name}@${(version as string).replace(/^\^|~/, '')}`,
       }));
-    } catch (_err) {
+    } catch (err) {
       log.warn('Failed to read package.json for SBOM', { error: String(err) });
     }
   }
@@ -123,7 +123,7 @@ export function audit(entries: CveEntry[], baselinePath?: string): { changed: bo
       const currentKeys = new Set(entries.map(e => `${e.package}@${e.cve}`));
       result.removed = baseline.filter(e => !currentKeys.has(`${e.package}@${e.cve}`));
       result.changed = result.added.length > 0 || result.removed.length > 0;
-    } catch (_err) {
+    } catch (err) {
       log.warn('Failed to parse baseline', { error: String(err) });
     }
   }
@@ -139,14 +139,14 @@ export function verifyPackage(name: string, cwd: string): { verified: boolean; i
       return { verified: true, integrity: data[0]?.integrity || 'unknown' };
     }
     return { verified: false, error: result.stderr };
-  } catch (_err) {
+  } catch (err) {
     return { verified: false, error: err instanceof Error ? err.message : String(err) };
   }
 }
 
 export function printScanReport(result: ScanResult, cwd: string, json?: boolean): void {
   if (json) {
-    console.log(JSON.stringify(result, null, 2));
+    log.info(JSON.stringify(result, null, 2));
     return;
   }
 
@@ -165,6 +165,6 @@ export function printScanReport(result: ScanResult, cwd: string, json?: boolean)
   fs.mkdirSync(reportDir, { recursive: true });
   const reportFile = path.join(reportDir, `supply-chain-${Date.now()}.md`);
   fs.writeFileSync(reportFile, reportStr, 'utf-8');
-  console.log(reportStr);
-  console.log(`\nRelatorio salvo: ${path.relative(cwd, reportFile)}`);
+  log.info(reportStr);
+  log.info('\nRelatorio salvo: ${path.relative(cwd, reportFile)}');
 }

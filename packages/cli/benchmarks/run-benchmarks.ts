@@ -1,4 +1,5 @@
 import { performance } from 'node:perf_hooks';
+import { createLogger } from '@ideia/logger';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -156,17 +157,17 @@ async function main(): Promise<void> {
   const compareMode = args.includes('--compare') || args.includes('-c');
   const verbose = args.includes('--verbose') || args.includes('-v');
 
-  console.log('┌─────────────────────────────────────────────┐');
-  console.log('│  IDEIA Benchmark Suite v1.0                 │');
+  logger.info('┌─────────────────────────────────────────────┐');
+  logger.info('│  IDEIA Benchmark Suite v1.0                 │');
   console.log('│  Node:', process.version.padEnd(32) + '│');
   console.log('│  Arch:', process.arch.padEnd(34) + '│');
   console.log('│  Platform:', process.platform.padEnd(30) + '│');
-  console.log('└─────────────────────────────────────────────┘\n');
+  logger.info('└─────────────────────────────────────────────┘\n');
 
   const results: BenchResult[] = [];
 
   for (const suite of SUITES) {
-    if (verbose) console.log(`  Running ${suite.name} (${suite.iterations} iterations)...`);
+    if (verbose) logger.info('  Running ${suite.name} (${suite.iterations} iterations)...');
 
     const result = await runBenchmark(suite);
     saveResult(result);
@@ -182,18 +183,18 @@ async function main(): Promise<void> {
         const diff = ((result.ops - baseline.ops) / baseline.ops) * 100;
         const sign = diff >= 0 ? '+' : '';
         const trend = diff > 5 ? '↑' : diff < -5 ? '↓' : '→';
-        console.log(`${line}  ${trend} ${sign}${diff.toFixed(1)}% vs baseline`);
+        logger.info('${line}  ${trend} ${sign}${diff.toFixed(1)}% vs baseline');
       } else {
-        console.log(`${line}  (no baseline)`);
+        logger.info('${line}  (no baseline)');
       }
     } else {
-      console.log(line);
+      logger.info(line);
     }
   }
 
   const totalDuration = results.reduce((sum, r) => sum + r.durationMs, 0);
-  console.log(`\n  Total: ${results.length} benchmarks in ${totalDuration.toFixed(0)}ms`);
-  console.log(`  Results saved to: ${RESULTS_DIR}\n`);
+  logger.info('\n  Total: ${results.length} benchmarks in ${totalDuration.toFixed(0)}ms');
+  logger.info('  Results saved to: ${RESULTS_DIR}\n');
 
   if (args.includes('--json')) {
     console.log(JSON.stringify(results, null, 2));

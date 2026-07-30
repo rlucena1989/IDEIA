@@ -1,4 +1,5 @@
 import { CacheEntry } from './cache';
+import { createLogger } from '@ideia/logger';
 
 export type InvalidationStrategy = 'ttl' | 'version' | 'manual' | 'dependency';
 

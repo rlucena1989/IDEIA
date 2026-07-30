@@ -1,4 +1,6 @@
 import { performance } from 'node:perf_hooks';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('opentelemetry');
 
 export interface Span {
   name: string;

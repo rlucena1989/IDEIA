@@ -1,36 +1,22 @@
-import { PhaseId, PhaseState, TaskNode, OrchestrationState, OrchestrationCheckpoint, TaskStatus, AutonomyLevel, ExecutionMode } from './orchestration-types';
-
+import {
+  PhaseId,
+  PhaseState,
+  TaskNode,
+  OrchestrationState,
+  OrchestrationCheckpoint,
+  TaskStatus,
+  AutonomyLevel,
+  ExecutionMode,
+} from './orchestration-types';
+import { createLogger } from '@ideia/logger';
 import { getEffectiveAutonomyLevel, shouldAutoExecute, shouldRequestHumanDecision } from './autonomy-policy';
 import { getReadyTasks, evaluateAfterCheckpoint, updateTaskStatuses } from './unlock-engine';
 import { routeBatch, estimateBatchCost } from './model-router';
 import * as CheckpointManager from './checkpoint-manager';
 import { buildDecisionRequest, resolveDecision } from './decision-center';
+import { PHASE_ORDER, PHASE_NAMES } from './phase-constants';
 
-/** Processa h a s e_ o r d e r. */
-export const PHASE_ORDER: PhaseId[] = [
-  'diagnosis',
-  'structuring',
-  'parallelization',
-  'checkpoint',
-  'multi-model',
-  'decision-routing',
-  'full-autonomous',
-  'adaptive-governance',
-  'industrial-autonomy',
-];
-
-/** Processa h a s e_ n a m e s. */
-export const PHASE_NAMES: Record<PhaseId, string> = {
-  diagnosis: 'Diagnostico e bootstrap',
-  structuring: 'Estruturacao local',
-  parallelization: 'Paralelizacao assistida',
-  checkpoint: 'Orquestracao de checkpoints',
-  'multi-model': 'Roteamento multi-modelo',
-  'decision-routing': 'Roteamento de decisoes humanas',
-  'full-autonomous': 'Sequenciamento autonomo completo',
-  'adaptive-governance': 'Governanca adaptativa',
-  'industrial-autonomy': 'Autonomia industrial',
-};
+export { PHASE_ORDER, PHASE_NAMES };
 
 /**
  * Cria initial state.
@@ -39,18 +25,14 @@ export const PHASE_NAMES: Record<PhaseId, string> = {
  * @param autonomyLevel - Valor level.
  * @returns O resultado da operação.
  */
-export function createInitialState(
-  cwd: string,
-  tasks: TaskNode[],
-  autonomyLevel: AutonomyLevel = 'guided',
-): OrchestrationState {
+export function createInitialState(cwd: string, tasks: TaskNode[], autonomyLevel: AutonomyLevel = 'guided'): OrchestrationState {
   const now = new Date().toISOString();
   const phases: PhaseState[] = PHASE_ORDER.map((id, idx) => {
-    const phaseTasks = tasks.filter(t => t.phase === id);
+    const phaseTasks = tasks.filter((t) => t.phase === id);
     return {
       id,
       name: PHASE_NAMES[id],
-      status: idx === 0 ? 'ready' as TaskStatus : 'pending' as TaskStatus,
+      status: idx === 0 ? ('ready' as TaskStatus) : ('pending' as TaskStatus),
       progress: 0,
       tasks: phaseTasks,
       completedTasks: 0,
@@ -73,7 +55,13 @@ export function createInitialState(
     metadata: {},
   };
 
-  const cp = CheckpointManager.createCheckpoint(cwd, 'diagnosis', 'init', 'completed', state.phases[0] ? { coverage: 0, branches: 0, scorecard: 0, risk: 0 } : undefined);
+  const cp = CheckpointManager.createCheckpoint(
+    cwd,
+    'diagnosis',
+    'init',
+    'completed',
+    state.phases[0] ? { coverage: 0, branches: 0, scorecard: 0, risk: 0 } : undefined,
+  );
   state.checkpoints.push(cp);
   state.lastCheckpointId = cp.id;
 
@@ -97,11 +85,7 @@ export interface PhaseTransition {
  * @param phaseIndex - Valor index.
  * @returns O resultado da operação.
  */
-export function evaluatePhaseReadiness(
-  state: OrchestrationState,
-  cwd: string,
-  phaseIndex: number,
-): PhaseTransition {
+export function evaluatePhaseReadiness(state: OrchestrationState, cwd: string, phaseIndex: number): PhaseTransition {
   if (phaseIndex >= PHASE_ORDER.length - 1) {
     return { canAdvance: false, reason: 'Fase final atingida', checkpoints: state.checkpoints };
   }
@@ -112,26 +96,22 @@ export function evaluatePhaseReadiness(
   }
 
   const nextPhaseId = PHASE_ORDER[phaseIndex + 1];
-  const nextPhase = state.phases.find(p => p.id === nextPhaseId);
+  const nextPhase = state.phases.find((p) => p.id === nextPhaseId);
 
-  const allCompleted = currentPhase.tasks.every(
-    t => t.status === 'completed' || t.status === 'validated',
-  );
+  const allCompleted = currentPhase.tasks.every((t) => t.status === 'completed' || t.status === 'validated');
 
   if (!allCompleted) {
-    const pending = currentPhase.tasks.filter(
-      t => t.status !== 'completed' && t.status !== 'validated',
-    );
+    const pending = currentPhase.tasks.filter((t) => t.status !== 'completed' && t.status !== 'validated');
     return {
       canAdvance: false,
       nextPhase: nextPhaseId,
-      reason: `Aguardando ${pending.length} tarefas: ${pending.map(t => t.name).join(', ')}`,
+      reason: `Aguardando ${pending.length} tarefas: ${pending.map((t) => t.name).join(', ')}`,
       checkpoints: state.checkpoints,
     };
   }
 
-  const phaseCheckpoints = state.checkpoints.filter(c => c.phase === currentPhase.id);
-  const allValidated = phaseCheckpoints.every(c => c.status === 'completed' || c.status === 'validated');
+  const phaseCheckpoints = state.checkpoints.filter((c) => c.phase === currentPhase.id);
+  const allValidated = phaseCheckpoints.every((c) => c.status === 'completed' || c.status === 'validated');
 
   if (!allValidated) {
     return {
@@ -156,10 +136,7 @@ export function evaluatePhaseReadiness(
  * @param cwd - Valor cwd.
  * @returns O resultado da operação.
  */
-export function advancePhase(
-  state: OrchestrationState,
-  cwd: string,
-): { state: OrchestrationState; transition: PhaseTransition } {
+export function advancePhase(state: OrchestrationState, cwd: string): { state: OrchestrationState; transition: PhaseTransition } {
   const currentIdx = PHASE_ORDER.indexOf(state.currentPhase);
   const transition = evaluatePhaseReadiness(state, cwd, currentIdx);
 
@@ -167,7 +144,7 @@ export function advancePhase(
     return { state, transition };
   }
 
-  const updatedPhases = state.phases.map(p => {
+  const updatedPhases = state.phases.map((p) => {
     if (p.id === state.currentPhase) {
       return { ...p, status: 'completed' as TaskStatus, progress: 100, completedAt: new Date().toISOString() };
     }
@@ -178,13 +155,7 @@ export function advancePhase(
   });
 
   const nextPhase = transition.nextPhase;
-  const cp = CheckpointManager.createCheckpoint(
-    cwd,
-    nextPhase,
-    `phase-transition-${nextPhase}`,
-    'completed',
-    undefined,
-  );
+  const cp = CheckpointManager.createCheckpoint(cwd, nextPhase, `phase-transition-${nextPhase}`, 'completed', undefined);
 
   const updatedState = {
     ...state,
@@ -233,7 +204,7 @@ export function orchestrateCycle(
   const executed: string[] = [];
   const decisions: string[] = [];
 
-  const currentPhase = current.phases.find(p => p.id === current.currentPhase);
+  const currentPhase = current.phases.find((p) => p.id === current.currentPhase);
   if (!currentPhase) return { state: current, executed, decisions, completed: false };
 
   const readyTasks = getReadyTasks(currentPhase.tasks);
@@ -241,13 +212,11 @@ export function orchestrateCycle(
 
   for (const task of readyTasks) {
     if (shouldAutoExecute(task, autonomyLevel)) {
-      const updatedTasks = currentPhase.tasks.map(t =>
-        t.id === task.id ? { ...t, status: 'running' as TaskStatus } : t,
-      );
+      const updatedTasks = currentPhase.tasks.map((t) => (t.id === task.id ? { ...t, status: 'running' as TaskStatus } : t));
       const updatedPhase = { ...currentPhase, tasks: updatedTasks };
       current = {
         ...current,
-        phases: current.phases.map(p => p.id === current.currentPhase ? updatedPhase : p),
+        phases: current.phases.map((p) => (p.id === current.currentPhase ? updatedPhase : p)),
       };
       executed.push(task.id);
 
@@ -257,60 +226,52 @@ export function orchestrateCycle(
           throw new Error(`Task ${task.id} execution returned failure`);
         }
 
-        const finalTasks = updatedPhase.tasks.map(t =>
-          t.id === task.id ? { ...t, status: 'completed' as TaskStatus } : t,
-        );
+        const finalTasks = updatedPhase.tasks.map((t) => (t.id === task.id ? { ...t, status: 'completed' as TaskStatus } : t));
         const finalPhase = {
           ...updatedPhase,
           tasks: finalTasks,
-          completedTasks: finalTasks.filter(t => t.status === 'completed' || t.status === 'validated').length,
-          progress: updatedPhase.totalTasks > 0
-            ? Math.round((finalTasks.filter(t => t.status === 'completed' || t.status === 'validated').length / updatedPhase.totalTasks) * 100)
-            : 100,
+          completedTasks: finalTasks.filter((t) => t.status === 'completed' || t.status === 'validated').length,
+          progress:
+            updatedPhase.totalTasks > 0
+              ? Math.round(
+                  (finalTasks.filter((t) => t.status === 'completed' || t.status === 'validated').length / updatedPhase.totalTasks) * 100,
+                )
+              : 100,
         };
         current = {
           ...current,
-          phases: current.phases.map(p => p.id === current.currentPhase ? finalPhase : p),
+          phases: current.phases.map((p) => (p.id === current.currentPhase ? finalPhase : p)),
         };
 
-        const cp = CheckpointManager.createCheckpoint(
-          cwd,
-          current.currentPhase,
-          task.id,
-          'completed',
-          {
-            coverage: current.metadata.coverage as number | undefined,
-          },
-        );
+        const cp = CheckpointManager.createCheckpoint(cwd, current.currentPhase, task.id, 'completed', {
+          coverage: current.metadata.coverage as number | undefined,
+        });
         cp.unlockIds = [task.id];
         CheckpointManager.saveCheckpoint(cwd, cp);
         current.checkpoints.push(cp);
         current.lastCheckpointId = cp.id;
       } catch (_error) {
-        const failedTasks = updatedPhase.tasks.map(t =>
-          t.id === task.id ? { ...t, status: 'failed' as TaskStatus } : t,
-        );
+        const failedTasks = updatedPhase.tasks.map((t) => (t.id === task.id ? { ...t, status: 'failed' as TaskStatus } : t));
         const failedPhase = {
           ...updatedPhase,
           tasks: failedTasks,
-          completedTasks: failedTasks.filter(t => t.status === 'completed' || t.status === 'validated').length,
-          progress: updatedPhase.totalTasks > 0
-            ? Math.round((failedTasks.filter(t => t.status === 'completed' || t.status === 'validated').length / updatedPhase.totalTasks) * 100)
-            : 100,
+          completedTasks: failedTasks.filter((t) => t.status === 'completed' || t.status === 'validated').length,
+          progress:
+            updatedPhase.totalTasks > 0
+              ? Math.round(
+                  (failedTasks.filter((t) => t.status === 'completed' || t.status === 'validated').length / updatedPhase.totalTasks) * 100,
+                )
+              : 100,
         };
         current = {
           ...current,
-          phases: current.phases.map(p => p.id === current.currentPhase ? failedPhase : p),
+          phases: current.phases.map((p) => (p.id === current.currentPhase ? failedPhase : p)),
         };
 
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        const cp = CheckpointManager.createCheckpoint(
-          cwd,
-          current.currentPhase,
-          task.id,
-          'failed',
-          { coverage: current.metadata.coverage as number | undefined },
-        );
+        const errorMessage = _error instanceof Error ? _error.message : String(_error);
+        const cp = CheckpointManager.createCheckpoint(cwd, current.currentPhase, task.id, 'failed', {
+          coverage: current.metadata.coverage as number | undefined,
+        });
         cp.unlockIds = [];
         cp.nextActions = [`retry:${task.id}`, `error:${errorMessage}`];
         CheckpointManager.saveCheckpoint(cwd, cp);
@@ -331,13 +292,7 @@ export function orchestrateCycle(
         current.pendingDecisions.push(decisionReq);
         decisions.push(decisionReq.id);
 
-        const decisionCp = CheckpointManager.createCheckpoint(
-          cwd,
-          current.currentPhase,
-          task.id,
-          'needs-decision',
-          undefined,
-        );
+        const decisionCp = CheckpointManager.createCheckpoint(cwd, current.currentPhase, task.id, 'needs-decision', undefined);
         current.checkpoints.push(decisionCp);
         current.lastCheckpointId = decisionCp.id;
       }
@@ -345,18 +300,14 @@ export function orchestrateCycle(
   }
 
   // Auto-replanning: check for failures and replan if needed
-  const hasFailures = current.phases.some(p =>
-    p.tasks.some(t => t.status === 'failed'),
-  );
+  const hasFailures = current.phases.some((p) => p.tasks.some((t) => t.status === 'failed'));
 
   if (hasFailures) {
     current = replan(current, cwd);
   }
 
   current.updatedAt = new Date().toISOString();
-  const allDone = current.phases.every(p =>
-    p.tasks.every(t => t.status === 'completed' || t.status === 'validated'),
-  );
+  const allDone = current.phases.every((p) => p.tasks.every((t) => t.status === 'completed' || t.status === 'validated'));
 
   CheckpointManager.saveOrchestrationState(cwd, current);
 
@@ -368,9 +319,7 @@ export function orchestrateCycle(
  * @param cwd - Valor cwd.
  * @returns O resultado da operação.
  */
-export function resumeFromCheckpoint(
-  cwd: string,
-): OrchestrationState | null {
+export function resumeFromCheckpoint(cwd: string): OrchestrationState | null {
   const latest = CheckpointManager.loadLatestCheckpoint(cwd);
   if (!latest) return null;
 
@@ -379,7 +328,7 @@ export function resumeFromCheckpoint(
   const state: OrchestrationState = {
     currentPhase: latest.phase,
     version: '1.0.0',
-    phases: PHASE_ORDER.map(id => ({
+    phases: PHASE_ORDER.map((id) => ({
       id,
       name: PHASE_NAMES[id],
       status: 'pending' as TaskStatus,
@@ -390,15 +339,17 @@ export function resumeFromCheckpoint(
       blockedCount: 0,
     })),
     pendingDecisions: allCheckpoints
-      .filter(c => c.status === 'needs-decision')
-      .map(c => buildDecisionRequest(
-        `Decisao pendente: ${c.taskId ?? 'desconhecida'}`,
-        'Retomada de checkpoint',
-        `Checkpoint ${c.id} esta aguardando decisao`,
-        `Fase: ${c.phase}\nCheckpoint: ${c.id}\nStatus: ${c.status}`,
-        c,
-        'Recomendado: continuar com configuracao padrao',
-      )),
+      .filter((c) => c.status === 'needs-decision')
+      .map((c) =>
+        buildDecisionRequest(
+          `Decisao pendente: ${c.taskId ?? 'desconhecida'}`,
+          'Retomada de checkpoint',
+          `Checkpoint ${c.id} esta aguardando decisao`,
+          `Fase: ${c.phase}\nCheckpoint: ${c.id}\nStatus: ${c.status}`,
+          c,
+          'Recomendado: continuar com configuracao padrao',
+        ),
+      ),
     checkpoints: allCheckpoints,
     executionMode: 'guided',
     autonomyLevel: 'guided',
@@ -408,7 +359,7 @@ export function resumeFromCheckpoint(
     metadata: {},
   };
 
-  const phaseState = state.phases.find(p => p.id === latest.phase);
+  const phaseState = state.phases.find((p) => p.id === latest.phase);
   if (phaseState) {
     phaseState.status = 'ready';
   }
@@ -441,17 +392,15 @@ export function replan(state: OrchestrationState, cwd: string): OrchestrationSta
   const affectedTaskIds: string[] = [];
   let phasesChanged = false;
 
-  const updatedPhases = state.phases.map(phase => {
-    const updatedTasks = phase.tasks.map(task => {
+  const updatedPhases = state.phases.map((phase) => {
+    const updatedTasks = phase.tasks.map((task) => {
       if (task.status === 'failed') {
         affectedTaskIds.push(task.id);
         phasesChanged = true;
         return { ...task, status: 'pending' as TaskStatus };
       }
       if (task.status === 'blocked') {
-        const depFailed = task.dependsOn.some(d =>
-          state.phases.some(p => p.tasks.some(t => t.id === d && t.status === 'failed')),
-        );
+        const depFailed = task.dependsOn.some((d) => state.phases.some((p) => p.tasks.some((t) => t.id === d && t.status === 'failed')));
         if (depFailed) {
           affectedTaskIds.push(task.id);
           phasesChanged = true;
@@ -464,15 +413,15 @@ export function replan(state: OrchestrationState, cwd: string): OrchestrationSta
     return {
       ...phase,
       tasks: updatedTasks,
-      completedTasks: updatedTasks.filter(t => t.status === 'completed' || t.status === 'validated').length,
-      blockedCount: updatedTasks.filter(t => t.status === 'blocked').length,
+      completedTasks: updatedTasks.filter((t) => t.status === 'completed' || t.status === 'validated').length,
+      blockedCount: updatedTasks.filter((t) => t.status === 'blocked').length,
     };
   });
 
   if (!phasesChanged) return state;
 
   const existingHistory = Array.isArray(state.metadata?.replanHistory)
-    ? state.metadata.replanHistory as Array<{ at: string; tasks: string[]; reason: string }>
+    ? (state.metadata.replanHistory as Array<{ at: string; tasks: string[]; reason: string }>)
     : [];
 
   const updatedState: OrchestrationState = {
@@ -492,13 +441,7 @@ export function replan(state: OrchestrationState, cwd: string): OrchestrationSta
     },
   };
 
-  const replanCp = CheckpointManager.createCheckpoint(
-    cwd,
-    state.currentPhase,
-    'replan',
-    'completed',
-    undefined,
-  );
+  const replanCp = CheckpointManager.createCheckpoint(cwd, state.currentPhase, 'replan', 'completed', undefined);
   replanCp.nextActions = [`replanned-${affectedTaskIds.length}-tasks`];
   replanCp.unlockIds = affectedTaskIds;
   CheckpointManager.saveCheckpoint(cwd, replanCp);

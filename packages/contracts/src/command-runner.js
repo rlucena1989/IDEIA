@@ -28,8 +28,8 @@ function runCommand(config) {
             durationMs: Date.now() - start,
         };
     }
-    catch (e) {
-        const err = e;
+    catch (_e) {
+        const err = _e;
         return {
             success: false,
             output: err.stdout?.toString().trim() || err.stderr?.toString().trim() || err.message || '',
@@ -44,8 +44,8 @@ async function runStep(name, fn) {
         const result = await fn();
         return { step: name, success: true, durationMs: Date.now() - start, result };
     }
-    catch (err) {
-        return { step: name, success: false, durationMs: Date.now() - start, error: String(err) };
+    catch (_err) {
+        return { step: name, success: false, durationMs: Date.now() - start, error: String(_err) };
     }
 }
 async function runWithRetry(name, fn, maxRetries = 3, timeoutMs = 30000) {
@@ -59,8 +59,8 @@ async function runWithRetry(name, fn, maxRetries = 3, timeoutMs = 30000) {
             ]);
             return { success: true, result, attempts: attempt, durationMs: Date.now() - start };
         }
-        catch (err) {
-            lastError = err instanceof Error ? err.message : String(err);
+        catch (_err) {
+            lastError = _err instanceof Error ? _err.message : String(_err);
         }
     }
     return { success: false, attempts: maxRetries, durationMs: Date.now() - start, error: lastError };

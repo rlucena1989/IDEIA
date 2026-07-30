@@ -1,4 +1,6 @@
 import { PlatformFinishResult, PlatformState } from './platform-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('platform-finish');
 
 export function finishPlatform(state: PlatformState): PlatformFinishResult {
   return {

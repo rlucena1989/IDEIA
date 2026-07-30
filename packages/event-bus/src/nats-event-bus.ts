@@ -79,7 +79,7 @@ export class NatsEventBus implements IEventBus {
       this.setupReconnectHandler();
     } catch (_err) {
       this.connected = false;
-      this.logger.warn(`[NatsEventBus] NATS unavailable, using in-memory storage: ${err}`);
+      this.logger.warn(`[NatsEventBus] NATS unavailable, using in-memory storage: ${_err}`);
     }
   }
 
@@ -121,7 +121,7 @@ export class NatsEventBus implements IEventBus {
         this.logger.info(`[NatsEventBus] Created JetStream stream: ${this.streamName}`);
       }
     } catch (_err) {
-      this.logger.warn(`[NatsEventBus] JetStream unavailable, using in-memory fallback: ${err}`);
+      this.logger.warn(`[NatsEventBus] JetStream unavailable, using in-memory fallback: ${_err}`);
     }
   }
 
@@ -147,7 +147,7 @@ export class NatsEventBus implements IEventBus {
               await handler(parsed);
               if (once) break;
             } catch (_e) {
-              this.logger.error(`[NatsEventBus] Handler error: ${String(e)}`);
+              this.logger.error(`[NatsEventBus] Handler error: ${String(_e)}`);
             }
           }
         })();
@@ -156,7 +156,7 @@ export class NatsEventBus implements IEventBus {
         });
         return id;
       } catch (_err) {
-        this.logger.warn(`[NatsEventBus] JetStream subscribe failed for ${subject}, using core NATS: ${err}`);
+        this.logger.warn(`[NatsEventBus] JetStream subscribe failed for ${subject}, using core NATS: ${_err}`);
       }
     }
     if (this.nc) {
@@ -172,7 +172,7 @@ export class NatsEventBus implements IEventBus {
               handler(parsed);
               if (once) break;
             } catch (_e) {
-              this.logger.error(`[NatsEventBus] Handler error: ${String(e)}`);
+              this.logger.error(`[NatsEventBus] Handler error: ${String(_e)}`);
             }
           }
         })();
@@ -181,7 +181,7 @@ export class NatsEventBus implements IEventBus {
         });
         return id;
       } catch (_err) {
-        this.logger.warn(`[NatsEventBus] Subscribe failed for ${subject}, using fallback: ${err}`);
+        this.logger.warn(`[NatsEventBus] Subscribe failed for ${subject}, using fallback: ${_err}`);
       }
     }
     this.subs.set(id, { unsubscribe: () => { this.subs.delete(id); } });
@@ -219,7 +219,7 @@ export class NatsEventBus implements IEventBus {
           decision: 'approved', result: 'success', metadata: { payload: event.payload, seq },
         });
       } catch (_err) {
-        this.logger.error(`[NatsEventBus] AuditTrail append error: ${String(err)}`);
+        this.logger.error(`[NatsEventBus] AuditTrail append error: ${String(_err)}`);
       }
     }
     if (this.js && this.connected) {
@@ -227,7 +227,7 @@ export class NatsEventBus implements IEventBus {
         const subject = `${this.streamName}.${event.type}`;
         await this.js.publish(subject, this.sc.encode(JSON.stringify({ ...fullEvent, _seq: seq })), { msgID: fullEvent.id });
       } catch (_err) {
-        this.logger.warn(`[NatsEventBus] JetStream publish failed, event stored in-memory: ${err}`);
+        this.logger.warn(`[NatsEventBus] JetStream publish failed, event stored in-memory: ${_err}`);
       }
     }
     return fullEvent;
@@ -277,7 +277,7 @@ export class NatsEventBus implements IEventBus {
         sub.unsubscribe();
         return events;
       } catch (_err) {
-        this.logger.warn(`[NatsEventBus] JetStream replay failed, using in-memory: ${err}`);
+        this.logger.warn(`[NatsEventBus] JetStream replay failed, using in-memory: ${_err}`);
       }
     }
     let filtered = options?.eventType

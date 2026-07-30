@@ -291,12 +291,12 @@ describe('generateSetupReport', () => {
   afterEach(() => rmDir(dir));
 
   it('dryRun nao deve escrever relatorio', () => {
-    generateSetupReport(dir, { dryRun: true }, {}, {}, 'tmpl');
+    generateSetupReport(dir, { dryRun: true }, { backedUp: [], copied: [], skipped: [], overwritten: [], errors: [] }, { added: [], preserved: [], overwritten: [] }, 'tmpl');
     expect(fs.existsSync(path.join(dir, '.ai', 'setup-report.md'))).toBe(false);
   });
 
   it('deve escrever setup-report.md com resumo', () => {
-    const copyResult = { copied: ['a'], skipped: [], overwritten: [], backedUp: [] };
+    const copyResult = { copied: ['a'], skipped: [], overwritten: [], backedUp: [], errors: [] };
     const scriptResult = { added: ['ai:verify'], preserved: ['build'], overwritten: [] };
     generateSetupReport(dir, { dryRun: false, flavor: 'node', force: false }, copyResult, scriptResult, 'tmpl');
     const reportPath = path.join(dir, '.ai', 'setup-report.md');
@@ -310,7 +310,7 @@ describe('generateSetupReport', () => {
   });
 
   it('deve reportar backup root quando houve backup', () => {
-    const copyResult = { copied: [], skipped: [], overwritten: [], backedUp: ['/x/backups/setup/d/file'] };
+    const copyResult = { copied: [], skipped: [], overwritten: [], backedUp: ['/x/backups/setup/d/file'], errors: [] };
     generateSetupReport(dir, { dryRun: false, flavor: 'node', force: true }, copyResult, { added: [], preserved: [], overwritten: [] }, 'tmpl');
     const content = fs.readFileSync(path.join(dir, '.ai', 'setup-report.md'), 'utf8');
     expect(content).toContain('Mode: force');

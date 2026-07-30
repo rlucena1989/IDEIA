@@ -1,4 +1,6 @@
 import { ChatMessage, ContextItem } from '../types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('priority-ranker');
 
 export interface PriorityRankerConfig {
   maxTokens: number;

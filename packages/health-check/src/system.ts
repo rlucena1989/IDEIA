@@ -1,4 +1,5 @@
 import * as os from 'os';
+import { createLogger } from '@ideia/logger';
 import { HealthChecker, ComponentHealth } from './types';
 
 export class SystemChecker implements HealthChecker {

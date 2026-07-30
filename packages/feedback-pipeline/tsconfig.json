@@ -3,10 +3,11 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "strict": true
+    "strict": true,
+    "composite": true
   },
   "include": [
-    "src"
+    "src/**/*.ts"
   ],
   "exclude": [
     "**/__tests__"
@@ -22,7 +23,13 @@
       "path": "../audit-trail"
     },
     {
+      "path": "../logger"
+    },
+    {
       "path": "../contracts"
+    },
+    {
+      "path": "../data-layer"
     }
   ]
 }

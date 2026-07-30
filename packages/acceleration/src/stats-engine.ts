@@ -1,4 +1,6 @@
 import { mean, variance, stddev, sum, min, max } from './numerical-engine';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('stats-engine');
 
 export function median(values: number[]): number {
   if (values.length === 0) return 0;

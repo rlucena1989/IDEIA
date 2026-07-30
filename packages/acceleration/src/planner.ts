@@ -1,5 +1,7 @@
 import { EngineMode, Forecast, PrecisionReport, PlannedJob } from './types';
+import { createLogger } from '@ideia/logger';
 export { PlannedJob };
+const logger = createLogger('planner');
 
 function getRealJobs(mode: EngineMode): PlannedJob[] {
   const jobs: PlannedJob[] = [];

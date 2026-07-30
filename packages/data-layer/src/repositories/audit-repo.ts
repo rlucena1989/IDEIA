@@ -1,4 +1,6 @@
 import { BaseRepository } from './base-repo';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('audit-repo');
 
 export interface AuditRecord {
   id: string;

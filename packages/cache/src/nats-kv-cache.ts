@@ -1,4 +1,5 @@
 import type { CacheLayer, CacheOptions, CacheStats } from './cache-layer';
+import { createLogger } from '@ideia/logger';
 
 interface NatsKvEntry {
   value: unknown;

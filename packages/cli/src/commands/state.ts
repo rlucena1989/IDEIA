@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { buildDevkitState } from '../state/state-builder';
 import { renderStateMarkdown, renderStateJSON } from '../state/state-renderer';
 import { readOrBuildState } from '../state/state-reader';

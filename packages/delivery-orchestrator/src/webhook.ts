@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { DeployEnvironment } from './types';
 
 export type WebhookEvent = 'deploy.started' | 'deploy.completed' | 'deploy.failed'
@@ -106,7 +107,7 @@ export class WebhookManager {
 
         lastError = new Error(`Webhook returned ${res.status}: ${await res.text().catch(() => 'unknown')}`);
       } catch (_err) {
-        lastError = err instanceof Error ? err : new Error(String(err));
+        lastError = _err instanceof Error ? _err : new Error(String(_err));
       }
 
       if (attempt < config.retryCount) {

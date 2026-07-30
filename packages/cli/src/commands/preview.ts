@@ -1,4 +1,6 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.preview');
 import { generatePreview, generateFrontendTemplate, generateLowLevelTemplate } from '../runtime/preview-engine';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -20,13 +22,15 @@ function createPreviewCommand(): Command {
       if (!fs.existsSync(mod)) { console.error('Modificado nao encontrado:', mod); process.exit(1); }
       const origContent = fs.readFileSync(orig, 'utf-8');
       const modContent = fs.readFileSync(mod, 'utf-8');
-      const diff = generatePreview(origContent, modContent, path.basename(orig));
+      const diff = generatePreview(origContent, modContent);
       if (opts.json) { console.log(JSON.stringify(diff, null, 2)); return; }
-      console.log(`\nDiff Preview: "${path.basename(orig)}"`);
-      console.log(`  +${diff.linesAdded}  -${diff.linesRemoved}`);
-      for (const c of diff.chunks.slice(0, 20)) {
-        const prefix = c.type === 'add' ? '+' : c.type === 'remove' ? '-' : ' ';
-        console.log(`  ${prefix} ${c.content.substring(0, 80)}`);
+      logger.info('\nDiff Preview: "${path.basename(orig)}"');
+      logger.info('  +${diff.added}  -${diff.removed}');
+      for (const h of diff.hunks.slice(0, 20)) {
+        logger.info('  Lines ${h.oldStart}-${h.newStart}:');
+        for (const line of h.lines.slice(0, 5)) {
+          logger.info('    ${line.substring(0, 80)}');
+        }
       }
     });
 
@@ -41,9 +45,9 @@ function createPreviewCommand(): Command {
         const ext = opts.stack === 'vue' ? '.vue' : opts.stack === 'svelte' ? '.svelte' : '.tsx';
         fs.mkdirSync(path.dirname(path.join(opts.save, name + ext)), { recursive: true });
         fs.writeFileSync(path.join(opts.save, name + ext), code, 'utf-8');
-        console.log(`Salvo: ${path.join(opts.save, name + ext)}`);
+        logger.info('Salvo: ${path.join(opts.save, name + ext)}');
       } else {
-        console.log(code);
+        logger.info(code);
       }
     });
 
@@ -57,9 +61,9 @@ function createPreviewCommand(): Command {
         const filePath = path.join(opts.save, `${name.toLowerCase()}.${type}.ts`);
         fs.mkdirSync(path.dirname(filePath), { recursive: true });
         fs.writeFileSync(filePath, code, 'utf-8');
-        console.log(`Salvo: ${filePath}`);
+        logger.info('Salvo: ${filePath}');
       } else {
-        console.log(code);
+        logger.info(code);
       }
     });
 

@@ -65,7 +65,7 @@ não apenas pessoal.
 
 **Como o ai-devkit resolve:**
 
-- O `.ai/` vive no repositório — PENDING_ACTIONs os devs e todas as IAs leem as
+- O `.ai/` vive no repositório — todos os devs e todas as IAs leem as
   mesmas regras, padrões e prompts.
 - O `quality-gate.yaml` e as fitness functions rodam no CI via
   `check-boundaries.js` e `static-rule-scan.js`, bloqueando violações
@@ -74,7 +74,7 @@ não apenas pessoal.
   decisões e padrões do time.
 - O `audit-agent` gera relatórios periódicos de saúde do projeto sem
   intervenção manual.
-- O `verify.js` executa PENDING_ACTIONs os quality gates em sequência como
+- O `verify.js` executa todos os quality gates em sequência como
   master script de validação.
 
 ---

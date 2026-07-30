@@ -1,4 +1,5 @@
 import { CircuitBreakerConfig, CircuitState, ExecutionResult, RetryConfig } from './types';
+import { createLogger } from '@ideia/logger';
 export class CircuitBreaker {
   private state: CircuitState = 'closed';
   private failures = 0; private lastFailureTime = 0;
@@ -13,7 +14,7 @@ export class CircuitBreaker {
       const data = await fn(); const durationMs = Date.now() - start;
       if (this.state === 'half_open') { this.state = 'closed'; this.failures = 0; }
       return { success: true, data, attempts: 1, durationMs };
-    } catch (_e) {
+    } catch (e) {
       this.failures++; this.lastFailureTime = Date.now();
       if (this.failures >= this.config.threshold) this.state = 'open';
       return { success: false, error: String(e), attempts: 1, durationMs: Date.now() - start };
@@ -28,7 +29,7 @@ export async function withRetry<T>(fn: () => Promise<T>, config: RetryConfig): P
     try {
       const start = Date.now(); const data = await fn();
       return { success: true, data, attempts: attempt, durationMs: Date.now() - start };
-    } catch (_e) {
+    } catch (e) {
       lastError = String(e);
       if (attempt < config.maxRetries) {
         const delay = config.strategy === 'exponential' ? config.baseDelayMs * Math.pow(2, attempt - 1)

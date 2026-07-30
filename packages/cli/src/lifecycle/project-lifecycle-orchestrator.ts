@@ -84,17 +84,18 @@ export class ProjectLifecycleOrchestrator {
       });
     }
 
-    (this.phases.get('idea') ?? {}).status = 'in_progress';
+    const ideaPhase = this.phases.get('idea');
+    if (ideaPhase) ideaPhase.status = 'in_progress';
   }
 
   getCurrentPhase(): PhaseState | undefined {
     for (const def of PHASE_DEFINITIONS) {
-      const state = this.phases.get(def.phase) ?? null;
-      if (state.status === 'in_progress') return state;
+      const state = this.phases.get(def.phase);
+      if (state?.status === 'in_progress') return state;
     }
     for (const def of PHASE_DEFINITIONS) {
-      const state = this.phases.get(def.phase) ?? null;
-      if (state.status === 'pending') return state;
+      const state = this.phases.get(def.phase);
+      if (state?.status === 'pending') return state;
     }
     return undefined;
   }
@@ -134,9 +135,11 @@ export class ProjectLifecycleOrchestrator {
     if (this.config.autoTransition) {
       const nextPhase = PHASE_DEFINITIONS[defIndex + 1];
       if (nextPhase) {
-        const nextState = this.phases.get(nextPhase.phase) ?? null;
-        nextState.status = 'in_progress';
-        nextState.startedAt = new Date().toISOString();
+        const nextState = this.phases.get(nextPhase.phase);
+        if (nextState) {
+          nextState.status = 'in_progress';
+          nextState.startedAt = new Date().toISOString();
+        }
       } else {
         this.status = 'completed';
       }
@@ -187,7 +190,8 @@ export class ProjectLifecycleOrchestrator {
   rollbackTo(targetPhase: LifecyclePhase): void {
     let rollbackStarted = false;
     for (const def of [...PHASE_DEFINITIONS].reverse()) {
-      const state = this.phases.get(def.phase) ?? null;
+      const state = this.phases.get(def.phase);
+      if (!state) continue;
       if (def.phase === targetPhase) {
         state.status = 'in_progress';
         state.startedAt = new Date().toISOString();
@@ -245,12 +249,13 @@ export class ProjectLifecycleOrchestrator {
     ];
 
     for (const def of PHASE_DEFINITIONS) {
-      const state = this.phases.get(def.phase) ?? null;
-      const icon = state.status === 'completed' ? '✅' : state.status === 'in_progress' ? '🔄' : state.status === 'failed' ? '❌' : '⏳';
-      const time = state.startedAt ? ` (${state.startedAt.slice(11, 19)})` : '';
-      const err = state.error ? ` — ERROR: ${state.error}` : '';
+      const state = this.phases.get(def.phase);
+      const statusLabel = state?.status ?? 'pending';
+      const icon = statusLabel === 'completed' ? '✅' : statusLabel === 'in_progress' ? '🔄' : statusLabel === 'failed' ? '❌' : '⏳';
+      const time = state?.startedAt ? ` (${state.startedAt.slice(11, 19)})` : '';
+      const err = state?.error ? ` — ERROR: ${state.error}` : '';
       lines.push(`  ${icon} ${def.label}${time}${err}`);
-      if (state.checkpoints.length > 0) {
+      if (state && state.checkpoints.length > 0) {
         state.checkpoints.forEach(cp => lines.push(`     ${cp.passed ? '✓' : '✗'} ${cp.description}`));
       }
     }

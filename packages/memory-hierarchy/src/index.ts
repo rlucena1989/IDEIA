@@ -16,6 +16,8 @@ export type {
 } from './types';
 
 import { MemoryHierarchy } from './hierarchy';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('index');
 
 export function createMemoryHierarchy(): MemoryHierarchy {
   return new MemoryHierarchy();

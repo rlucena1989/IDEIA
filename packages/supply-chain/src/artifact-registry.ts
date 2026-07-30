@@ -1,5 +1,7 @@
 import { ArtifactProvenance, IntegrityCheck, Attestation } from './types';
+import { createLogger } from '@ideia/logger';
 import { createHash, randomUUID } from 'crypto';
+const logger = createLogger('artifact-registry');
 
 export class ArtifactRegistry {
   private artifacts: Map<string, ArtifactProvenance> = new Map();

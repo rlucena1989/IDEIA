@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import path from 'path';
 import crypto from 'crypto';
 import { KnowledgeGraph } from './knowledge-graph';
@@ -96,7 +97,7 @@ export class PatternDetector {
       if (!freq.has(key)) {
         freq.set(key, { count: 0, timestamps: [], texts: [] });
       }
-      const f = freq.get(key) ?? null;
+      const f = freq.get(key)!;
       f.count++;
       f.timestamps.push(entry.timestamp);
       if (f.texts.length < 5) f.texts.push(entry.text);
@@ -113,8 +114,8 @@ export class PatternDetector {
         name: key.slice(0, 80),
         frequency: f.count,
         confidence: Math.min(f.count / 20, 1),
-        firstSeen: times[0]!,
-        lastSeen: times[times.length - 1]!,
+        firstSeen: times[0] ?? 0,
+        lastSeen: times[times.length - 1] ?? 0,
         relatedPatterns: related,
         source: 'statistical',
       });
@@ -159,7 +160,7 @@ export class PatternDetector {
       const d = new Date(p.firstSeen);
       const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
       if (!grouped.has(key)) grouped.set(key, []);
-      grouped.get(key) ?? {}.push(p);
+      grouped.get(key)!.push(p);
     }
     return Array.from(grouped.entries())
       .map(([month, patterns]) => ({ month, patterns, count: patterns.length }))

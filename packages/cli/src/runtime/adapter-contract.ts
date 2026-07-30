@@ -10,6 +10,7 @@
  */
 
 import { execFile } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
 import { promises as fsp } from 'node:fs';
 
 /** Status de execução de um comando de adapter. */

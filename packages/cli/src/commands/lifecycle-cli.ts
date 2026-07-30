@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { ProjectLifecycleOrchestrator, type LifecyclePhase } from '../lifecycle/project-lifecycle-orchestrator';
 import { createEnvelope } from '../hardening/output-contract';
 import { printHeader, printLine, printResult } from '../utils/output';
@@ -125,7 +126,7 @@ export function lifecycleAddCheckpointAction(phase: string, description: string,
 export function lifecycleFailAction(phase: string, errorMsg: string, opts: { json?: boolean }): void {
   try {
     const lc = getOrCreateOrchestrator();
-    lc.fail(phase as 'idea' | 'definition' | 'analysis' | 'design' | 'implementation' | 'testing' | 'deployment' | 'monitoring', errorMsg);
+    lc.fail(phase as any, errorMsg);
     const report = lc.getReport();
     const envelope = createEnvelope({
       ok: false, command: 'lifecycle fail', version: getCliVersion(), data: report,
@@ -184,3 +185,5 @@ export function lifecycleCommand(): Command {
 
   return cmd;
 }
+
+

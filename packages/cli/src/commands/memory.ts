@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { MemoryStore, createMemoryRecord } from '@ideia/memory-store';
 import { buildMemoryIndex } from '../memory/memory-index';
 import { createEnvelope } from '../hardening/output-contract';

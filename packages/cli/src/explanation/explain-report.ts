@@ -1,5 +1,7 @@
 import { DecisionTrace, Explanation, EvidenceLink } from './explanation-types';
+import { createLogger } from '@ideia/logger';
 import { Rationale } from './rationale-builder';
+const logger = createLogger('explain-report');
 
 export interface ExplainReport {
   generatedAt: string;

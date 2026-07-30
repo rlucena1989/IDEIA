@@ -7,12 +7,14 @@ const log = (0, logger_1.createLogger)('kv-store');
 const DEFAULT_KV_CONFIG = {
     maxAge: 24 * 60 * 60 * 1000,
     maxEntries: 10000,
+    natsBucket: 'ideia_kv',
 };
 class KVStore {
     connectionManager;
     config;
     store = new Map();
     versionCounter = 0;
+    natsConnected = false;
     constructor(connectionManager, config = {}) {
         this.connectionManager = connectionManager;
         this.config = { ...DEFAULT_KV_CONFIG, ...config };
@@ -20,12 +22,24 @@ class KVStore {
     async initialize() {
         try {
             await this.connectionManager.connect();
+            this.natsConnected = await this.connectionManager.hasJetStream();
         }
-        catch (err) {
-            log.info(`Initialized (offline mode): ${err}`);
+        catch (_err) {
+            log.info(`Initialized (offline mode): ${_err}`);
             return;
         }
-        log.info('Initialized');
+        log.info(`Initialized (NATS: ${this.natsConnected ? 'connected' : 'offline'})`);
+    }
+    async natsOp(op, fallback) {
+        if (!this.natsConnected)
+            return fallback();
+        try {
+            return await op();
+        }
+        catch {
+            this.natsConnected = false;
+            return fallback();
+        }
     }
     async put(key, value) {
         const now = Date.now();
@@ -72,7 +86,6 @@ class KVStore {
     async cleanup() {
         const now = Date.now();
         if (this.config.maxAge) {
-            const cutoff = now - this.config.maxAge;
             for (const [key, entry] of this.store.entries()) {
                 if ((now - entry.updatedAt) > this.config.maxAge) {
                     this.store.delete(key);

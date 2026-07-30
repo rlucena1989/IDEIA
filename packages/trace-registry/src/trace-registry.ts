@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { EntityType, LinkRequest, Relationship, TraceEdge, TraceGraph, TraceLink, TraceNode, TracePath } from './types';
 
@@ -107,7 +108,7 @@ export class TraceRegistry {
     }
 
     while (queue.length > 0) {
-      const current = queue.shift()!;
+      const current = queue.shift() as (typeof queue)[number];
       const lastLink = current.link;
       const targetKey = `${lastLink.targetType}:${lastLink.targetId}`;
 

@@ -1,4 +1,5 @@
 import { RiskLevel, ApprovalLevel, ApprovalRequirement, ApprovalRequest, Approval } from './types';
+import { createLogger } from '@ideia/logger';
 import { randomUUID } from 'crypto';
 
 const DEFAULT_REQUIREMENTS: Record<RiskLevel, ApprovalRequirement> = {
@@ -12,7 +13,7 @@ export class ApprovalMatrix {
   private requirements: Map<RiskLevel, ApprovalRequirement> = new Map(Object.entries(DEFAULT_REQUIREMENTS) as [RiskLevel, ApprovalRequirement][]);
 
   getRequirement(riskLevel: RiskLevel): ApprovalRequirement {
-    return this.requirements.get(riskLevel) ?? this.requirements.get('medium') ?? null;
+    return this.requirements.get(riskLevel) ?? this.requirements.get('medium')!;
   }
 
   createRequest(action: string, riskLevel: RiskLevel, requestedBy: string, justification?: string): ApprovalRequest {

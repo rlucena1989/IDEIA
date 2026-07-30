@@ -1,5 +1,7 @@
 import { DecisionTrace, Explanation, EvidenceLink } from './explanation-types';
+import { createLogger } from '@ideia/logger';
 import { Rationale } from './rationale-builder';
+const logger = createLogger('explanation-registry');
 
 export class ExplanationRegistry {
   private traces: DecisionTrace[] = [];

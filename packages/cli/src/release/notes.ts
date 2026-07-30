@@ -1,4 +1,6 @@
 import { execSync } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('notes');
 
 /** Interface que define a estrutura de release notes result. */
 export interface ReleaseNotesResult {

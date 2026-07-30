@@ -1,4 +1,6 @@
 import { SemanticNeed, ContextPackRecommendation } from './semantic-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('context-router');
 
 const CONTEXT_RULES: Record<string, { packId: string; priority: number; keywords: string[]; condition?: (need: SemanticNeed) => boolean }> = {
   bugfix: {

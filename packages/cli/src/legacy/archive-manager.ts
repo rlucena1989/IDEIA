@@ -1,4 +1,6 @@
 import { ArchiveBundle } from './legacy-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('archive-manager');
 
 export function archiveItems(items: string[]): ArchiveBundle {
   return {

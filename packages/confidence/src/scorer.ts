@@ -1,6 +1,9 @@
 import { ConfidenceScore, ConfidenceLevel, ScoringFactor, ClassificationResult, ConsensusResult } from './types';
+import { createLogger } from '@ideia/logger';
 import { SemanticClassifier } from './classifier';
 import { ConsensusEngine } from './consensus';
+
+const ConsensusProvider = class {} as any;
 
 export class ConfidenceScorer {
   private classifier: SemanticClassifier;
@@ -58,7 +61,7 @@ export class ConfidenceScorer {
   }
 
   async consensus(prompt: string, providers: unknown[]): Promise<ConsensusResult> {
-    return this.consensusEngine.reachConsensus(prompt, providers);
+    return this.consensusEngine.reachConsensus(prompt, providers as any[]);
   }
 
   private toLevel(score: number): ConfidenceLevel {

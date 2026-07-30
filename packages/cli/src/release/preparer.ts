@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -24,7 +25,7 @@ export function prepareRelease(version: string, dryRun: boolean = false): Releas
   try {
     const tags = execFileSync('git tag --sort=-v:refname 2>/dev/null', { cwd: root, encoding: 'utf-8' });
     const tagList = tags.split('\n').filter(Boolean);
-    if (tagList.length > 0) previousVersion = tagList[0]!.replace(/^v/, '');
+    if (tagList.length > 0) previousVersion = (tagList[0] ?? '').replace(/^v/, '');
   } catch { /* no tags */ }
 
   let commitsSinceLast = 0;

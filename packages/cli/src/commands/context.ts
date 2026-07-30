@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { ContextRegistry } from '../context/context-registry';
 import { resolveActiveContext } from '../context/context-resolver';
 import { prioritizeContexts } from '../context/context-prioritizer';

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { createLogger } from '@ideia/logger';
 
 export const HealthStatusSchema = z.enum(['healthy', 'degraded', 'unhealthy']);
 export type HealthStatus = z.infer<typeof HealthStatusSchema>;
@@ -29,4 +30,21 @@ export interface HealthChecker {
 export interface HealthCheckOptions {
   version?: string;
   includeSystem?: boolean;
+}
+
+
+export interface HealthCheckDependency {
+  name: string;
+  required: boolean;
+  check: () => Promise<boolean>;
+  dependsOn: string[];
+}
+
+export interface HealthReport {
+  status: HealthStatus;
+  timestamp: string;
+  components: ComponentHealth[];
+  dependencies: HealthCheckDependency[];
+  uptime: number;
+  version?: string;
 }

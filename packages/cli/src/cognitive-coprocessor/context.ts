@@ -1,4 +1,5 @@
 import type { CognitiveContext, ContextOptions, CoprocessOptions } from './types';
+import { createLogger } from '@ideia/logger';
 import { normalizeInput } from './normalize';
 import { computeMetrics } from './metrics';
 import { rankPriorities } from './rank';

@@ -1,5 +1,5 @@
 import { AuditTrail } from '@ideia/audit-trail';
-import { BusEvent, EventHandler, EventType } from './types';
+import { BusEvent, EventHandler, EventType, IEventBus, EventEmitInput } from './types';
 export interface NatsEventBusConfig {
     servers?: string | string[];
     streamName?: string;
@@ -25,10 +25,11 @@ export interface Logger {
     error(message: string, ...args: unknown[]): void;
     info(message: string, ...args: unknown[]): void;
 }
-export declare class NatsEventBus {
+export declare class NatsEventBus implements IEventBus {
     private config;
     private nc;
     private js;
+    private jsm;
     private subs;
     private stored;
     private maxHistory;
@@ -38,24 +39,25 @@ export declare class NatsEventBus {
     private connected;
     private seqCounter;
     private sc;
+    private reconnectTimer;
     constructor(config?: NatsEventBusConfig);
     get isConnected(): boolean;
     connect(): Promise<void>;
+    private setupReconnectHandler;
     private ensureStream;
     subscribe(eventType: string, handler: EventHandler, once?: boolean): Promise<string>;
     subscribeOnce(eventType: EventType | '*', handler: EventHandler): Promise<string>;
     unsubscribe(id: string): Promise<boolean>;
-    emit(event: {
-        type: string;
-        source: string;
-        payload?: Record<string, unknown>;
-        metadata?: Record<string, unknown>;
-    }): Promise<BusEvent>;
+    emit(event: EventEmitInput): Promise<BusEvent>;
     getHistory(eventType?: string): Promise<BusEvent[]>;
-    subscriberCount(): number;
+    subscriberCount(): Promise<number>;
     clearHistory(): Promise<void>;
     replayFromSequence(fromSeq: number, options?: ReplayOptions): Promise<BusEvent[]>;
     replayFromTimestamp(fromTimestamp: string, options?: ReplayOptions): Promise<BusEvent[]>;
+    replayFromJetStream(options?: {
+        eventType?: string;
+        maxEvents?: number;
+    }): Promise<BusEvent[]>;
     replayState(options?: ReplayOptions): Promise<Map<string, BusEvent>>;
     disconnect(): Promise<void>;
 }

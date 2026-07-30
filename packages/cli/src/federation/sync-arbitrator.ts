@@ -1,4 +1,6 @@
 import { SyncDecision } from './federation-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('sync-arbitrator');
 
 export function arbitrateSync(
   localVersion: string,

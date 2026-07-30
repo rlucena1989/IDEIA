@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { shutdownSystem, confirmShutdown } from '../legacy/shutdown-coordinator';
 import { freezeLegacy } from '../legacy/freeze-manager';
 import { createEnvelope } from '../hardening/output-contract';

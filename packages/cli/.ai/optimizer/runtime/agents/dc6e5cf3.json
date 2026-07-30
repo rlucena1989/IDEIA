@@ -1,0 +1,21 @@
+{
+  "sessionId": "dc6e5cf3",
+  "taskId": "task-4",
+  "status": "paused",
+  "phase": "execution",
+  "step": 0,
+  "totalSteps": 5,
+  "context": {},
+  "startedAt": "2026-07-27T03:00:55.936Z",
+  "updatedAt": "2026-07-27T03:00:55.939Z",
+  "checkpoint": {
+    "path": "F:\\PROJETOS\\ai-devkit-workspace\\IDEIA\\packages\\cli\\.ai\\optimizer\\runtime\\agents\\dc6e5cf3.json",
+    "hash": "6e186a949ab7",
+    "timestamp": "2026-07-27T03:00:55.938Z",
+    "filesChanged": [
+      "file1.ts",
+      "file2.ts"
+    ]
+  },
+  "history": []
+}

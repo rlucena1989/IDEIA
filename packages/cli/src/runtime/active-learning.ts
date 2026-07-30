@@ -7,6 +7,7 @@
  */
 
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 
 // === Item 43: Active Learning ===
 

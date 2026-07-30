@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { createPackageMetadata, OperationalPackage } from '../distribution/package-types';
 import { buildOperationalPackage } from '../distribution/package-builder';
 import { computePackageChecksum } from '../distribution/package-hasher';

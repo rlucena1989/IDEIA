@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 import { EventEmitter } from 'node:events';

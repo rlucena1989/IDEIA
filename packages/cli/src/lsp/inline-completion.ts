@@ -35,13 +35,7 @@ export class InlineCompletionProvider {
   private temperature: number;
   private timeoutMs: number;
 
-  constructor(options?: {
-    baseUrl?: string;
-    model?: string;
-    maxTokens?: number;
-    temperature?: number;
-    timeoutMs?: number;
-  }) {
+  constructor(options?: { baseUrl?: string; model?: string; maxTokens?: number; temperature?: number; timeoutMs?: number }) {
     this.baseUrl = options?.baseUrl ?? 'http://127.0.0.1:11434';
     this.model = options?.model ?? 'phi-4-mini';
     this.maxTokens = options?.maxTokens ?? 64;
@@ -80,7 +74,7 @@ export class InlineCompletionProvider {
         return { items: [] };
       }
 
-      const data = await response.json() as { response?: string };
+      const data = (await response.json()) as { response?: string };
       const completion = data.response?.trim() ?? '';
 
       if (!completion || completion.length < 1) {
@@ -91,7 +85,7 @@ export class InlineCompletionProvider {
       return { items };
     } catch (_error) {
       log.warn('Ollama inline completion failed', {
-        error: error instanceof Error ? error.message : String(error),
+        error: _error instanceof Error ? _error.message : String(_error),
       });
       return { items: [] };
     }
@@ -180,9 +174,6 @@ Completion:
   }
 }
 
-export function createInlineCompletionProvider(options?: {
-  baseUrl?: string;
-  model?: string;
-}): InlineCompletionProvider {
+export function createInlineCompletionProvider(options?: { baseUrl?: string; model?: string }): InlineCompletionProvider {
   return new InlineCompletionProvider(options);
 }

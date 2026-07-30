@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/agent-specialization",
+  "private": true,
+  "description": "Agent Specialization & Cooperation — sistema multiagente especializado com contratos formais, orquestrador e mecanismos de consenso para 7 tipos de agente",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*",
+    "@types/node": "*"
+  }
+}

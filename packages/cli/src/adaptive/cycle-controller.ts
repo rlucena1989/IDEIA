@@ -1,5 +1,7 @@
 import { Recommendation } from './recommendation-engine';
+import { createLogger } from '@ideia/logger';
 import { AdaptivePolicy, DEFAULT_ADAPTIVE_POLICY } from './adaptive-policy';
+const logger = createLogger('cycle-controller');
 
 export interface CycleControlResult {
   shouldRepeat: boolean;

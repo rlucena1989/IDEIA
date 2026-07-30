@@ -1,4 +1,6 @@
 import { PlatformState } from './platform-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('platform-builder');
 
 export function buildPlatformState(input: {
   platformId?: string;

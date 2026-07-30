@@ -1,9 +1,11 @@
 import { MemoryEntry, EntryCategory, MemoryLevel, HierarchySummary } from './types';
+import { createLogger } from '@ideia/logger';
 import { WorkingMemory } from './working-memory';
 import { ProjectMemory } from './project-memory';
 import { InstitutionalMemory } from './institutional-memory';
 import { GlobalMemory } from './global-memory';
 import { MemoryCurator } from './curator';
+const logger = createLogger('hierarchy');
 
 export class MemoryHierarchy {
   readonly working: WorkingMemory;

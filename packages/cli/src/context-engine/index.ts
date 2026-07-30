@@ -5,6 +5,7 @@
 //       ai-devkit context search <term>  â†’ busca no Ã­ndice de conhecimento
 
 import { readFileSync, existsSync, readdirSync, statSync, writeFileSync } from 'fs';
+import { createLogger } from '@ideia/logger';
 import { join, relative, resolve } from 'path';
 
 interface ContextEntry {
@@ -208,7 +209,7 @@ export class ContextEngine {
     for (const pattern of patterns) {
       let match;
       while ((match = pattern.exec(content)) !== null) {
-        const term = match[0]!.replace(/[#`]/g, '').trim();
+        const term = (match[0] ?? '').replace(/[#`]/g, '').trim();
         if (term.length > 8) terms.add(term);
       }
     }

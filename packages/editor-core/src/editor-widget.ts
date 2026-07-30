@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { IEditorWidget, EditorSelection } from './types';
 
 export class BaseEditorWidget implements IEditorWidget {
@@ -79,7 +80,7 @@ export class CodeEditorWidget extends BaseEditorWidget {
     return this.selection;
   }
 
-  async open(uri: string): Promise<void> {
+  override async open(uri: string): Promise<void> {
     await super.open(uri);
   }
 }

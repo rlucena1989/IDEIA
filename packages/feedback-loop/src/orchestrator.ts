@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid';
+import { createLogger } from '@ideia/logger';
 import { FeedbackEvent, FeedbackAction, PatternEntry } from './types';
 
 export class FeedbackOrchestrator {
@@ -72,7 +73,7 @@ export class FeedbackOrchestrator {
 
   async processQueue(): Promise<void> {
     while (this.queue.length > 0) {
-      const event = this.queue.shift()!;
+      const event = this.queue.shift() as (typeof this.queue)[number];
       const action = this.actions.find(a => a.eventId === event.id);
       if (action && action.status === 'pending') {
         action.status = 'running';

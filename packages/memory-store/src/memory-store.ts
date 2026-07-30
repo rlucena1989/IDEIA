@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import path from 'path';
 import crypto from 'crypto';
 import { MemoryRecord, MemoryCategory, MemoryState } from '@ideia/contracts';

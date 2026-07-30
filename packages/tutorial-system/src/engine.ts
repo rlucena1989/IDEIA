@@ -1,10 +1,12 @@
 import { v4 as uuid } from 'uuid';
+import { createLogger } from '@ideia/logger';
 import {
   TutorialStep, TutorialProgress, TutorialSession,
   StepResult, ValidationResult, CompletionSummary, TutorialId, SessionId
 } from './types';
 import { TutorialRegistry } from './registry';
 import { ProgressTracker } from './tracker';
+const logger = createLogger('engine');
 
 export class TutorialValidator {
   validateStep(step: TutorialStep, userInput: string): ValidationResult {

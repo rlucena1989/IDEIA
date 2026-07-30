@@ -1,8 +1,12 @@
-﻿import { Command } from "commander";
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.scorecard');
+import { Command } from "commander";
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync, execSync } from 'node:child_process';
 import { generateGranularScorecard } from "../utils/module-scorecard";
+
+const log = createLogger('cli:commands:scorecard');
 import { printHeader, printLine, finish } from "../utils/output";
 import { queryLocalAI, loadPolicyGates, applyPolicyGates, runBenchmarks, buildAIAnalysisPrompt, shieldColor, calcScore, level, overallScore, buildRecommendations, buildAlerts, generateBadge, buildTrends, computeGit, crossCategoryAnalysis, forecastScore, validateYamlContent, generateFromTemplate, scoreDiffExport, loadCustomChecks, linkScoreToCommits, detectRegression, saveSnapshot, createTasksFromFailures, generateHTML, serveMode, publishResult, watchMode, cadenceMode, sendNotifications, root, read, git, npmAudit, coveragePct, pylintOk, golintOk, oldestDep, ex, hasContent, dirSize, jsonParse, runNode, runAllScripts, jestResultOk, Benchmarks } from './scorecard-utils';
 import { print } from './scorecard-display';
@@ -14,10 +18,10 @@ import type { ScorecardItem, ScorecardCategory, ScorecardTrend, ScorecardAlert, 
 export type { ScorecardItem, ScorecardCategory, ScorecardTrend, ScorecardAlert, CorrelationAlert, ScorecardResult } from "./scorecard-types";
 import { evalSecurity, evalQuality, evalArchitecture, evalDocs, evalOptimizer, evalAgents, evalEcosystem, evalExtensibility, evalRoadmap, evalGit, evalPackageHealth, evalProjectStructure, evalCodeQuality, evalCICD, evalDependencies, evalCodeDocs, evalProjectIntegrity, evalPipelineHealth } from "./scorecard-evaluators";
 
-// ─── Core ───────────────────────────────────────────────────────────────────â”€â”€â”€â”€
+// --- Core -------------------------------------------------------------------────
 /**
  * Processa scorecard.
- * @returns O resultado da operaÃ§Ã£o.
+ * @returns O resultado da operação.
  */
 export function computeScorecard(): ScorecardResult {
   const start = Date.now();
@@ -41,117 +45,117 @@ function saveAll(result: ScorecardResult): void {
   // badge
   const badge = generateBadge(result.overallScore);
   fs.writeFileSync(path.join(dir, "badge.svg"), badge);
-  saveSnapshot(result);
+  saveSnapshot(result as unknown as Record<string, unknown>);
   // markdown summary for CI
   const md = [
     "# Scorecard Report",
     `- **Score:** ${result.overallScore}/100 (${result.maturityLevel})`,
-    `- **VersÃ£o:** ${result.evolution.version} â€” ${result.evolution.categories} categorias, ${result.evolution.items} itens`,
+    `- **Versão:** ${result.evolution.version} — ${result.evolution.categories} categorias, ${result.evolution.items} itens`,
     `- **Git:** ${result.git.branch}@${result.git.commit}`,
     `- **Timestamp:** ${result.timestamp}`,
-    `- **DuraÃ§Ã£o:** ${result.meta.durationMs}ms`,
+    `- **Duração:** ${result.meta.durationMs}ms`,
     "",
     "## Categorias",
     ...result.categories.filter(c => c.weight > 0).map(c => `- **${c.name}** (${c.weight}%): ${Math.round(c.score)}/100`),
     "",
-    result.alerts.length > 0 ? "## Alertas\n" + result.alerts.map(a => `- ðŸ”´ [${a.category}] ${a.message}`).join("\n") : "",
-    result.recommendations.length > 0 ? "## RecomendaÃ§Ãµes\n" + result.recommendations.slice(0, 10).map((r, i) => `${i + 1}. ${r.text}`).join("\n") : "",
+    result.alerts.length > 0 ? "## Alertas\n" + result.alerts.map(a => `- 🔴 [${a.category}] ${a.message}`).join("\n") : "",
+    result.recommendations.length > 0 ? "## Recomendações\n" + result.recommendations.slice(0, 10).map((r, i) => `${i + 1}. ${r.text}`).join("\n") : "",
     "---",
-    result.correlationAlerts.length > 0 ? "## CorrelaÃ§Ãµes\n" + result.correlationAlerts.map(a => `- ${a.message}`).join("\n") : "",
-    result.forecast.history && result.forecast.history.length >= 3 ? `## PrevisÃ£o 30d\n- Score previsto: ${result.forecast.forecast}/100\n- ConfianÃ§a: ${result.forecast.confidence}\n- TendÃªncia: ${result.forecast.trend}` : "",
-    result.alerts.length > 0 ? "## Alertas\n" + result.alerts.slice(0, 5).map(a => `- ðŸ”´ ${a.message}`).join("\n") : "",
+    result.correlationAlerts.length > 0 ? "## Correlações\n" + result.correlationAlerts.map(a => `- ${a.message}`).join("\n") : "",
+    result.forecast.history && result.forecast.history.length >= 3 ? `## Previsão 30d\n- Score previsto: ${result.forecast.forecast}/100\n- Confiança: ${result.forecast.confidence}\n- Tendência: ${result.forecast.trend}` : "",
+    result.alerts.length > 0 ? "## Alertas\n" + result.alerts.slice(0, 5).map(a => `- 🔴 ${a.message}`).join("\n") : "",
     "---",
     `_Gerado pelo AI-Devkit Scorecard v13_`,
   ].filter(Boolean).join("\n");
   fs.writeFileSync(path.join(dir, "report.md"), md);
 }
 
-// â”€â”€â”€ Command â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Command ────────────────────────────────────────────────────────────────
 /**
  * Processa command.
- * @returns O resultado da operaÃ§Ã£o.
+ * @returns O resultado da operação.
  */
 export function scorecardCommand(): Command {
   const cmd = new Command("scorecard")
-    .description("Scorecard v8 â€” cross-category correlation, 30d forecast, schema validation, templates, json-diff, + 25 flags v1-v7")
+    .description("Scorecard v8 — cross-category correlation, 30d forecast, schema validation, templates, json-diff, + 25 flags v1-v7")
     .option("--json", "JSON completo para CI")
-    .option("--history", "Ãšltimos 10 scores")
-    .option("--diff", "ComparaÃ§Ã£o com anterior")
+    .option("--history", "Últimos 10 scores")
+    .option("--diff", "Comparação com anterior")
     .option("--branch <name>", "Compara score com outra branch")
-    .option("--trends", "GrÃ¡fico textual de tendÃªncia")
-    .option("--watch [seconds]", "Modo observaÃ§Ã£o (default 30s)", false)
+    .option("--trends", "Gráfico textual de tendência")
+    .option("--watch [seconds]", "Modo observação (default 30s)", false)
     .option("--badge", "Gera badge SVG apenas")
-    .option("--auto-fix", "Corrige itens automÃ¡ticos via fixCommand")
+    .option("--auto-fix", "Corrige itens automáticos via fixCommand")
     .option("--create-tasks", "Cria tasks no backlog para itens falhos")
-    .option("--html", "Gera relatÃ³rio HTML em .ai/reports/scorecard/report.html")
+    .option("--html", "Gera relatório HTML em .ai/reports/scorecard/report.html")
     .option("--serve [port]", "Inicia servidor HTTP com dashboard (default 3456)")
-    .option("--changes", "Mostra diff detalhado desde o Ãºltimo scorecard")
+    .option("--changes", "Mostra diff detalhado desde o último scorecard")
     .option("--gate <threshold>", "Exit 1 se score < N (ex: 70)")
     .option("--webhook <url>", "POST resultado para webhook")
     .option("--ci", "Exit 1 se score < 50")
-    .option("--ai [model]", "Analisa resultados com IA local (Ollama) e gera recomendaÃ§Ãµes")
+    .option("--ai [model]", "Analisa resultados com IA local (Ollama) e gera recomendações")
     .option("--benchmark", "Executa benchmarks (build, test, lint) e anexa ao resultado")
     .option("--remote <url>", "Envia resultado para aggregation server remoto")
-    .option("--remote-benchmark <url>", "Compara score com benchmarks remotos (mÃ©dia da org)")
-    .option("--cadence [minutes]", "Modo monitoramento contÃ­nuo (default 15min)", false)
-    .option("--cadence-threshold <points>", "Limiar de regressÃ£o para cadence (default 5)", "5")
-    .option("--git-trace", "Mostra histÃ³rico de score linkado a commits")
-    .option("--notify-webhook <url>", "Webhook para notificaÃ§Ãµes de regressÃ£o")
+    .option("--remote-benchmark <url>", "Compara score com benchmarks remotos (média da org)")
+    .option("--cadence [minutes]", "Modo monitoramento contínuo (default 15min)", false)
+    .option("--cadence-threshold <points>", "Limiar de regressão para cadence (default 5)", "5")
+    .option("--git-trace", "Mostra histórico de score linkado a commits")
+    .option("--notify-webhook <url>", "Webhook para notificações de regressão")
     .option("--snapshot", "Apenas gera snapshot do scorecard atual")
-    .option("--regression-check", "Verifica regressÃ£o desde o Ãºltimo snapshot")
-    .option("--correlation", "Mostra anÃ¡lise cruzada entre categorias")
-    .option("--forecast", "Mostra previsÃ£o de score para 30 dias")
+    .option("--regression-check", "Verifica regressão desde o último snapshot")
+    .option("--correlation", "Mostra análise cruzada entre categorias")
+    .option("--forecast", "Mostra previsão de score para 30 dias")
     .option("--json-diff <fromTimestamp>", "Exporta diff JSON entre dois snapshots (usa o timestamp do snapshot)")
-    .option("--validate-yaml <file>", "Valida conteÃºdo de YAML contra chaves obrigatÃ³rias")
-    .option("--template <name>", "Gera arquivo de governanÃ§a a partir de template")
+    .option("--validate-yaml <file>", "Valida conteúdo de YAML contra chaves obrigatórias")
+    .option("--template <name>", "Gera arquivo de governança a partir de template")
     .action(async (options) => {
-      // â”€â”€ Compute once â”€â”€
+      // ── Compute once ──
       const result = computeScorecard();
       saveAll(result);
       publishResult(result, options.webhook);
 
-      // â”€â”€ Policy gates â”€â”€
+      // ── Policy gates ──
       const gates = loadPolicyGates();
       const gateResult = applyPolicyGates(result, gates);
-      if (gateResult.blocked) { console.error("  ðŸ”´ Policy gate bloqueou.\n"); process.exit(1); }
-      if (gateResult.tasksCreated > 0) console.log(`  ðŸ“‹ ${gateResult.tasksCreated} tasks via policy gates.\n`);
+      if (gateResult.blocked) { log.error("  Policy gate bloqueou."); process.exit(1); }
+      if (gateResult.tasksCreated > 0) logger.info('  📋 ${gateResult.tasksCreated} tasks via policy gates.\n');
 
-      // â”€â”€ Correlation â”€â”€
+      // ── Correlation ──
       if (options.correlation) {
         const ca = crossCategoryAnalysis(result);
-        if (ca.length > 0) { console.log("\n  ANÃLISE CRUZADA:\n"); ca.forEach(a => console.log(`  ${a.severity === "critical" ? "ðŸ”´" : a.severity === "warn" ? "ðŸŸ¡" : "ðŸ”µ"} [${a.severity.toUpperCase()}] ${a.message}\n`)); }
-        else console.log("\n  âœ… Sem alertas de correlaÃ§Ã£o entre categorias.\n");
+        if (ca.length > 0) { logger.info('\n  ANÁLISE CRUZADA:\n'); ca.forEach(a => logger.info('  ${a.severity === "critical" ? "🔴" : a.severity === "warn" ? "🟡" : "🔵"} [${a.severity.toUpperCase()}] ${a.message}\n')); }
+        else logger.info('\n  ✅ Sem alertas de correlação entre categorias.\n');
       }
 
-      // â”€â”€ Forecast â”€â”€
+      // ── Forecast ──
       if (options.forecast) {
         const f = forecastScore(30);
         if (f.history.length >= 3) {
-          const arrow = f.trend === "up" ? "ðŸ“ˆ" : f.trend === "down" ? "ðŸ“‰" : "âž¡ï¸";
-          console.log(`\n  PREVISÃƒO 30 DIAS:\n  ${arrow} ${f.forecast}/100 (confianÃ§a: ${f.confidence})\n  TendÃªncia: ${f.trend}\n`);
-          console.log(`  HistÃ³rico (${f.history.length} pontos): ${f.history.slice(-10).join(" â†’ ")}\n`);
-        } else { console.log("\n  âš  Dados insuficientes para previsÃ£o (mÃ­nimo 3 snapshots).\n"); }
+          const arrow = f.trend === "up" ? "📈" : f.trend === "down" ? "📉" : "➡️";
+          logger.info('\n  PREVISÃO 30 DIAS:\n  ${arrow} ${f.forecast}/100 (confiança: ${f.confidence})\n  Tendência: ${f.trend}\n');
+          logger.info('  Histórico (${f.history.length} pontos): ${f.history.slice(-10).join(" → ")}\n');
+        } else { logger.info('\n  �  Dados insuficientes para previsão (mínimo 3 snapshots).\n'); }
       }
 
-      // â”€â”€ Validate YAML â”€â”€
+      // ── Validate YAML ──
       if (options.validateYaml) {
         const keys = ["version", "enabled", "name"];
         const result2 = validateYamlContent(options.validateYaml, keys);
-        if (result2.valid) console.log(`\n  âœ… ${options.validateYaml}: vÃ¡lido (${keys.length}/${keys.length} chaves)\n`);
-        else console.log(`\n  âš  ${options.validateYaml}: ${result2.missing.join(", ")} ausentes\n`);
+        if (result2.valid) logger.info('\n  ✅ ${options.validateYaml}: válido (${keys.length}/${keys.length} chaves)\n');
+        else logger.info('\n  �  ${options.validateYaml}: ${result2.missing.join(", ")} ausentes\n');
       }
 
-      // â”€â”€ Template generation â”€â”€
+      // ── Template generation ──
       if (options.template) {
-        const content = generateFromTemplate(options.template, { version: "1.0", project: root().split(/[/\\]/).pop() || "projeto", agents: "agente1, agente2", network: "restrita", secrets: "gerenciadas", title: "DecisÃ£o Arquitetural", status: "proposto", context: "Descreva o contexto...", decision: "Descreva a decisÃ£o..." });
+        const content = generateFromTemplate(options.template, { version: "1.0", project: root().split(/[/\\]/).pop() || "projeto", agents: "agente1, agente2", network: "restrita", secrets: "gerenciadas", title: "Decisão Arquitetural", status: "proposto", context: "Descreva o contexto...", decision: "Descreva a decisão..." });
         const targetDir = path.join(root(), ".ai/scorecard/templates");
         if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
         const targetFile = path.join(targetDir, `${options.template}.md`);
         fs.writeFileSync(targetFile, content, "utf8");
-        console.log(`\n  Template gerado: ${targetFile}\n`);
+        log.info(`  Template gerado: ${targetFile}`);
       }
 
-      // â”€â”€ JSON diff â”€â”€
+      // ── JSON diff ──
       if (options.jsonDiff) {
         const snapDir = path.join(root(), ".ai/reports/scorecard/snapshots");
         try {
@@ -164,41 +168,41 @@ export function scorecardCommand(): Command {
             const diff = scoreDiffExport(r1, r2);
             const diffPath = path.join(root(), ".ai/reports/scorecard/latest-diff.json");
             fs.writeFileSync(diffPath, diff, "utf8");
-            console.log(`\n  Diff salvo: ${diffPath}\n`);
-          } else { console.log("\n  Snapshot nÃ£o encontrado.\n"); }
-        } catch { console.log("\n  Erro ao gerar diff.\n"); }
+            log.info(`  Diff salvo: ${diffPath}`);
+          } else { log.info("  Snapshot não encontrado."); }
+        } catch { log.error("  Erro ao gerar diff."); }
       }
 
-      // â”€â”€ Remote â”€â”€
+      // ── Remote ──
 
-      // â”€â”€ Benchmark â”€â”€
+      // ── Benchmark ──
       let benchmarks: Benchmarks | undefined;
       if (options.benchmark) benchmarks = runBenchmarks();
 
-      // â”€â”€ AI analysis â”€â”€
+      // ── AI analysis ──
       if (options.ai !== undefined && options.ai !== false) {
         const prompt = buildAIAnalysisPrompt(result, benchmarks);
-        console.log("\n  ðŸ¤– Analisando com IA local...\n");
+        log.info("  Analisando com IA local...");
         const analysis = await queryLocalAI(prompt, typeof options.ai === "string" ? options.ai : undefined);
         if (analysis) {
-          console.log("  " + "â”€".repeat(55));
-          console.log("  ANÃLISE DO SCORECARD:\n");
-          for (const line of analysis.split("\n")) console.log(`  ${line}`);
-          console.log("\n  " + "â”€".repeat(55) + "\n");
-        } else { console.log("  âš  IA local indisponÃ­vel (Ollama nÃ£o estÃ¡ rodando?)\n"); }
+          console.log("  " + "─".repeat(55));
+          logger.info('  ANÁLISE DO SCORECARD:\n');
+          for (const line of analysis.split("\n")) logger.info('  ${line}');
+          console.log("\n  " + "─".repeat(55) + "\n");
+        } else { log.warn("  IA local indisponivel (Ollama nao esta rodando?)"); }
         return;
       }
 
       if (options.benchmark && benchmarks) {
-        console.log(`\n  BENCHMARKS:\n`);
-        console.log(`  Build:  ${benchmarks.buildTimeMs ? (benchmarks.buildTimeMs / 1000).toFixed(1) + "s" : "N/A"}`);
-        console.log(`  Test:   ${benchmarks.testTimeMs ? (benchmarks.testTimeMs / 1000).toFixed(1) + "s" : "N/A"}`);
-        console.log(`  Lint:   ${benchmarks.lintTimeMs ? (benchmarks.lintTimeMs / 1000).toFixed(1) + "s" : "N/A"}`);
-        console.log(`  Files:  ${benchmarks.totalFiles} arquivos .ts/.tsx\n`);
+        logger.info('\n  BENCHMARKS:\n');
+        logger.info('  Build:  ${benchmarks.buildTimeMs ? (benchmarks.buildTimeMs / 1000).toFixed(1) + "s" : "N/A"}');
+        logger.info('  Test:   ${benchmarks.testTimeMs ? (benchmarks.testTimeMs / 1000).toFixed(1) + "s" : "N/A"}');
+        logger.info('  Lint:   ${benchmarks.lintTimeMs ? (benchmarks.lintTimeMs / 1000).toFixed(1) + "s" : "N/A"}');
+        logger.info('  Files:  ${benchmarks.totalFiles} arquivos .ts/.tsx\n');
         if (!options.ai) return;
       }
 
-      // â”€â”€ Cadence mode â”€â”€
+      // ── Cadence mode ──
       if (options.cadence !== false) {
         const interval = typeof options.cadence === "string" ? parseInt(options.cadence) || 15 : 15;
         const threshold = parseInt(options.cadenceThreshold) || 5;
@@ -206,81 +210,81 @@ export function scorecardCommand(): Command {
         return;
       }
 
-      // â”€â”€ Git trace â”€â”€
+      // ── Git trace ──
       if (options.gitTrace) {
-        const trace = linkScoreToCommits(result);
-        if (trace.scoreHistory.length > 0) {
-          console.log("\n  ðŸ“œ Score x Commits:\n");
-          trace.scoreHistory.forEach((s, i) => console.log(`  ${i + 1}. ${s.commit} â€” ${s.score}/100`));
+        const trace = linkScoreToCommits(result.overallScore, '.');
+        if (trace.length > 0) {
+          logger.info('\n  📜 Score x Commits:\n');
+          trace.forEach((s: any, i: any) => logger.info('  ${i + 1}. ${s.commit} — ${s.score}/100'));
           console.log();
-        } else { console.log("  Sem dados de snapshot para git-trace.\n"); }
+        } else { logger.info('  Sem dados de snapshot para git-trace.\n'); }
         return;
       }
 
-      // â”€â”€ Snapshot only â”€â”€
+      // ── Snapshot only ──
       if (options.snapshot) {
-        console.log(`  ðŸ“¸ Snapshot salvo: ${result.timestamp.slice(0, 19)} â€” ${result.overallScore}/100\n`);
+        log.info(`  ?? Snapshot salvo: ${result.timestamp.slice(0, 19)} � ${result.overallScore}/100`);
         return;
       }
 
-      // â”€â”€ Regression check â”€â”€
+      // ── Regression check ──
       if (options.regressionCheck) {
         const reg = detectRegression(result, 5);
         if (reg.regressed) {
-          console.log(`\n  âš  REGRESSÃƒO DETECTADA desde ${reg.sinceTimestamp?.slice(0, 19) || "?"}:\n`);
-          reg.drops.forEach(d => console.log(`  â†“ ${d.category}: ${d.from} â†’ ${d.to}`));
+          logger.info('\n  �  REGRESSÃO DETECTADA desde ${reg.sinceTimestamp?.slice(0, 19) || "?"}:\n');
+          reg.drops.forEach(d => logger.info('  ↓ ${d.category}: ${d.from} → ${d.to}'));
           console.log();
-        } else { console.log(`  âœ… Sem regressÃ£o significativa desde o Ãºltimo snapshot.\n`); }
+        } else { logger.info('  ✅ Sem regressão significativa desde o último snapshot.\n'); }
         return;
       }
 
-      // â”€â”€ Watch mode â”€â”€
+      // ── Watch mode ──
       if (options.watch !== false) {
         watchMode(typeof options.watch === "string" ? parseInt(options.watch) || 30 : 30);
         return;
       }
 
-      // â”€â”€ Badge only â”€â”€
+      // ── Badge only ──
       if (options.badge) {
         const b = generateBadge(result.overallScore);
         const p = path.join(root(), ".ai/reports/scorecard/badge.svg");
         if (!fs.existsSync(path.dirname(p))) fs.mkdirSync(path.dirname(p), { recursive: true });
-        fs.writeFileSync(p, b); console.log(`  Badge: .ai/reports/scorecard/badge.svg (${result.overallScore}/100)\n`); return;
+        fs.writeFileSync(p, b); log.info(`  Badge: .ai/reports/scorecard/badge.svg (${result.overallScore}/100)`); return;
       }
 
-      // â”€â”€ Branch comparison â”€â”€
+      // ── Branch comparison ──
       if (options.branch) {
         const currentBranch = git(["rev-parse", "--abbrev-ref", "HEAD"]) || "current";
         const targetBranch = options.branch;
-        console.log(`\n  Comparando: ${currentBranch} vs ${targetBranch}\n`);
+        logger.info('\n  Comparando: ${currentBranch} vs ${targetBranch}\n');
         const stash = git(["stash"]) !== null;
         const checkoutOk = git(["checkout", targetBranch]) !== null;
         let branchScore: ScorecardResult | null = null;
         if (checkoutOk) { branchScore = computeScorecard(); git(["checkout", currentBranch]); if (stash) git(["stash", "pop"]); }
         else { git(["checkout", currentBranch]); if (stash) git(["stash", "pop"]); }
-        if (!branchScore) { console.log(`  âŒ Branch "${targetBranch}" inacessÃ­vel.\n`); return; }
+        if (!branchScore) { logger.info('  ❌ Branch "${targetBranch}" inacessível.\n'); return; }
         const diff = result.overallScore - branchScore.overallScore;
-        console.log(`  ${currentBranch}: ${result.overallScore}/100 (${result.maturityLevel})`);
-        console.log(`  ${targetBranch}: ${branchScore.overallScore}/100 (${branchScore.maturityLevel})`);
-        console.log(`  VariaÃ§Ã£o: ${diff > 0 ? "+" : ""}${diff} pontos\n`);
+        logger.info('  ${currentBranch}: ${result.overallScore}/100 (${result.maturityLevel})');
+        logger.info('  ${targetBranch}: ${branchScore.overallScore}/100 (${branchScore.maturityLevel})');
+        logger.info('  Variação: ${diff > 0 ? "+" : ""}${diff} pontos\n');
         for (const cc of result.categories) {
           const bc = branchScore.categories.find(c => c.name === cc.name);
-          if (bc) { const d = Math.round(cc.score - bc.score); if (d !== 0) console.log(`  ${cc.name}: ${d > 0 ? "+" : ""}${d}`); }
+          if (bc) { const d = Math.round(cc.score - bc.score); if (d !== 0) logger.info('  ${cc.name}: ${d > 0 ? "+" : ""}${d}'); }
         }
         console.log(); return;
       }
 
-      // â”€â”€ Other display modes â”€â”€
+      // ── Other display modes ──
       if (options.json) { console.log(JSON.stringify(result, null, 2)); return; }
 
       if (options.history) {
         const f = path.join(root(), ".ai/reports/scorecard/history.json");
         if (fs.existsSync(f)) {
           const h: ScorecardResult[] = JSON.parse(fs.readFileSync(f, "utf8"));
-          console.log("\n  HistÃ³rico:\n");
-          h.slice(-10).forEach((e, i) => console.log(`  ${i + 1}. ${e.timestamp.slice(0, 19)} â€” ${e.overallScore}/100 ${e.maturityLevel} â€” v${e.evolution.version}`));
+          logger.info('\n  Histórico:\n');
+          h.slice(-10).forEach((e, i) => logger.info('  ${i + 1}. ${e.timestamp.slice(0, 19)} — ${e.overallScore}/100 ${e.maturityLevel} — v${e.evolution.version}'));
           console.log();
-        } else { console.log("  Nenhum histÃ³rico.\n"); }
+        } else { logger.info('  Nenhum histórico.\n'); }
         return;
       }
 
@@ -290,10 +294,10 @@ export function scorecardCommand(): Command {
           const h: ScorecardResult[] = JSON.parse(fs.readFileSync(f, "utf8"));
           if (h.length >= 2) {
             const p = h[h.length - 2]; const d = result.overallScore - p.overallScore;
-            console.log(`\n  Anterior: ${p.overallScore}/100 ${p.maturityLevel} â€” v${p.evolution.version} â€” ${p.evolution.items} itens`);
-            console.log(`  Atual:    ${result.overallScore}/100 ${result.maturityLevel} â€” v${result.evolution.version} â€” ${result.evolution.items} itens`);
-            console.log(`  VariaÃ§Ã£o: ${d > 0 ? "+" : ""}${d} pontos\n`);
-          } else { console.log("  HistÃ³rico insuficiente.\n"); }
+            logger.info('\n  Anterior: ${p.overallScore}/100 ${p.maturityLevel} — v${p.evolution.version} — ${p.evolution.items} itens');
+            logger.info('  Atual:    ${result.overallScore}/100 ${result.maturityLevel} — v${result.evolution.version} — ${result.evolution.items} itens');
+            logger.info('  Variação: ${d > 0 ? "+" : ""}${d} pontos\n');
+          } else { logger.info('  Histórico insuficiente.\n'); }
         }
         return;
       }
@@ -304,28 +308,28 @@ export function scorecardCommand(): Command {
           const h: ScorecardResult[] = JSON.parse(fs.readFileSync(f, "utf8"));
           const w = h.slice(-15);
           if (w.length >= 2) {
-            console.log("\n  TendÃªncia:\n");
+            logger.info('\n  Tendência:\n');
             const mx = Math.max(...w.map(e => e.overallScore), 100);
-            w.forEach(e => console.log(`  ${e.timestamp.slice(0, 10)} ${"â–ˆ".repeat(Math.round(e.overallScore / mx * 30))} ${e.overallScore}`));
+            w.forEach(e => logger.info('  ${e.timestamp.slice(0, 10)} ${"█".repeat(Math.round(e.overallScore / mx * 30))} ${e.overallScore}'));
             console.log();
-          } else { console.log("  Dados insuficientes.\n"); }
+          } else { logger.info('  Dados insuficientes.\n'); }
         }
         return;
       }
 
       if (options.autoFix) {
-        console.log("\n  AUTO-FIX:\n"); let fixed = 0;
+        log.info("  AUTO-FIX:"); let fixed = 0;
         for (const cat of result.categories) for (const item of cat.items) {
           if (!item.passed && item.fixCommand) {
-            process.stdout.write(`  ðŸ”§ ${item.id}... `);
-            try { const r = spawnSync("node", [path.join(root(), item.fixCommand)], { cwd: root(), stdio: "pipe", timeout: 10000 }); if (r.status === 0) { fixed++; console.log("âœ…"); } else console.log("âŒ"); } catch { console.log("âŒ"); }
+            process.stdout.write(`  ?? ${item.id}... `);
+            try { const r = spawnSync("node", [path.join(root(), item.fixCommand)], { cwd: root(), stdio: "pipe", timeout: 10000 }); if (r.status === 0) { fixed++; logger.info('?'); } else logger.info('?'); } catch { logger.info('?'); }
           }
         }
-        console.log(`\n  ${fixed} corrigidos.\n`); return;
+        log.info(`  ${fixed} corrigidos.`); return;
       }
 
-      if (options.createTasks) { const n = createTasksFromFailures(result); console.log(`\n  ${n} tarefas criadas.\n`); return; }
-      if (options.html) { const h = generateHTML(result); fs.writeFileSync(path.join(root(), ".ai/reports/scorecard/report.html"), h, "utf8"); console.log(`  HTML: .ai/reports/scorecard/report.html\n`); return; }
+      if (options.createTasks) { const n = createTasksFromFailures(result); log.info(`  ${n} tarefas criadas.`); return; }
+      if (options.html) { const h = generateHTML(result); fs.writeFileSync(path.join(root(), ".ai/reports/scorecard/report.html"), h, "utf8"); log.info(`  HTML: .ai/reports/scorecard/report.html`); return; }
       if (options.serve !== undefined && options.serve !== false) { serveMode(typeof options.serve === "string" ? parseInt(options.serve) || 3456 : 3456); return; }
 
       if (options.changes) {
@@ -334,24 +338,24 @@ export function scorecardCommand(): Command {
           const h: ScorecardResult[] = JSON.parse(fs.readFileSync(f, "utf8"));
           if (h.length >= 2) {
             const prev = h[h.length - 2]; const d = result.overallScore - prev.overallScore;
-            console.log(`\n  MudanÃ§as desde ${prev.timestamp.slice(0, 19)}:\n`);
-            console.log(`  Score: ${prev.overallScore} â†’ ${result.overallScore} (${d > 0 ? "+" : ""}${d})`);
-            console.log(`  Itens: ${prev.evolution.items} â†’ ${result.evolution.items}`);
+            logger.info('\n  Mudanças desde ${prev.timestamp.slice(0, 19)}:\n');
+            logger.info('  Score: ${prev.overallScore} → ${result.overallScore} (${d > 0 ? "+" : ""}${d})');
+            logger.info('  Itens: ${prev.evolution.items} → ${result.evolution.items}');
             for (const cc of result.categories) {
               const pc = prev.categories.find(c => c.name === cc.name);
-              if (pc) { const dd = Math.round(cc.score - pc.score); if (dd !== 0) console.log(`  ${dd > 0 ? "â†‘" : "â†“"} ${cc.name}: ${Math.round(pc.score)} â†’ ${Math.round(cc.score)} (${dd > 0 ? "+" : ""}${dd})`); }
-              else console.log(`  âœš ${cc.name}: ${Math.round(cc.score)}/100 (nova)`);
+              if (pc) { const dd = Math.round(cc.score - pc.score); if (dd !== 0) logger.info('  ${dd > 0 ? "↑" : "↓"} ${cc.name}: ${Math.round(pc.score)} → ${Math.round(cc.score)} (${dd > 0 ? "+" : ""}${dd})'); }
+              else logger.info('  ✚ ${cc.name}: ${Math.round(cc.score)}/100 (nova)');
             }
             console.log();
-          } else { console.log("  HistÃ³rico insuficiente.\n"); }
+          } else { logger.info('  Histórico insuficiente.\n'); }
         }
         return;
       }
 
-      // â”€â”€ Default: print â”€â”€
+      // ── Default: print ──
       print(result);
       const threshold = options.gate ? parseInt(options.gate) : options.ci ? 50 : 0;
-      if (threshold > 0 && result.overallScore < threshold) { console.error(`  Gate FAIL: score ${result.overallScore} < ${threshold}\n`); process.exit(1); }
+      if (threshold > 0 && result.overallScore < threshold) { log.error(`  Gate FAIL: score ${result.overallScore} < ${threshold}`); process.exit(1); }
     });
 
   cmd
@@ -376,7 +380,7 @@ export function scorecardCommand(): Command {
       printLine("");
 
       for (const mod of result.modules) {
-        const icon = mod.status === "excellent" ? "âœ…" : mod.status === "good" ? "ðŸŸ¢" : mod.status === "warning" ? "ðŸŸ¡" : "ðŸ”´";
+        const icon = mod.status === "excellent" ? "✅" : mod.status === "good" ? "🟢" : mod.status === "warning" ? "🟡" : "🔴";
         printLine(`${icon} ${mod.name}: ${mod.overall}/100`);
         for (const [dim, score] of Object.entries(mod.dimensions)) {
           printLine(`   ${dim}: ${score}`);

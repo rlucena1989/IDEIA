@@ -1,4 +1,5 @@
 import { FileEntry, generateFiles, GeneratorOptions, printGeneratorResult } from './engine';
+import { createLogger } from '@ideia/logger';
 
 /**
  * Processa onboarding.

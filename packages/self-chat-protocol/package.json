@@ -1,0 +1,37 @@
+{
+  "name": "@ideia/self-chat-protocol",
+  "description": "Self-Chat Protocol — chat about IDEIA itself, its architecture, capabilities, packages, and state",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/event-bus": "*",
+    "@ideia/schema-registry": "*",
+    "@ideia/auto-adr": "*",
+    "@ideia/technology-radar": "*",
+    "@ideia/scope-isolation": "*",
+    "@ideia/feedback-pipeline": "*",
+    "@ideia/contract-cdc": "*",
+    "@ideia/slo-monitor": "*",
+    "@ideia/initiative-feedback": "*",
+    "@ideia/contracts": "*",
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

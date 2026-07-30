@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/anomaly-detection",
+  "private": true,
+  "description": "Behavioral Anomaly Detection — deteccao de anomalias em metricas, padroes de acesso, comportamento de agentes e eventos do sistema",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

@@ -1,4 +1,5 @@
 import { DOCUMENT_REGISTRY, DocumentRegistryEntry } from './document-registry';
+import { createLogger } from '@ideia/logger';
 import { DEFAULT_DOCUMENT_POLICIES, DocumentPolicy } from './document-policy';
 
 export interface DocumentConflict {

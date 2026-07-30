@@ -1,4 +1,6 @@
 import { Command } from "commander";
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.drift');
 import fs from "node:fs";
 import path from "node:path";
 
@@ -54,7 +56,7 @@ function findFilesByPattern(pattern: string): string[] {
   if (pattern.includes("*")) {
     const dir = path.dirname(pattern);
     const fullDir = path.join(process.cwd(), dir);
-    
+
     if (!fs.existsSync(fullDir)) {
       return [];
     }
@@ -65,7 +67,7 @@ function findFilesByPattern(pattern: string): string[] {
       .filter(f => f.endsWith(ext))
       .map(f => path.join(dir, f));
   }
-  
+
   return [pattern];
 }
 
@@ -74,7 +76,7 @@ export function checkStaleFiles(): DriftFinding[] {
 
   SOURCE_DIRS.forEach(sourcePattern => {
     const sourceFiles = findFilesByPattern(sourcePattern);
-    
+
     sourceFiles.forEach(sourceFile => {
       const sourceStats = getFileStats(sourceFile);
       if (!sourceStats.exists || !sourceStats.mtime) return;
@@ -82,7 +84,7 @@ export function checkStaleFiles(): DriftFinding[] {
 
       TARGET_FILES.forEach(targetPattern => {
         const targetFiles = findFilesByPattern(targetPattern);
-        
+
         targetFiles.forEach(targetFile => {
           const targetStats = getFileStats(targetFile);
           if (!targetStats.exists || !targetStats.mtime) return;
@@ -109,7 +111,7 @@ export function checkOrphanFiles(): DriftFinding[] {
 
   TARGET_FILES.forEach(targetPattern => {
     const targetFiles = findFilesByPattern(targetPattern);
-    
+
     targetFiles.forEach(targetFile => {
       const targetStats = getFileStats(targetFile);
       if (!targetStats.exists) return;
@@ -224,16 +226,16 @@ export function saveDriftReport(report: DriftReport): void {
 }
 
 export function printDriftReport(report: DriftReport): void {
-  console.log("\n╔═══════════════════════════════════════════════════════════╗");
-  console.log("║              DRIFT DETECTION REPORT                      ║");
-  console.log("╚═══════════════════════════════════════════════════════════╝\n");
+  logger.info('\n╔═══════════════════════════════════════════════════════════╗');
+  logger.info('║              DRIFT DETECTION REPORT                      ║');
+  logger.info('╚═══════════════════════════════════════════════════════════╝\n');
 
-  console.log(`📅 Timestamp: ${report.timestamp}`);
-  console.log(`📊 Status: ${report.status === "clean" ? "✅ Clean" : "❌ Drift Detected"}`);
-  console.log(`🔍 Total findings: ${report.total_findings}\n`);
+  logger.info('📅 Timestamp: ${report.timestamp}');
+  logger.info('📊 Status: ${report.status === "clean" ? "✅ Clean" : "❌ Drift Detected"}');
+  logger.info('🔍 Total findings: ${report.total_findings}\n');
 
   if (report.findings.length === 0) {
-    console.log("✅ No drift detected. All sources and targets are synchronized.\n");
+    logger.info('✅ No drift detected. All sources and targets are synchronized.\n');
     return;
   }
 
@@ -244,21 +246,21 @@ export function printDriftReport(report: DriftReport): void {
   }, {} as Record<string, DriftFinding[]>);
 
   Object.entries(grouped).forEach(([type, findings]) => {
-    console.log(`\n┌─────────────────────────────────────────────────────────┐`);
-    console.log(`│ ${type.toUpperCase()} (${findings.length})`);
-    console.log(`└─────────────────────────────────────────────────────────┘\n`);
+    logger.info('\n┌─────────────────────────────────────────────────────────┐');
+    logger.info('│ ${type.toUpperCase()} (${findings.length})');
+    logger.info('└─────────────────────────────────────────────────────────┘\n');
 
     findings.forEach((f, index) => {
-      console.log(`${index + 1}. ${f.message}`);
-      if (f.source) console.log(`   Source: ${f.source}`);
-      if (f.target) console.log(`   Target: ${f.target}`);
-      console.log(`   Severity: ${f.severity}`);
+      logger.info('${index + 1}. ${f.message}');
+      if (f.source) logger.info('   Source: ${f.source}');
+      if (f.target) logger.info('   Target: ${f.target}');
+      logger.info('   Severity: ${f.severity}');
       console.log();
     });
   });
 
   console.log("═".repeat(60));
-  console.log(`Status: ${report.status}`);
+  logger.info('Status: ${report.status}');
   console.log("═".repeat(60) + "\n");
 }
 
@@ -286,8 +288,8 @@ export function driftCommand(): Command {
       }
 
       if (options.fix) {
-        console.log("\n🔧 Auto-fix not yet implemented. Requires multi-format compiler (Fase 2).");
-        console.log("   Run 'ai-devkit compile' manually to regenerate targets.\n");
+        logger.info('\n🔧 Auto-fix not yet implemented. Requires multi-format compiler (Fase 2).');
+        logger.info("   Run 'ai-devkit compile' manually to regenerate targets.\n");
       }
 
       if (report.status === "drift_detected") {
@@ -300,16 +302,16 @@ export function driftCommand(): Command {
     .description("Exibe status do último drift check")
     .action(() => {
       const reportFile = path.join(process.cwd(), ".ai/reports/drift/latest.json");
-      
+
       if (!fs.existsSync(reportFile)) {
-        console.log("No drift check performed yet. Run 'ai-devkit drift check' first.");
+        logger.info("No drift check performed yet. Run 'ai-devkit drift check' first.");
         return;
       }
 
       const report: DriftReport = JSON.parse(fs.readFileSync(reportFile, "utf8"));
-      console.log(`\n📊 Last drift check: ${report.timestamp}`);
-      console.log(`Status: ${report.status === "clean" ? "✅ Clean" : "❌ Drift Detected"}`);
-      console.log(`Findings: ${report.total_findings}\n`);
+      logger.info(`\n📊 Last drift check: ${report.timestamp}`);
+      logger.info(`Status: ${report.status === "clean" ? "✅ Clean" : "❌ Drift Detected"}`);
+      logger.info(`Findings: ${report.total_findings}\n`);
     });
 
   return drift;

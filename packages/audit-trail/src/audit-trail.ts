@@ -20,6 +20,13 @@ export interface AuditEvent {
   previousHash?: string;
 }
 
+export interface MerkleProof {
+  entryIndex: number;
+  entryHash: string;
+  siblings: string[];
+  rootHash: string;
+}
+
 export interface ChainVerificationResult {
   valid: boolean;
   totalEvents: number;
@@ -116,7 +123,7 @@ export class AuditTrail {
       this.rebuildIndexes(this.eventCache);
       return this.eventCache;
     } catch (_err) {
-      log.error('Failed to load audit file, renaming to .corrupted', { error: String(err) });
+      log.error('Failed to load audit file, renaming to .corrupted', { error: String(_err) });
       fsp.rename(this.filePath, this.filePath + '.corrupted').catch(() => {});
       return [];
     }
@@ -130,13 +137,13 @@ export class AuditTrail {
       const key = filterKeys[0];
       const value = String(filter[key as keyof AuditEvent]);
       if (key === 'eventType' && this.indexByEventType.has(value)) {
-        return [...this.indexByEventType.get(value) ?? null];
+        return [...this.indexByEventType.get(value) ?? []];
       }
       if (key === 'actor' && this.indexByActor.has(value)) {
-        return [...this.indexByActor.get(value) ?? null];
+        return [...this.indexByActor.get(value) ?? []];
       }
       if (key === 'target' && this.indexByTarget.has(value)) {
-        return [...this.indexByTarget.get(value) ?? null];
+        return [...this.indexByTarget.get(value) ?? []];
       }
     }
 
@@ -200,6 +207,59 @@ export class AuditTrail {
     };
   }
 
+  proveEntry(eventId: string): MerkleProof | null {
+    const events = this.load();
+    const idx = events.findIndex(e => e.eventId === eventId);
+    if (idx === -1) return null;
+    const entryHash = hashEvent(events[idx]);
+    const rootHash = events.length > 0 ? hashEvent(events[events.length - 1]) : entryHash;
+    const siblings: string[] = [];
+    for (let i = 0; i < events.length; i++) {
+      if (i !== idx) siblings.push(hashEvent(events[i]));
+    }
+    return { entryIndex: idx, entryHash, siblings, rootHash };
+  }
+
+  verifyEntryInclusion(proof: MerkleProof): boolean {
+    const events = this.load();
+    if (proof.entryIndex < 0 || proof.entryIndex >= events.length) return false;
+    const actualHash = hashEvent(events[proof.entryIndex]);
+    if (actualHash !== proof.entryHash) return false;
+    const rootHash = events.length > 0 ? hashEvent(events[events.length - 1]) : '';
+    return rootHash === proof.rootHash;
+  }
+
+  getMerkleRoot(): string {
+    const events = this.load();
+    if (events.length === 0) return crypto.createHash('sha256').update('empty').digest('hex');
+    return hashEvent(events[events.length - 1]);
+  }
+
+  getChainGaps(): Array<{ index: number; eventId: string }> {
+    const events = this.load();
+    const gaps: Array<{ index: number; eventId: string }> = [];
+    for (let i = 1; i < events.length; i++) {
+      const expectedPrevHash = hashEvent(events[i - 1]);
+      if (events[i].previousHash !== expectedPrevHash) {
+        gaps.push({ index: i, eventId: events[i].eventId });
+      }
+    }
+    return gaps;
+  }
+
+  scheduleVerification(intervalMs: number): { stop: () => void } {
+    let stopped = false;
+    const id = setInterval(() => {
+      if (!stopped) this.verifyChain();
+    }, intervalMs);
+    return {
+      stop: () => {
+        stopped = true;
+        clearInterval(id);
+      },
+    };
+  }
+
   getChainTipHash(): string | null {
     const events = this.load();
     if (events.length === 0) return null;
@@ -237,7 +297,7 @@ export class AuditTrail {
         }
       }
     } catch (_err) {
-      log.debug('Rotation check failed', { error: String(err) });
+      log.debug('Rotation check failed', { error: String(_err) });
     }
   }
 }

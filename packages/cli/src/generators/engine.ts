@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 
 /** Interface que define a estrutura de generator options. */
@@ -37,11 +38,11 @@ function interpolate(template: string, vars: Record<string, string>): string {
  * @returns O resultado da operação.
  */
 export function buildVars(name: string): Record<string, string> {
-  const pascal = name.replace(/[-_]\w/g, m => m[1]!.toUpperCase()).replace(/^\w/, c => c.toUpperCase());
+  const pascal = name.replace(/[-_]\w/g, m => (m[1] ?? '').toUpperCase()).replace(/^\w/, c => c.toUpperCase());
   const screaming = name.replace(/[-]/g, '_').toUpperCase();
   const kebab = name.replace(/_/g, '-').toLowerCase();
   const pluralName = name.endsWith('y') ? name.slice(0, -1) + 'ies' : name + 's';
-  const pluralPascal = pluralName.replace(/[-_]\w/g, m => m[1]!.toUpperCase()).replace(/^\w/, c => c.toUpperCase());
+  const pluralPascal = pluralName.replace(/[-_]\w/g, m => (m[1] ?? '').toUpperCase()).replace(/^\w/, c => c.toUpperCase());
   return { name, Name: pascal, NAME: screaming, name_kebab: kebab, name_plural: pluralName, NamePlural: pluralPascal };
 }
 

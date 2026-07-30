@@ -1,4 +1,5 @@
 import { DiscoveryRegistry } from './registry';
+import { createLogger } from '@ideia/logger';
 import { Tool, ToolCall, ToolResult, ToolHandler } from './types';
 
 export class ToolExecutor {
@@ -38,7 +39,7 @@ export class ToolExecutor {
     } catch (_err) {
       return this.logResult({
         success: false, toolId: call.toolId,
-        error: err instanceof Error ? err.message : String(err),
+        error: _err instanceof Error ? _err.message : String(_err),
         duration: Date.now() - start,
       });
     }

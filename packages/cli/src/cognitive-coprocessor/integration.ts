@@ -6,8 +6,10 @@
  */
 
 import { IntentClassifier, IntentResult } from '../planner/intent-classifier';
+import { createLogger } from '@ideia/logger';
 import { AdaptDecomposer, DecomposedTask } from '../planner/adapt-decomposer';
 import { PlanPromptBuilder } from '../planner/plan-prompt-builder';
+const logger = createLogger('integration');
 
 export interface CoprocessorInput {
   title: string;

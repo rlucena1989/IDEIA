@@ -1,5 +1,7 @@
 import { Emitter, Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { PreferenceMigration, PreferenceMigrationManager } from './types';
+const logger = createLogger('ideia-preferences:migration');
 
 export class DefaultPreferenceMigrationManager implements PreferenceMigrationManager {
   private migrations: PreferenceMigration[] = [];
@@ -17,7 +19,7 @@ export class DefaultPreferenceMigrationManager implements PreferenceMigrationMan
     while (current < toVersion) {
       const migration = this.migrations.find(m => m.fromVersion === current);
       if (!migration) {
-        console.warn(`No migration found from version ${current} to ${current + 1}`);
+        logger.warn(`No migration found from version ${current} to ${current + 1}`);
         current++;
         continue;
       }

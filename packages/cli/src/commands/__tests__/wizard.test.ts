@@ -60,6 +60,14 @@ describe('printGoalSummary', () => {
   });
 });
 
+describe('printGoalSummary', () => {
+  it('deve lidar com goal desconhecido sem lancar erro', () => {
+    const logSpy = jest.spyOn(console, 'log').mockImplementation();
+    expect(() => printGoalSummary({ goal: 'unknown_goal' })).not.toThrow();
+    logSpy.mockRestore();
+  });
+});
+
 describe('wizardCommand', () => {
   it('returns a commander command', () => {
     const cmd = wizardCommand();
@@ -69,5 +77,62 @@ describe('wizardCommand', () => {
   it('has description', () => {
     const cmd = wizardCommand();
     expect(cmd.description()).toBeTruthy();
+  });
+});
+
+describe('wizardCommand actions', () => {
+  let logSpy: jest.SpyInstance;
+  let errorSpy: jest.SpyInstance;
+  let exitSpy: jest.SpyInstance;
+  let stdoutWriteSpy: jest.SpyInstance;
+  let originalIsTTY: boolean | undefined;
+
+  beforeAll(() => {
+    originalIsTTY = process.stdin.isTTY;
+  });
+
+  afterAll(() => {
+    Object.defineProperty(process.stdin, 'isTTY', { value: originalIsTTY, configurable: true });
+  });
+
+  beforeEach(() => {
+    logSpy = jest.spyOn(console, 'log').mockImplementation();
+    errorSpy = jest.spyOn(console, 'error').mockImplementation();
+    exitSpy = jest.spyOn(process, 'exit').mockImplementation((() => { throw new Error('exit'); }) as () => never);
+    stdoutWriteSpy = jest.spyOn(process.stdout, 'write').mockImplementation();
+    Object.defineProperty(process.stdin, 'isTTY', { value: true, configurable: true });
+  });
+
+  afterEach(() => {
+    logSpy.mockRestore();
+    errorSpy.mockRestore();
+    exitSpy.mockRestore();
+    stdoutWriteSpy.mockRestore();
+  });
+
+  it('--no-wizard desativa modo interativo', () => {
+    const cmd = wizardCommand();
+    cmd.parse(['node', 'test', '--no-wizard']);
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('desativado'));
+  });
+
+  it('modo piped desativa wizard', () => {
+    Object.defineProperty(process.stdin, 'isTTY', { value: false, configurable: true });
+    const cmd = wizardCommand();
+    cmd.parse(['node', 'test']);
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('desativado'));
+  });
+
+  it('--goal invalido exibe erro', async () => {
+    jest.isolateModules(async () => {
+      jest.mock('../wizard', () => ({
+        ...jest.requireActual('../wizard'),
+        runWizard: jest.fn().mockResolvedValue({}),
+      }));
+      const { wizardCommand } = await import('../wizard');
+      const cmd = wizardCommand();
+      try { await cmd.parseAsync(['node', 'test', '--goal', 'invalid-goal']); } catch {}
+      expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('inválido'));
+    });
   });
 });

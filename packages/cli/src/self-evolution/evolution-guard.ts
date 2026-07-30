@@ -1,4 +1,6 @@
 import { EvolutionPlan } from './evolution-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('evolution-guard');
 
 export interface EvolutionCheck {
   allowed: boolean;

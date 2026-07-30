@@ -1,0 +1,21 @@
+{
+  "name": "@ideia/context-provenance",
+  "private": true,
+  "description": "Context Provenance & Audit — Merkle tree, ZK proofs, DP anonymization, TEE attestation",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../study-engine"
+    },
+    {
+      "path": "../risk-approval"
+    },
+    {
+      "path": "../quality-gates"
+    },
+    {
+      "path": "../planning-engine"
+    },
+    {
+      "path": "../spec-engine"
+    },
+    {
+      "path": "../agent-runtime"
+    },
+    {
+      "path": "../distillation-engine"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../data-layer"
+    },
+    {
+      "path": "../memory-store"
+    }
+  ]
+}

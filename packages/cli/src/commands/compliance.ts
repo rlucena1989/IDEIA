@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { printLine, printResult } from "../utils/output";
 import { listFrameworks, getFramework } from '../compliance/frameworks';

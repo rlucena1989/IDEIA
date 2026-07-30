@@ -1,7 +1,9 @@
 import { PlatformState, PlatformVerification } from './platform-types';
+import { createLogger } from '@ideia/logger';
 import { PlatformPackage } from './platform-types';
 import { PlatformFinishResult } from './platform-types';
 import { MaintenanceTask } from './platform-types';
+const logger = createLogger('platform-report');
 
 export interface PlatformReport {
   generatedAt: string;

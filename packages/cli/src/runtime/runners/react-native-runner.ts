@@ -1,5 +1,7 @@
 import { BaseRunner } from './base-runner';
+import { createLogger } from '@ideia/logger';
 import { LanguageId } from '../adapter-contract';
+const logger = createLogger('react-native-runner');
 
 /** Classe responsável por processa native runner. */
 export class ReactNativeRunner extends BaseRunner {

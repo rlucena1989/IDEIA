@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import fs from 'fs';
 import path from 'path';
 
@@ -27,9 +28,9 @@ export function cosineSimilarity(a: number[], b: number[]): number {
   if (a.length !== b.length) return 0;
   let dot = 0, normA = 0, normB = 0;
   for (let i = 0; i < a.length; i++) {
-    dot += a[i]! * b[i]!;
-    normA += a[i]! * a[i]!;
-    normB += b[i]! * b[i]!;
+    dot += (a[i] ?? 0) * (b[i] ?? 0);
+    normA += (a[i] ?? 0) * (a[i] ?? 0);
+    normB += (b[i] ?? 0) * (b[i] ?? 0);
   }
   const denom = Math.sqrt(normA) * Math.sqrt(normB);
   return denom === 0 ? 0 : dot / denom;

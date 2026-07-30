@@ -1,5 +1,7 @@
 import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import { join } from 'node:path';
+const logger = createLogger('gitops-generator');
 
 export interface GitHubPipelineConfig {
   name: string;

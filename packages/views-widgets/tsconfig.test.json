@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strict": false,
+    "paths": {
+      "@ideia/core-contributions": ["./src/__mocks__/@ideia/core-contributions.ts"]
+    }
+  },
+  "include": ["src"]
+}

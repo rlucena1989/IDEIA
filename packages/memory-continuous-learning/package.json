@@ -1,0 +1,26 @@
+{
+  "name": "@ideia/memory-continuous-learning",
+  "description": "Continuous learning engine with FTRL, EWC, progressive compaction and meta-memory optimization",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  }
+}

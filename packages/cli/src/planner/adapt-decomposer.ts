@@ -7,6 +7,7 @@
  */
 
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 
 export interface DecomposedTask {
   id: string;
@@ -43,7 +44,7 @@ export class AdaptDecomposer {
     const parts = this.splitTask(spec);
     const subResults = await Promise.all(parts.map(p => this.decompose(p, depth + 1)));
     for (let i = 1; i < subResults.length; i++) {
-      subResults[i]!.dependencies.push(subResults[i - 1].id);
+      if (subResults[i]) subResults[i].dependencies.push(subResults[i - 1].id);
     }
 
     return {

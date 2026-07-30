@@ -1,5 +1,11 @@
 import path from 'path';
+import { createLogger } from '@ideia/logger';
 import { Scope, AllowedPaths, ResolveResult } from './types';
+import { PolicyEnforcer } from './policy-enforcer';
+import { PolicyParser, ParsedIsolationPolicy } from './policy-parser';
+import { IsolationPolicy } from './isolation-policy';
+import { ValidationResult } from './path-validator';
+const logger = createLogger('scope-isolation');
 
 export class ScopeViolationError extends Error {
   public readonly fromScope: Scope;
@@ -82,17 +88,92 @@ export class PathValidator {
       ? [...this.allowedPaths.selfSpace]
       : [...this.allowedPaths.projectSpace];
   }
+
+  validate(targetPath: string, scope: Scope, _operation?: string): ValidationResult {
+    const resolved = path.resolve(targetPath);
+    const hasTraversal = targetPath.includes('..');
+    const normalized = resolved.replace(/\\/g, '/');
+
+    if (hasTraversal) {
+      return {
+        allowed: false,
+        reason: `Path traversal detected: ${targetPath}`,
+        resolvedPath: resolved,
+      };
+    }
+
+    const inSelf = this.allowedPaths.selfSpace.some(p =>
+      normalized.startsWith(p.replace(/\\/g, '/')),
+    );
+    const inProject = this.allowedPaths.projectSpace.some(p =>
+      normalized.startsWith(p.replace(/\\/g, '/')),
+    );
+
+    if (scope === 'self' && inSelf) {
+      return { allowed: true, reason: 'Valid self-scope path', resolvedPath: resolved };
+    }
+    if (scope === 'project' && inProject) {
+      return { allowed: true, reason: 'Valid project-scope path', resolvedPath: resolved };
+    }
+
+    return {
+      allowed: false,
+      reason: `Path ${targetPath} not in allowed scope '${scope}'`,
+      resolvedPath: resolved,
+    };
+  }
+
+  getWorkspaceRoot(): string {
+    return path.resolve(process.cwd());
+  }
+
+  getWorkspaceRelativePath(absolutePath: string): string {
+    const root = this.getWorkspaceRoot();
+    return path.relative(root, absolutePath);
+  }
 }
 
 export class ScopeIsolation {
   public readonly validator: PathValidator;
+  public readonly enforcer: PolicyEnforcer;
+  private isolationPolicy: IsolationPolicy;
 
-  constructor(allowedPaths: AllowedPaths) {
+  constructor(allowedPaths: AllowedPaths, policyConfig?: Partial<import('./types').IsolationPolicyConfig>) {
     this.validator = new PathValidator(allowedPaths);
+    this.enforcer = new PolicyEnforcer();
+    this.isolationPolicy = new IsolationPolicy(policyConfig);
   }
 
   resolvePath(scope: Scope, target: string): string {
     return this.validator.resolvePathOrThrow(scope, target);
+  }
+
+  resolveScope(scope: Scope, target: string): ResolveResult {
+    const result = this.validator.resolvePath(scope, target);
+    return result;
+  }
+
+  loadPolicyFromYaml(yamlContent: string): void {
+    const parsed = PolicyParser.parse(yamlContent);
+    this.enforcer.load(parsed);
+  }
+
+  loadPolicyFromFile(filePath: string): void {
+    const parsed = PolicyParser.parseFile(filePath);
+    this.enforcer.load(parsed);
+  }
+
+  getIsolationPolicy(): IsolationPolicy {
+    return this.isolationPolicy;
+  }
+
+  evaluateAccess(fromScope: Scope, toScope: Scope): {
+    allowed: boolean;
+    bypassRequired: boolean;
+    approvalLevel: string;
+    reason: string;
+  } {
+    return this.isolationPolicy.evaluate(fromScope, toScope);
   }
 }
 

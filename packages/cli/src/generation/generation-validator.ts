@@ -1,5 +1,7 @@
 import { GeneratedArtifact } from './artifact-generator';
+import { createLogger } from '@ideia/logger';
 import { GenerationPlan } from './artifact-types';
+const logger = createLogger('generation-validator');
 
 export interface GenerationValidationResult {
   ok: boolean;

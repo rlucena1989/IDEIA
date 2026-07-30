@@ -23,6 +23,8 @@ export interface AIDecisionChain {
 }
 
 import { createHash } from 'node:crypto';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('ai-decisions');
 
 export class AIDecisionAuditor {
   private decisions: AIDecision[] = [];

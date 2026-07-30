@@ -1,4 +1,6 @@
 import { ProductScope, ProductPlan, ProductArtifactSpec } from './product-model';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('artifact-planner');
 
 export function planArtifacts(scope: ProductScope): ProductPlan {
   const artifacts: ProductArtifactSpec[] = [

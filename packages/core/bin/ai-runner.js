@@ -9,15 +9,15 @@ const ROOT = process.cwd();
 
 console.log('=== AI-Devkit: Native Agent Runner ===\n');
 
-const apiKey = process.env.OPENAI_API_KEY;
+const apiKey = config.get('OPENAI_API_KEY');
 if (!apiKey) {
   console.error('❌ [FATAL] Variável de ambiente OPENAI_API_KEY ausente.');
   console.error('Configure OPENAI_API_KEY no .env ou no ambiente.');
   process.exit(1);
 }
 
-const baseUrl = process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1';
-const model = process.env.OPENAI_MODEL || 'gpt-4';
+const baseUrl = config.get('OPENAI_BASE_URL') || 'https://api.openai.com/v1';
+const model = config.get('OPENAI_MODEL') || 'gpt-4';
 
 function loadContext() {
   const handoffPath = path.join(ROOT, '.ai', 'context', 'ai-handoff.md');

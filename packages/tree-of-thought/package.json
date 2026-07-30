@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/tree-of-thought",
+  "private": true,
+  "description": "Tree of Thought reasoning — branching exploration, evaluation, search strategies (BFS/DFS/MCTS) for multi-step reasoning",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

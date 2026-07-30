@@ -1,4 +1,5 @@
 import type { ResolvedDependencies, DependencyError, DependencyWarning } from './types';
+import { createLogger } from '@ideia/logger';
 
 interface DepEntry {
   version: string;
@@ -100,7 +101,7 @@ export class DependencyResolver {
 
   async checkLatestVersion(packageName: string): Promise<string> {
     if (this.registryCache.has(packageName)) {
-      return this.registryCache.get(packageName)!;
+      return this.registryCache.get(packageName) as string;
     }
     try {
       const url = `${this.registryUrl}/${encodeURIComponent(packageName)}`;

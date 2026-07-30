@@ -1,4 +1,5 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { v4 as uuid } from 'uuid';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -112,8 +113,8 @@ export class IDEIA_TaskRunner implements IDEIA_TaskService {
             break;
           }
         }
-      } catch (_err) {
-        this.log('system', `Error applying ${change.path}: ${err}`);
+      } catch (err) {
+        this.log('system', `Error applying ${change.path}: ${err instanceof Error ? err.message : String(err)}`);
       }
     }
   }
@@ -219,5 +220,14 @@ export class IDEIA_TaskRunner implements IDEIA_TaskService {
     const logs = this.taskLogs.get(taskId) || [];
     logs.push(`[${new Date().toISOString()}] ${message}`);
     this.taskLogs.set(taskId, logs);
+  }
+
+  private async isCliAvailable(): Promise<boolean> {
+    try {
+      const result = await this.runCommand('ai-devkit --version');
+      return result.stdout.includes('ai-devkit');
+    } catch {
+      return false;
+    }
   }
 }

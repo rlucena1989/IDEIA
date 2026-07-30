@@ -71,5 +71,5 @@
 - [ ] **TSK-4.7:** Tornar `sync` funcional com relatório real.
 - [ ] **TSK-4.8:** Reescrever `master-plan.md`/`project-state.md` sempre com prova.
 
-> PENDING_ACTIONs os códigos de correção destas tarefas estão no pacote de hardening
+> Todos os códigos de correção destas tarefas estão no pacote de hardening
 > entregue em 05/07/2026 (`ai-devkit-hardening-package.zip`).

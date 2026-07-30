@@ -1,4 +1,6 @@
 import { AgentTaskResult } from './agent-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('agent-result');
 
 export function summarizeResults(results: AgentTaskResult[]): {
   total: number;

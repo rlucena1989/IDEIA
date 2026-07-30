@@ -4,7 +4,8 @@
     "rootDir": ".",
     "outDir": "dist",
     "allowJs": true,
-    "strict": true
+    "strict": true,
+    "composite": true
   },
   "include": [
     "index.js",
@@ -12,5 +13,25 @@
   ],
   "exclude": [
     "**/__tests__"
+  ],
+  "references": [
+    {
+      "path": "../logger"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../event-bus"
+    },
+    {
+      "path": "../audit-trail"
+    },
+    {
+      "path": "../data-layer"
+    },
+    {
+      "path": "../memory-store"
+    }
   ]
 }

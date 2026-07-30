@@ -1,4 +1,5 @@
 import { NatsConnectionManager } from './nats-connection';
+import { createLogger } from '@ideia/logger';
 import { NatsStreamManager } from './streams';
 import { DeadLetterQueue } from './dlq';
 import { ConsumerGroupManager } from './consumers';
@@ -67,7 +68,7 @@ export class HealthCheck {
         ? { status: 'healthy', message: 'Connected' }
         : { status: 'degraded', message: 'Not connected' };
     } catch (_err) {
-      return { status: 'unhealthy', message: String(err) };
+      return { status: 'unhealthy', message: String(_err) };
     }
   }
 
@@ -77,7 +78,7 @@ export class HealthCheck {
       const streams = await this.streamManager.listStreams();
       return { status: 'healthy', message: `${streams.length} streams active` };
     } catch (_err) {
-      return { status: 'unhealthy', message: String(err) };
+      return { status: 'unhealthy', message: String(_err) };
     }
   }
 
@@ -87,7 +88,7 @@ export class HealthCheck {
       const stats = await this.dlq.getStats();
       return { status: 'healthy', details: stats };
     } catch (_err) {
-      return { status: 'unhealthy', message: String(err) };
+      return { status: 'unhealthy', message: String(_err) };
     }
   }
 
@@ -97,7 +98,7 @@ export class HealthCheck {
       const groups = this.consumerGroupManager.listGroups();
       return { status: 'healthy', message: `${groups.length} consumer groups` };
     } catch (_err) {
-      return { status: 'unhealthy', message: String(err) };
+      return { status: 'unhealthy', message: String(_err) };
     }
   }
 
@@ -107,7 +108,7 @@ export class HealthCheck {
       const stats = await this.kvStore.getStats();
       return { status: 'healthy', details: stats };
     } catch (_err) {
-      return { status: 'unhealthy', message: String(err) };
+      return { status: 'unhealthy', message: String(_err) };
     }
   }
 
@@ -117,7 +118,7 @@ export class HealthCheck {
       const stats = await this.objectStore.getStats();
       return { status: 'healthy', details: stats };
     } catch (_err) {
-      return { status: 'unhealthy', message: String(err) };
+      return { status: 'unhealthy', message: String(_err) };
     }
   }
 
@@ -127,7 +128,7 @@ export class HealthCheck {
       const handlers = this.reqReplyManager.getRegisteredHandlers();
       return { status: 'healthy', message: `${handlers.length} handlers registered` };
     } catch (_err) {
-      return { status: 'unhealthy', message: String(err) };
+      return { status: 'unhealthy', message: String(_err) };
     }
   }
 

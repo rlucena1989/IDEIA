@@ -1,4 +1,6 @@
 import { OperationalContext } from './context-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('context-prioritizer');
 
 export interface ContextPriorityResult {
   contextId: string;

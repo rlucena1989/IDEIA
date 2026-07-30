@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { detectStack, StackInfo } from './detect';
 import { printHeader, printLine, printResult, finish } from "../utils/output";

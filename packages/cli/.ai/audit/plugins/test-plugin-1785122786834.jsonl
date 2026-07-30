@@ -1,0 +1,1 @@
+{"id":"1785122786835-nex7qs","timestamp":"2026-07-27T03:26:26.835Z","pluginId":"test-plugin","action":"file-read","resource":"/outside/file.txt","allowed":false,"reason":"Path not in allowlist: F:\\outside\\file.txt"}

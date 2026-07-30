@@ -1,7 +1,9 @@
 import { DefaultPreferenceService } from './service';
+import { createLogger } from '@ideia/logger';
 import { DefaultPreferenceSchemaRegistry } from './schema';
 import { DefaultPreferenceProviderChain, DefaultPreferenceProvider } from './providers';
 import { PreferenceScope, PreferenceSchema } from './types';
+const logger = createLogger('factory');
 
 export function createDefaultPreferenceService(): DefaultPreferenceService {
   const schemaRegistry = new DefaultPreferenceSchemaRegistry();

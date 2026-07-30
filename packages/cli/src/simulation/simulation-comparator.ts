@@ -1,4 +1,6 @@
 import { SimulationResult, SimulationComparison } from './simulation-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('simulation-comparator');
 
 export function compareSimulations(results: SimulationResult[]): SimulationComparison {
   const winners = results

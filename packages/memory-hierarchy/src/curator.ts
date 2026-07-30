@@ -1,8 +1,10 @@
 import { MemoryEntry, MemoryLevel, PromotionRule } from './types';
+import { createLogger } from '@ideia/logger';
 import { WorkingMemory } from './working-memory';
 import { ProjectMemory } from './project-memory';
 import { InstitutionalMemory } from './institutional-memory';
 import { GlobalMemory } from './global-memory';
+const logger = createLogger('curator');
 
 export interface CuratorConfig {
   autoPromote: boolean;

@@ -1,4 +1,5 @@
 import { MemoryEntry, MemoryLevel, EntryCategory, RetentionPolicy } from './types';
+import { createLogger } from '@ideia/logger';
 import { randomUUID } from 'crypto';
 
 export class WorkingMemory {

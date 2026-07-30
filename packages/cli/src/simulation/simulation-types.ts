@@ -1,4 +1,6 @@
 import * as _crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('simulation-types');
 
 export interface SimulationScenario {
   scenarioId: string;

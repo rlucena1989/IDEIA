@@ -1,4 +1,6 @@
 import { ServiceCatalog } from './service-catalog';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('capability-discovery');
 
 export interface DiscoveredCapability {
   name: string;

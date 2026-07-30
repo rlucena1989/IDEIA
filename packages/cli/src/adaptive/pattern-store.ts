@@ -1,5 +1,7 @@
 import * as crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
 import { OperationalEvent, OperationalPattern } from './pattern-types';
+const logger = createLogger('pattern-store');
 
 export class PatternStore {
   private events: OperationalEvent[] = [];

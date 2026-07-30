@@ -1,4 +1,5 @@
 import { PatternRegistry, PatternDefinition, PatternCategory, PatternMatch } from './pattern-registry';
+import { createLogger } from '@ideia/logger';
 import { PatternObserver, PatternSignal, inferPattern } from './pattern-observer';
 
 /** Tipo que define engine mode. */

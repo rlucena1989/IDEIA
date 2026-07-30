@@ -1,0 +1,41 @@
+{
+  "name": "@ideia/resource-manager",
+  "description": "Resource Manager — autonomous CPU/memory monitoring, leak detection, degradation, self-healing, and process management",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/event-bus": "*",
+    "@ideia/audit-trail": "*",
+    "@ideia/control-tower": "*",
+    "@ideia/safety-circuit": "*",
+    "@ideia/resilience-engine": "*",
+    "@ideia/resilience-v2": "*",
+    "@ideia/health-check": "*",
+    "@ideia/acceleration": "*",
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

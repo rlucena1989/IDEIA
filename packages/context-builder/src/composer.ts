@@ -1,9 +1,11 @@
 import { TaskProfile, ContextItem, ContextSource, ComposedContext, ContextComposerConfig, ScoredContextItem } from './types';
+import { createLogger } from '@ideia/logger';
 import { ContextAggregator } from './aggregator';
 import { RelevanceScorer } from './scorer';
 import { ContextDeduplicator } from './deduplicator';
 import { ContextProvenance } from './provenance';
 import { ContextSerializer } from './serializer';
+const logger = createLogger('composer');
 
 const DEFAULT_CONFIG: ContextComposerConfig = {
   defaultTokenBudget: 4000,

@@ -1,4 +1,6 @@
 import { FusionInput, FusionResult, AgentRole } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('fusion-engine');
 
 export interface FusionConfig {
   mergeStrategy: 'weighted' | 'majority' | 'complementary';

@@ -1,4 +1,5 @@
 import * as fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import * as _path from 'node:path';
 import { SyncResult, SyncConfig } from './types';
 
@@ -13,7 +14,7 @@ function writeLines(p: string, lines: string[]): void {
 function _updateGapStatus(lines: string[], gapId: string, status: string): boolean {
   let changed = false;
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i]!;
+    const line = lines[i] ?? '';
     if (line.includes(`G${gapId} —`) || line.includes(`G${gapId} `)) {
       if (!line.includes('✅') && status === 'resolved') {
         lines[i] = line.replace(/^(#+.*?)(\n|$)/, `$1 ✅`);
@@ -31,10 +32,10 @@ function updateResolvedCount(lines: string[]): boolean {
     if (line.includes('✅ **RESOLVIDO**') || line.includes('✅ Resolvido')) resolved++;
   }
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i]!;
+    const line = lines[i] ?? '';
     const match = line.match(/\*\*Resolvidos?\*\*:\s*(\d+)/);
     if (match) {
-      const current = parseInt(match[1]!, 10);
+      const current = parseInt(match[1] ?? '0', 10);
       if (current !== resolved) {
         lines[i] = line.replace(/\*\*Resolvidos?\*\*:\s*\d+/, `**Resolvidos**: ${resolved}`);
         return true;
@@ -59,6 +60,6 @@ export function syncGaps(config: SyncConfig): SyncResult {
 
     return { ok: errors.length === 0, actions, errors, durationMs: Date.now() - start };
   } catch (_err) {
-    return { ok: false, actions, errors: [String(err)], durationMs: Date.now() - start };
+    return { ok: false, actions, errors: [String(_err)], durationMs: Date.now() - start };
   }
 }

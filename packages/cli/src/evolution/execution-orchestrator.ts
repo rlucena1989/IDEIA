@@ -1,4 +1,5 @@
 import * as crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
 import { buildStateDelta } from './delta-engine';
 import { decideEvolution } from './decision-engine';
 import { EvolutionRunResult } from './execution-types';
@@ -28,3 +29,4 @@ export function orchestrateEvolution(fromState: DevkitState, toState: DevkitStat
     auditId: crypto.randomUUID(),
   };
 }
+

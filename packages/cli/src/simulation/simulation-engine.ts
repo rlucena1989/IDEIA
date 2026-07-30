@@ -1,4 +1,6 @@
 import { SimulationResult, SimulationScenario } from './simulation-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('simulation-engine');
 
 export function runSimulation(scenario: SimulationScenario): SimulationResult {
   const hasCriticalConstraint = scenario.constraints.some(c =>

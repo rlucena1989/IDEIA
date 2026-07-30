@@ -1,4 +1,5 @@
 import { Decision, RiskLevel } from '@ideia/contracts';
+import { createLogger } from '@ideia/logger';
 
 export interface PolicyInput {
   actionType: string;
@@ -83,7 +84,7 @@ export function evaluateBatch(inputs: PolicyInput[]): PolicyResult[] {
     try {
       return evaluatePolicy(input);
     } catch (_err) {
-      return { decision: 'block', reason: `evaluation error: ${err}` };
+      return { decision: 'block', reason: `evaluation error: ${_err}` };
     }
   });
 }

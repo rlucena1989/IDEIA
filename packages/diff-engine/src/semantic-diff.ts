@@ -42,7 +42,7 @@ function normalizeIdentifiers(tokens: string[]): string[] {
   return tokens.map(t => {
     if (/^[a-z_]\w*$/i.test(t) && !KEYWORDS.has(t)) {
       if (!map.has(t)) map.set(t, `ID${counter++}`);
-      return map.get(t) ?? null;
+      return map.get(t)!;
     }
     return t;
   });

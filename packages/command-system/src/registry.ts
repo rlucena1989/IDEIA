@@ -1,5 +1,7 @@
 import { Emitter, Disposable, DisposableCollection } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { Command, CommandHandler, CommandRegistry } from './types';
+const logger = createLogger('command-system:registry');
 
 export class DefaultCommandRegistry implements CommandRegistry {
   private commands = new Map<string, Command>();
@@ -35,11 +37,11 @@ export class DefaultCommandRegistry implements CommandRegistry {
   async executeCommand<T>(id: string, ...args: unknown[]): Promise<T | undefined> {
     const handler = this.handlers.get(id);
     if (!handler) {
-      console.warn(`No handler registered for command: ${id}`);
+      logger.warn(`No handler registered for command: ${id}`);
       return undefined;
     }
     if (handler.isEnabled && !handler.isEnabled(...args)) {
-      console.warn(`Command not enabled: ${id}`);
+      logger.warn(`Command not enabled: ${id}`);
       return undefined;
     }
     this.onCommandExecutedEmitter.fire({ commandId: id, args });

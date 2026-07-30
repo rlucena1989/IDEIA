@@ -1,3 +1,10 @@
 export { SafetyCircuit, createSafetyCircuit } from './safety-circuit';
 export { EmergencyStop, createEmergencyStop } from './e-stop';
+export { EmergencyRollback } from './emergency-rollback';
+export { SafetyArchitecture } from './safety-architecture';
+export { SafetyReportGenerator } from './safety-report';
+export { CircuitBreakerManager } from './circuit-breaker-manager';
+export { AutoRollbackCircuit, createAutoRollbackCircuit } from './auto-rollback';
+export { MetricsMonitor, createMetricsMonitor } from './metrics-monitor';
+export { ContinuityScheduler, createContinuityScheduler } from './continuity-scheduler';
 export * from './types';

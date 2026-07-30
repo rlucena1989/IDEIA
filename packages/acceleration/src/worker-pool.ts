@@ -8,7 +8,7 @@ export async function runInParallel<T, R>(
 
   const worker = async (): Promise<void> => {
     while (queue.length > 0) {
-      const item = queue.shift()!;
+      const item = queue.shift() as T;
       const index = items.indexOf(item);
       results[index] = await fn(item);
     }
@@ -47,7 +47,7 @@ export async function runInWorkerThreads<T extends Record<string, unknown>, R>(
 
     const spawnWorker = async (): Promise<void> => {
       while (queue.length > 0) {
-        const item = queue.shift()!;
+        const item = queue.shift() as T;
         const index = nextIndex++;
         await new Promise<void>((resolve, reject) => {
           const worker = new Worker(workerFile, {

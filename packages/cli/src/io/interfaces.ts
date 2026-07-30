@@ -39,4 +39,8 @@ export interface IOContainer {
   shell: Shell;
   fs: FileSystem;
   http: HttpClient;
+  /** Output data as structured output (e.g., JSON) */
+  output(data: unknown): void;
+  /** Output multiple lines of text */
+  outputLines(lines: string[]): void;
 }

@@ -1,5 +1,7 @@
 import type { RankOutput, PriorityItem, PriorityWeights, RankedItem } from './types';
+import { createLogger } from '@ideia/logger';
 import { DEFAULT_PRIORITY_WEIGHTS } from './types';
+const logger = createLogger('rank');
 
 function clampScore(v: number): number {
   return Math.max(0, Math.min(100, v));

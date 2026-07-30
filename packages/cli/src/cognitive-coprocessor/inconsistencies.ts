@@ -1,4 +1,6 @@
 import type { InconsistencyOutput, Inconsistency, Rule } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('inconsistencies');
 
 function detectLogical(raw: unknown): Inconsistency[] {
   const results: Inconsistency[] = [];

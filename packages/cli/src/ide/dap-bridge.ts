@@ -1,4 +1,5 @@
 import { spawn, ChildProcess } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
 import { EventEmitter } from 'node:events';
 import _path from 'node:path';
 
@@ -118,7 +119,7 @@ export class DAPBridge extends EventEmitter {
       });
 
     } catch (_err) {
-      this.emit('dap:error', { sessionId, error: String(err) });
+      this.emit('dap:error', { sessionId, error: String(_err) });
     }
 
     this.sessions.set(sessionId, session);
@@ -213,3 +214,4 @@ export class DAPBridge extends EventEmitter {
 export function createDAPBridge(): DAPBridge {
   return new DAPBridge();
 }
+

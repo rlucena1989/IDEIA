@@ -1,4 +1,5 @@
 import { readFileSync, existsSync } from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import { resolve } from 'node:path';
 import { load } from 'js-yaml';
 import { TestOrchestrator } from '@ideia/test-orchestrator';

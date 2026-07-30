@@ -2,8 +2,14 @@
 // Wraps the monorepo's LLM providers into the Theia's SSEEvent streaming pattern
 
 import * as devkit from '@ideia/llm-provider';
+import { createLogger } from '@ideia/logger';
+import { ConfigManager } from '@ideia/config-engine';
 import type { SSEEvent } from '../common/ideia-types';
 import { createSSEEvent } from '../common/ideia-types';
+import type { IDEIA_ConfigService } from '../common/ideia-protocol';
+
+const logger = createLogger('llm-provider');
+const config = ConfigManager.getInstance();
 
 export interface LLMProvider {
   readonly name: string;
@@ -15,7 +21,7 @@ function adaptProvider(inner: devkit.LLMProvider, defaultModel?: string): LLMPro
     get name() { return inner.name; },
     async *chat(messages) {
       try {
-        const model = defaultModel || process.env.IDEIA_LLM_MODEL || 'deepseek-coder';
+        const model = defaultModel || config.get('IDEIA_LLM_MODEL') || 'deepseek-coder';
         const result = await inner.chat({ model, messages: messages as devkit.ChatMessage[], stream: true });
         if (Symbol.asyncIterator in (result as object)) {
           for await (const chunk of result as AsyncIterable<devkit.ChatResponse>) {
@@ -26,7 +32,7 @@ function adaptProvider(inner: devkit.LLMProvider, defaultModel?: string): LLMPro
           if (response.content) yield createSSEEvent('message', response.content);
         }
       } catch (_err) {
-        yield createSSEEvent('error', err instanceof Error ? err.message : String(err));
+        yield createSSEEvent('error', _err instanceof Error ? _err.message : String(_err));
       }
     },
   };
@@ -57,29 +63,75 @@ export class ProviderRouter {
   listProviders(): string[] { return Array.from(this.providers.keys()); }
 }
 
-export function createDefaultRouter(): ProviderRouter {
-  const router = new ProviderRouter();
-  const endpoint = process.env.IDEIA_LLM_ENDPOINT || 'http://localhost:11434';
-  const apiKey = process.env.IDEIA_LLM_API_KEY;
-  const model = process.env.IDEIA_LLM_MODEL;
+const UNIVERSAL_PROVIDER_ENDPOINTS: Array<{ name: string; endpoint: string; defaultModel: string }> = [
+  { name: 'openai',         endpoint: 'https://api.openai.com/v1',                    defaultModel: 'gpt-4o-mini' },
+  { name: 'openrouter',     endpoint: 'https://openrouter.ai/api/v1',                  defaultModel: 'openai/gpt-4o-mini' },
+  { name: 'deepseek',       endpoint: 'https://api.deepseek.com/v1',                   defaultModel: 'deepseek-chat' },
+  { name: 'groq',           endpoint: 'https://api.groq.com/openai/v1',                defaultModel: 'llama-3.1-70b-versatile' },
+  { name: 'together',       endpoint: 'https://api.together.xyz/v1',                   defaultModel: 'mistralai/Mixtral-8x7B-Instruct-v0.1' },
+  { name: 'deepinfra',      endpoint: 'https://api.deepinfra.com/v1/openai',           defaultModel: 'mistralai/Mixtral-8x22B-Instruct-v0.1' },
+  { name: 'fireworks',      endpoint: 'https://api.fireworks.ai/inference/v1',         defaultModel: 'accounts/fireworks/models/llama-v3p1-70b-instruct' },
+  { name: 'perplexity',     endpoint: 'https://api.perplexity.ai',                     defaultModel: 'llama-3.1-sonar-small-128k-online' },
+  { name: 'cerebras',       endpoint: 'https://api.cerebras.ai/v1',                    defaultModel: 'llama3.1-8b' },
+  { name: 'siliconflow',    endpoint: 'https://api.siliconflow.cn/v1',                  defaultModel: 'Pro/Qwen/Qwen2.5-7B-Instruct' },
+  { name: 'sambanova',      endpoint: 'https://api.sambanova.ai/v1',                   defaultModel: 'Meta-Llama-3.1-70B-Instruct' },
+  { name: 'anyscale',       endpoint: 'https://api.endpoints.anyscale.com/v1',         defaultModel: 'mistralai/Mistral-7B-Instruct-v0.1' },
+];
 
-  if (endpoint.includes('localhost') || endpoint.includes('127.0.0.1')) {
-    router.register(adaptProvider(new devkit.OllamaProvider({ endpoint, defaultModel: model }), model));
-    if (apiKey) {
-      router.register(adaptProvider(new devkit.OpenAIProvider({ endpoint: 'https://api.openai.com/v1', apiKey, defaultModel: model || 'gpt-4o-mini' }), model || 'gpt-4o-mini'));
-    }
-  } else {
-    try {
-      const provider = devkit.createProvider({ endpoint, apiKey, defaultModel: model });
-      router.register(adaptProvider(provider, model));
-    } catch {
-      router.register(adaptProvider(new devkit.OllamaProvider({ endpoint, defaultModel: model }), model));
-    }
-    if (!endpoint.includes('openai') && apiKey) {
-      router.register(adaptProvider(new devkit.OpenAIProvider({ endpoint: 'https://api.openai.com/v1', apiKey, defaultModel: 'gpt-4o-mini' }), 'gpt-4o-mini'));
+export function createDefaultRouter(configService?: IDEIA_ConfigService): ProviderRouter {
+  const router = new ProviderRouter();
+
+  // 1. Ollama local (always)
+  router.register(adaptProvider(new devkit.OllamaProvider({ endpoint: 'http://localhost:11434', defaultModel: 'deepseek-coder' }), 'deepseek-coder'));
+
+  // 2. Read API key from config service or env
+  let masterKey = process.env.IDEIA_LLM_API_KEY || process.env.OPENAI_API_KEY || '';
+  let activeProvider = process.env.IDEIA_LLM_ENDPOINT || '';
+  let defaultModel = process.env.IDEIA_LLM_MODEL || '';
+
+  // 3. Register all universal providers that have a key
+  for (const ep of UNIVERSAL_PROVIDER_ENDPOINTS) {
+    const key = process.env[`${ep.name.toUpperCase()}_API_KEY`] || masterKey;
+    if (key) {
+      try {
+        router.register(adaptProvider(
+          new devkit.OpenAIProvider({ endpoint: ep.endpoint, apiKey: key, defaultModel: ep.defaultModel, providerName: ep.name }),
+          defaultModel || ep.defaultModel,
+        ));
+      } catch { /* skip */ }
     }
   }
 
-  router.setPriority(['ollama', 'openai', 'deepseek']);
+  // 4. Gemini
+  const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || masterKey;
+  if (geminiKey) {
+    try {
+      router.register(adaptProvider(
+        new devkit.GeminiProvider({ endpoint: 'https://generativelanguage.googleapis.com', apiKey: geminiKey, defaultModel: 'gemini-2.0-flash' }),
+        'gemini-2.0-flash',
+      ));
+    } catch { /* skip */ }
+  }
+
+  // 5. Reasoning
+  if (process.env.IDEIA_LLM_REASONING === 'true' || process.env.IDEIA_LLM_REASONING === '1') {
+    if (masterKey) {
+      try {
+        router.register(adaptProvider(new devkit.OpenAIReasoningProvider({ endpoint: 'https://api.openai.com/v1', apiKey: masterKey, defaultModel: 'o3-mini' }), 'o3-mini'));
+        const dk = process.env.DEEPSEEK_API_KEY || masterKey;
+        if (dk) router.register(adaptProvider(new devkit.DeepSeekReasoningProvider({ endpoint: 'https://api.deepseek.com/v1', apiKey: dk, defaultModel: 'deepseek-reasoner' }), 'deepseek-reasoner'));
+      } catch { /* skip */ }
+    }
+  }
+
+  // 6. Custom endpoint via env
+  if (activeProvider && !activeProvider.includes('localhost')) {
+    try {
+      const custom = devkit.createProvider({ endpoint: activeProvider, apiKey: masterKey, defaultModel: defaultModel });
+      router.register(adaptProvider(custom, defaultModel));
+    } catch { /* skip */ }
+  }
+
+  router.setPriority(['openai', 'openrouter', 'deepseek', 'groq', 'ollama']);
   return router;
 }

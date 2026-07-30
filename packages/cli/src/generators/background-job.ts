@@ -1,4 +1,5 @@
 import { FileEntry, buildVars, generateFiles, GeneratorOptions, printGeneratorResult } from './engine';
+import { createLogger } from '@ideia/logger';
 
 /**
  * Processa job.
@@ -27,7 +28,7 @@ export class {{Name}}Job {
 
   async execute(payload: JobPayload): Promise<JobResult> {
     try {
-      console.log(\`[{{Name}}Job] Executing job \${payload.id}\`);
+      logger.info(\`[{{Name}}Job] Executing job \${payload.id}\`);
       // Implementar logica real do job (ex: processar payload, chamar APIs, persistir resultado)
       return { success: true };
     } catch (_error) {
@@ -64,7 +65,7 @@ export class {{Name}}Queue {
     this.processing = true;
 
     while (this.queue.length > 0) {
-      const payload = this.queue.shift()!;
+      const payload = this.queue.shift() as (typeof this.queue)[number];
       await this.job.execute(payload);
     }
 

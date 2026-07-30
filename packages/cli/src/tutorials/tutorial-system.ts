@@ -189,7 +189,7 @@ export class TutorialSystem {
     if (!tutorial) return { error: `Tutorial '${id}' not found` };
 
     if (this.progress.has(id)) {
-      const existing = this.progress.get(id) ?? null;
+      const existing = this.progress.get(id)!;
       if (existing.status === 'in_progress') return { error: `Tutorial '${id}' is already in progress` };
       if (existing.status === 'completed') return { error: `Tutorial '${id}' is already completed` };
     }

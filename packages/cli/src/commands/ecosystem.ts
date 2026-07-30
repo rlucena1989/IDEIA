@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { DomainRegistry } from '../ecosystem/domain-registry';
 import { createDomain } from '../ecosystem/ecosystem-types';
 import { auditEcosystem, AuditEntry } from '../ecosystem/federation-auditor';

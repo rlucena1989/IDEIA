@@ -58,6 +58,9 @@ export interface WizardSummary {
   mode: WizardMode
   config: Record<string, unknown>
   duration: number
+  adaptationPhase?: string
+  pendingSuggestions?: number
+  interactionCount?: number
 }
 
 export const PROFILES: ProfileOption[] = [
@@ -109,3 +112,31 @@ export const AUTONOMY_OPTIONS: { value: AutonomyLevel; label: string; descriptio
   { value: 'N3', label: 'Autônomo', description: 'IA executa e reporta' },
   { value: 'N4', label: 'Total', description: 'IA age independentemente' }
 ]
+
+export interface CoachmarkProgress {
+  completed: number;
+  total: number;
+  percent: number;
+  byFeature: Record<string, { completed: number; total: number }>;
+}
+
+export interface ScheduledCoachmark {
+  feature: string;
+  triggerOn: 'dashboard' | 'chat' | 'config' | 'command' | 'time';
+  delayMs: number;
+  completed: boolean;
+}
+
+export interface AdaptiveSuggestionsInput {
+  stepId: string;
+  suggestion: string;
+  confidence: number;
+  source: 'interaction' | 'pattern' | 'heuristic';
+}
+
+export interface AdaptiveWizardState {
+  pendingSuggestions: number;
+  interactionCount: number;
+  adaptationPhase: 'observation' | 'suggestion' | 'automation';
+}
+

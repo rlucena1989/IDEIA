@@ -1,4 +1,6 @@
 import { ProvenanceEntry } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('provenance');
 
 export class ContextProvenance {
   private entries: ProvenanceEntry[] = [];

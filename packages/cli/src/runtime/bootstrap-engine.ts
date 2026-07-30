@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 
 /** Interface que define a estrutura de bootstrap config. */
@@ -20,10 +21,10 @@ export interface BootstrapResult {
 const BOOTSTRAP_TEMPLATES: Record<string, (name: string) => string> = {
   'package.json_node': (name) => JSON.stringify({ name, version: '1.0.0', private: true, scripts: { build: 'tsc', test: 'jest', dev: 'ts-node src/index.ts' }, devDependencies: { typescript: '^5.0.0', jest: '^29.0.0' } }, null, 2),
   'tsconfig.json': () => JSON.stringify({ compilerOptions: { target: 'ES2022', module: 'commonjs', strict: true, esModuleInterop: true, outDir: './dist', rootDir: './src' }, include: ['src'] }, null, 2),
-  'src/index.ts': () => 'console.log("Hello, world!");\n',
+  'src/index.ts': () => "logger.info('Hello, world!');\n",
   '.gitignore': () => 'node_modules/\ndist/\n.env\n*.log\n',
   'README.md': (name) => `# ${name}\n\n## Getting Started\n\n\`\`\`bash\nnpm install\nnpm run dev\n\`\`\`\n`,
-  'src/app.ts': () => `import express from 'express';\n\nconst app = express();\nconst port = process.env.PORT || 3000;\n\napp.get('/', (req, res) => {\n  res.json({ status: 'ok' });\n});\n\napp.listen(port, () => {\n  console.log(\`Server running on port \${port}\`);\n});\n`,
+  'src/app.ts': () => `import express from 'express';\n\nconst app = express();\nconst port = process.env.PORT || 3000;\n\napp.get('/', (req, res) => {\n  res.json({ status: 'ok' });\n});\n\napp.listen(port, () => {\n  logger.info(\`Server running on port \${port}\`);\n});\n`,
   'src/__tests__/app.test.ts': () => `describe('App', () => {\n  it('should work', () => {\n    expect(true).toBe(true);\n  });\n});\n`,
   'Dockerfile': (_name) => `FROM node:20-alpine\nWORKDIR /app\nCOPY package.json .\nRUN npm install\nCOPY . .\nRUN npm run build\nCMD ["node", "dist/index.js"]\n`,
   'docker-compose.yml': (_name) => `version: '3.8'\nservices:\n  app:\n    build: .\n    ports:\n      - "3000:3000"\n    environment:\n      - NODE_ENV=production\n`,

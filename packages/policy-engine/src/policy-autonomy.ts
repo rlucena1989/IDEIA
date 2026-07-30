@@ -1,6 +1,8 @@
 import fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import path from 'path';
 import yaml from 'js-yaml';
+const logger = createLogger('policy-autonomy');
 
 export interface AutonomyDecision {
   decision: 'auto' | 'ask' | 'block';

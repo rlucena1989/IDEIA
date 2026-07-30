@@ -1,4 +1,6 @@
 import { OperationalPattern } from './pattern-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('adaptive-score');
 
 export interface AdaptiveScores {
   consistencyWeight: number;

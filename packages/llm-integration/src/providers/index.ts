@@ -1,5 +1,7 @@
 import { AiMessage, AiStreamChunk } from '@ideia/theia-ai';
-import { LlmProvider, LlmProviderConfig, ChatOptions, ChatResponse, ModelDescriptor, HealthStatus } from './types';
+import { createLogger } from '@ideia/logger';
+import { ConfigManager } from '@ideia/config-engine';
+import { LlmProvider, LlmProviderConfig, ChatOptions, ChatResponse, ModelDescriptor, HealthStatus } from '../types';
 
 export class OllamaProvider implements LlmProvider {
   readonly id = 'ollama';
@@ -51,7 +53,7 @@ export class OpenAiProvider implements LlmProvider {
     this.config = {
       id: 'openai',
       name: 'OpenAI',
-      apiKey: config?.apiKey || process.env.OPENAI_API_KEY,
+      apiKey: config?.apiKey || (config as any)?.get('OPENAI_API_KEY'),
       baseUrl: config?.baseUrl || 'https://api.openai.com/v1',
       defaultModel: config?.defaultModel || 'gpt-4o',
       capabilities: {
@@ -135,7 +137,7 @@ export class AnthropicProvider implements LlmProvider {
     this.config = {
       id: 'anthropic',
       name: 'Anthropic',
-      apiKey: config?.apiKey || process.env.ANTHROPIC_API_KEY,
+      apiKey: config?.apiKey || (config as any)?.get('ANTHROPIC_API_KEY'),
       baseUrl: config?.baseUrl || 'https://api.anthropic.com/v1',
       defaultModel: config?.defaultModel || 'claude-4-sonnet',
       capabilities: {
@@ -177,7 +179,7 @@ export class GoogleGeminiProvider implements LlmProvider {
     this.config = {
       id: 'google',
       name: 'Google Gemini',
-      apiKey: config?.apiKey || process.env.GEMINI_API_KEY,
+      apiKey: config?.apiKey || (config as any)?.get('GEMINI_API_KEY'),
       baseUrl: config?.baseUrl || 'https://generativelanguage.googleapis.com/v1beta',
       defaultModel: config?.defaultModel || 'gemini-2.0-flash',
       capabilities: {

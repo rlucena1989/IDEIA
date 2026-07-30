@@ -1,9 +1,17 @@
-import { Emitter, Disposable } from '@ideia/core-contributions';
-import { SelfHealingPolicy, SelfHealingEngine, HealingAction, HealingActionResult } from './types';
+import { Emitter, Disposable, Event } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
+import { SelfHealingPolicy, SelfHealingEngine, HealingAction, HealingActionResult, EscalationPolicy } from './types';
 
 export class DefaultSelfHealingEngine implements SelfHealingEngine {
   private policies: SelfHealingPolicy[] = [];
   private actionHistory: HealingActionResult[] = [];
+  private attemptCounts = new Map<string, number>();
+  private strategies = new Map<string, (params: Record<string, unknown>) => Promise<void>>();
+  private onEscalationEmitter = new Emitter<EscalationPolicy>();
+
+  get onEscalation(): Event<EscalationPolicy> {
+    return this.onEscalationEmitter.event;
+  }
 
   registerPolicy(policy: SelfHealingPolicy): Disposable {
     this.policies.push(policy);
@@ -53,6 +61,14 @@ export class DefaultSelfHealingEngine implements SelfHealingEngine {
 
     this.actionHistory.push(result);
     return result;
+  }
+
+  getAttempts(policyId: string): number {
+    return this.attemptCounts.get(policyId) ?? 0;
+  }
+
+  registerStrategy(type: string, handler: (params: Record<string, unknown>) => Promise<void>): void {
+    this.strategies.set(type, handler);
   }
 
   private unregisterPolicy(id: string): void {

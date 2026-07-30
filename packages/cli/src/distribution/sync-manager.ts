@@ -1,6 +1,8 @@
 import { reconcilePackages } from './package-reconciler';
+import { createLogger } from '@ideia/logger';
 import { OperationalPackage, PackageEmissionResult } from './package-types';
 import { emitPackage } from './package-emitter';
+const logger = createLogger('sync-manager');
 
 export interface SyncResult {
   ok: boolean;

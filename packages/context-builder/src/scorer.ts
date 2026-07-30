@@ -1,4 +1,5 @@
 import { ContextItem, ScoredContextItem, TaskProfile, ContextComposerConfig } from './types';
+import { createLogger } from '@ideia/logger';
 
 const DEFAULT_CONFIG = {
   minConfidence: 0.3,

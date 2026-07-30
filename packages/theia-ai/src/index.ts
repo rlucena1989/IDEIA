@@ -1,6 +1,11 @@
 export * from './types';
+export * from './types-debugger';
 export { DefaultAiManager } from './manager';
 export { ChatService } from './chat';
 export { AgentRegistry, AgentExecutor } from './agents';
 export { DefaultAiPermissionManager, AiAuditService } from './security';
 export { AiServiceFactory } from './factory';
+export { DebugSessionManager } from './debug-session-manager';
+export { BreakpointManager } from './breakpoint-manager';
+export { AgentExecutionTracer } from './agent-execution-tracer';
+export { AgentDebugger } from './agent-debugger';

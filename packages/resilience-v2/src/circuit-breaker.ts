@@ -1,4 +1,5 @@
 import { Emitter } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { CircuitBreaker, CircuitBreakerConfig, CircuitBreakerMetrics, CircuitBreakerRegistry, CircuitState } from './types';
 
 export class DefaultCircuitBreaker implements CircuitBreaker {

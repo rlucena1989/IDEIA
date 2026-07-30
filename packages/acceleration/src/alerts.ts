@@ -1,4 +1,6 @@
 import { Alert, Thresholds, ScorecardAnalysis, CoverageAnalysis, HistorySummary } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('alerts');
 
 export function buildAlerts(
   thresholds: Thresholds,

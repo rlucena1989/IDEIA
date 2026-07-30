@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import * as crypto from 'node:crypto';
 import { buildDevkitState } from '../state/state-builder';
 import type { DevkitState } from '../state/state-types';
@@ -97,7 +98,7 @@ export function evolveCommand(): Command {
     .option('--json', 'Saída em JSON')
     .action((opts) => {
       try {
-        const fromState = { version: '1.0.0', blocks: ['governance', 'planning'] } as unknown as DevkitState;
+        const fromState = buildDevkitState();
         const toState = buildDevkitState();
         const result = orchestrateEvolution(fromState, toState);
 

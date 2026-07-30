@@ -17,17 +17,17 @@ class EventBus {
         this.maxHistory = maxHistory;
         this.logger = logger ?? log;
     }
-    subscribe(eventType, handler, once = false) {
+    async subscribe(eventType, handler, once = false) {
         const id = (0, crypto_1.randomUUID)();
         const subs = this.subscriptions.get(eventType) || [];
         subs.push({ id, eventType, handler, once });
         this.subscriptions.set(eventType, subs);
         return id;
     }
-    subscribeOnce(eventType, handler) {
+    async subscribeOnce(eventType, handler) {
         return this.subscribe(eventType, handler, true);
     }
-    unsubscribe(id) {
+    async unsubscribe(id) {
         for (const [type, subs] of this.subscriptions) {
             const idx = subs.findIndex(s => s.id === id);
             if (idx !== -1) {
@@ -64,8 +64,8 @@ class EventBus {
                     metadata: { payload: event.payload }
                 });
             }
-            catch (err) {
-                this.logger.error('AuditTrail append error', { error: String(err) });
+            catch (_err) {
+                this.logger.error('AuditTrail append error', { error: String(_err) });
             }
         }
         const wildcardSubs = this.subscriptions.get('*') || [];
@@ -76,8 +76,8 @@ class EventBus {
             try {
                 await sub.handler(fullEvent);
             }
-            catch (err) {
-                this.logger.error('Handler error', { error: String(err), eventType: event.type });
+            catch (_err) {
+                this.logger.error('Handler error', { error: String(_err), eventType: event.type });
             }
             if (sub.once)
                 onceSubs.push(sub.id);
@@ -85,15 +85,15 @@ class EventBus {
         onceSubs.forEach(id => this.unsubscribe(id));
         return fullEvent;
     }
-    getHistory(eventType) {
+    async getHistory(eventType) {
         if (eventType)
             return this.history.filter(e => e.type === eventType);
         return [...this.history];
     }
-    clearHistory() {
+    async clearHistory() {
         this.history = [];
     }
-    subscriberCount() {
+    async subscriberCount() {
         let count = 0;
         for (const subs of this.subscriptions.values()) {
             count += subs.length;

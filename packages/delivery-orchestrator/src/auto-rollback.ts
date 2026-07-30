@@ -1,4 +1,5 @@
 import { DeliveryOrchestrator } from './delivery-orchestrator';
+import { createLogger } from '@ideia/logger';
 import { CanaryDeployer } from './canary';
 import { WebhookManager, WebhookPayload } from './webhook';
 import { NotificationManager } from './notifications';

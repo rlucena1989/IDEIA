@@ -1,4 +1,6 @@
 import { AutonomyLevel, PhaseId, RiskLevel, TaskNode } from './orchestration-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('autonomy-policy');
 
 /** Interface que define a estrutura de autonomy config. */
 export interface AutonomyConfig {

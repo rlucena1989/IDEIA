@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { ideaCommand } from './ideia/idea-command';
 import { ideiaInitCommand } from './ideia/init-command';
 import { ideiaStatusCommand } from './ideia/status-command';

@@ -1,4 +1,5 @@
 import { BulkFileOperator, FileDeleteOptions, FileSystemProvider } from './types';
+import { createLogger } from '@ideia/logger';
 
 export class DefaultBulkFileOperator implements BulkFileOperator {
   private history: Array<{ action: string; sources: string[]; target?: string }> = [];

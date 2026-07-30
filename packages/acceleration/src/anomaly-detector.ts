@@ -1,4 +1,6 @@
 import { mean, stddev } from './numerical-engine';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('anomaly-detector');
 
 export interface AnomalyResult {
   value: number;

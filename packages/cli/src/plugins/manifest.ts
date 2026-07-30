@@ -51,6 +51,7 @@ export function validateManifest(data: Record<string, unknown>): { valid: boolea
     return { valid: false, errors };
   }
 
-  const manifest = data as PluginManifest;
+  const manifest = data as unknown as PluginManifest;
   return { valid: true, errors: [], manifest };
 }
+

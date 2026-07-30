@@ -1,4 +1,5 @@
 import { DatabaseAdapter } from './types';
+import { createLogger } from '@ideia/logger';
 
 export interface VectorRecord {
   id: string;

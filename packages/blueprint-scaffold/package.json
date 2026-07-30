@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/blueprint-scaffold",
+  "private": true,
+  "description": "Project Blueprint & Scaffold Engine — geracao de projetos completos com arquitetura, contratos, configuracoes e ADRs a partir de templates declarativos",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*",
+    "@types/node": "*"
+  }
+}

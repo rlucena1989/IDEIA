@@ -1,0 +1,31 @@
+{
+  "name": "@ideia/initiative-feedback",
+  "description": "Initiative Feedback — auto-fix results → FeedbackPipeline integration",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ideia/correction-oracle": "*",
+    "@ideia/feedback-pipeline": "*",
+    "@ideia/event-bus": "*",
+    "@ideia/audit-trail": "*",
+    "@ideia/logger": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/ideia.git"
+  },
+  "homepage": "https://ideia.dev",
+  "bugs": {
+    "url": "https://github.com/anomalyco/ideia/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}

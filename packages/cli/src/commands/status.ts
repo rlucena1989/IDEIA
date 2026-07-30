@@ -1,4 +1,5 @@
 import { Command } from "commander";
+import { createLogger } from '@ideia/logger';
 import { REQUIRED_FILE_GROUPS } from "../core/health/required-files";
 import { printHeader, printLine, printSummary, finish } from "../utils/output";
 import { detectStack } from "./detect";

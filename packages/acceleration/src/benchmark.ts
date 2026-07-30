@@ -1,4 +1,5 @@
 import { ProviderKind, BenchmarkResult } from './types';
+import { createLogger } from '@ideia/logger';
 import { LLMAdapter } from './llm-adapter';
 import { MOCK_ADAPTER } from './llm-adapter';
 import { OPENAI_ADAPTER, ANTHROPIC_ADAPTER, GOOGLE_ADAPTER } from './remote-model-adapter';

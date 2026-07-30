@@ -52,11 +52,13 @@
     "@ideia/slo-monitor": "*",
     "@ideia/trace-registry": "*",
     "@ideia/workflow-engine": "*",
+    "@ideia/adapter-base": "*",
     "chalk": "^4.1.2",
-    "commander": "^10.0.0",
+    "commander": "^12.0.0",
     "node-pty": "^1.0.0",
     "ws": "^8.16.0",
-    "yaml": "^2.9.0"
+    "yaml": "^2.9.0",
+    "ora": "^5.4.0"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",

@@ -1,4 +1,5 @@
 import { ControlTower } from './control-tower';
+import { createLogger } from '@ideia/logger';
 import { CliOutput } from './types';
 
 export class CliCommands {
@@ -9,7 +10,7 @@ export class CliCommands {
       await this.tower.emergencyStop(reason);
       return { success: true, message: `Emergency STOP executed: ${reason}` };
     } catch (_err) {
-      return { success: false, message: `Emergency STOP failed: ${String(err)}` };
+      return { success: false, message: `Emergency STOP failed: ${String(_err)}` };
     }
   }
 
@@ -18,7 +19,7 @@ export class CliCommands {
       await this.tower.emergencyPause(reason);
       return { success: true, message: `Emergency PAUSE executed: ${reason}` };
     } catch (_err) {
-      return { success: false, message: `Emergency PAUSE failed: ${String(err)}` };
+      return { success: false, message: `Emergency PAUSE failed: ${String(_err)}` };
     }
   }
 
@@ -27,7 +28,7 @@ export class CliCommands {
       await this.tower.emergencyRollback(id);
       return { success: true, message: `Rollback to ${id} executed` };
     } catch (_err) {
-      return { success: false, message: `Rollback failed: ${String(err)}` };
+      return { success: false, message: `Rollback failed: ${String(_err)}` };
     }
   }
 
@@ -36,7 +37,7 @@ export class CliCommands {
       await this.tower.emergencyResume();
       return { success: true, message: 'System resumed after emergency' };
     } catch (_err) {
-      return { success: false, message: `Resume failed: ${String(err)}` };
+      return { success: false, message: `Resume failed: ${String(_err)}` };
     }
   }
 
@@ -67,7 +68,7 @@ export class CliCommands {
       await this.tower.setAutonomyLevel(level as 'passive' | 'assisted' | 'autonomous');
       return { success: true, message: `Autonomy level set to ${level}` };
     } catch (_err) {
-      return { success: false, message: `Failed to set autonomy: ${String(err)}` };
+      return { success: false, message: `Failed to set autonomy: ${String(_err)}` };
     }
   }
 

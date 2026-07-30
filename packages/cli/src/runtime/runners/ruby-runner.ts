@@ -1,5 +1,7 @@
 import { BaseRunner } from './base-runner';
+import { createLogger } from '@ideia/logger';
 import { LanguageId } from '../adapter-contract';
+const logger = createLogger('ruby-runner');
 
 /** Classe responsável por processa runner. */
 export class RubyRunner extends BaseRunner {

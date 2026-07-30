@@ -1,4 +1,6 @@
 import { TaskType } from './classifier';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('prompt-router');
 
 /** Tipo que define output mode. */
 export type OutputMode = 'compact' | 'standard' | 'expanded' | 'forensic';

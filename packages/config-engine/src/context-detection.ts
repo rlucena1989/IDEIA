@@ -123,7 +123,7 @@ export class ContextDetector {
       try {
         await this.configEngine.set(key, value);
       } catch (_err) {
-        log.warn(`Failed to apply context config '${key}': ${String(err)}`);
+        log.warn(`Failed to apply context config '${key}': ${String(_err)}`);
       }
     }
   }

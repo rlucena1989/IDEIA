@@ -1,4 +1,5 @@
 import { PublicationPlan, PublicationResult } from './publication-types';
+import { createLogger } from '@ideia/logger';
 
 export interface PublicationReport {
   generatedAt: string;

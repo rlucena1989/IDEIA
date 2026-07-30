@@ -43,6 +43,8 @@ export interface LoadedPlugin {
 const PLUGIN_DIRS = ['.ai/plugins', 'node_modules/@ai-devkit-plugin-'];
 
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('runtime.plugin-sdk');
 import path from 'node:path';
 
 function findPluginDirs(): string[] {
@@ -115,7 +117,7 @@ export function loadPlugin(pluginDir: string): LoadedPlugin | null {
   }
 
   const api: PluginAPI = {
-    log: (msg) => console.log(`[Plugin:${manifest.id}] ${msg}`),
+    log: (msg) => logger.info('[Plugin:${manifest.id}] ${msg}'),
     readFile: (p) => { try { return fs.readFileSync(path.resolve(p), 'utf8'); } catch { return null; } },
     writeFile: (p, c) => { try { fs.writeFileSync(path.resolve(p), c); return true; } catch { return false; } },
     execCommand: (cmd) => { try { const r = require('child_process').execFileSync(cmd, { encoding: 'utf8' }); return { stdout: r, stderr: '', code: 0 }; } catch (e: unknown) { const err = e as { stderr?: string; message?: string }; return { stdout: '', stderr: err.stderr || err.message || '', code: 1 }; } },

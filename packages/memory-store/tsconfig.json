@@ -1,12 +1,13 @@
-{
+﻿{
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "strict": true
+    "strict": true,
+    "composite": true
   },
   "include": [
-    "src"
+    "src/**/*.ts"
   ],
   "exclude": [
     "**/__tests__"
@@ -17,6 +18,9 @@
     },
     {
       "path": "../event-bus"
+    },
+    {
+      "path": "../logger"
     }
   ]
 }

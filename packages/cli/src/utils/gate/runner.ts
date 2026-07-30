@@ -1,5 +1,8 @@
 import { Checkpoint, StageResult, saveGateCheckpoint, loadLatestGateCheckpoint } from './checkpoint';
+import { createLogger } from '@ideia/logger';
 import { getStages, runStages, StageDef } from './stages';
+
+const logger = createLogger('cli-gate-runner');
 
 /**
  * Executa pipeline.
@@ -18,12 +21,12 @@ export function runPipeline(cwd: string, startStage?: string, resume?: boolean, 
       if (failedStage) {
         stages = getStages(failedStage.stage);
       } else {
-        console.log('Pipeline ja foi concluida com sucesso.');
-        if (json) console.log(JSON.stringify(checkpoint, null, 2));
+        logger.info('Pipeline ja foi concluida com sucesso.');
+        if (json) logger.info(JSON.stringify(checkpoint, null, 2));
         return;
       }
     } else {
-      console.log('Nenhum checkpoint encontrado. Iniciando do inicio.');
+      logger.info('Nenhum checkpoint encontrado. Iniciando do inicio.');
       stages = getStages();
     }
   } else {
@@ -51,13 +54,13 @@ export function runPipeline(cwd: string, startStage?: string, resume?: boolean, 
   const failed = results.filter(r => !r.passed).length;
 
   if (json) {
-    console.log(JSON.stringify(checkpoint, null, 2));
+    logger.info(JSON.stringify(checkpoint, null, 2));
   } else {
-    console.log(`\n=== Quality Gate Pipeline ===`);
-    console.log(`Estagios: ${results.length}`);
-    console.log(`Passaram: ${results.filter(r => r.passed).length}`);
-    console.log(`Falharam: ${failed}`);
-    console.log(`Status: ${allPassed ? '✅ TODOS OK' : '❌ FALHAS DETECTADAS'}`);
+    logger.info('\n=== Quality Gate Pipeline ===');
+    logger.info('Estagios: ${results.length}');
+    logger.info('Passaram: ${results.filter(r => r.passed).length}');
+    logger.info('Falharam: ${failed}');
+    logger.info('Status: ${allPassed ? \'✅ TODOS OK\' : \'❌ FALHAS DETECTADAS\'}');
   }
 
   process.exit(failed);
@@ -71,24 +74,24 @@ export function runPipeline(cwd: string, startStage?: string, resume?: boolean, 
 export function printStatus(cwd: string, json?: boolean): void {
   const cp = loadLatestGateCheckpoint(cwd);
   if (!cp) {
-    console.log('Nenhum checkpoint encontrado. Execute "ai-devkit gate run" primeiro.');
+    logger.info('Nenhum checkpoint encontrado. Execute "ai-devkit gate run" primeiro.');
     return;
   }
 
   if (json) {
-    console.log(JSON.stringify(cp, null, 2));
+    logger.info(JSON.stringify(cp, null, 2));
     return;
   }
 
-  console.log(`\n=== Quality Gate Status ===`);
-  console.log(`Ultima execucao: ${cp.timestamp}`);
-  console.log(`Estagios: ${cp.stages.length}/${getStages().length}`);
-  console.log(`Completo: ${cp.completed}`);
-  console.log('');
+  logger.info('\n=== Quality Gate Status ===');
+  logger.info('Ultima execucao: ${cp.timestamp}');
+  logger.info('Estagios: ${cp.stages.length}/${getStages().length}');
+  logger.info('Completo: ${cp.completed}');
+  logger.info('');
 
   for (const stage of cp.stages) {
     const icon = stage.passed ? '✅' : '❌';
-    console.log(`  ${icon} ${stage.stage} (${stage.durationMs}ms)`);
+    logger.info('  ${icon} ${stage.stage} (${stage.durationMs}ms)');
   }
 }
 

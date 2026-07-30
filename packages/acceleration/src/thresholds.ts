@@ -1,4 +1,6 @@
 import { Thresholds } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('thresholds');
 
 export const defaultThresholds: Thresholds = {
   scorecardMin: 80,

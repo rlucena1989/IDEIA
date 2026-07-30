@@ -1,4 +1,6 @@
 import { RegressionResult, GateResult } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('regression-analyzer');
 
 export class RegressionAnalyzer {
   analyze(before: GateResult[], after: GateResult[]): RegressionResult {

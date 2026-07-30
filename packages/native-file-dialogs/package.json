@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/native-file-dialogs",
+  "private": true,
+  "description": "Native File Dialogs — dialogs nativos para desktop, file picker, save dialog, folder browser com preview e filtros",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

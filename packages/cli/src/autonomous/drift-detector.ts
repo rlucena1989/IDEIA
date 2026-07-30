@@ -1,4 +1,6 @@
 import { DriftSignal } from './autonomous-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('drift-detector');
 
 export function detectDrift(currentScore: number, expectedScore: number): DriftSignal | null {
   const delta = expectedScore - currentScore;

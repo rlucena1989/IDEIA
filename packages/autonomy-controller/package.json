@@ -1,0 +1,17 @@
+{
+  "name": "@ideia/autonomy-controller",
+  "description": "Graduated autonomy control with 5 levels (N0-N4), trust calibration, safety limits, and exception management for the IDEIA ecosystem",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

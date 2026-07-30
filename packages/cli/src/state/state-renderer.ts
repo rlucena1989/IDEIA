@@ -1,4 +1,6 @@
 import { DevkitState } from './state-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('state-renderer');
 
 export function renderStateMarkdown(state: DevkitState): string {
   const lines: string[] = [];

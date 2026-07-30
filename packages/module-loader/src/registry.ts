@@ -1,4 +1,5 @@
 import { Emitter, Disposable, DisposableCollection } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { ModuleDefinition, LoadedModule, ModuleRegistry } from './types';
 
 export class DefaultModuleRegistry implements ModuleRegistry {
@@ -18,7 +19,7 @@ export class DefaultModuleRegistry implements ModuleRegistry {
 
   async load(id: string): Promise<LoadedModule> {
     if (this.loaded.has(id)) {
-      return this.loaded.get(id)!;
+      return this.loaded.get(id) as LoadedModule;
     }
 
     const def = this.definitions.get(id);

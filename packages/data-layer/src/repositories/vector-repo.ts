@@ -1,4 +1,6 @@
 import { BaseRepository } from './base-repo';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('vector-repo');
 
 export interface VectorRecord {
   id: string;

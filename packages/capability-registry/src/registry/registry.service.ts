@@ -1,4 +1,5 @@
 import type { ICapabilityRegistry } from './registry.interface';
+import { createLogger } from '@ideia/logger';
 import type { Capability, CapabilityQuery, RegistryEvent } from '../types/capability';
 
 export class CapabilityRegistryService implements ICapabilityRegistry {
@@ -47,7 +48,7 @@ export class CapabilityRegistryService implements ICapabilityRegistry {
       if (query.category) caps = caps.filter(c => c.category === query.category);
       if (query.subcategory) caps = caps.filter(c => c.subcategory === query.subcategory);
       if (query.status) caps = caps.filter(c => c.status === query.status);
-      if (query.tags?.length) caps = caps.filter(c => query.tags.some(t => c.tags.includes(t)));
+      if (query.tags?.length) caps = caps.filter(c => query.tags!.some(t => c.tags.includes(t)));
     }
     return caps;
   }

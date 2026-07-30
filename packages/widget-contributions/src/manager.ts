@@ -1,5 +1,7 @@
 import { Emitter, Disposable, DisposableCollection } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
 import { WidgetFactory, WidgetManager } from './types';
+const logger = createLogger('manager');
 
 export class DefaultWidgetManager implements WidgetManager {
   private factories = new Map<string, WidgetFactory>();

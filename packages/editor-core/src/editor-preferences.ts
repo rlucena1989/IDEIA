@@ -1,4 +1,6 @@
 import { EditorPreferences } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('editor-preferences');
 
 export class DefaultEditorPreferences implements EditorPreferences {
   tabSize = 4;
@@ -10,6 +12,7 @@ export class DefaultEditorPreferences implements EditorPreferences {
   fontFamily = "'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace";
   autoSave: 'off' | 'afterDelay' | 'onFocusChange' | 'onWindowChange' = 'afterDelay';
   autoSaveDelay = 1000;
+  autoSaveOnFocusChange = true;
   formatOnSave = true;
   formatOnPaste = false;
   cursorBlinking: 'blink' | 'smooth' | 'phase' | 'expand' | 'solid' = 'blink';
@@ -18,6 +21,8 @@ export class DefaultEditorPreferences implements EditorPreferences {
   bracketPairColorization = { enabled: true };
   suggestOnTriggerCharacters = true;
   quickSuggestions = { other: true, comments: false, strings: false };
+  enableUndoRedo = true;
+  undoStackSize = 100;
 
   update(partial: Partial<EditorPreferences>): void {
     Object.assign(this, partial);

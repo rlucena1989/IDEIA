@@ -1,6 +1,8 @@
 import { DatabaseAdapter, DataLayerConfig as _DataLayerConfig } from './types';
+import { createLogger } from '@ideia/logger';
 import { DecisionRepository } from './repositories/decision-repo';
 import { SessionRepository } from './repositories/session-repo';
+const logger = createLogger('memory-pg-adapter');
 
 export interface MemoryRow {
   id: string;

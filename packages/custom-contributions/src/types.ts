@@ -1,12 +1,14 @@
 import { Contribution, Disposable } from '@ideia/core-contributions';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('types');
 
-export interface ToolContribution extends Contribution {
+export interface ToolContribution extends Contribution<unknown> {
   readonly toolId: string;
   readonly description: string;
   execute(input: unknown): Promise<unknown>;
 }
 
-export interface AgentContribution extends Contribution {
+export interface AgentContribution extends Contribution<unknown> {
   readonly agentId: string;
   readonly capabilities: string[];
   readonly model?: string;

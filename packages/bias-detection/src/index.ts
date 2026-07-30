@@ -1,0 +1,13 @@
+﻿export { BiasDetector } from './detector';
+export { BiasReportGenerator } from './report-generator';
+export { CIGate } from './ci-gate';
+export { AuditChain } from './audit-chain';
+export { ConfidenceIntervalCalculator } from './confidence-interval';
+export { DemographicParityMetric } from './metrics/demographic-parity';
+export { EqualOpportunityMetric } from './metrics/equal-opportunity';
+export { EqualizedOddsMetric } from './metrics/equalized-odds';
+export { DisparateImpactMetric } from './metrics/disparate-impact';
+export { StatisticalParityMetric } from './metrics/statistical-parity';
+export { TheilIndexMetric } from './metrics/theil-index';
+export { CompositeScoreMetric } from './metrics/composite-score';
+export * from './types';

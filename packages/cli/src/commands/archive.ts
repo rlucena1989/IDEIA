@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import { createLogger } from '@ideia/logger';
 import { archiveItems, verifyArchive } from '../legacy/archive-manager';
 import { ArchiveBundle } from '../legacy/legacy-types';
 import { createEnvelope } from '../hardening/output-contract';

@@ -1,4 +1,6 @@
 import { GovernanceDecision } from './ecosystem-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('governance-council');
 
 export function decideGovernance(topic: string, votes: Array<{ member: string; approve: boolean }>): GovernanceDecision {
   const approvals = votes.filter(v => v.approve).length;

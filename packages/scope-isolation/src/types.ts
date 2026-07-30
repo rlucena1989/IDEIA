@@ -1,4 +1,4 @@
-export type Scope = 'self' | 'project';
+export type Scope = 'self' | 'project' | 'system';
 
 export interface AllowedPaths {
   selfSpace: string[];

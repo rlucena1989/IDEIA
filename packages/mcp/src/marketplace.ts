@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import { join, resolve } from 'node:path';
 import { get } from 'node:https';
 import type { MCPServer, MCPTool } from './index';
@@ -89,7 +90,7 @@ export class MCPMarketplace {
         handler: async (args: Record<string, unknown>) => {
           try {
             const result = await httpGetJson(
-              `${entry!.registryUrl}/call?server=${entry!.name}&tool=${t.name}&args=${encodeURIComponent(JSON.stringify(args))}`,
+              `${entry?.registryUrl ?? ''}/call?server=${entry?.name ?? ''}&tool=${t.name}&args=${encodeURIComponent(JSON.stringify(args))}`,
             );
             return result;
           } catch (err) {

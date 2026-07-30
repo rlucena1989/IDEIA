@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loadEnv = loadEnv;
 const path_1 = require("path");
+const logger_1 = require("@ideia/logger");
 const fs_1 = require("fs");
+const logger = (0, logger_1.createLogger)('env-loader');
 function loadEnv(root) {
     try {
         const dotenv = require('dotenv');

@@ -1,4 +1,5 @@
 import { WorkspaceInput, WorkspaceData, ScopedStorageService } from './types';
+import { createLogger } from '@ideia/logger';
 
 export class DefaultWorkspaceDataService {
   parseWorkspaceFile(content: string): WorkspaceData {

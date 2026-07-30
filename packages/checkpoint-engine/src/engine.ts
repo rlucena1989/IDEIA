@@ -1,6 +1,8 @@
 import { CheckpointStore } from './store';
+import { createLogger } from '@ideia/logger';
 import { ResumeManager } from './resume';
 import { Checkpoint, CheckpointType, ResumeState } from './types';
+const logger = createLogger('engine');
 
 export class CheckpointEngine {
   readonly store: CheckpointStore;

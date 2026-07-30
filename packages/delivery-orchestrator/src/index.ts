@@ -21,3 +21,12 @@ export type { NotificationEvent, NotificationChannel, NotificationMessage } from
 
 export { ReviewGateManager, createReviewGateManager } from './review-gate';
 export type { ReviewGateConfig, PendingReview } from './review-gate';
+
+export { PRPipeline } from './pr-pipeline';
+export { PRPlanner } from './pr-planner';
+export { CIMonitor } from './ci-monitor';
+export { AutoFixer } from './auto-fixer';
+export { ReviewGenerator } from './review-generator';
+export { MergeGate } from './merge-gate';
+export type { MergeGateConfig } from './merge-gate';
+export type * from './types-pr';

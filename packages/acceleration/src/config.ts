@@ -1,4 +1,9 @@
 import { EngineConfig, EngineMode } from './types';
+import { createLogger } from '@ideia/logger';
+import { ConfigManager } from '@ideia/config-engine';
+const config = ConfigManager.getInstance();
+const logger = createLogger('config');
+
 
 function parseMode(value: string | undefined): EngineMode {
   if (value === 'fast' || value === 'balanced' || value === 'deep') return value;
@@ -16,9 +21,9 @@ function parseNumber(value: string | undefined, fallback: number): number {
 }
 
 export function loadConfig(): EngineConfig {
-  const mode = parseMode(process.env.AI_MODE);
-  const loop = parseBoolean(process.env.AI_LOOP, false);
-  const stopOnFailure = parseBoolean(process.env.AI_STOP_ON_FAILURE, true);
+  const mode = parseMode(config.get('AI_MODE'));
+  const loop = parseBoolean(config.get('AI_LOOP'), false);
+  const stopOnFailure = parseBoolean(config.get('AI_STOP_ON_FAILURE'), true);
 
   const concurrencyByMode: Record<EngineMode, number> = {
     fast: 8,
@@ -28,13 +33,13 @@ export function loadConfig(): EngineConfig {
 
   return {
     mode,
-    concurrency: parseNumber(process.env.AI_CONCURRENCY, concurrencyByMode[mode]),
+    concurrency: parseNumber(config.get('AI_CONCURRENCY'), concurrencyByMode[mode]),
     loop,
     stopOnFailure,
-    reportDir: process.env.AI_REPORT_DIR ?? '.ai-devkit/reports',
-    cacheFile: process.env.AI_CACHE_FILE ?? '.ai-devkit/cache.json',
-    stateFile: process.env.AI_STATE_FILE ?? '.ai-devkit/state.json',
-    metricsFile: process.env.AI_METRICS_FILE ?? '.ai-devkit/metrics.json',
-    telemetryFile: process.env.AI_TELEMETRY_FILE ?? '.ai-devkit/telemetry.json'
+    reportDir: config.get('AI_REPORT_DIR') ?? '.ai-devkit/reports',
+    cacheFile: config.get('AI_CACHE_FILE') ?? '.ai-devkit/cache.json',
+    stateFile: config.get('AI_STATE_FILE') ?? '.ai-devkit/state.json',
+    metricsFile: config.get('AI_METRICS_FILE') ?? '.ai-devkit/metrics.json',
+    telemetryFile: config.get('AI_TELEMETRY_FILE') ?? '.ai-devkit/telemetry.json'
   };
 }

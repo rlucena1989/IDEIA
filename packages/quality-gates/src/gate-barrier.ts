@@ -1,4 +1,5 @@
 import { GateDefinition, GateResult, GateStatus, BarrierDecision } from './types';
+import { createLogger } from '@ideia/logger';
 
 export class GateBarrier {
   private gates: GateDefinition[] = [];

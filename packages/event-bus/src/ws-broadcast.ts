@@ -1,5 +1,7 @@
 import { WebSocketServer, WebSocket } from 'ws';
+import { createLogger } from '@ideia/logger';
 import type { IEventBus } from './types';
+const logger = createLogger('ws-broadcast');
 
 export interface WSBroadcastConfig {
   port: number;

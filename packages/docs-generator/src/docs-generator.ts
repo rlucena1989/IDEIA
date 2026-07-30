@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'path';
 import { APIDoc, CommandDoc, DocFormat, GenerateOptions, PackageDoc } from './types';
 

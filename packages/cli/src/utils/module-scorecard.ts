@@ -1,5 +1,8 @@
-import path from 'node:path';
+﻿import path from 'node:path';
+import { createLogger } from '@ideia/logger';
 import { getIO } from '../io';
+import { safeExists, safeReaddir, safeReaddirEntries, safeRead, safeStat, walkFiles, countFiles, findTestFiles, findSourceFiles, tryReadCoveragePct as tryReadCoveragePctHelper, determineStatus } from './module-scorecard-helpers';
+
 
 /** Interface que define a estrutura de module score. */
 export interface ModuleScore {
@@ -33,87 +36,6 @@ const WEIGHTS: Record<string, number> = {
   testabilidade: 0.15,
 };
 
-function safeExists(p: string): boolean {
-  try {
-    return getIO().fs.exists(p);
-  } catch {
-    return false;
-  }
-}
-
-function safeReaddir(p: string): string[] {
-  try {
-    if (!getIO().fs.exists(p)) return [];
-    return getIO().fs.readDir(p);
-  } catch {
-    return [];
-  }
-}
-
-function safeReaddirEntries(p: string): { name: string; isDirectory: () => boolean; isFile: () => boolean }[] {
-  try {
-    if (!getIO().fs.exists(p)) return [];
-    return getIO().fs.readDirEntries(p);
-  } catch {
-    return [];
-  }
-}
-
-function safeRead(p: string): string | null {
-  try {
-    if (!getIO().fs.exists(p)) return null;
-    return getIO().fs.read(p, 'utf8');
-  } catch {
-    return null;
-  }
-}
-
-function safeStat(p: string): { mtimeMs: number; size: number; isDirectory: () => boolean } | null {
-  try {
-    if (!getIO().fs.exists(p)) return null;
-    return getIO().fs.stat(p);
-  } catch {
-    return null;
-  }
-}
-
-function walkFiles(dir: string, maxDepth: number, _currentDepth = 0): string[] {
-  if (_currentDepth > maxDepth) return [];
-  const results: string[] = [];
-  const entries = safeReaddirEntries(dir);
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-    if (entry.name.startsWith('.') || entry.name === 'node_modules' || entry.name === 'dist') continue;
-    if (entry.isDirectory()) {
-      results.push(...walkFiles(fullPath, maxDepth, _currentDepth + 1));
-    } else if (entry.isFile() && (entry.name.endsWith('.ts') || entry.name.endsWith('.tsx'))) {
-      results.push(fullPath);
-    }
-  }
-  return results;
-}
-
-function countFiles(dir: string): number {
-  try {
-    return walkFiles(dir, 3).length;
-  } catch {
-    return 0;
-  }
-}
-
-function findTestFiles(files: string[]): string[] {
-  return files.filter(f => /\.(test|spec)\.(ts|tsx)$/.test(f));
-}
-
-function findSourceFiles(files: string[]): string[] {
-  return files.filter(f => !/\.(test|spec)\.(ts|tsx)$/.test(f) && !f.endsWith('.d.ts'));
-}
-
-/**
- * Processa modules.
- * @param baseDir - Valor dir.
- * @returns O resultado da operação.
- */
 export function discoverModules(baseDir: string): { name: string; path: string }[] {
   const modules: { name: string; path: string }[] = [];
   const seen = new Set<string>();
@@ -145,7 +67,7 @@ export function discoverModules(baseDir: string): { name: string; path: string }
  * Calcula depth score.
  * @param modulePath - Valor path.
  * @param baseDir - Valor dir.
- * @returns O resultado da operação.
+ * @returns O resultado da operaÃ§Ã£o.
  */
 export function calculateDepthScore(modulePath: string, baseDir: string): number {
   try {
@@ -179,7 +101,7 @@ function tryReadCoveragePct(): number | null {
 /**
  * Calcula coverage score.
  * @param modulePath - Valor path.
- * @returns O resultado da operação.
+ * @returns O resultado da operaÃ§Ã£o.
  */
 export function calculateCoverageScore(modulePath: string): number {
   try {
@@ -214,7 +136,7 @@ export function calculateCoverageScore(modulePath: string): number {
 /**
  * Processa risk.
  * @param modulePath - Valor path.
- * @returns O resultado da operação.
+ * @returns O resultado da operaÃ§Ã£o.
  */
 export function assessRisk(modulePath: string): { score: number; factors: string[] } {
   const factors: string[] = [];
@@ -260,7 +182,7 @@ export function assessRisk(modulePath: string): { score: number; factors: string
 /**
  * Estima complexity.
  * @param modulePath - Valor path.
- * @returns O resultado da operação.
+ * @returns O resultado da operaÃ§Ã£o.
  */
 export function estimateComplexity(modulePath: string): number {
   try {
@@ -293,7 +215,7 @@ export function estimateComplexity(modulePath: string): number {
 /**
  * Estima business value.
  * @param modulePath - Valor path.
- * @returns O resultado da operação.
+ * @returns O resultado da operaÃ§Ã£o.
  */
 export function estimateBusinessValue(modulePath: string): number {
   const name = path.basename(modulePath).toLowerCase();
@@ -313,7 +235,7 @@ export function estimateBusinessValue(modulePath: string): number {
 /**
  * Calcula testability.
  * @param modulePath - Valor path.
- * @returns O resultado da operação.
+ * @returns O resultado da operaÃ§Ã£o.
  */
 export function calculateTestability(modulePath: string): number {
   try {
@@ -335,7 +257,7 @@ export function calculateTestability(modulePath: string): number {
 /**
  * Processa maturity.
  * @param modulePath - Valor path.
- * @returns O resultado da operação.
+ * @returns O resultado da operaÃ§Ã£o.
  */
 export function assessMaturity(modulePath: string): number {
   let score = 0;
@@ -379,17 +301,12 @@ export function assessMaturity(modulePath: string): number {
   }
 }
 
-function determineStatus(score: number): 'critical' | 'warning' | 'good' | 'excellent' {
-  if (score >= 80) return 'excellent';
-  if (score >= 60) return 'good';
-  if (score >= 40) return 'warning';
-  return 'critical';
-}
+
 
 /**
  * Gera recommendations.
  * @param modules - Valor modules.
- * @returns O resultado da operação.
+ * @returns O resultado da operaÃ§Ã£o.
  */
 export function generateRecommendations(modules: ModuleScore[]): string[] {
   const recommendations: string[] = [];
@@ -398,30 +315,30 @@ export function generateRecommendations(modules: ModuleScore[]): string[] {
     if (mod.overall >= 60) continue;
 
     if ((mod.dimensions.profundidade || 0) < 40) {
-      recommendations.push(`${mod.name}: baixa profundidade — considere adicionar mais arquivos ou estrutura de diretórios`);
+      recommendations.push(`${mod.name}: baixa profundidade â€” considere adicionar mais arquivos ou estrutura de diretÃ³rios`);
     }
     if ((mod.dimensions.cobertura || 0) < 40) {
-      recommendations.push(`${mod.name}: cobertura baixa — adicione relatórios de scorecard ou fortaleça definições de tipos`);
+      recommendations.push(`${mod.name}: cobertura baixa â€” adicione relatÃ³rios de scorecard ou fortaleÃ§a definiÃ§Ãµes de tipos`);
     }
     if ((mod.dimensions.risco || 0) > 60) {
-      recommendations.push(`${mod.name}: risco elevado — reduza usos de any, resolva TODOs e divida arquivos grandes`);
+      recommendations.push(`${mod.name}: risco elevado â€” reduza usos de any, resolva TODOs e divida arquivos grandes`);
     }
     if ((mod.dimensions.complexidade || 0) > 70) {
-      recommendations.push(`${mod.name}: complexidade alta — divida módulos grandes em submódulos menores`);
+      recommendations.push(`${mod.name}: complexidade alta â€” divida mÃ³dulos grandes em submÃ³dulos menores`);
     }
     if ((mod.dimensions.valor_de_negocio || 0) < 50) {
-      recommendations.push(`${mod.name}: baixo valor de negócio percebido — avalie se o módulo ainda é necessário`);
+      recommendations.push(`${mod.name}: baixo valor de negÃ³cio percebido â€” avalie se o mÃ³dulo ainda Ã© necessÃ¡rio`);
     }
     if ((mod.dimensions.maturidade || 0) < 40) {
-      recommendations.push(`${mod.name}: maturidade baixa — adicione README, testes e configuração de lint`);
+      recommendations.push(`${mod.name}: maturidade baixa â€” adicione README, testes e configuraÃ§Ã£o de lint`);
     }
     if ((mod.dimensions.testabilidade || 0) < 30) {
-      recommendations.push(`${mod.name}: testabilidade baixa — crie arquivos de teste (.test.ts) para os módulos existentes`);
+      recommendations.push(`${mod.name}: testabilidade baixa â€” crie arquivos de teste (.test.ts) para os mÃ³dulos existentes`);
     }
   }
 
   if (recommendations.length === 0 && modules.length > 0) {
-    recommendations.push('todos os módulos estão com pontuação adequada — mantenha o padrão atual');
+    recommendations.push('todos os mÃ³dulos estÃ£o com pontuaÃ§Ã£o adequada â€” mantenha o padrÃ£o atual');
   }
 
   return recommendations;
@@ -431,7 +348,7 @@ export function generateRecommendations(modules: ModuleScore[]): string[] {
  * Gera granular scorecard.
  * @param projectDir - Valor dir.
  * @param options - Valor options.
- * @returns O resultado da operação.
+ * @returns O resultado da operaÃ§Ã£o.
  */
 export function generateGranularScorecard(
   projectDir?: string,

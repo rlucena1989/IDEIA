@@ -1,0 +1,19 @@
+{
+  "name": "@ideia/self-healing",
+  "description": "IDEIA Self-Healing System — automated detect-diagnose-heal-verify cycle for production resilience",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@ideia/logger": "0.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ]
+}

@@ -1,4 +1,5 @@
 import { ContextStore, ContextQuery, ContextItem, estimateTokens, createContextItem, DEFAULT_CONTEXT_STORE_CONFIG } from './context-store';
+import { createLogger } from '@ideia/logger';
 import { DecisionCache, ProjectSummary, summarizeProject, DEFAULT_SUMMARIZER_CONFIG } from './context-summarizer';
 import { OutputMode, PromptRoute, OutputBudget, routePrompt, selectOutputMode, getOutputBudget, formatOutputBudget, DEFAULT_PROMPT_ROUTER_CONFIG } from './prompt-router';
 import { TaskType } from './classifier';

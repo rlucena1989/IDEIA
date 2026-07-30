@@ -10,6 +10,7 @@
  */
 
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import {
   AdapterCommand,
@@ -119,7 +120,7 @@ export abstract class BaseRunner implements LangRunner {
     try {
       out = await execCommand(argv, effCwd, { timeoutMs: opts.timeoutMs ?? DEFAULT_TIMEOUT_MS, env: opts.env });
     } catch (_err) {
-      const message = err instanceof Error ? err.message : String(err);
+      const message = _err instanceof Error ? _err.message : String(_err);
       return {
         command: id,
         language: this.language,

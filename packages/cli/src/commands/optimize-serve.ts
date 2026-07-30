@@ -1,11 +1,14 @@
 import { execFileSync } from 'node:child_process';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import http from 'node:http';
+import https from 'node:https';
 import { printHeader, printLine, printResult, finish } from "../utils/output";
 import { getIO } from '../io';
 import { readJson } from './optimize-pipeline';
+import { loadTlsOptions } from '../utils/crypto-utils';
 
-export function handleOptimizeServe(options: { port: string; host: string; open?: boolean }): void {
+export function handleOptimizeServe(options: { port: string; host: string; open?: boolean; tls?: boolean }): void {
   const cwd = process.cwd();
   const uiDir = path.join(cwd, '.ai/optimizer/ui');
   const runtimeDir = path.join(cwd, '.ai/optimizer/runtime');
@@ -60,7 +63,16 @@ export function handleOptimizeServe(options: { port: string; host: string; open?
     } catch { /* ignore */ }
   }, 2000);
 
-  const server = http.createServer((req, res) => {
+  const tlsOpts = options.tls !== false ? loadTlsOptions() : null;
+  const server = tlsOpts
+    ? https.createServer(tlsOpts, (req, res) => {
+        handleOptimizeRequest(req, res);
+      })
+    : http.createServer((req, res) => {
+        handleOptimizeRequest(req, res);
+      });
+
+  function handleOptimizeRequest(req: http.IncomingMessage, res: http.ServerResponse): void {
     const url = new URL(req.url || '/', `http://${host}:${port}`);
     const pathname = url.pathname;
 
@@ -117,11 +129,13 @@ export function handleOptimizeServe(options: { port: string; host: string; open?
       res.writeHead(404);
       res.end('Not found');
     }
-  });
+  }
 
   server.listen(port, host, () => {
+    const proto = tlsOpts ? 'https' : 'http';
     printHeader('Optimizer Dashboard Server');
-    printResult('URL', true, `http://${host}:${port}`);
+    printResult('URL', true, `${proto}://${host}:${port}`);
+    if (tlsOpts) printLine('TLS 1.3 enabled');
     printLine(`UI: ${uiDir}`);
     printLine('');
     printLine('Available API endpoints:');
@@ -133,7 +147,7 @@ export function handleOptimizeServe(options: { port: string; host: string; open?
 
     if (options.open) {
       const openCmd = process.platform === 'win32' ? 'start' : process.platform === 'darwin' ? 'open' : 'xdg-open';
-      try { execFileSync(`${openCmd} http://${host}:${port}`); } catch { /* ignore */ }
+      try { execFileSync(`${openCmd} ${proto}://${host}:${port}`); } catch { /* ignore */ }
     }
   });
 

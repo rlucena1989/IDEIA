@@ -1,4 +1,6 @@
 import { Tutorial } from '../types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('06-context-pack-custom');
 
 export const contextPackCustomTutorial: Tutorial = {
   id: '06-context-pack-custom',

@@ -1,4 +1,6 @@
 import { createLangGraphAgent, createAnalystNode, createArchitectNode, createProgrammerNode, createReviewerNode, createTesterNode, createDevOpsNode, createSupervisorNode, createDefaultEdgeConditions } from '../src';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('simple-pipeline');
 
 async function runSimplePipeline() {
   const agent = createLangGraphAgent({
@@ -24,17 +26,17 @@ async function runSimplePipeline() {
 
   const result = await agent.invoke('Create a REST API for user management');
 
-  console.log('=== Pipeline Complete ===');
-  console.log('Input:', result.finalState.input);
-  console.log('Completed:', result.finalState.completed);
-  console.log('Errors:', result.finalState.errors.length);
-  console.log('Nodes executed:', result.summary.totalNodes);
-  console.log('Duration:', result.summary.totalDurationMs, 'ms');
-  console.log('Artifacts:', result.finalState.artifacts.length);
-  console.log('Timing:');
+  logger.info('=== Pipeline Complete ===');
+  logger.info(`Input: ${result.finalState.input}`);
+  logger.info(`Completed: ${result.finalState.completed}`);
+  logger.info(`Errors: ${result.finalState.errors.length}`);
+  logger.info(`Nodes executed: ${result.summary.totalNodes}`);
+  logger.info(`Duration: ${result.summary.totalDurationMs}ms`);
+  logger.info(`Artifacts: ${result.finalState.artifacts.length}`);
+  logger.info('Timing:');
   for (const t of result.summary.timing) {
-    console.log(`  ${t.role}: ${t.status} (${t.durationMs}ms, ${t.attempts} attempts)`);
+    logger.info(`  ${t.role}: ${t.status} (${t.durationMs}ms, ${t.attempts} attempts)`);
   }
 }
 
-runSimplePipeline().catch(console.error);
+runSimplePipeline().catch(logger.error);

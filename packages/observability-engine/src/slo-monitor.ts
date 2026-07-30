@@ -51,15 +51,15 @@ export class SLOMonitor {
     if (!this.data.has(metric)) this.data.set(metric, []);
     if (!this.timestamps.has(metric)) this.timestamps.set(metric, []);
 
-    const values = this.data.get(metric) ?? null;
-    const times = this.timestamps.get(metric) ?? null;
+    const values = this.data.get(metric)!;
+    const times = this.timestamps.get(metric)!;
     values.push(value);
     times.push(now);
 
     const slo = this.slos.get(metric);
     if (slo) {
       const cutoff = now - slo.windowMs;
-      while (times.length > 0 && times[0]! < cutoff) {
+      while (times.length > 0 && (times[0] ?? 0) < cutoff) {
         times.shift();
         values.shift();
       }
@@ -83,7 +83,7 @@ export class SLOMonitor {
     const cutoff = Date.now() - slo.windowMs;
     const recent: number[] = [];
     for (let i = 0; i < times.length; i++) {
-      if (times[i]! >= cutoff) recent.push(values[i]!);
+      if ((times[i] ?? 0) >= cutoff) recent.push(values[i] ?? 0);
     }
 
     if (recent.length === 0) {
@@ -132,7 +132,7 @@ export class SLOMonitor {
     const cutoff = Date.now() - windowMs;
     const recent: number[] = [];
     for (let i = 0; i < times.length; i++) {
-      if (times[i]! >= cutoff) recent.push(values[i]!);
+      if ((times[i] ?? 0) >= cutoff) recent.push(values[i] ?? 0);
     }
 
     const target = slo?.target ?? 0.99;

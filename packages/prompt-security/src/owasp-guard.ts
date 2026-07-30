@@ -1,5 +1,6 @@
 import { PromptSecurity } from './prompt-security';
 import { createLogger } from '@ideia/logger';
+import { IndirectInjectionDetector, createIndirectInjectionDetector } from './indirect-injection-detector';
 
 const log = createLogger('owasp-guard');
 
@@ -36,7 +37,7 @@ const OWASP_CHECKS: Array<{
 }> = [
   {
     category: 'LLM01',
-    description: 'Prompt Injection — Check for attempts to override system instructions',
+    description: 'Prompt Injection + Indirect Injection — Check for direct/indirect attempts to override system instructions',
     severity: 'critical',
     check: (input: string): OwaspCheckResult => {
       const injectionPatterns = [
@@ -49,13 +50,29 @@ const OWASP_CHECKS: Array<{
         /reveal\s+(your\s+)?(instructions|system\s+message)/i,
       ];
 
-      const failed = injectionPatterns.some(pattern => pattern.test(input));
+      const directInjectionFailed = injectionPatterns.some(pattern => pattern.test(input));
+
+      const indirectDetector = createIndirectInjectionDetector();
+      const indirectResult = indirectDetector.analyze(input);
+
+      const failed = directInjectionFailed || indirectResult.detected;
+      let details: string;
+      if (directInjectionFailed && indirectResult.detected) {
+        details = `Direct injection pattern detected + ${indirectResult.matches.length} indirect injection pattern(s) (confidence: ${Math.round(indirectResult.confidence * 100)}%)`;
+      } else if (directInjectionFailed) {
+        details = 'Direct prompt injection pattern detected';
+      } else if (indirectResult.detected) {
+        details = `Indirect injection detected: ${indirectResult.matches.length} pattern(s) in ${Object.keys(indirectResult.subcategoryBreakdown).join(', ')} (confidence: ${Math.round(indirectResult.confidence * 100)}%)`;
+      } else {
+        details = 'No injection patterns found';
+      }
+
       return {
         passed: !failed,
-        description: 'Prompt Injection — Check for attempts to override system instructions',
+        description: 'Prompt Injection + Indirect Injection — Check for direct/indirect attempts to override system instructions',
         severity: 'critical',
         category: 'LLM01',
-        details: failed ? 'Prompt injection pattern detected' : 'No injection patterns found',
+        details,
       };
     },
   },
@@ -161,9 +178,9 @@ const OWASP_CHECKS: Array<{
   },
   {
     category: 'LLM06',
-    description: 'Excessive Agency — Check for requests to perform unauthorized actions',
-    severity: 'high',
-    check: (input: string): OwaspCheckResult => {
+    description: 'Sensitive Info Disclosure + Excessive Agency — Check for PII leakage and unauthorized actions',
+    severity: 'critical',
+    check: (input: string, security: PromptSecurity): OwaspCheckResult => {
       const excessiveAgencyPatterns = [
         /delete\s+(all|every|entire)\s+(file|data|record|account|user)/i,
         /(shutdown|restart|reboot|poweroff)\s+(the\s+)?(system|server|computer)/i,
@@ -174,22 +191,42 @@ const OWASP_CHECKS: Array<{
         /bypass\s+(all\s+)?(security|restriction|approval|audit)/i,
       ];
 
-      const failed = excessiveAgencyPatterns.some(pattern => pattern.test(input));
+      const agencyFailed = excessiveAgencyPatterns.some(pattern => pattern.test(input));
+
+      const outputResult = security.validateOutput(input);
+      const piiIssues = outputResult.issues.filter(i =>
+        i.category.includes('leak') || i.category.includes('pii') || i.category.includes('hipaa') ||
+        i.category.includes('sus') || i.category.includes('cnh') || i.category.includes('nino') ||
+        i.category.includes('sin') || i.category.includes('iban') || i.category.includes('passport') ||
+        i.category.includes('swift') || i.category.includes('bic') || i.category.includes('cc-') ||
+        i.category.includes('gps') || i.category.includes('address') || i.category.includes('phone')
+      );
+
+      const failed = agencyFailed || piiIssues.length > 0;
+      let details: string;
+      if (agencyFailed && piiIssues.length > 0) {
+        details = `Excessive agency detected + ${piiIssues.length} PII/sensitive data disclosure(s): ${piiIssues.map(i => i.category).join(', ')}`;
+      } else if (agencyFailed) {
+        details = 'Excessive agency request detected — action may require elevated permissions';
+      } else if (piiIssues.length > 0) {
+        details = `PII/Sensitive data disclosure detected in output: ${piiIssues.map(i => i.category).join(', ')}`;
+      } else {
+        details = 'No excessive agency or sensitive data disclosure detected';
+      }
+
       return {
         passed: !failed,
-        description: 'Excessive Agency — Check for requests to perform unauthorized actions',
-        severity: 'high',
+        description: 'Sensitive Info Disclosure + Excessive Agency — Check for PII leakage and unauthorized actions',
+        severity: 'critical',
         category: 'LLM06',
-        details: failed
-          ? 'Excessive agency request detected — action may require elevated permissions'
-          : 'No excessive agency detected',
+        details,
       };
     },
   },
   {
     category: 'LLM07',
-    description: 'Overreliance — Check for blind trust in model output',
-    severity: 'medium',
+    description: 'Plugin Insecurity + Overreliance — Check for insecure plugin design and blind trust',
+    severity: 'high',
     check: (input: string): OwaspCheckResult => {
       const overreliancePatterns = [
         /(just|simply|blindly)\s+(trust|believe|accept)\s+(the\s+)?(model|AI|output)/i,
@@ -200,15 +237,37 @@ const OWASP_CHECKS: Array<{
         /always\s+(run|execute|apply)\s+(without|no)\s+(confirmation|approval|review)/i,
       ];
 
-      const failed = overreliancePatterns.some(pattern => pattern.test(input));
+      const pluginInsecurityPatterns = [
+        /plugin\s+(load|install|import|enable)\s+(untrusted|unsigned|unverified|external|third.party)/i,
+        /(allow|grant|give)\s+(plugin|extension|addon)\s+(full|unrestricted|all)\s+(access|permissions|rights)/i,
+        /bypass\s+(plugin|extension|sandbox|isolation)\s+(security|restriction|check)/i,
+        /disable\s+(plugin|sandbox|isolation|security)\s+(check|verification|validation|audit)/i,
+        /run\s+(code|script|command)\s+(from|inside)\s+(plugin|extension)\s+(without|no)\s+(validation|sandbox|check)/i,
+        /plugin\s+(has|gets|receives)\s+(unrestricted|full|root|admin)\s+(access|permissions|capabilities)/i,
+        /skip\s+(plugin|extension|sandbox)\s+(verification|validation|isolation|security)/i,
+      ];
+
+      const overrelianceFailed = overreliancePatterns.some(pattern => pattern.test(input));
+      const pluginInsecurityFailed = pluginInsecurityPatterns.some(pattern => pattern.test(input));
+
+      const failed = overrelianceFailed || pluginInsecurityFailed;
+      let details: string;
+      if (overrelianceFailed && pluginInsecurityFailed) {
+        details = 'Overreliance + plugin insecurity patterns detected';
+      } else if (overrelianceFailed) {
+        details = 'Overreliance pattern detected — outputs should always be verified';
+      } else if (pluginInsecurityFailed) {
+        details = 'Plugin insecurity pattern detected — plugins should be sandboxed and restricted';
+      } else {
+        details = 'No plugin insecurity or overreliance detected';
+      }
+
       return {
         passed: !failed,
-        description: 'Overreliance — Check for blind trust in model output',
-        severity: 'medium',
+        description: 'Plugin Insecurity + Overreliance — Check for insecure plugin design and blind trust',
+        severity: 'high',
         category: 'LLM07',
-        details: failed
-          ? 'Overreliance pattern detected — outputs should always be verified'
-          : 'No overreliance patterns detected',
+        details,
       };
     },
   },
@@ -299,6 +358,37 @@ const OWASP_CHECKS: Array<{
       };
     },
   },
+  {
+    category: 'LLM10_ModelTheft',
+    description: 'Model Theft — Check for unauthorized model access, weight exfiltration, and model duplication attempts',
+    severity: 'high',
+    check: (input: string): OwaspCheckResult => {
+      const modelTheftPatterns = [
+        /model\.(export|save|download|upload|serialize|deserialize)\s*(\(|\s|$)/i,
+        /(get_weights|load_weights|save_weights|export_weights|get_parameters|load_checkpoint)/i,
+        /(clone_model|copy_model|duplicate)\s*(\(|\s|$)/i,
+        /download\s+(model|weights|checkpoint)\s+(from|via|through)\s+(api|endpoint|url)/i,
+        /model\s+id\s*=\s*\d{3,}/i,
+        /iterate\s+(over|through|all)\s+(model|environment|endpoint)/i,
+        /list\s+(all|every)\s+(model|deployment|environment|endpoint)/i,
+        /(enumerate|brute.?force|scan)\s+(model|endpoint|version|deployment)/i,
+        /(steal|exfiltrate|extract|capture)\s+(model|weights|parameters|architecture)/i,
+        /bypass\s+(auth|authentication|authorization|access.control)\s+(for|to)\s+(model|api)/i,
+        /unauthorized\s+(access|download|copy|save)\s+(model|endpoint)/i,
+      ];
+
+      const failed = modelTheftPatterns.some(pattern => pattern.test(input));
+      return {
+        passed: !failed,
+        description: 'Model Theft — Check for unauthorized model access, weight exfiltration, and model duplication attempts',
+        severity: 'high',
+        category: 'LLM10_ModelTheft',
+        details: failed
+          ? 'Model theft pattern detected — possible unauthorized model access or weight exfiltration'
+          : 'No model theft patterns detected',
+      };
+    },
+  },
 ];
 
 export function runOwaspChecks(input: string): OwaspScanResult {
@@ -359,4 +449,31 @@ export function formatOwaspReport(result: OwaspScanResult): string {
   lines.push('========================================');
 
   return lines.join('\n');
+}
+
+export function checkModelTheft(input: string): OwaspCheckResult {
+  const patterns = [
+    /model\.(export|save|download|upload|serialize|deserialize)\s*(\(|\s|$)/i,
+    /(get_weights|load_weights|save_weights|export_weights|get_parameters|load_checkpoint)/i,
+    /(clone_model|copy_model|duplicate)\s*(\(|\s|$)/i,
+    /download\s+(model|weights|checkpoint)\s+(from|via|through)\s+(api|endpoint|url)/i,
+    /model\s+id\s*=\s*\d{3,}/i,
+    /iterate\s+(over|through|all)\s+(model|environment|endpoint)/i,
+    /list\s+(all|every)\s+(model|deployment|environment|endpoint)/i,
+    /(enumerate|brute.?force|scan)\s+(model|endpoint|version|deployment)/i,
+    /(steal|exfiltrate|extract|capture)\s+(model|weights|parameters|architecture)/i,
+    /bypass\s+(auth|authentication|authorization|access.control)\s+(for|to)\s+(model|api)/i,
+    /unauthorized\s+(access|download|copy|save)\s+(model|endpoint)/i,
+  ];
+
+  const failed = patterns.some(pattern => pattern.test(input));
+  return {
+    passed: !failed,
+    description: 'Model Theft — Check for unauthorized model access, weight exfiltration, and model duplication attempts',
+    severity: 'high',
+    category: 'LLM10_ModelTheft',
+    details: failed
+      ? 'Model theft pattern detected — possible unauthorized model access or weight exfiltration'
+      : 'No model theft patterns detected',
+  };
 }

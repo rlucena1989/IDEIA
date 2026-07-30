@@ -1,3 +1,6 @@
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('notifications');
+
 export type NotificationChannel = 'console' | 'webhook' | 'slack' | 'email';
 export type NotificationSeverity = 'info' | 'warning' | 'error' | 'critical';
 export type NotificationEvent = 'deploy.started' | 'deploy.completed' | 'deploy.failed'
@@ -61,7 +64,7 @@ export class NotificationService {
     this.notifications.push(notification);
     if (this.notifications.length > this.maxHistory) this.notifications.shift();
 
-    console.log(`[${severity.toUpperCase()}] ${title}: ${message}`);
+    logger.info('[${severity.toUpperCase()}] ${title}: ${message}');
 
     for (const listener of this.listeners) listener(notification);
 

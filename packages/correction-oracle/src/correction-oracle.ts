@@ -1,7 +1,9 @@
 import { randomUUID } from 'crypto';
+import { createLogger } from '@ideia/logger';
 import * as fs from 'fs';
 import * as path from 'path';
 import { CheckResult, OracleReport, OracleRule } from './types';
+const logger = createLogger('correction-oracle');
 
 const DEFAULT_RULES: OracleRule[] = [
   {

@@ -1,4 +1,5 @@
 import { Checkpoint, CheckpointType, CheckpointStatus, CheckpointSummary } from './types';
+import { createLogger } from '@ideia/logger';
 import { randomUUID } from 'crypto';
 
 export class CheckpointStore {

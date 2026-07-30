@@ -1,4 +1,5 @@
 import { AgentRole, IdentityCheckRequest, IdentityCheckResult, Permission, RoleDefinition } from './types';
+import { createLogger } from '@ideia/logger';
 
 const ACTION_PERMISSION_MAP: Record<string, Permission> = {
   'file.read': 'read',

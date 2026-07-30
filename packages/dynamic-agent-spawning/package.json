@@ -1,0 +1,20 @@
+{
+  "name": "@ideia/dynamic-agent-spawning",
+  "private": true,
+  "description": "Dynamic Agent Spawning & Scaling — pools, lifecycle, reactive/predictive scaling, cold/warm/elastic pools",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "@types/jest": "*"
+  }
+}

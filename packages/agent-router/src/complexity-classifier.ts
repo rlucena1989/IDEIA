@@ -1,4 +1,6 @@
 import { ComplexityLevel, ComplexityCriteria, ClassificationResult } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('complexity-classifier');
 
 export class ComplexityClassifier {
   classify(criteria: ComplexityCriteria): ClassificationResult {

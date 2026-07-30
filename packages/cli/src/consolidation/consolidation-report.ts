@@ -1,7 +1,9 @@
 import { SystemConsolidation, FinalVerdict } from './consolidation-types';
+import { createLogger } from '@ideia/logger';
 import { CycleClosure } from './closure-manager';
 import { AutonomyState } from './autonomy-controller';
 import { SystemSynthesis } from './system-synthesis';
+const logger = createLogger('consolidation-report');
 
 export interface ConsolidationReport {
   generatedAt: string;

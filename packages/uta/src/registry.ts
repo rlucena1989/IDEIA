@@ -1,4 +1,5 @@
 import { Tool, ToolHandler } from './types';
+import { createLogger } from '@ideia/logger';
 
 export class DiscoveryRegistry {
   private tools: Map<string, { tool: Tool; handler: ToolHandler }> = new Map();

@@ -1,4 +1,6 @@
 import { Command } from "commander";
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('commands.backup');
 import path from "path";
 
 /**
@@ -10,11 +12,11 @@ export function backupStatusAction(): void {
   try {
     const backupManager = require(bkpPath);
     const s = backupManager.status();
-    console.log('\n📦 Status do Backup do Ledger\n');
-    console.log(`Uso: ${s.sizeMB} MB / ${s.quotaMB} MB (${s.percentUsed}%)`);
-    console.log(`GitHub configurado: ${s.githubEnabled ? '✅ Sim -> ' + s.githubRemote : '❌ Não'}`);
-    console.log(`Arquivos de histórico frio (.gz): ${s.archiveCount}`);
-  } catch (_e) {
+    logger.info('\n📦 Status do Backup do Ledger\n');
+    logger.info('Uso: ${s.sizeMB} MB / ${s.quotaMB} MB (${s.percentUsed}%)');
+    logger.info('GitHub configurado: ${s.githubEnabled ? \'✅ Sim -> \' + s.githubRemote : \'❌ Não\'}');
+    logger.info('Arquivos de histórico frio (.gz): ${s.archiveCount}');
+  } catch (e) {
     console.log('Módulo backup-manager.js ausente ou com falha na carga.', e);
   }
 }
@@ -24,8 +26,8 @@ export function backupConfigureGithubAction(url: string): void {
   try {
     const backupManager = require(bkpPath);
     backupManager.configureGithub(url);
-    console.log(`✅ GitHub configurado como espelho: ${url}`);
-  } catch (_e) {
+    logger.info('✅ GitHub configurado como espelho: ${url}');
+  } catch (e) {
     console.log('Módulo backup-manager.js ausente ou com falha na carga.', e);
   }
 }

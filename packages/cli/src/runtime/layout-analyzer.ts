@@ -93,7 +93,7 @@ export function analyzeLayout(content: string, _filePath: string): LayoutReport 
       const props: string[] = [];
       const propMatch = content.match(/(?:interface|type)\s+\w+Props\s*\{([^}]+)\}/);
       if (propMatch) {
-        propMatch[1]!.split(';').forEach(p => { const t = p.trim().split(':')[0]; if (t) props.push(t.trim()); });
+        (propMatch[1] ?? '').split(';').forEach(p => { const t = p.trim().split(':')[0]; if (t) props.push(t.trim()); });
       }
       components.push({ name, type: cp.type, props: props.slice(0, 10), dependencies: [], linesOfCode: content.split('\n').length, complexity: Math.round(content.length / 100) });
     }

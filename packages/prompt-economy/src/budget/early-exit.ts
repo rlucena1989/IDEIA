@@ -1,4 +1,6 @@
 import { EarlyExitDecision, Evidence, TaskType } from '../types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('early-exit');
 
 export interface EarlyExitConfig {
   minConfidence: number;

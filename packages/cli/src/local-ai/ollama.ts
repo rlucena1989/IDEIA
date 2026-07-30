@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import path from 'node:path';
 import { InferenceLogEntry, hashPrompt } from './classifier';
 import { recordCall } from './mirror/recorder';
@@ -54,7 +55,7 @@ export async function queryOllama(
     recordCall(prompt, content, model, 'ollama', duration, tokensIn, tokensOut, 0, route, 'success').catch(() => {});
 
     return content;
-  } catch (_err) {
+  } catch (err) {
     const duration = Date.now() - start;
     const msg = err instanceof Error ? err.message : String(err);
     logInference(root, { timestamp: new Date().toISOString(), route, model, prompt_hash: ph, duration_ms: duration, success: false, error: msg });

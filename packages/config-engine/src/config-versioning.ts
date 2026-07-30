@@ -123,4 +123,51 @@ export class ConfigVersioning {
     this.snapshots = index.snapshots;
     return [...this.snapshots];
   }
+
+  getHistory(): ConfigSnapshot[] {
+    return this.history();
+  }
+
+  getVersion(id: string): ConfigSnapshot | undefined {
+    return this.snapshots.find(s => s.id === id);
+  }
+
+  describe(id: string): { date: string; size: number; changes: number; name: string } | null {
+    const snapshot = this.snapshots.find(s => s.id === id);
+    if (!snapshot) return null;
+    const flatFrom = flattenKeys(snapshot.config as Record<string, unknown>);
+    const prevIdx = this.snapshots.indexOf(snapshot) - 1;
+    let changes = 0;
+    if (prevIdx >= 0) {
+      const prev = this.snapshots[prevIdx];
+      changes = computeDiff(prev.config as Record<string, unknown>, snapshot.config as Record<string, unknown>).length;
+    }
+    return {
+      date: snapshot.timestamp,
+      size: JSON.stringify(snapshot.config).length,
+      changes,
+      name: snapshot.name,
+    };
+  }
+
+  async prune(keep: number): Promise<void> {
+    const sorted = [...this.snapshots].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    const toRemove = sorted.slice(keep);
+    for (const snap of toRemove) {
+      const filePath = path.join(HISTORY_DIR, `${snap.id}.json`);
+      try { await fsp.unlink(filePath); } catch { /* ignore */ }
+      this.snapshots = this.snapshots.filter(s => s.id !== snap.id);
+    }
+    await writeIndex({ snapshots: this.snapshots });
+    log.info(`Pruned ${toRemove.length} snapshots, keeping ${keep}`);
+  }
+
+  compare(id1: string, id2: string): string {
+    const diff = this.diff(id1, id2);
+    if (diff.changes.length === 0) return 'No differences';
+    return diff.changes.map(c => {
+      const op = c.operation === 'added' ? '+' : c.operation === 'removed' ? '-' : '~';
+      return `${op} ${c.path}: ${JSON.stringify(c.oldValue)} → ${JSON.stringify(c.newValue)}`;
+    }).join('\n');
+  }
 }

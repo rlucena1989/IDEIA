@@ -1,4 +1,6 @@
 import type { Capability } from '../types/capability';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('discovery.interface');
 
 export type DiscoverySource = 'decorator' | 'manifest' | 'static-analysis' | 'config';
 

@@ -1,5 +1,7 @@
 import { Tracer } from './observability-engine';
+import { createLogger } from '@ideia/logger';
 import type { SpanStatus } from './types';
+const logger = createLogger('opentelemetry-spans');
 
 export type SpanCategory = 'chat' | 'agent' | 'autofix' | 'scan' | 'lsp';
 

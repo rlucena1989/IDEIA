@@ -1,6 +1,8 @@
 import { LangGraphStateAnnotation, LangGraphAgentRole } from '../langgraph-graph';
+import { createLogger } from '@ideia/logger';
 import { LangGraphNodeFunction } from '../langgraph-graph';
 import { LLMProvider, ChatMessage } from '@ideia/llm-provider';
+const logger = createLogger('reviewer-node');
 
 const REVIEWER_PROMPT = `You are a Code Reviewer agent. Review the provided implementation:
 1. Check for bugs, security issues, and code smells

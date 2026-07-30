@@ -1,5 +1,7 @@
 import * as crypto from 'node:crypto';
+import { createLogger } from '@ideia/logger';
 import { EvolutionAuditEntry, EvolutionAuditTrail } from './audit-types';
+const logger = createLogger('audit-trail');
 
 export function buildAuditTrail(entries: EvolutionAuditEntry[]): EvolutionAuditTrail {
   return {

@@ -1,4 +1,5 @@
 import { SemanticNeed, CapabilityMatch, AgentRecommendation, ContextPackRecommendation, WorkflowRecommendation, SemanticMatchResult } from './semantic-types';
+import { createLogger } from '@ideia/logger';
 import { KEYWORD_TO_CAPABILITY, COMPLEXITY_TO_CONTEXT_DEPTH } from './rules';
 import { calculateConfidence, normalizeKeywords, normalizeStack } from './scoring';
 import { SemanticAnalyzer } from './analyzer';

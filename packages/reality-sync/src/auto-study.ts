@@ -1,4 +1,5 @@
 import * as fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
 import * as path from 'node:path';
 
 export interface AutoStudyInput {
@@ -171,7 +172,7 @@ export class AutoStudyGenerator {
   }
 
   estimateViability(technology: string): ViabilityScore {
-    return this.researchTechnology(technology) as ViabilityScore;
+    return this.researchTechnology(technology) as unknown as ViabilityScore;
   }
 
   private getOverallRecommendation(scores: Array<ViabilityScore | null>): string {

@@ -1,4 +1,6 @@
 import { MessageService, MessageAction } from './types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('markers-output');
 
 export class DefaultMessageService implements MessageService {
   async info(message: string, actions?: MessageAction[]): Promise<string | undefined> {
@@ -14,10 +16,10 @@ export class DefaultMessageService implements MessageService {
   }
 
   async showMessage(type: 'info' | 'warn' | 'error', message: string, actions?: MessageAction[]): Promise<string | undefined> {
-    console.log(`[${type.toUpperCase()}] ${message}`);
+    logger.info('[${type.toUpperCase()}] ${message}');
     if (actions) {
       for (const action of actions) {
-        console.log(`  Action: ${action.label}`);
+        logger.info('  Action: ${action.label}');
       }
     }
     return undefined;

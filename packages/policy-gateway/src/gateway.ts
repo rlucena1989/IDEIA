@@ -1,5 +1,7 @@
 import { Decision, RiskLevel } from '@ideia/contracts';
+import { createLogger } from '@ideia/logger';
 import { evaluatePolicy, evaluateBatch, PolicyInput, PolicyResult } from '@ideia/policy-engine';
+const logger = createLogger('gateway');
 
 export interface GatewayRequest {
   actionType: string;

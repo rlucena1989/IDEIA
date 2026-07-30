@@ -1,4 +1,6 @@
 import { OperationalPackage, PackageEmissionResult } from './package-types';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('package-emitter');
 
 export function emitPackage<T>(
   pkg: OperationalPackage<T>,

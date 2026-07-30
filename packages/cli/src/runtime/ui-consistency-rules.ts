@@ -60,7 +60,7 @@ export const DEFAULT_CONSISTENCY_RULES: UIConsistencyRule[] = [
       const lines = content.split('\n');
       for (let i = 0; i < lines.length; i++) {
         for (const sp of SPACING_PATTERNS) {
-          const matches = lines[i]!.match(sp.pattern);
+          const matches = (lines[i] ?? '').match(sp.pattern);
           if (matches) {
             violations.push({ ruleId: 'spacing-raw-px', ruleName: 'Raw px spacing', filePath, line: i + 1, message: `Raw px value found: "${matches[0]}"`, severity: 'warning', suggestion: sp.suggestion });
           }
@@ -76,7 +76,7 @@ export const DEFAULT_CONSISTENCY_RULES: UIConsistencyRule[] = [
       const lines = content.split('\n');
       for (let i = 0; i < lines.length; i++) {
         for (const cp of COLOR_PATTERNS) {
-          const matches = lines[i]!.match(cp.pattern);
+          const matches = (lines[i] ?? '').match(cp.pattern);
           if (matches) {
             violations.push({ ruleId: 'color-raw-hex', ruleName: 'Raw hex colors', filePath, line: i + 1, message: `Raw hex color: "${matches[0]}"`, severity: 'warning', suggestion: cp.suggestion });
           }
@@ -92,7 +92,7 @@ export const DEFAULT_CONSISTENCY_RULES: UIConsistencyRule[] = [
       const lines = content.split('\n');
       for (let i = 0; i < lines.length; i++) {
         for (const fp of FONT_PATTERNS) {
-          const matches = lines[i]!.match(fp.pattern);
+          const matches = (lines[i] ?? '').match(fp.pattern);
           if (matches) {
             violations.push({ ruleId: 'typography-raw', ruleName: 'Raw typography values', filePath, line: i + 1, message: `Raw typography: "${matches[0]}"`, severity: 'warning', suggestion: fp.suggestion });
           }

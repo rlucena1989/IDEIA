@@ -69,7 +69,7 @@ export class EventBus implements IEventBus {
           metadata: { payload: event.payload }
         });
       } catch (_err) {
-        this.logger.error('AuditTrail append error', { error: String(err) });
+        this.logger.error('AuditTrail append error', { error: String(_err) });
       }
     }
 
@@ -83,7 +83,7 @@ export class EventBus implements IEventBus {
       try {
         await sub.handler(fullEvent);
       } catch (_err) {
-        this.logger.error('Handler error', { error: String(err), eventType: event.type });
+        this.logger.error('Handler error', { error: String(_err), eventType: event.type });
       }
       if (sub.once) onceSubs.push(sub.id);
     }

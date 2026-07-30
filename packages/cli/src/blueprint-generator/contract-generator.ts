@@ -1,5 +1,7 @@
 import type { ContractDefinition, GeneratedContract } from './types';
+import { createLogger } from '@ideia/logger';
 import { TemplateEngine } from './template-engine';
+const logger = createLogger('contract-generator');
 
 export class ContractGenerator {
   private engine: TemplateEngine;

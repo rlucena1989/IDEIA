@@ -1,4 +1,5 @@
 import { ContainerModule } from '@theia/core/shared/inversify';
+import { createLogger } from '@ideia/logger';
 import { ConnectionHandler, JsonRpcConnectionHandler } from '@theia/core/lib/common/messaging';
 import { createBus, EventBus } from '@ideia/event-bus';
 
@@ -22,7 +23,7 @@ import { IDEIA_SearchBackendService } from './ideia-search-service';
 import { IDEIA_SecurityBackendService } from './ideia-security-service';
 
 export default new ContainerModule(bind => {
-  bind(EventBus).toDynamicValue(async () => createBus({ memory: { maxHistory: 5000 } })).inSingletonScope();
+  bind(EventBus).toDynamicValue(async () => createBus({ memory: { maxHistory: 5000 } }) as any).inSingletonScope();
 
   bind(IDEIA_TaskRunner).toSelf().inSingletonScope();
   bind(IDEIA_TASK_SERVICE).toService(IDEIA_TaskRunner);

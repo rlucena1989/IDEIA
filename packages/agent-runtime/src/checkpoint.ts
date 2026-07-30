@@ -1,4 +1,6 @@
 import { LangGraphStateAnnotation } from './langgraph-graph';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('checkpoint');
 
 export interface CheckpointData {
   threadId: string;

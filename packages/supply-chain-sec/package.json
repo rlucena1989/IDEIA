@@ -1,0 +1,22 @@
+{
+  "name": "@ideia/supply-chain-sec",
+  "private": true,
+  "description": "IDEIA Supply Chain Security — SBOM, Dependency Scanning, InToto, SLSA, Sigstore, Dependency Confusion",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@ideia/logger": "*"
+  },
+  "devDependencies": {
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "@types/jest": "*",
+    "@types/node": "*"
+  }
+}

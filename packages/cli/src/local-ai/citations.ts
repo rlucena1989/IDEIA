@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { createLogger } from '@ideia/logger';
 import { DenseVectorDoc } from './vector-store';
 import { RankedResult } from './reranker';
 
@@ -67,7 +68,7 @@ export function groupCitationsByFile(citations: Citation[]): CitationGroup[] {
   return Array.from(groups.entries())
     .map(([filePath, citList]) => ({
       filePath,
-      fileName: citList[0]!.fileName,
+      fileName: citList[0]?.fileName ?? '',
       citations: citList,
       totalRelevance: citList.reduce((s, c) => s + c.relevanceScore, 0),
     }))

@@ -1,0 +1,69 @@
+{
+  "version": "1.0",
+  "policies": [
+    {
+      "id": "sh-001",
+      "description": "Block destructive root operations",
+      "effect": "forbid",
+      "action": { "type": "shell.exec" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "matches", "value": "rm\\s+(-[a-z]*r[a-z]*\\s+)?(-[a-z]*f[a-z]*\\s+)?\\s*\\/|--no-preserve-root" }],
+      "priority": 100
+    },
+    {
+      "id": "sh-002",
+      "description": "Block filesystem format operations",
+      "effect": "forbid",
+      "action": { "type": "shell.exec" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "matches", "value": "^format\\s+|^mkfs\\s+|^dd\\s+" }],
+      "priority": 100
+    },
+    {
+      "id": "sh-003",
+      "description": "Block disk-level operations",
+      "effect": "forbid",
+      "action": { "type": "shell.exec" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "matches", "value": "/dev/sd|diskpart|bcedit" }],
+      "priority": 100
+    },
+    {
+      "id": "sh-004",
+      "description": "Block PowerShell code execution",
+      "effect": "forbid",
+      "action": { "type": "shell.exec" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "matches", "value": "Invoke-Expression|IEX\\s+|Remove-Item\\s+-Recurse|Remove-Item\\s+-Force" }],
+      "priority": 100
+    },
+    {
+      "id": "sh-005",
+      "description": "Block registry and shadow copy operations",
+      "effect": "forbid",
+      "action": { "type": "shell.exec" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "matches", "value": "reg\\s+delete|vssadmin\\s+delete|takeown\\s+\\/f" }],
+      "priority": 100
+    },
+    {
+      "id": "sh-006",
+      "description": "Block fork bombs",
+      "effect": "forbid",
+      "action": { "type": "shell.exec" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "matches", "value": ":\\(\\)\\s*\\{" }],
+      "priority": 100
+    },
+    {
+      "id": "sh-007",
+      "description": "Permit npm operations",
+      "effect": "permit",
+      "action": { "type": "shell.exec" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "matches", "value": "^npm\\s+(install|ci|run|test|build)" }],
+      "priority": 10
+    },
+    {
+      "id": "sh-008",
+      "description": "Block system power operations",
+      "effect": "forbid",
+      "action": { "type": "shell.exec" },
+      "conditions": [{ "clause": "if", "match": "resource", "operator": "matches", "value": "^shutdown\\s|^reboot\\s|^halt\\s|^poweroff\\s" }],
+      "priority": 100
+    }
+  ]
+}

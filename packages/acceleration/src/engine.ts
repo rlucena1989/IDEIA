@@ -1,4 +1,6 @@
 import fs from 'node:fs';
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('acceleration');
 import { loadConfig } from './config';
 import { JsonCache } from './cache';
 import { createProjectFingerprint } from './fingerprint';
@@ -42,16 +44,16 @@ function runLightweightDiagnostics() {
   // Check imports
   checks.push({ name: 'check-imports', cmd: 'npx tsx scripts/audit/check-imports.ts' });
 
-  console.log('[engine] running lightweight diagnostics...');
+  logger.info('[engine] running lightweight diagnostics...');
   for (const check of checks) {
     try {
-      console.log(`[engine]   ${check.name}...`);
+      logger.info('[engine]   ${check.name}...');
       execSync(check.cmd, { stdio: 'pipe', timeout: 60000 });
-      console.log(`[engine]   ${check.name} OK`);
+      logger.info('[engine]   ${check.name} OK');
     } catch (err: unknown) {
       const execErr = err as { stdout?: Buffer | string; message?: string; status?: number };
       const output = execErr.stdout?.toString()?.split('\n')?.slice(0, 2)?.join('; ') ?? execErr.message ?? '';
-      console.log(`[engine]   ${check.name} completed (exit: ${execErr.status ?? '?'}): ${output.slice(0, 100)}`);
+      logger.info('[engine]   ${check.name} completed (exit: ${execErr.status ?? \'?\'}): ${output.slice(0, 100)}');
     }
   }
 }
@@ -72,15 +74,15 @@ function runPreCycleChecks(): { name: string; ok: boolean; output: string }[] {
       out.push({ name: check.name, ok: true, output: 'skipped (ja compilado)' });
       continue;
     }
-    console.log(`[engine] pre-cycle ${check.name}...`);
+    logger.info('[engine] pre-cycle ${check.name}...');
     try {
       execSync(check.cmd, { stdio: 'pipe', timeout: 300000 });
-      console.log(`[engine] pre-cycle ${check.name} OK`);
+      logger.info('[engine] pre-cycle ${check.name} OK');
       out.push({ name: check.name, ok: true, output: 'ok' });
     } catch (err: unknown) {
       const execErr = err as { stdout?: Buffer | string; message?: string; status?: number };
       const output = execErr.stdout?.toString()?.split('\n')?.slice(0, 3)?.join('; ') ?? execErr.message ?? '';
-      console.log(`[engine] pre-cycle ${check.name} FALHOU: ${output.slice(0, 120)}`);
+      logger.info('[engine] pre-cycle ${check.name} FALHOU: ${output.slice(0, 120)}');
       out.push({ name: check.name, ok: false, output: output.slice(0, 120) });
     }
   }
@@ -96,15 +98,15 @@ function ensureScorecardData(): boolean {
   }
 
   // Generate scorecard data (takes ~90s, runs only if missing)
-  console.log('[engine] generating scorecard data (first run, may take ~90s)...');
+  logger.info('[engine] generating scorecard data (first run, may take ~90s)...');
   try {
     execSync('npx tsx packages/cli/src/index.ts scorecard', {
       stdio: 'pipe', timeout: 300000
     });
-    console.log('[engine] scorecard data generated');
+    logger.info('[engine] scorecard data generated');
     return fs.existsSync(latestPath);
   } catch {
-    console.log('[engine] scorecard generation completed (may have non-zero exit)');
+    logger.info('[engine] scorecard generation completed (may have non-zero exit)');
     return fs.existsSync(latestPath);
   }
 }
@@ -151,7 +153,7 @@ export async function runEngineOnce(): Promise<EngineReport> {
   const forecast = predictProjectLoad();
   const precision = analyzePrecision();
 
-  console.log(`[engine] scorecard=${scorecard.score} coverage=${coverage.total} maturity=${maturity.score} gaps=${gaps.length} history.runs=${history.runs} precision=${precision.confidence}`);
+  logger.info('[engine] scorecard=${scorecard.score} coverage=${coverage.total} maturity=${maturity.score} gaps=${gaps.length} history.runs=${history.runs} precision=${precision.confidence}');
 
   // AI decisions
   const decision = decideExecution(config.mode, forecast, precision, scorecard, coverage, history);

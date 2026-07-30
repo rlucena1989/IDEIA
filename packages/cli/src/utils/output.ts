@@ -1,3 +1,6 @@
+import { createLogger } from '@ideia/logger';
+const logger = createLogger('output');
+
 const isLLMMode = (): boolean => process.env.AI_LLM_MODE === '1';
 
 type OutputOptions = {
@@ -20,7 +23,7 @@ function exitCode(ok: boolean): number {
  */
 export function printHeader(title: string): void {
   if (isLLMMode()) return;
-  console.log(`\n${title}\n`);
+  logger.info('\n${title}\n');
 }
 
 /**
@@ -29,7 +32,7 @@ export function printHeader(title: string): void {
  */
 export function printLine(line: string): void {
   if (isLLMMode()) return;
-  console.log(line);
+  logger.info(line);
 }
 
 /**
@@ -42,7 +45,7 @@ export function printResult(label: string, ok: boolean, detail?: string): void {
   if (isLLMMode()) return;
   const icon = ok ? '✅' : '❌';
   const msg = detail ? `${icon} ${label}: ${detail}` : `${icon} ${label}`;
-  console.log(msg);
+  logger.info(msg);
 }
 
 /**
@@ -54,7 +57,7 @@ export function printResult(label: string, ok: boolean, detail?: string): void {
 export function printSummary(score: number, max: number, label: string): void {
   if (isLLMMode()) return;
   const icon = score >= 85 ? '✅' : score >= 65 ? '⚠️' : '❌';
-  console.log(`${icon} ${label}: ${score}/${max}`);
+  logger.info('${icon} ${label}: ${score}/${max}');
 }
 
 /**
@@ -72,7 +75,7 @@ export function finish(opts: OutputOptions): void {
       cost_usd: 0.00,
       ...(opts.data ? { data: opts.data } : {}),
     }, null, 2);
-    console.log(json);
+    logger.info(json);
   }
   if (opts.exit !== false) process.exit(exitCode(opts.ok));
 }
