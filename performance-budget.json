@@ -1,0 +1,97 @@
+{
+  "$schema": "./performance-budget.schema.json",
+  "version": "2.0",
+  "updatedAt": "2026-07-24",
+  "bundles": {
+    "cli": { "maxSizeKb": 5000, "currentSizeKb": 3840, "warnThreshold": 0.9 },
+    "plugin": { "maxSizeKb": 3000, "currentSizeKb": 2150, "warnThreshold": 0.9 },
+    "event-bus": { "maxSizeKb": 500, "currentSizeKb": 320, "warnThreshold": 0.85 },
+    "worker": { "maxSizeKb": 2000, "currentSizeKb": 1050, "warnThreshold": 0.85 },
+    "css": { "maxSizeKb": 500, "currentSizeKb": 280, "warnThreshold": 0.85 }
+  },
+  "metrics": {
+    "ttft": { "maxMs": 500, "p95MaxMs": 1000 },
+    "tps": { "minPerSecond": 30, "p95MaxMs": 200 },
+    "memoryHeap": { "maxMb": 512, "warnMb": 400 },
+    "cacheHitRate": { "minRatio": 0.6 },
+    "eventBusLatency": { "maxMs": 100, "p95MaxMs": 250 },
+    "deployDuration": { "maxSeconds": 300 },
+    "startupTime": { "maxMs": 5000, "warnMs": 3000 },
+    "apiResponseTimeP50": { "maxMs": 200 },
+    "apiResponseTimeP95": { "maxMs": 500 },
+    "apiResponseTimeP99": { "maxMs": 1000 },
+    "testExecutionTime": { "maxSeconds": 120, "warnSeconds": 90 },
+    "buildTime": { "maxSeconds": 180, "warnSeconds": 120 }
+  },
+  "lighthouse": {
+    "performance": 80,
+    "accessibility": 85,
+    "bestPractices": 80,
+    "seo": 90
+  },
+  "budgets": {
+    "bundleSize": {
+      "targetKb": 5000,
+      "warningKb": 4000,
+      "criticalKb": 15000,
+      "currentKb": 525,
+      "status": "under budget"
+    },
+    "startupTime": {
+      "targetMs": 2000,
+      "warningMs": 3000,
+      "criticalMs": 5000,
+      "currentMs": 2400,
+      "status": "near limit"
+    },
+    "ttft": {
+      "targetMs": 300,
+      "warningMs": 400,
+      "criticalMs": 500,
+      "currentLocalMs": 1800,
+      "currentCloudMs": 640,
+      "status": "over budget"
+    },
+    "tps": {
+      "targetTps": 30,
+      "warningTps": 25,
+      "criticalTps": 20,
+      "currentLocalTps": 32,
+      "currentCloudTps": 108,
+      "status": "ok"
+    },
+    "memoryHeap": {
+      "targetMb": 256,
+      "warningMb": 384,
+      "criticalMb": 512,
+      "currentMb": 180,
+      "status": "ok"
+    },
+    "apiResponseTime": {
+      "p50TargetMs": 200,
+      "p95TargetMs": 500,
+      "p99TargetMs": 1000,
+      "currentP50Ms": 145,
+      "currentP95Ms": 420,
+      "currentP99Ms": 890,
+      "status": "ok"
+    },
+    "testExecutionTime": {
+      "targetSeconds": 120,
+      "warningSeconds": 90,
+      "criticalSeconds": 180,
+      "currentSeconds": 65,
+      "status": "ok"
+    },
+    "buildTime": {
+      "targetSeconds": 180,
+      "warningSeconds": 120,
+      "criticalSeconds": 300,
+      "currentSeconds": 95,
+      "status": "ok"
+    }
+  },
+  "history": [
+    { "date": "2026-07-24", "bundleKb": 525, "note": "Initial measurement" }
+  ]
+}
