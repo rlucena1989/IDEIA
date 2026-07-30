@@ -1,0 +1,63 @@
+{
+  "__inputs": [],
+  "__requires": [],
+  "title": "IDEIA Overview",
+  "uid": "ideia-overview",
+  "version": 1,
+  "panels": [
+    {
+      "title": "SLO Status",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 0 },
+      "targets": [{ "expr": "slo_status", "legendFormat": "{{ name }}" }]
+    },
+    {
+      "title": "Request Rate",
+      "type": "graph",
+      "gridPos": { "h": 4, "w": 8, "x": 4, "y": 0 },
+      "targets": [{ "expr": "rate(http_requests_total[5m])", "legendFormat": "{{ status }}" }]
+    },
+    {
+      "title": "P95 Latency",
+      "type": "graph",
+      "gridPos": { "h": 4, "w": 8, "x": 4, "y": 4 },
+      "targets": [{ "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_ms_bucket[5m])) by (le))", "legendFormat": "p95" }]
+    },
+    {
+      "title": "Error Rate",
+      "type": "graph",
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 4 },
+      "targets": [{ "expr": "rate(http_requests_total{status=~\"5..\"}[5m]) / rate(http_requests_total[5m])", "legendFormat": "error rate" }]
+    },
+    {
+      "title": "Memory Usage",
+      "type": "gauge",
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 8 },
+      "targets": [{ "expr": "memory_heap_used_bytes / memory_heap_limit_bytes", "legendFormat": "heap" }]
+    },
+    {
+      "title": "Cache Hit Rate",
+      "type": "graph",
+      "gridPos": { "h": 4, "w": 8, "x": 4, "y": 8 },
+      "targets": [{ "expr": "cache_hit_ratio", "legendFormat": "hit ratio" }]
+    },
+    {
+      "title": "Active Subscriptions",
+      "type": "stat",
+      "gridPos": { "h": 3, "w": 4, "x": 0, "y": 12 },
+      "targets": [{ "expr": "nats_subscriptions_active", "legendFormat": "subscriptions" }]
+    },
+    {
+      "title": "Deploy Status",
+      "type": "stat",
+      "gridPos": { "h": 3, "w": 4, "x": 4, "y": 12 },
+      "targets": [{ "expr": "deploy_status", "legendFormat": "{{ environment }}" }]
+    },
+    {
+      "title": "Events per Second",
+      "type": "graph",
+      "gridPos": { "h": 4, "w": 8, "x": 4, "y": 15 },
+      "targets": [{ "expr": "rate(event_bus_events_total[5m])", "legendFormat": "{{ type }}" }]
+    }
+  ]
+}

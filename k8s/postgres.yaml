@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ideia-secrets
+  namespace: ideia
+type: Opaque
+stringData:
+  postgres-password: "CHANGE_ME_IN_PRODUCTION"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ideia-postgres-pvc
+  namespace: ideia
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: fast-ssd
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ideia-postgres
+  namespace: ideia
+spec:
+  serviceName: ideia-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ideia-postgres
+  template:
+    metadata:
+      labels:
+        app: ideia-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: pgvector/pgvector:pg17
+          ports:
+            - containerPort: 5432
+              name: postgres
+              protocol: TCP
+          env:
+            - name: POSTGRES_DB
+              value: ideia
+            - name: POSTGRES_USER
+              value: ideia
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ideia-secrets
+                  key: postgres-password
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1000m"
+            limits:
+              memory: "8Gi"
+              cpu: "4000m"
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - ideia
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - ideia
+            initialDelaySeconds: 10
+            periodSeconds: 5
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 50Gi
+        storageClassName: fast-ssd

@@ -1,0 +1,32 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ideia-backend-pdb
+  namespace: ideia
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: ideia-backend
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ideia-nats-pdb
+  namespace: ideia
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: ideia-nats
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ideia-postgres-pdb
+  namespace: ideia
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: ideia-postgres

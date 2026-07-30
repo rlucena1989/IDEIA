@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ideia-backend
+  namespace: ideia
+  labels:
+    app: ideia-backend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 3001
+      protocol: TCP
+      name: http
+  selector:
+    app: ideia-backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ideia-backend-internal
+  namespace: ideia
+  labels:
+    app: ideia-backend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3001
+      targetPort: 3001
+      protocol: TCP
+      name: http
+    - port: 9464
+      targetPort: 9464
+      protocol: TCP
+      name: otlp
+  selector:
+    app: ideia-backend
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ideia-backend-ingress
+  namespace: ideia
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - api.ideia.ai
+      secretName: ideia-backend-tls
+  rules:
+    - host: api.ideia.ai
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ideia-backend
+                port:
+                  number: 80

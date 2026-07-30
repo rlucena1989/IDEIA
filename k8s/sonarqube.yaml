@@ -1,0 +1,166 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonarqube-data
+  namespace: ideia
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonarqube-extensions
+  namespace: ideia
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: fast-ssd
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sonarqube-secrets
+  namespace: ideia
+type: Opaque
+stringData:
+  jdbc-username: sonar
+  jdbc-password: CHANGE_ME_IN_PRODUCTION
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarqube
+  namespace: ideia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarqube
+  template:
+    metadata:
+      labels:
+        app: sonarqube
+    spec:
+      initContainers:
+        - name: init-sysctl
+          image: busybox:1.35
+          command:
+            - sh
+            - -c
+            - |
+              sysctl -w vm.max_map_count=262144
+              sysctl -w fs.file-max=131072
+              ulimit -n 131072
+              ulimit -u 8192
+          securityContext:
+            privileged: true
+      containers:
+        - name: sonarqube
+          image: sonarqube:9.9.3-community
+          ports:
+            - containerPort: 9000
+              name: http
+            - containerPort: 9092
+              name: ce
+          env:
+            - name: SONAR_JDBC_URL
+              value: jdbc:postgresql://sonarqube-db:5432/sonar
+            - name: SONAR_JDBC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sonarqube-secrets
+                  key: jdbc-username
+            - name: SONAR_JDBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sonarqube-secrets
+                  key: jdbc-password
+            - name: SONAR_ES_BOOTSTRAP_CHECKS_DISABLE
+              value: "true"
+          volumeMounts:
+            - name: data
+              mountPath: /opt/sonarqube/data
+            - name: extensions
+              mountPath: /opt/sonarqube/extensions
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1000m"
+            limits:
+              memory: "4Gi"
+              cpu: "2000m"
+          livenessProbe:
+            httpGet:
+              path: /api/system/status
+              port: 9000
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            httpGet:
+              path: /api/system/status
+              port: 9000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: sonarqube-data
+        - name: extensions
+          persistentVolumeClaim:
+            claimName: sonarqube-extensions
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarqube
+  namespace: ideia
+spec:
+  ports:
+    - port: 9000
+      targetPort: 9000
+      name: http
+    - port: 9092
+      targetPort: 9092
+      name: ce
+  selector:
+    app: sonarqube
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sonarqube-ingress
+  namespace: ideia
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - sonarqube.ideia.ai
+      secretName: sonarqube-tls
+  rules:
+    - host: sonarqube.ideia.ai
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sonarqube
+                port:
+                  number: 9000
