@@ -3,7 +3,7 @@
 > **Como continuar esta sessão em outro PC:**
 > 1. Clone o repositório no novo PC
 > 2. Execute `cd IDEIA && npm install`
-> 3. Confirme que compila: `npx tsc --noEmit` (deve retornar 0 erros)
+> 3. Confirme o estado do build: `npx tsc -b` (atualmente FALHA com 3.424 erros — gate real habilitado em FA-01; correções em FA-05)
 > 4. Confirme os testes: `npx jest --testPathPattern "prompt-economy|context-builder|planning-engine|agent-router|memory-hierarchy|quality-gates|risk-approval|checkpoint-engine|supply-chain" --no-coverage` (177 testes + 52 novos testes dos features pendentes)
 > 5. Leia este documento + `docs/livro-IDEIA-ANALISE-CRUZADA.md` para entender o estado atual
 > 6. Para retomar, veja a seção "Próximos Passos" abaixo
@@ -14,7 +14,9 @@
 
 ### Compilação
 ```bash
-npx tsc --noEmit    # 0 erros
+npx tsc -b          # ATUALMENTE FALHA: 3.424 erros em 184/292 packages
+                   # Gate real habilitado em FA-01 (antes era tsc --noEmit vacuoso)
+                   # Resolucao completa em FA-05
 ```
 
 ### 9 novos packages criados nesta sessão
@@ -85,8 +87,8 @@ Os 9 packages criados PRECISAM ser integrados ao `agent-runtime` e ao `PromptPip
 ## Comandos Úteis para Retomada
 
 ```bash
-# Verificar compilação
-npx tsc --noEmit
+# Verificar compilação (gate real, atualmente FAIL)
+npx tsc -b
 
 # Rodar testes de todos os novos packages
 npx jest --testPathPattern "prompt-economy|context-builder|planning-engine|agent-router|memory-hierarchy|quality-gates|risk-approval|checkpoint-engine|supply-chain" --no-coverage

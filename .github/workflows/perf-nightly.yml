@@ -1,0 +1,38 @@
+name: Performance Nightly
+
+on:
+  schedule:
+    - cron: '0 6 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  k6-benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build:bundle
+      - run: npm run build:bundle:report
+      - run: node -e "console.log('Baseline:', require('./.ai/bundle-sizes.json'))"
+      - name: k6 load test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: scripts/benchmark/k6-test.js
+          flags: --out json=perf-report.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: perf-report
+          path: perf-report.json
+
+  lighthouse-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npx lhci autorun --collect.staticDistDir=./apps/ideia-app/lib --upload.target=temporary-public-storage || true

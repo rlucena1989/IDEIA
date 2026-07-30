@@ -36,11 +36,11 @@ jobs:
       - name: test
         run: npx jest --passWithNoTests
       - name: build
-        run: npx tsc --noEmit
+        run: npx tsc -b
       - name: security
         run: npm audit --audit-level=high
       - name: architecture
-        run: npx tsc -b --dry
+        run: npx tsc -b
 
   deploy:
     needs: quality-gates

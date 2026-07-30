@@ -1,0 +1,87 @@
+name: SonarQube Analysis
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
+      - develop
+
+env:
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+jobs:
+  sonarqube:
+    name: SonarQube Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Run tests with coverage
+        run: |
+          npm run test:unit -- --coverage --coverageReporters=lcov --coverageReporters=cobertura
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.projectKey=ideia
+            -Dsonar.projectName=IDEIA
+            -Dsonar.sources=packages
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.language=ts
+            -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.coverage.exclusions=**/*.test.ts,**/*.spec.ts,**/node_modules/**
+            -Dsonar.test.exclusions=**/*.test.ts,**/*.spec.ts
+            -Dsonar.exclusions=**/*.test.ts,**/*.spec.ts,**/node_modules/**,**/dist/**,**/lib/**,**/*.d.ts
+
+      - name: SonarQube Quality Gate Check
+        uses: SonarSource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+  sonarqube-pr-comment:
+    name: SonarQube PR Comment
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    needs: sonarqube
+    steps:
+      - name: Comment PR with SonarQube results
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sonarUrl = '${{ secrets.SONAR_HOST_URL }}/dashboard?id=ideia&pullRequest=${{ github.event.pull_request.number }}';
+            const comment = `## SonarQube Analysis Results
+            
+            [View detailed analysis in SonarQube](${sonarUrl})
+            
+            The analysis has been completed. Check the link above for:
+            - Code quality metrics
+            - Security hotspots
+            - Code smells
+            - Bugs and vulnerabilities
+            - Test coverage
+            - Technical debt ratio`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

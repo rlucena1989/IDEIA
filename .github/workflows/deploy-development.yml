@@ -36,7 +36,7 @@ jobs:
       - name: test
         run: npx jest --passWithNoTests
       - name: build
-        run: npx tsc --noEmit
+        run: npx tsc -b
 
   deploy:
     needs: quality-gates

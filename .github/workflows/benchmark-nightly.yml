@@ -1,0 +1,41 @@
+name: Nightly Benchmark
+on:
+  schedule:
+    - cron: '0 6 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm ci
+      - run: npm run build
+      - name: Run k6 benchmarks
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: tests/performance/k6/api-load.js
+          flags: --out json=.ai/benchmark-results/api-load.json
+      - uses: grafana/k6-action@v0.3.1
+        with:
+          filename: tests/performance/k6/eventbus-load.js
+          flags: --out json=.ai/benchmark-results/eventbus-load.json
+      - uses: grafana/k6-action@v0.3.1
+        with:
+          filename: tests/performance/k6/streaming-load.js
+          flags: --out json=.ai/benchmark-results/streaming-load.json
+      - name: Run agent benchmark
+        run: npx tsx tests/performance/benchmark-agent-runtime.ts --json > .ai/benchmark-results/agent.json
+      - name: Run cache benchmark
+        run: npx tsx tests/performance/benchmark-cache.ts --json > .ai/benchmark-results/cache.json
+      - name: Compare with baseline
+        run: npx tsx packages/cli/benchmarks/run-benchmarks.ts --compare .ai/benchmark-results/baseline.json
+      - name: Store results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: .ai/benchmark-results/
+      - name: Check performance budget
+        run: npx tsx scripts/verify-performance-budget.ts --ci

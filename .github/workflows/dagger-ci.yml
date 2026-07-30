@@ -1,0 +1,63 @@
+name: Dagger CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      gate:
+        description: 'Quality Gate to run'
+        type: choice
+        options: [gate1-commit, gate2-pr, gate3-release, gate4-sprint]
+        default: gate2-pr
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  dagger-ci:
+    name: Dagger CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Dagger
+        uses: dagger/setup-dagger@v1
+        with:
+          version: "0.12.0"
+
+      - name: Run Dagger Pipeline
+        run: |
+          if [ "${{ github.event.inputs.gate }}" != "" ]; then
+            GATE="${{ github.event.inputs.gate }}"
+          elif [ "${{ github.event_name }}" == "pull_request" ]; then
+            GATE="gate2-pr"
+          elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            GATE="gate3-release"
+          else
+            GATE="gate1-commit"
+          fi
+          
+          dagger run .dagger/ci.ts -- $GATE
+
+  dagger-local-test:
+    name: Test Dagger Pipeline Locally
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Dagger
+        uses: dagger/setup-dagger@v1
+        with:
+          version: "0.12.0"
+
+      - name: Test Gate 1
+        run: dagger run .dagger/ci.ts -- gate1-commit
+
+      - name: Test Gate 2
+        run: dagger run .dagger/ci.ts -- gate2-pr

@@ -1,0 +1,211 @@
+name: Desktop Release
+
+on:
+  push:
+    tags:
+      - 'desktop-v*'
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Build platform'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - windows
+          - macos
+          - linux
+      channel:
+        description: 'Release channel'
+        required: true
+        default: 'beta'
+        type: choice
+        options:
+          - beta
+          - stable
+
+jobs:
+  # 1. Validate — run lint, typecheck, and tests
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - name: Lint & Typecheck
+        run: |
+          npx tsc -b
+          npx eslint packages/electron/ --ext .ts
+      - name: Run tests
+        run: npx jest --config packages/electron/jest.config.js --no-coverage
+      - name: Get version
+        id: get-version
+        run: echo "version=$(node -p "require('./electron/package.json').version")" >> $GITHUB_OUTPUT
+
+  # 2. Build Electron — Windows
+  build-electron-win:
+    needs: validate
+    runs-on: windows-latest
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'windows'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - name: Build Electron
+        run: |
+          cd electron
+          npm run build
+      - name: Package (NSIS)
+        run: |
+          cd electron
+          npm run build:win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_LINK: ${{ secrets.WINDOWS_CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.WINDOWS_CSC_KEY_PASSWORD }}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: electron-win-installer
+          path: electron/dist/*.exe
+          if-no-files-found: warn
+
+  # 3. Build Electron — macOS
+  build-electron-mac:
+    needs: validate
+    runs-on: macos-latest
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'macos'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - name: Build Electron
+        run: |
+          cd electron
+          npm run build
+      - name: Package (DMG)
+        run: |
+          cd electron
+          npm run build:mac
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: electron-mac-dmg
+          path: electron/dist/*.dmg
+          if-no-files-found: warn
+
+  # 4. Build Electron — Linux
+  build-electron-linux:
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'linux'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - name: Build Electron
+        run: |
+          cd electron
+          npm run build
+      - name: Package (AppImage + deb)
+        run: |
+          cd electron
+          npm run build:linux
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: electron-linux-builds
+          path: |
+            electron/dist/*.AppImage
+            electron/dist/*.deb
+          if-no-files-found: warn
+
+  # 5. Build Tauri — all platforms
+  build-tauri:
+    needs: validate
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Install Linux deps
+        if: runner.os == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+      - name: Build Tauri
+        run: |
+          cd packages/tauri
+          npm ci
+          npm run build
+        env:
+          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tauri-${{ runner.os }}
+          path: packages/tauri/src-tauri/target/release/bundle/
+          if-no-files-found: warn
+
+  # 6. Create Release
+  release:
+    needs: [build-electron-win, build-electron-mac, build-electron-linux, build-tauri]
+    if: success() && startsWith(github.ref, 'refs/tags/desktop-v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+      - name: Generate release notes
+        run: |
+          echo "## IDEIA Desktop Release ${{ needs.validate.outputs.version }}" > release-notes.md
+          echo "" >> release-notes.md
+          echo "### Downloads" >> release-notes.md
+          echo "" >> release-notes.md
+          echo "See attached artifacts for platform-specific installers." >> release-notes.md
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "IDEIA Desktop ${{ needs.validate.outputs.version }}"
+          body_path: release-notes.md
+          files: |
+            electron-win-installer/**
+            electron-mac-dmg/**
+            electron-linux-builds/**
+            tauri-*/**
+          draft: true
+          prerelease: ${{ github.event.inputs.channel == 'beta' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

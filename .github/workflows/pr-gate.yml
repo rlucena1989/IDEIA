@@ -1,0 +1,161 @@
+# Gate 2 — PR Quality Gates
+# Triggered on pull_request to main/develop
+name: PR Gate
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  lint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npx eslint packages/ --max-warnings 300
+
+  typecheck:
+    name: TypeScript Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npx tsc -b
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - name: Run unit tests with coverage
+        run: npx jest --passWithNoTests --coverage --testPathPattern='^(packages/|scripts/)'
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+  coverage:
+    name: Coverage Check (>=65%)
+    runs-on: ubuntu-latest
+    needs: [unit-tests]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npx jest --passWithNoTests --coverage --coverageReporters=json-summary --testPathPattern='^(packages/|scripts/)'
+      - name: Check coverage threshold
+        run: |
+          COVERAGE=$(cat coverage/coverage-summary.json | jq -r '.total.lines.pct')
+          echo "Coverage: ${COVERAGE}%"
+          if (( $(echo "$COVERAGE < 65" | bc -l) )); then
+            echo "❌ Coverage ${COVERAGE}% is below 65% threshold"
+            exit 1
+          fi
+          echo "✅ Coverage ${COVERAGE}% meets 65% threshold"
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - name: npm audit
+        run: npm audit --audit-level=high
+        continue-on-error: true
+      - name: Secrets check
+        run: npx tsx scripts/check-secrets.ts
+
+  contract-check:
+    name: Contract Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npx jest packages/contract-cdc
+
+  metrics-drift:
+    name: Metrics Drift Gate (FA-04)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - name: Verify REALITY-MANIFEST reflects codebase (FA-04)
+        run: npx tsx scripts/audit/regenerate-metrics.ts --ci
+
+  gate-immutability:
+    name: Gate Immutability (FA-07)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - name: Verify gate manifest SHA-256 + penetration test (FA-07)
+        run: npx tsx scripts/audit/gate-guard.ts --ci
+
+  quality-gates:
+    name: Quality Gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - name: Check package versions are consistent
+        run: |
+          VERSIONS=$(jq -r '.version' packages/*/package.json | sort -u | wc -l)
+          echo "Distinct versions: $VERSIONS"
+          if [ "$VERSIONS" -gt 3 ]; then
+            echo "❌ Package versions are inconsistent ($VERSIONS distinct)"
+            exit 1
+          fi
+          echo "✅ Package versions are consistent"
+      - name: Check no duplicate packages
+        run: |
+          DUPS=$(jq -r '.name' packages/*/package.json | sort | uniq -d)
+          if [ -n "$DUPS" ]; then
+            echo "❌ Duplicate package names found:"
+            echo "$DUPS"
+            exit 1
+          fi
+          echo "✅ No duplicate packages"
+      - name: Run quality check
+        run: npx tsx scripts/quality-check.mjs --ci
