@@ -1,9 +1,6 @@
 {
-  "mode": "analysis",
-  "updatedAt": "2026-07-21T23:00:00.000Z",
-  "status": "all_phases_complete",
-  "packages": 87,
-  "gapsResolved": 82,
-  "studiesPublished": 35,
-  "tscErrors": 0
+  "mode": "development",
+  "updatedAt": "2026-07-29T19:40:52.791Z",
+  "timestamp": "2026-07-29T19:40:52.791Z",
+  "summary": "Sessao atual — veja docs/governance/HANDOFF-NEXT-SESSION.md"
 }

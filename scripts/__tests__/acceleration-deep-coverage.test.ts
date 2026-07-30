@@ -1,19 +1,19 @@
-import { classifyFailure, getRetryDecision } from '../acceleration/retry-policy';
-import { analyzeCoverage } from '../acceleration/coverage-analyzer';
-import { analyzeScorecard } from '../acceleration/scorecard-analyzer';
-import { scoreMaturity } from '../acceleration/maturity-scorer';
-import { qualityGate } from '../acceleration/quality-gate';
-import { createPlan } from '../acceleration/planner';
-import { topologicalSort } from '../acceleration/task-graph';
-import { buildAlerts } from '../acceleration/alerts';
-import { decideFeedback } from '../acceleration/feedback-controller';
-import { StateManager } from '../acceleration/state-manager';
-import { Telemetry } from '../acceleration/telemetry';
-import { MetricsStore } from '../acceleration/metrics-store';
-import { JsonCache } from '../acceleration/cache';
-import { Observability } from '../acceleration/observability';
-import { defaultThresholds } from '../acceleration/thresholds';
-import type { EngineMode, ScorecardAnalysis, CoverageAnalysis, Gap, HistorySummary, Forecast, PrecisionReport, JobResult } from '../acceleration/types';
+import { classifyFailure, getRetryDecision } from '../../packages/acceleration/src/retry-policy';
+import { analyzeCoverage } from '../../packages/acceleration/src/coverage-analyzer';
+import { analyzeScorecard } from '../../packages/acceleration/src/scorecard-analyzer';
+import { scoreMaturity } from '../../packages/acceleration/src/maturity-scorer';
+import { qualityGate } from '../../packages/acceleration/src/quality-gate';
+import { createPlan } from '../../packages/acceleration/src/planner';
+import { topologicalSort } from '../../packages/acceleration/src/task-graph';
+import { buildAlerts } from '../../packages/acceleration/src/alerts';
+import { decideFeedback } from '../../packages/acceleration/src/feedback-controller';
+import { StateManager } from '../../packages/acceleration/src/state-manager';
+import { Telemetry } from '../../packages/acceleration/src/telemetry';
+import { MetricsStore } from '../../packages/acceleration/src/metrics-store';
+import { JsonCache } from '../../packages/acceleration/src/cache';
+import { Observability } from '../../packages/acceleration/src/observability';
+import { defaultThresholds } from '../../packages/acceleration/src/thresholds';
+import type { EngineMode, ScorecardAnalysis, CoverageAnalysis, Gap, HistorySummary, Forecast, PrecisionReport, JobResult } from '../../packages/acceleration/src/types';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
@@ -791,8 +791,8 @@ describe('acceleration - observability deep', () => {
 // ──────────────────────────────────────
 // executor.ts — sortByDependencies missing dep
 // ──────────────────────────────────────
-import { executePlan } from '../acceleration/executor';
-import { PlannedJob } from '../acceleration/planner';
+import { executePlan } from '../../packages/acceleration/src/executor';
+import { PlannedJob } from '../../packages/acceleration/src/planner';
 
 describe('acceleration - executor deep', () => {
   let tmpDir: string;
@@ -848,7 +848,7 @@ describe('acceleration - executor deep', () => {
 // ──────────────────────────────────────
 // history-analyzer.ts — edge cases
 // ──────────────────────────────────────
-import { analyzeHistory } from '../acceleration/history-analyzer';
+import { analyzeHistory } from '../../packages/acceleration/src/history-analyzer';
 
 describe('acceleration - history-analyzer deep', () => {
   let tmpDir: string;

@@ -1,12 +1,12 @@
 # Communication Protocol — Human ↔ AI
 
+> **Projeto:** IDEIA (não confundir com o legado do diretório-pai do workspace).
+> Este arquivo é saída determinística de `scripts/audit/regenerate-metrics.ts`.
+
 ## Objetivo
 
-Aumentar a capacidade dos modelos de IA de interpretar corretamente pedidos humanos, reduzir ambiguidade e transformar intenção vaga em plano executável.
-
-O ai-devkit deve ajudar a IA a entender não apenas o que foi escrito, mas o que provavelmente foi pretendido.
-
----
+Aumentar a capacidade dos modelos de IA de interpretar corretamente pedidos
+humanos, reduzir ambiguidade e transformar intenção vaga em plano executável.
 
 ## Princípios
 
@@ -19,11 +19,9 @@ O ai-devkit deve ajudar a IA a entender não apenas o que foi escrito, mas o que
 7. A IA deve distinguir pedido simples, feature completa, mudança arquitetural e decisão de produto.
 8. A IA deve reduzir perguntas desnecessárias inferindo padrões seguros do projeto.
 
----
-
 ## Protocolo de interpretação
 
-Para cada pedido, a IA deve extrair:
+Para cada pedido, a IA deve extrair (ver `intent-schema.yaml`):
 
 ```yaml
 intent:
@@ -39,8 +37,6 @@ intent:
   acceptance_criteria: []
 ```
 
----
-
 ## Classificação de ambiguidade
 
 | Nível | Descrição | Ação |
@@ -50,80 +46,41 @@ intent:
 | Alto | Falta informação que muda arquitetura/UX | Perguntar antes |
 | Crítico | Pode causar dano, quebra de segurança ou retrabalho grande | Bloquear e pedir decisão |
 
----
-
 ## Perguntas internas obrigatórias
 
 Antes de implementar, a IA deve se perguntar:
 
 - O que o usuário realmente quer alcançar?
 - Quem vai usar isso?
-- Qual é o fluxo feliz?
-- Quais são os fluxos de erro?
+- Qual é o fluxo feliz? Quais os fluxos de erro?
 - Que dados entram e saem?
-- Onde isso se encaixa no sistema?
-- Que permissões são necessárias?
+- Onde isso se encaixa no sistema (qual camada das 15)?
+- Que permissões são necessárias (Cedar Policy Engine)?
 - Que partes do sistema podem quebrar?
-- Como vou provar que funciona?
-- Como isso deve parecer e se comportar para o usuário final?
-- Existe padrão semelhante no projeto?
-- Existe decisão anterior que impede essa abordagem?
-- Existe risco de segurança, privacidade ou perda de dados?
-
----
+- Como provar que funciona (Gate 1-3)?
+- Existe padrão semelhante em `packages/`?
+- Existe ADR que impeça essa abordagem (ver `docs/adr/`)?
+- Há risco de segurança, privacidade ou perda de dados?
 
 ## Resposta padrão para pedido de feature
 
-A IA deve estruturar a resposta inicial assim:
-
 ```markdown
 ## Entendimento
-
 Explique em 3–5 linhas o que será feito.
-
 ## Hipóteses
-
 Liste hipóteses, se houver.
-
 ## Plano
-
 Liste etapas.
-
 ## Critérios de aceite
-
 Liste critérios testáveis.
-
 ## Arquivos prováveis
-
-Liste arquivos que devem ser criados/alterados.
-
+Liste arquivos a criar/alterar (sempre dentro de `IDEIA/`).
 ## Validação
-
-Liste comandos de teste/verificação.
+Liste comandos (lint, typecheck, test, `regenerate-metrics.ts --ci`).
 ```
-
----
 
 ## Regra de economia de perguntas
 
-A IA não deve perguntar por detalhes que podem ser inferidos com segurança pelo ai-devkit.
-
-Exemplo:
-
-Pedido:
-
-> Crie cadastro de usuário
-
-A IA não deve perguntar imediatamente:
-
-> Devo colocar nome e email?
-
-Deve inferir:
-
-- Nome, email, senha e confirmação são campos esperados.
-- Validação de email é esperada.
-- Confirmação visual é esperada.
-- Tratamento de erro é esperado.
-- Fluxo de login relacionado deve ser considerado.
-
-Depois, deve permitir ajuste pelo humano.
+A IA não deve perguntar por detalhes que podem ser inferidos com segurança a partir
+de: `docs/governance/REALITY-MANIFEST.md`, `inject.json`, ADRs existentes e padrões
+em `packages/`. Depois, deve permitir ajuste pelo humano.

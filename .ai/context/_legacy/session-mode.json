@@ -1,0 +1,9 @@
+{
+  "mode": "analysis",
+  "updatedAt": "2026-07-21T23:00:00.000Z",
+  "status": "all_phases_complete",
+  "packages": 87,
+  "gapsResolved": 82,
+  "studiesPublished": 35,
+  "tscErrors": 0
+}

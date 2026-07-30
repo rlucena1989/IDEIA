@@ -2149,3 +2149,165 @@ export class OpenAIProvider implements LLMProvider {
 > **Total:** 15 seÃ§Ãµes, ~2100 linhas
 > **PrÃ³ximo passo:** Implementar Fase 1 (Core Provider System) â€” ~80h
 > **ConexÃµes:** S3, S4, S7, S17, S18, S19, S26, S27, S28, S2
+
+---
+
+## 16. FRONTEIRAS — LLM Gateway with Circuit Breaker, Semantic Cache & Cost-Optimized Router
+
+> **Propósito:** Gateway multi-provedor com circuit breaker, cache semântico por embeddings e roteamento otimizado por custo
+> **Frontier References:** "Circuit Breaker Pattern" — Fowler (2024), "Semantic Caching for LLMs" — Google (2025), "Cost-Aware LLM Routing" — MLSys (2025)
+
+### 16.1 LLMGateway — Gateway Multi-Provedor com Circuit Breaker
+
+Gateway resiliente que gerencia múltiplos provedores com circuit breaker, retry e fallback:
+
+`	ypescript
+interface CircuitBreakerState { failures: number; lastFailure: number; state: 'closed' | 'open' | 'half-open'; }
+
+class LLMGateway {
+  private circuits = new Map<string, CircuitBreakerState>();
+  private config = { threshold: 5, resetMs: 30000, halfOpenMax: 3 };
+
+  constructor(private providers: Map<string, LLMProvider>) {}
+
+  async execute(providerId: string, model: string, messages: ChatMessage[], options?: ChatOptions): Promise<ChatResponse> {
+    this.checkCircuit(providerId);
+    try {
+      const provider = this.providers.get(providerId);
+      if (!provider) throw new Error('Unknown provider: ' + providerId);
+      const result = await this.withTimeout(provider.chat(model, messages, options), options?.timeout || 30000);
+      this.recordSuccess(providerId);
+      return result;
+    } catch (err) {
+      this.recordFailure(providerId);
+      return this.fallback(providerId, model, messages, options);
+    }
+  }
+
+  private async fallback(excludeId: string, model: string, messages: ChatMessage[], options?: ChatOptions): Promise<ChatResponse> {
+    const ordered = ['anthropic', 'openai', 'deepseek', 'ollama'].filter(p => p !== excludeId);
+    for (const pid of ordered) {
+      if (this.isCircuitOpen(pid)) continue;
+      const provider = this.providers.get(pid);
+      if (!provider) continue;
+      try {
+        return await provider.chat(model, messages, options);
+      } catch { continue; }
+    }
+    throw new Error('All providers failed');
+  }
+
+  private checkCircuit(id: string): void {
+    const c = this.circuits.get(id);
+    if (c?.state === 'open') {
+      if (Date.now() - c.lastFailure > this.config.resetMs) { c.state = 'half-open'; return; }
+      throw new Error('Circuit open for ' + id);
+    }
+  }
+
+  private recordSuccess(id: string): void { this.circuits.set(id, { failures: 0, lastFailure: 0, state: 'closed' }); }
+  private recordFailure(id: string): void {
+    const c = this.circuits.get(id) || { failures: 0, lastFailure: 0, state: 'closed' as const };
+    c.failures++; c.lastFailure = Date.now();
+    if (c.failures >= this.config.threshold) c.state = 'open';
+    this.circuits.set(id, c);
+  }
+  private isCircuitOpen(id: string): boolean { return this.circuits.get(id)?.state === 'open'; }
+  private withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+    return Promise.race([promise, new Promise<T>((_, r) => setTimeout(() => r(new Error('Timeout')), ms)) as any]);
+  }
+}
+`
+
+### 16.2 SemanticCache — Cache Semântico com Embeddings
+
+Cache inteligente que retorna respostas similares baseado em similaridade cosseno dos embeddings:
+
+`	ypescript
+class SemanticCache {
+  private store: Array<{ query: string; embedding: number[]; response: ChatResponse; timestamp: number; accessCount: number }> = [];
+  private embedder: (text: string) => Promise<number[]>;
+
+  constructor(embedder: (text: string) => Promise<number[]>, private threshold = 0.92, private maxSize = 5000, private ttlMs = 3600000) {
+    this.embedder = embedder;
+  }
+
+  async get(messages: ChatMessage[]): Promise<ChatResponse | null> {
+    const queryText = messages.map(m => typeof m.content === 'string' ? m.content : JSON.stringify(m.content)).join('\n');
+    const queryEmb = await this.embedder(queryText);
+    let bestMatch: { response: ChatResponse; score: number } | null = null;
+
+    for (const entry of this.store) {
+      if (Date.now() - entry.timestamp > this.ttlMs) continue;
+      const score = this.cosineSimilarity(queryEmb, entry.embedding);
+      if (score > this.threshold && (!bestMatch || score > bestMatch.score)) {
+        bestMatch = { response: entry.response, score };
+      }
+    }
+
+    if (bestMatch) { bestMatch.response.cached = true; return bestMatch.response; }
+    return null;
+  }
+
+  async set(messages: ChatMessage[], response: ChatResponse): Promise<void> {
+    if (this.store.length >= this.maxSize) this.store.sort((a, b) => a.accessCount - b.accessCount).shift();
+    const queryText = messages.map(m => typeof m.content === 'string' ? m.content : JSON.stringify(m.content)).join('\n');
+    this.store.push({ query: queryText, embedding: await this.embedder(queryText), response, timestamp: Date.now(), accessCount: 0 });
+  }
+
+  getStats(): { size: number; hitRate: number } {
+    const hits = this.store.filter(e => e.accessCount > 0).length;
+    return { size: this.store.length, hitRate: this.store.length > 0 ? hits / this.store.length : 0 };
+  }
+
+  private cosineSimilarity(a: number[], b: number[]): number {
+    let dot = 0, magA = 0, magB = 0;
+    for (let i = 0; i < a.length; i++) { dot += a[i] * b[i]; magA += a[i] * a[i]; magB += b[i] * b[i]; }
+    return dot / (Math.sqrt(magA) * Math.sqrt(magB) + 1e-10);
+  }
+}
+`
+
+### 16.3 CostOptimizedRouter — Roteamento Otimizado por Custo
+
+Roteia para o modelo mais barato capaz de resolver a tarefa:
+
+`	ypescript
+interface ModelCostProfile { provider: string; model: string; inputCost: number; outputCost: number; avgLatencyMs: number; capabilityScore: number; }
+
+class CostOptimizedRouter {
+  private profiles: ModelCostProfile[] = [
+    { provider: 'ollama', model: 'deepseek-coder-v3', inputCost: 0, outputCost: 0, avgLatencyMs: 500, capabilityScore: 0.7 },
+    { provider: 'openai', model: 'gpt-4o-mini', inputCost: 0.0015, outputCost: 0.006, avgLatencyMs: 800, capabilityScore: 0.8 },
+    { provider: 'openai', model: 'gpt-4o', inputCost: 0.005, outputCost: 0.015, avgLatencyMs: 1500, capabilityScore: 0.95 },
+    { provider: 'anthropic', model: 'claude-4-sonnet', inputCost: 0.015, outputCost: 0.075, avgLatencyMs: 2000, capabilityScore: 0.92 },
+    { provider: 'anthropic', model: 'claude-4-opus', inputCost: 0.04, outputCost: 0.08, avgLatencyMs: 3000, capabilityScore: 0.98 },
+    { provider: 'deepseek', model: 'deepseek-chat-v3', inputCost: 0.0005, outputCost: 0.002, avgLatencyMs: 1000, capabilityScore: 0.75 },
+  ];
+
+  route(task: string, requiredCapability: number, maxCost?: number, maxLatency?: number): { provider: string; model: string; estimatedCost: number } {
+    let candidates = this.profiles.filter(p => p.capabilityScore >= requiredCapability);
+    if (maxCost) candidates = candidates.filter(c => (c.inputCost + c.outputCost) * 0.5 <= maxCost);
+    if (maxLatency) candidates = candidates.filter(c => c.avgLatencyMs <= maxLatency);
+    if (!candidates.length) candidates = [this.profiles[2]]; // fallback to gpt-4o
+
+    candidates.sort((a, b) => {
+      const costA = (a.inputCost + a.outputCost) * 0.4 + (a.avgLatencyMs / 10000) * 0.3;
+      const costB = (b.inputCost + b.outputCost) * 0.4 + (b.avgLatencyMs / 10000) * 0.3;
+      return costA - costB;
+    });
+
+    const best = candidates[0];
+    return { provider: best.provider, model: best.model, estimatedCost: (best.inputCost + best.outputCost) * 500 };
+  }
+
+  addProfile(profile: ModelCostProfile): void { this.profiles.push(profile); }
+}
+`
+
+**Frontier References 2024-2026:**
+- Fowler "Circuit Breaker Pattern — Updated for Cloud Native" (2024)
+- Google Research "Semantic Caching for Large Language Models" (2025)
+- MLSys "Cost-Aware LLM Routing: Balancing Quality and Expense" (2025)
+- "LLM Gateway: A Unified Interface for Multi-Provider LLM Access" — arXiv (2024)
+- "CacheLLM: Semantic Caching for LLM Applications" — VLDB (2025)

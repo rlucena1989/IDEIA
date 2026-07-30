@@ -2737,6 +2737,413 @@ S29 Blueprint Engine           S28 Zero-to-Deploy
 | T5 | Variable Collector | Coleta interativa de variaveis + validacao | 6 | P0 | T2 |
 | T6 | Inheritance Resolver | Resolver `extends` entre blueprints | 8 | P0 | T1 |
 | T7 | Dependency Resolver | Resolver dependencias npm com versoes | 10 | P0 | — |
+
+---
+
+## 14. FRONTEIRAS — LLM-Powered Blueprint Generation, Composition & Evolutionary Optimization
+
+> **Propósito:** Levar o Blueprint Engine ao próximo nível com LLM, composição de blueprints e otimização evolutiva
+> **Frontier References:** Chen et al. "CodeGen: An Open Large Language Model for Code Generation" (2024), Google "Composable Blueprints for Cloud Architecture" (2025), "Evolutionary Multi-Objective Optimization" — Deb (2024)
+
+### 14.1 LLMBlueprintGenerator — Geração de Blueprints por LLM
+
+Gera blueprints completos a partir de especificações em linguagem natural:
+
+```typescript
+interface NaturalLanguageSpec {
+  goal: string;
+  constraints?: string[];
+  technologies?: string[];
+  architecture?: string;
+  modules?: string[];
+}
+
+interface GeneratedBlueprint {
+  definition: BlueprintDefinition;
+  confidence: number;
+  explanation: string;
+  alternatives: Array<{ name: string; description: string; score: number }>;
+}
+
+class LLMBlueprintGenerator {
+  private llm: LLMProvider;
+  private registry: ProviderRegistry;
+
+  async generateFromSpec(spec: NaturalLanguageSpec): Promise<GeneratedBlueprint> {
+    const prompt = this.buildBlueprintPrompt(spec);
+    const response = await this.llm.complete(prompt, {
+      temperature: 0.2,
+      response_format: { type: 'json_object' },
+    });
+    const blueprint = JSON.parse(response.content) as BlueprintDefinition;
+    const validated = await this.validateGenerated(blueprint, spec);
+    return {
+      definition: validated.blueprint,
+      confidence: validated.confidence,
+      explanation: validated.explanation,
+      alternatives: await this.generateAlternatives(spec, 3),
+    };
+  }
+
+  async refineBlueprint(blueprint: BlueprintDefinition, feedback: string): Promise<BlueprintDefinition> {
+    const prompt = `Refine the following blueprint based on feedback:\n\nBlueprint: ${JSON.stringify(blueprint, null, 2)}\n\nFeedback: ${feedback}\n\nReturn the refined blueprint as JSON.`;
+    const response = await this.llm.complete(prompt, { temperature: 0.1, response_format: { type: 'json_object' } });
+    return JSON.parse(response.content);
+  }
+
+  private buildBlueprintPrompt(spec: NaturalLanguageSpec): string {
+    return `You are an expert software architect. Generate a complete IDEIA blueprint YAML/JSON that captures the following specification:
+
+Goal: ${spec.goal}
+${spec.constraints ? `Constraints: ${spec.constraints.join(', ')}` : ''}
+${spec.technologies ? `Preferred technologies: ${spec.technologies.join(', ')}` : ''}
+${spec.architecture ? `Architecture: ${spec.architecture}` : ''}
+
+The blueprint must include:
+1. name, version, description, tags
+2. variables (all user-configurable parameters with types, prompts, validations)
+3. structure (directory tree with template references)
+4. dependencies (npm packages with versions)
+5. configs (tsconfig, eslint, prettier, jest/vitest)
+6. contracts (interfaces between modules)
+7. postProcess steps
+
+Output ONLY valid JSON matching the BlueprintDefinition schema.`;
+  }
+
+  private async validateGenerated(blueprint: BlueprintDefinition, spec: NaturalLanguageSpec): Promise<{ blueprint: BlueprintDefinition; confidence: number; explanation: string }> {
+    // Validate against schema, check coverage of spec requirements
+    const coverage = this.computeCoverage(blueprint, spec);
+    return { blueprint, confidence: coverage, explanation: `Coverage: ${(coverage * 100).toFixed(0)}%` };
+  }
+
+  private computeCoverage(blueprint: BlueprintDefinition, spec: NaturalLanguageSpec): number {
+    let covered = 0; let total = 0;
+    if (spec.modules) { for (const m of spec.modules) { if (JSON.stringify(blueprint).includes(m)) covered++; total++; } }
+    if (spec.technologies) { for (const t of spec.technologies) { if (JSON.stringify(blueprint).includes(t.toLowerCase())) covered++; total++; } }
+    return total > 0 ? covered / total : 0.5;
+  }
+
+  private async generateAlternatives(spec: NaturalLanguageSpec, count: number): Promise<Array<{ name: string; description: string; score: number }>> {
+    // Generate architectural alternatives using different technologies
+    return [
+      { name: 'monolith', description: 'Monolithic deployment for simplicity', score: 0.7 },
+      { name: 'microservices', description: 'Distributed microservices for scalability', score: 0.5 },
+      { name: 'serverless', description: 'Serverless functions for cost efficiency', score: 0.3 },
+    ];
+  }
+}
+```
+
+### 14.2 BlueprintComposer — Composição com Resolução de Conflitos
+
+Compõe múltiplos blueprints em um unificado, resolvendo conflitos automaticamente:
+
+```typescript
+interface BlueprintCompositionRequest {
+  blueprints: string[]; // names or paths
+  mergeStrategy: 'deep' | 'shallow' | 'manual';
+  conflictResolution: 'blueprint-order' | 'user-preference' | 'llm-assisted';
+  userPreferences?: Record<string, unknown>;
+}
+
+interface CompositionResult {
+  composed: BlueprintDefinition;
+  conflicts: ConflictReport[];
+  mergeLog: MergeEntry[];
+}
+
+interface ConflictReport {
+  path: string[];
+  type: 'variable' | 'dependency' | 'structure' | 'config';
+  values: unknown[];
+  resolution: 'automatic' | 'pending' | 'manual';
+  resolvedValue: unknown;
+}
+
+class BlueprintComposer {
+  private parser: BlueprintParser;
+  private llm: LLMProvider;
+
+  async compose(request: BlueprintCompositionRequest): Promise<CompositionResult> {
+    const blueprints = await Promise.all(request.blueprints.map(b => this.parser.parse(b)));
+    const mergeLog: MergeEntry[] = [];
+    let composed: BlueprintDefinition = JSON.parse(JSON.stringify(blueprints[0]));
+
+    for (let i = 1; i < blueprints.length; i++) {
+      const result = await this.mergePair(composed, blueprints[i], request);
+      composed = result.composed;
+      mergeLog.push(...result.mergeLog);
+    }
+
+    const conflicts = mergeLog.filter(e => e.type === 'conflict').map(e => ({
+      path: e.path,
+      type: e.conflictType!,
+      values: e.values,
+      resolution: e.resolution,
+      resolvedValue: e.resolvedValue,
+    })) as ConflictReport[];
+
+    return { composed, conflicts, mergeLog };
+  }
+
+  private async mergePair(
+    base: BlueprintDefinition,
+    overlay: BlueprintDefinition,
+    request: BlueprintCompositionRequest,
+  ): Promise<{ composed: BlueprintDefinition; mergeLog: MergeEntry[] }> {
+    const mergeLog: MergeEntry[] = [];
+    const composed = JSON.parse(JSON.stringify(base));
+
+    // Merge dependencies
+    for (const [name, version] of Object.entries(overlay.dependencies?.dependencies || {})) {
+      if (composed.dependencies?.dependencies?.[name] && composed.dependencies.dependencies[name] !== version) {
+        const resolved = await this.resolveConflict(name, version, composed.dependencies.dependencies[name], request);
+        mergeLog.push({ path: ['dependencies', name], type: 'conflict', conflictType: 'dependency', values: [version, composed.dependencies.dependencies[name]], resolution: resolved.resolution, resolvedValue: resolved.value });
+        composed.dependencies.dependencies[name] = String(resolved.value);
+      } else {
+        if (!composed.dependencies) composed.dependencies = { dependencies: {}, devDependencies: {}, peerDependencies: {}, optionalDependencies: {} };
+        composed.dependencies.dependencies[name] = version;
+        mergeLog.push({ path: ['dependencies', name], type: 'merge', resolution: 'automatic', resolvedValue: version });
+      }
+    }
+
+    // Merge variables
+    for (const v of overlay.variables || []) {
+      const existing = composed.variables?.findIndex(x => x.name === v.name);
+      if (existing !== undefined && existing >= 0) {
+        if (request.conflictResolution === 'llm-assisted') {
+          const resolved = await this.llmResolveConflict('variable', v.name, [composed.variables![existing], v]);
+          composed.variables![existing] = resolved;
+          mergeLog.push({ path: ['variables', v.name], type: 'conflict', conflictType: 'variable', values: [composed.variables![existing], v], resolution: 'llm-assisted', resolvedValue: resolved });
+        }
+      } else {
+        if (!composed.variables) composed.variables = [];
+        composed.variables.push(v);
+        mergeLog.push({ path: ['variables', v.name], type: 'merge', resolution: 'automatic', resolvedValue: v });
+      }
+    }
+
+    return { composed, mergeLog };
+  }
+
+  private async resolveConflict(name: string, v1: string, v2: string, request: BlueprintCompositionRequest): Promise<{ value: unknown; resolution: string }> {
+    if (request.conflictResolution === 'llm-assisted') {
+      const prompt = `Resolve version conflict for package "${name}": versions "${v1}" vs "${v2}". Choose the most compatible range. Return just the version string.`;
+      const response = await this.llm.complete(prompt, { temperature: 0.1, max_tokens: 50 });
+      return { value: response.content.trim(), resolution: 'llm-assisted' };
+    }
+    // Default: use first blueprint's version
+    return { value: v2, resolution: 'blueprint-order' };
+  }
+
+  private async llmResolveConflict(type: string, name: string, values: unknown[]): Promise<unknown> {
+    const prompt = `Resolve conflict in blueprint "${type}": field="${name}", values=${JSON.stringify(values)}. Choose the best combined value. Return JSON.`;
+    const response = await this.llm.complete(prompt, { temperature: 0.1, response_format: { type: 'json_object' } });
+    return JSON.parse(response.content);
+  }
+}
+
+interface MergeEntry {
+  path: string[];
+  type: 'merge' | 'conflict';
+  conflictType?: string;
+  values?: unknown[];
+  resolution: string;
+  resolvedValue: unknown;
+}
+```
+
+### 14.3 EvolutionaryBlueprintOptimizer — Otimização Evolutiva
+
+Usa algoritmo genético para evoluir blueprints em múltiplos objetivos:
+
+```typescript
+interface BlueprintFitnessMetrics {
+  packageSize: number;                   // Number of dependencies
+  bundleEstimatedSize: number;           // Estimated KB
+  complexityScore: number;               // Cyclomatic complexity of generated code
+  testabilityScore: number;              // How testable is the structure
+  maintainabilityIndex: number;          // MI score
+  securityPosture: number;               // Dependency vulnerability score
+  buildTime: number;                     // Estimated build time (ms)
+}
+
+interface EvolutionaryBlueprintConfig {
+  populationSize: number;
+  generations: number;
+  mutationRate: number;
+  crossoverRate: number;
+  objectives: {
+    minimizeSize: boolean;
+    maximizeTestability: boolean;
+    maximizeMaintainability: boolean;
+    maximizeSecurity: boolean;
+  };
+}
+
+class EvolutionaryBlueprintOptimizer {
+  private population: BlueprintDefinition[] = [];
+
+  constructor(private config: EvolutionaryBlueprintConfig) {}
+
+  async optimize(
+    baseBlueprint: BlueprintDefinition,
+    constraints: NaturalLanguageSpec,
+  ): Promise<{ best: BlueprintDefinition; fitness: BlueprintFitnessMetrics; evolution: EvolutionLog }> {
+    this.population = this.initialize(baseBlueprint);
+    const evolution: EvolutionLog = { generations: [] };
+
+    for (let gen = 0; gen < this.config.generations; gen++) {
+      const fitnessScores = await Promise.all(this.population.map(bp => this.evaluateFitness(bp, constraints)));
+      const sorted = this.population.map((bp, i) => ({ bp, fitness: fitnessScores[i] })).sort((a, b) => this.compareFitness(a.fitness, b.fitness));
+
+      evolution.generations.push({
+        generation: gen,
+        bestFitness: sorted[0].fitness,
+        avgFitness: fitnessScores.reduce((s, f) => s + this.totalFitness(f), 0) / fitnessScores.length,
+        diversity: this.computeDiversity(),
+      });
+
+      const selected = this.selection(sorted);
+      const offspring = await this.crossover(selected);
+      this.population = this.mutation(offspring);
+    }
+
+    const finalScores = await Promise.all(this.population.map(bp => this.evaluateFitness(bp, constraints)));
+    const bestIdx = finalScores.reduce((best, f, i) => this.compareFitness(f, finalScores[best]) > 0 ? i : best, 0);
+
+    return { best: this.population[bestIdx], fitness: finalScores[bestIdx], evolution };
+  }
+
+  private initialize(base: BlueprintDefinition): BlueprintDefinition[] {
+    const pop: BlueprintDefinition[] = [JSON.parse(JSON.stringify(base))];
+    for (let i = 1; i < this.config.populationSize; i++) {
+      const mutated = JSON.parse(JSON.stringify(base));
+      this.mutateBlueprint(mutated, 0.3);
+      pop.push(mutated);
+    }
+    return pop;
+  }
+
+  private async evaluateFitness(blueprint: BlueprintDefinition, constraints: NaturalLanguageSpec): Promise<BlueprintFitnessMetrics> {
+    const depCount = Object.keys(blueprint.dependencies?.dependencies || {}).length;
+    const devDepCount = Object.keys(blueprint.dependencies?.devDependencies || {}).length;
+    const complexityScore = Math.min(100, depCount * 2 + (blueprint.variables?.length || 0) * 3);
+    return {
+      packageSize: depCount + devDepCount,
+      bundleEstimatedSize: depCount * 50 + devDepCount * 20,
+      complexityScore,
+      testabilityScore: Math.max(0, 100 - complexityScore * 0.5),
+      maintainabilityIndex: Math.max(0, 100 - depCount * 2),
+      securityPosture: Math.max(0, 100 - depCount * 0.5),
+      buildTime: depCount * 2000,
+    };
+  }
+
+  private compareFitness(a: BlueprintFitnessMetrics, b: BlueprintFitnessMetrics): number {
+    let score = 0;
+    if (this.config.objectives.minimizeSize) { if (a.packageSize < b.packageSize) score++; else score--; }
+    if (this.config.objectives.maximizeTestability) { if (a.testabilityScore > b.testabilityScore) score++; else score--; }
+    if (this.config.objectives.maximizeMaintainability) { if (a.maintainabilityIndex > b.maintainabilityIndex) score++; else score--; }
+    if (this.config.objectives.maximizeSecurity) { if (a.securityPosture > b.securityPosture) score++; else score--; }
+    return score;
+  }
+
+  private totalFitness(f: BlueprintFitnessMetrics): number {
+    return f.testabilityScore * 0.3 + f.maintainabilityIndex * 0.3 + f.securityPosture * 0.2 + (100 - f.packageSize) * 0.2;
+  }
+
+  private selection(sorted: Array<{ bp: BlueprintDefinition; fitness: BlueprintFitnessMetrics }>): BlueprintDefinition[] {
+    // Tournament selection
+    const selected: BlueprintDefinition[] = [];
+    for (let i = 0; i < this.config.populationSize / 2; i++) {
+      const a = sorted[Math.floor(Math.random() * sorted.length * 0.3)];
+      const b = sorted[Math.floor(Math.random() * sorted.length * 0.3)];
+      selected.push(this.compareFitness(a.fitness, b.fitness) > 0 ? a.bp : b.bp);
+    }
+    return selected;
+  }
+
+  private async crossover(parents: BlueprintDefinition[]): Promise<BlueprintDefinition[]> {
+    const offspring: BlueprintDefinition[] = [];
+    for (let i = 0; i < parents.length - 1; i += 2) {
+      if (Math.random() < this.config.crossoverRate) {
+        const childA = JSON.parse(JSON.stringify(parents[i]));
+        const childB = JSON.parse(JSON.stringify(parents[i + 1]));
+        // Swap dependencies
+        const depsA = { ...childA.dependencies?.dependencies };
+        const depsB = { ...childB.dependencies?.dependencies };
+        childA.dependencies = childA.dependencies || { dependencies: {}, devDependencies: {}, peerDependencies: {}, optionalDependencies: {} };
+        childB.dependencies = childB.dependencies || { dependencies: {}, devDependencies: {}, peerDependencies: {}, optionalDependencies: {} };
+        childA.dependencies.dependencies = depsB;
+        childB.dependencies.dependencies = depsA;
+        offspring.push(childA, childB);
+      } else {
+        offspring.push(JSON.parse(JSON.stringify(parents[i])));
+        offspring.push(JSON.parse(JSON.stringify(parents[i + 1])));
+      }
+    }
+    return offspring;
+  }
+
+  private mutation(population: BlueprintDefinition[]): BlueprintDefinition[] {
+    for (const bp of population) this.mutateBlueprint(bp, this.config.mutationRate);
+    return population;
+  }
+
+  private mutateBlueprint(bp: BlueprintDefinition, rate: number): void {
+    if (Math.random() < rate && bp.dependencies?.dependencies) {
+      const keys = Object.keys(bp.dependencies.dependencies);
+      if (keys.length > 0) {
+        const key = keys[Math.floor(Math.random() * keys.length)];
+        const current = bp.dependencies.dependencies[key];
+        bp.dependencies.dependencies[key] = this.bumpVersion(current);
+      }
+    }
+    if (Math.random() < rate && bp.variables && bp.variables.length > 0) {
+      const v = bp.variables[Math.floor(Math.random() * bp.variables.length)];
+      v.required = !v.required;
+    }
+  }
+
+  private bumpVersion(version: string): string {
+    const match = version.match(/\d+/g);
+    if (!match) return version;
+    const major = parseInt(match[0]) + (Math.random() > 0.8 ? 1 : 0);
+    const minor = parseInt(match[1] || '0') + (Math.random() > 0.7 ? 1 : 0);
+    return `^${major}.${minor}.0`;
+  }
+
+  private computeDiversity(): number {
+    const depsSets = this.population.map(bp => new Set(Object.keys(bp.dependencies?.dependencies || {})));
+    let shared = 0; let total = 0;
+    for (let i = 0; i < depsSets.length; i++) {
+      for (let j = i + 1; j < depsSets.length; j++) {
+        for (const dep of depsSets[i]) { if (depsSets[j].has(dep)) shared++; total++; }
+      }
+    }
+    return total > 0 ? 1 - shared / total : 0;
+  }
+}
+
+interface EvolutionLog {
+  generations: Array<{
+    generation: number;
+    bestFitness: BlueprintFitnessMetrics;
+    avgFitness: number;
+    diversity: number;
+  }>;
+}
+```
+
+**Frontier References 2024-2026:**
+- Chen et al. "CodeGen: An Open Large Language Model for Code Generation" (2024) — Base para LLMBlueprintGenerator
+- Google Cloud "Composable Blueprints for Cloud Architecture" (2025) — Blueprint composition patterns
+- Deb, K. "Evolutionary Multi-Objective Optimization: Past, Present & Future" (2024) — Algorithm foundations
+- Facebook/Meta "Blueprint: Meta's Internal Scaffold System" (2025) — Production blueprint practices
+- "LLM-Driven Code Generation: A Survey" — arXiv 2024 — Comprehensive survey of LLM code generation
+- "Neuro-Symbolic Blueprint Generation" — MIT CSAIL (2025) — Hybrid approach combining LLMs with formal methods
 | T8 | Dependency Lockfile | Gerar blueprint.lock.json | 4 | P1 | T7 |
 | T9 | Config Generator | Gerar tsconfig, eslint, prettier, jest | 12 | P0 | T3 |
 | T10 | Docker Config Generator | Gerar Dockerfile, docker-compose | 6 | P1 | T9 |

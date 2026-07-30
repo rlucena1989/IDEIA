@@ -1,15 +1,15 @@
-import { sumKahan, sumKahanWithError, sumNaive } from '../acceleration/kahan-sum';
-import { WelfordAggregator, varianceWelford, stddevWelford, meanWelford } from '../acceleration/welford-variance';
+import { sumKahan, sumKahanWithError, sumNaive } from '../../packages/acceleration/src/kahan-sum';
+import { WelfordAggregator, varianceWelford, stddevWelford, meanWelford } from '../../packages/acceleration/src/welford-variance';
 import {
   detectDomain,
   getDomainPrecision,
   applyDomainPrecision,
   applyPrecision,
   listDomains,
-} from '../acceleration/domain-precision';
-import { IncrementalEngine } from '../acceleration/incremental-engine';
-import { Interval, interval, intervalFromMeasurement } from '../acceleration/interval-arithmetic';
-import { validateBySample, validateMeanBySample, validateSumBySample } from '../acceleration/sample-validator';
+} from '../../packages/acceleration/src/domain-precision';
+import { IncrementalEngine } from '../../packages/acceleration/src/incremental-engine';
+import { Interval, interval, intervalFromMeasurement } from '../../packages/acceleration/src/interval-arithmetic';
+import { validateBySample, validateMeanBySample, validateSumBySample } from '../../packages/acceleration/src/sample-validator';
 
 const EPS = 1e-9;
 

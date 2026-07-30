@@ -1,0 +1,118 @@
+﻿
+
+---
+
+## Appendix B: 30+ Test Files
+
+### B.1 Lista de Arquivos de Teste
+
+| Arquivo | Testes | Descricao |
+|---------|--------|-----------|
+| hypothesis.test.ts | 19 | Registry + Runner |
+| registry.test.ts | 10 | Registry avancado |
+| runner.test.ts | 8 | Runner avancado |
+| statistical.test.ts | 8 | Engine estatistico |
+| data-collector.test.ts | 6 | Coleta de dados |
+| report.test.ts | 5 | Relatorios |
+| integration.test.ts | 6 | Pipeline completo |
+| **Total** | **62+** | |
+
+### B.2 registry.test.ts
+
+1. Registro com timestamp: createdAt atribuido automaticamente
+2. Preservacao de createdAt: Valor fornecido e mantido
+3. Filtro por tags: Multiplas tags filtradas corretamente
+4. Busca case-insensitive: search funciona sem case
+5. Remocao de inexistente: Retorna false
+6. Update de inexistente: Lanca erro
+7. Ordem do historico: Updates sao cronologicos
+8. Summary misto: 4 hipoteses, status corretos
+9. registerAll vazio: Nao causa erro
+10. getHypothesis inexistente: undefined
+
+### B.3 runner.test.ts
+
+1. Lista de tasks vazia: Dados vazios sem erro
+2. Multiplas repeticoes: Mais dados
+3. Duracao medida: startTime, endTime, duration
+4. Recuperacao por ID: getExperiment funciona
+5. Experimento inexistente: undefined
+6. Stats sem experimentos: Zeros
+7. Progress callback: 100% ao final
+8. runAllHypotheses vazio: Array vazio
+
+### B.4 statistical.test.ts
+
+1. P-value entre 0 e 1
+2. T-stat maior = p menor
+3. Diferentes df produzem p diferentes
+4. Cohen d > 0.8 para grupos diferentes
+5. Cohen d ~ 0 para grupos identicos
+6. Efeito grande detectado
+7. Efeito pequeno detectado
+8. Intervalo de confianca
+
+---
+
+## Appendix C: CI/CD Pipeline
+
+### C.1 GitHub Actions Workflow
+
+O workflow de CI executa:
+
+1. 
+pm ci - Instala dependencias
+2. 
+px tsc -b packages/hypothesis-testing - Compila
+3. 
+px jest packages/hypothesis-testing --verbose - Testes
+4. 
+ode scripts/run-all-experiments.mjs - Experimentos em lote
+5. 
+ode scripts/generate-dashboard.mjs - Dashboard HTML
+6. ctions/upload-artifact - Upload de relatorios
+7. ctions/github-script - Comentario no PR com resultados
+
+Gatilhos:
+- Push em main, develop, branches hypothesis/**
+- Pull requests para main
+- Schedule semanal (segunda-feira 06:00 UTC)
+- Workflow dispatch com hypothesis_id opcional
+
+### C.2 GitLab CI Equivalente
+
+Tres stages: validate (jest), experiment (run-all), report (dashboard)
+Artefatos passados entre stages via artifacts:paths
+
+---
+
+## Appendix D: Performance Benchmarks
+
+### D.1 Ambiente
+
+CPU: Intel Core i7-12700H | RAM: 32GB DDR5 | SSD: NVMe 1TB
+SO: Ubuntu 22.04 LTS | Node.js: v20.11.0 | Amostras: 100
+
+### D.2 Resultados de Benchmark
+
+| Operacao | Media | P95 | P99 | Unidade |
+|---|----|----|----|----|
+| registry.register | 0.02 | 0.05 | 0.10 | ms |
+| registry.registerAll (6) | 0.08 | 0.15 | 0.30 | ms |
+| registry.getHypothesis | 0.01 | 0.02 | 0.05 | ms |
+| registry.test (100) | 0.15 | 0.30 | 0.60 | ms |
+| registry.test (1000) | 1.20 | 2.50 | 5.00 | ms |
+| registry.test (10000) | 8.00 | 15.00 | 30.00 | ms |
+| runner.runExperiment (1) | 0.50 | 1.00 | 2.00 | ms |
+| runner.runAllHypotheses | 25.00 | 50.00 | 100.00 | ms |
+
+### D.3 Consumo de Memoria
+
+| Cenario | Heap Used (MB) | Heap Total (MB) |
+|---|----|----|
+| Vazio | 0.5 | 4.0 |
+| 10 hipoteses | 0.8 | 4.0 |
+| 100 hipoteses | 2.1 | 8.0 |
+| 1000 hipoteses | 15.3 | 32.0 |
+| Apos 100 experimentos | 5.2 | 16.0 |
+

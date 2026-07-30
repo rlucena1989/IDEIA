@@ -1,45 +1,73 @@
-# Handoff — ai-devkit
+# Handoff — IDEIA
 
-> Cole este arquivo no inicio de qualquer conversa com a IA.
-> Atualizado em: 15/07/2026
+> **Projeto:** IDEIA — IDE que transforma ideias em sistemas completos.
+> **Tagline:** "Dê a ideia, nós entregamos a solução."
+> **Regerado por:** `scripts/audit/regenerate-metrics.ts` em 2026-07-29 §ts§
+> **Fonte única da verdade:** `docs/governance/REALITY-MANIFEST.md`
 
-## O que é este projeto
+---
 
-O **ai-devkit** é o "sistema operacional de governança" para desenvolvimento assistido por IA. Ele fornece CLI, generators, quality gates, security scanning, multi-provider AI orchestration, compliance mapping, contract validation, VSCode extension e 35+ comandos para estruturar, validar e auditar projetos com Clean Architecture + Modular Monolith.
+## O que é o IDEIA
 
-**Stack real:** Node.js ≥18, TypeScript 5.4, npm workspaces (monorepo com 38 packages), Jest 29, ts-jest, ESLint 8.57.
+Plataforma IDE AI-first construída sobre **Eclipse Theia** + **NATS JetStream** +
+**LangGraph** + **Ollama**, com 6 agentes especializados (Analyst, Architect,
+Programmer, Reviewer, Tester, DevOps), 15 camadas arquiteturais e orquestração
+multiagente event-driven. O shell é Theia-only; frontend são widgets React, never
+SPA standalone.
 
-## Comandos Principais (35+ registrados)
+## Stack verificada no código
 
-`init`, `status`, `verify`, `doctor`, `audit`, `prove`, `sync`, `adapter`, `compile`, `generate` (33 subcomandos), `hook`, `mode`, `detect`, `wizard`, `retrospective`, `mcp`, `ci`, `scorecard`, `timeline`, `learn`, `agents`, `hooks`, `drift`, `plugin`, `attest`, `security`, `compliance`, `rules`, `ai` (11 subcomandos), `contract`, `release`, `pipeline`, `performance`, `feature-flag`, `ecosystem`, `review`, `supply-chain`, `gate`, `knowledge`, `observability`, `prompt`, `stream`, `worktree`, `snapshot`, `feature`.
+- **Linguagem:** TypeScript 5.x · Node.js 20
+- **Shell:** Eclipse Theia Platform (+ Monaco + Inversify DI)
+- **Backend HTTP:** **Fastify** (ver `packages/api-server` — `fastify@^5.0.0`,
+  `@fastify/cors`, `@fastify/helmet`, `@fastify/rate-limit`)
+- **Frontend (widgets):** React 18
+- **Mensageria:** NATS JetStream (Pub/Sub, Req/Rep, KV, DLQ)
+- **Multiagente:** LangGraph + LangChain
+- **LLM:** Ollama local (com routing para OpenAI/Anthropic)
+- **Memória:** PostgreSQL+pgvector, SQLite+FTS5, DuckDB, Redis
+- **Build:** `tsc -b` (project references)
+- **Testes:** Jest + ts-jest
 
-## Arquitetura
+> ⚠️ **Não confundir:** existe um projeto **legado** no diretório-pai do workspace
+> (software anterior inspirador, fora de `IDEIA/`), que **não é** este projeto.
+> Descrições como "NestJS + Next.js + Prisma", "38 packages" ou "35 comandos"
+> referem-se àquele legado e estão **obsoletas** aqui. Para o estado real consulte
+> `docs/governance/REALITY-MANIFEST.md`.
 
-Monorepo npm workspaces: 38 packages em `packages/*` + `apps/*`. CLI em TypeScript compilado com Commander. Core compartilha utilitários entre comandos. 13 adapters suportam multi-linguagem (Python, Go, Java, Kotlin, Scala, Ruby, PHP, Dart, Elixir, Haskell, Swift, Zig, NestJS). .ai/bin/ tem 97+ scripts de governança.
+## Métricas reais (recalculadas por script)
 
-## Estado Atual
+| Métrica | Valor |
+|---------|-------|
+| Packages com `src/` | 292 |
+| Arquivos de teste | 1565 |
+| LOC (`src/`) | ~440083 |
+| TODO/FIXME/HACK | 49/14/10 |
+| `console.log` em `src/` | 184 |
+| ADRs (únicos/duplicados) | 29/5 |
+| Comandos CLI (subcomandos) | 345 |
+| Arquivos >500 linhas | 33 |
 
-- **Épicos 1-15:** Completos (instalador inteligente, agentes, adapters, hardening, transformers, enterprise, IA local, VSCode, 33 generators, functional devkit, multi-formato compiler, quality/security avançados, knowledge base, observability/workflow, visão futura)
-- **Pendente:** TSK-1.3 (ai-handoff compacto), TSK-4.2 (audit ↔ prove sync), GAP-16 a 20 (Web UI, RAG, multi-agent, autonomous engineer, PR review)
-- **VSCode Extension:** 12 source files, 15 commands, 3 TreeViews, diagnostics, status bar, keybinding Alt+D
-- **IA Local:** 5 providers (Ollama, OpenAI, Anthropic, Google, AWS), TF-IDF embeddings, routing, 461 arquivos indexados
-- **Knowledge Base:** 46 entradas curadas, 9 categorias, 188 tags
-- **Generators:** 33 subcomandos com engine handlebars + dry-run + force
-- **Quality Gates:** 6 estágios progressivos (lint→test→security→build→architecture→deploy) com checkpoints resumíveis
+## Regras obrigatórias (fonte: `.ai/rules/UNIVERSAL.md`)
 
-## Regras
+1. **R1 — Verdade está no código**: leia `REALITY-MANIFEST.md` + este `ai-handoff`
+   + `inject.json` antes de operar. Nunca confie na memória.
+2. **R2 — Docs verificada**: `docs-sync.ts --ci` e `regenerate-metrics.ts --ci`
+   bloqueiam commits/PRs com deriva.
+3. **R4 — Theia-only**: sem web UI standalone. Widgets React no Theia.
+4. **R6 — Clean Architecture**: domínio não importa infra. Sem `any` sem justificativa.
+5. **R7 — Workspace Boundary**: somente `IDEIA/` é editável.
 
-1. Não alterar arquivos fora do escopo da tarefa
-2. Propor plano antes de implementar mudanças complexas
-3. Verificar `.ai/knowledge/` e `.ai/errors/error-catalog.md` antes de implementar
-4. Rodar `npm run ai:quality:gate` antes de concluir
-5. Cobertura mínima de testes: 20% (real: ~20%)
-6. Seguir as laws em `.ai/laws.yaml`
+## Próxima sessão
 
-## Links Úteis
+Consulte `docs/governance/HANDOFF-NEXT-SESSION.md` para continuidade entre sessões.
+Lista de pendências ativa em `docs/governance/GAPS-PRODUCAO-IDE.md` (gaps abertos
+GS141-GS147, FA-03..FA-05 em andamento).
 
-- **Master Plan:** `.ai/tasks/master-plan.md`
-- **CHANGELOG:** `CHANGELOG.md` (histórico completo por épico)
-- **Architecture ADRs:** `.ai/architecture/adr/`
-- **Knowledge Base:** `ai-devkit knowledge list`
-- **Quality Gate:** `npm run ai:quality:gate`
+## Comandos de verificação
+
+```bash
+npx tsx scripts/audit/regenerate-metrics.ts --ci   # gate de deriva (CI)
+npx tsx scripts/audit/regenerate-metrics.ts --fix   # regenerar
+npx tsx scripts/docs-sync.ts --ci                   # sync de AGENTS.md
+```

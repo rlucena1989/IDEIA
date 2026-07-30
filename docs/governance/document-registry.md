@@ -7,6 +7,7 @@
 | Documento                    | Caminho                                                   | Descrição                                                                                |
 | ---------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | REALITY-MANIFEST.md          | `docs/governance/REALITY-MANIFEST.md`                     | Documento mestre da verdade                                                              |
+| METRICS-GUIDE.md             | `docs/governance/METRICS-GUIDE.md`                        | Guia FA-04 — como adicionar novas métricas em `regenerate-metrics.ts` (5 passos)         |
 | GAPS-PRODUCAO-IDE.md         | `docs/governance/GAPS-PRODUCAO-IDE.md`                    | Gaps catalogados (críticos, altos, médios, resolvidos)                                   |
 | document-registry.md         | `docs/governance/document-registry.md`                    | Este arquivo                                                                             |
 | Relatório de Validação Final | `docs/governance/RELATORIO-VALIDACAO-FINAL.md`            | Validação pós-Fase 5                                                                     |
@@ -25,10 +26,13 @@
 | Audit Ledger — comando | `packages/cli/src/commands/audit-ledger.ts`               | Comando `audit-ledger` reescrito — usa `AuditTrail.verifyChain()` |
 | Audit Daemon | `scripts/audit-daemon.mjs`                                | Daemon contínuo de auditoria — `--once` / `--daemon`, SHA-256 chain |
 | Audit Trail runtime | `.ai/audit/cli-trail.jsonl`                               | Audit trail de comandos CLI (SHA-256 chainado) |
+| Regenerate Metrics (FA-04) | `scripts/audit/regenerate-metrics.ts`                     | Fonte determinística única das métricas — recalcula tudo do código, 12 saídas regeneradas, `--ci` bloqueia drift |
+| Regenerate Metrics Test | `scripts/audit/__tests__/regenerate-metrics.test.ts`      | 6 testes: --ci exit 0/1, --fix idempotente, cobertura das 13 métricas canônicas, 12 arquivos gerados |
 | Relatório Validação Final    | `docs/governance/RELATORIO-VALIDACAO-FINAL.md`            | 47/47 checks passaram |
 | Relatório Completo Estado    | `docs/governance/RELATORIO-COMPLETO-ESTADO-ATUAL-IDEIA.md` | Documento consolidado 360° do projeto |
+| Master Tracker Pendências    | `docs/governance/MASTER-TRACKER-PENDENCIAS.md`            | Lista completa de 125 pendências em 12 categorias (segurança, qualidade, tasks, roadmap, compliance, UX, infra, governança) |
 
-## Estudos — 52 Registrados (seções principais) + 104 Complementares
+## Estudos — 85 Registrados (seções principais) + 104 Complementares + 23 D-series
 
 ### Estratégicos (E1-E5)
 | # | Documento | Caminho | Descrição |
@@ -73,7 +77,6 @@
 | T1 | Topologia de Integração | `docs/ESTUDOS/ESTUDO-COMPLETO-TOPOLOGIA-INTEGRACAO-IDEIA.md` | 66 packages, 18 contratos C1-C18, 16 eventos, 130+ comandos |
 | UX | Melhoria de Usabilidade | `docs/ESTUDOS/ESTUDO-MELHORIA-USABILIDADE-EXPERIENCIA-USUARIO.md` | 27 componentes, 5 canais, 15 melhorias em 3 fases |
 | INT | Intensificação Consolidada | `docs/ESTUDOS/ESTUDO-INTENSIFICACAO-CONSOLIDADA-TODOS-ESTUDOS.md` | Scores 1-5 para 44 estudos, gaps comuns, plano 3 fases |
-| S34 | Monaco Editor Integration | `docs/ESTUDOS/ESTUDO-S34-MONACO-EDITOR.md` | Monaco integração, customização, language features, editor API |
 | S35 | Filesystem & Workspace | `docs/ESTUDOS/ESTUDO-S35-FILESYSTEM-WORKSPACE.md` | Virtual FS, workspace model, file watchers, resource management |
 | S36 | Extension Host | `docs/ESTUDOS/ESTUDO-S36-EXTENSION-HOST.md` | Extension host process, plug-in architecture, IPC, sandbox |
 | S37 | Search, SCM & Task | `docs/ESTUDOS/ESTUDO-S37-SEARCH-SCM-TASK.md` | Search engine, source control, task system integration |
@@ -329,10 +332,100 @@
 | 6 | `OP6-AUTONOMOUS-LOOP-CHECKPOINT/` | `docs/ESTUDOS/OP6-AUTONOMOUS-LOOP-CHECKPOINT/README.md` | Autonomous Loop Checkpoint |
 | 7 | `OP7-ENGINEERING-FEEDBACK-LOOP/` | `docs/ESTUDOS/OP7-ENGINEERING-FEEDBACK-LOOP/README.md` | Engineering Feedback Loop |
 
-### Próximas Fases — Priorizadas (Atualizado 2026-07-22)
+### S66-S71 — Estudos de Arquitetura Avançada (não registrados anteriormente)
+| # | Documento | Caminho | Descrição |
+|---|-----------|---------|-----------|
+| S66 | AI-Driven Testing | `docs/ESTUDOS/ESTUDO-S66-AI-DRIVEN-TESTING.md` | Testes gerados por IA, mutation testing inteligente, auto-healing de testes — 2.823 linhas |
+| S67 | Cost Optimization & FinOps | `docs/ESTUDOS/ESTUDO-S67-COST-OPTIMIZATION-FINOPS.md` | FinOps para LLM, otimização de custos de inferência, budget tracking — 1.623 linhas |
+| S68 | AI-Assisted Code Debugging | `docs/ESTUDOS/ESTUDO-S68-AI-ASSISTED-CODE-DEBUGGING.md` | Debug assistido por IA, root cause analysis, auto-fix — 1.787 linhas |
+| S69 | Edge Computing & Fog Architecture | `docs/ESTUDOS/ESTUDO-S69-EDGE-COMPUTING-FOG-ARCHITECTURE.md` | Edge deployment, fog computing, offline-first, distributed inference — 3.286 linhas |
+| S70 | Developer Experience Metrics | `docs/ESTUDOS/ESTUDO-S70-DEVELOPER-EXPERIENCE-METRICS.md` | DX metrics, DORA, SPACE, dev satisfaction, productivity tracking — 1.427 linhas |
+| S71 | Internal Developer Platform | `docs/ESTUDOS/ESTUDO-S71-INTERNAL-DEVELOPER-PLATFORM.md` | IDP design, golden paths, backstage integration, developer portals — 1.677 linhas |
+
+### Sub-estudos Desktop (D01-D23) — Desmembramento do E5
+| # | Documento | Caminho | Descrição |
+|---|-----------|---------|-----------|
+| D01 | Electron Arquitetura | `docs/ESTUDOS/ESTUDO-D01-ELECTRON-ARQUITETURA-ENGENHARIA.md` | Electron arquitetura, processo main/renderer, contexto isolado — 979 linhas |
+| D02 | Tauri v2 Core Rust | `docs/ESTUDOS/ESTUDO-D02-TAURI-V2-CORE-RUST-ARQUITETURA.md` | Tauri v2 arquitetura, Rust core, segurança — 1.015 linhas |
+| D03 | NW.js Legado | `docs/ESTUDOS/ESTUDO-D03-NWJS-LEGADO.md` | NW.js análise, legado, comparação — 781 linhas |
+| D04 | Neutralino.js Ultra-Leve | `docs/ESTUDOS/ESTUDO-D04-NEUTRALINOJS-ULTRA-LEVE.md` | Neutralino.js análise, lightweight desktop — 675 linhas |
+| D05 | Matriz Comparativa Shells | `docs/ESTUDOS/ESTUDO-D05-MATRIZ-COMPARATIVA-SHELLS.md` | Comparação multi-shell desktop — 1.127 linhas |
+| D06 | Rust Core Segurança | `docs/ESTUDOS/ESTUDO-D06-RUST-CORE-SEGURANCA-DESKTOP.md` | Rust core, segurança, performance — 1.657 linhas |
+| D07 | Plugin System Tauri | `docs/ESTUDOS/ESTUDO-D07-PLUGIN-SYSTEM-TAURI.md` | Plugin system, Tauri extensibility — 1.074 linhas |
+| D08 | Sidecar Node.js | `docs/ESTUDOS/ESTUDO-D08-SIDECAR-NODEJS.md` | Sidecar process, Node.js integration — 1.341 linhas |
+| D09 | IPC Security Model | `docs/ESTUDOS/ESTUDO-D09-IPC-SECURITY-MODEL.md` | IPC security, sandbox, isolation — 2.074 linhas |
+| D10 | Auto-Update Desktop | `docs/ESTUDOS/ESTUDO-D10-AUTOUPDATE-DESKTOP.md` | Auto-update, delta updates, rollback — 1.237 linhas |
+| D11 | Instaladores Windows | `docs/ESTUDOS/ESTUDO-D11-INSTALADORES-WINDOWS.md` | Windows installers, MSI, NSIS, Squirrel — 2.548 linhas |
+| D12 | Instaladores macOS | `docs/ESTUDOS/ESTUDO-D12-INSTALADORES-MACOS.md` | macOS installers, DMG, PKG, notarization — 1.472 linhas |
+| D13 | Instaladores Linux | `docs/ESTUDOS/ESTUDO-D13-INSTALADORES-LINUX.md` | Linux installers, AppImage, Snap, Flatpak, deb/rpm — 1.463 linhas |
+| D14 | Code Signing Desktop | `docs/ESTUDOS/ESTUDO-D14-CODE-SIGNING-DESKTOP.md` | Code signing, certificates, platforms — 1.618 linhas |
+| D15 | CI/CD Pipeline Desktop | `docs/ESTUDOS/ESTUDO-D15-CICD-PIPELINE-DESKTOP.md` | CI/CD for desktop builds, automation — 632 linhas |
+| D16 | Package Managers | `docs/ESTUDOS/ESTUDO-D16-PACKAGE-MANAGERS.md` | Package managers, chocolatey, winget, brew — 1.227 linhas |
+| D17 | Silent Install Enterprise | `docs/ESTUDOS/ESTUDO-D17-SILENT-INSTALL-ENTERPRISE.md` | Silent install, enterprise deployment, GPO — 1.773 linhas |
+| D18 | GPU Acceleration Desktop | `docs/ESTUDOS/ESTUDO-D18-GPU-ACCELERATION-DESKTOP.md` | GPU acceleration, WebGPU, CUDA — 1.169 linhas |
+| D19 | Native File Dialogs | `docs/ESTUDOS/ESTUDO-D19-NATIVE-FILE-DIALOGS.md` | Native file dialogs, OS integration — 1.465 linhas |
+| D20 | Tray & Global Shortcuts | `docs/ESTUDOS/ESTUDO-D20-TRAY-GLOBAL-SHORTCUTS.md` | System tray, global shortcuts, notifications — 1.672 linhas |
+| D21 | Protocol Handlers & Deep Links | `docs/ESTUDOS/ESTUDO-D21-PROTOCOL-HANDLERS-DEEP-LINKS.md` | Deep links, protocol handlers, ideia:// — 786 linhas |
+| D22 | Electron → Theia Migration | `docs/ESTUDOS/ESTUDO-D22-ELECTRON-THEIA-MIGRATION.md` | Migration path Electron to Theia — 2.742 linhas |
+| D23 | Estratégia Multi-Shell | `docs/ESTUDOS/ESTUDO-D23-ESTRATEGIA-MULTI-SHELL-IDEIA.md` | Estratégia multi-shell: Electron + Tauri + Theia — 1.349 linhas |
+| DM | Desmembramento Desktop | `docs/ESTUDOS/ESTUDO-DESKTOP-NATIVE-DESMEMBRAMENTO.md` | Documento de desmembramento do E5 em 23 sub-estudos — 664 linhas |
+
+### Documentos de Suporte (Score, Maturidade, Metodologia)
+| Documento | Caminho | Descrição |
+|-----------|---------|-----------|
+| Catálogo Mestre Maturidade | `docs/ESTUDOS/CATALOGO-MESTRE-MATURIDADE.md` | Catálogo consolidado de maturidade dos estudos — 258 linhas |
+| Metodologia Estudos V3 | `docs/ESTUDOS/METODOLOGIA-ESTUDOS-V3.md` | Metodologia de produção de estudos, critérios de qualidade — 314 linhas |
+| Score T3 Completo | `docs/ESTUDOS/SCORE-T3-COMPLETO.md` | Score consolidado T3 de todos os estudos — 800 linhas |
+| Score F5 Intensificados | `docs/ESTUDOS/SCORE-F5-INTENSIFICADOS.md` | Score tracking F5 — 73 linhas |
+| Score F5 S54 Desktop P1 | `docs/ESTUDOS/SCORE-F5-S54-DESKTOP-P1.md` | Score desktop phase 1 — 102 linhas |
+| Score F5 S66-S71 | `docs/ESTUDOS/SCORE-F5-S66-S71.md` | Score S66-S71 — 100 linhas |
+| Score F5 S69-S70-S71 | `docs/ESTUDOS/SCORE-F5-S69-S70-S71.md` | Score S69-S71 — 55 linhas |
+
+### S72-S81 — Estudos dos Livros IA Eficiente (2026-07-26)
+| # | Documento | Caminho | Descrição |
+|---|-----------|---------|-----------|
+| S72 | Model Compression & Quantization | `docs/ESTUDOS/S72-S81-LIVROS-IA-EFICIENTE/S72-MODEL-COMPRESSION-QUANTIZATION.md` | INT4/INT8/FP8, GPTQ, AWQ, GGUF, BitNet b1.58 — Score 4.35 |
+| S73 | PEFT — Fine-tuning Eficiente | `docs/ESTUDOS/S72-S81-LIVROS-IA-EFICIENTE/S73-PEFT-FINETUNING.md` | LoRA, QLoRA, DoRA, AdaLoRA, PiSSA — Score 4.30 |
+| S74 | Knowledge Distillation | `docs/ESTUDOS/S72-S81-LIVROS-IA-EFICIENTE/S74-KNOWLEDGE-DISTILLATION.md` | R1-style, logit distillation, Minitron — Score 4.50 |
+| S75 | Inference Optimization | `docs/ESTUDOS/S72-S81-LIVROS-IA-EFICIENTE/S75-INFERENCE-OPTIMIZATION.md` | PagedAttention, batching, prefix cache, speculative decoding — Score 4.25 |
+| S76 | Mixture of Experts | `docs/ESTUDOS/S72-S81-LIVROS-IA-EFICIENTE/S76-MIXTURE-OF-EXPERTS.md` | MoE routing, expert parallelism, sparse activation — Score 4.10 |
+| S77 | Frontier Training (RLVR/GRPO) | `docs/ESTUDOS/S72-S81-LIVROS-IA-EFICIENTE/S77-FRONTIER-TRAINING-RLVR-GRPO.md` | RLVR, GRPO, test-time compute, agentic training — Score 4.00 |
+| S78 | Token Economy & Context Engineering | `docs/ESTUDOS/S72-S81-LIVROS-IA-EFICIENTE/S78-TOKEN-ECONOMY-CONTEXT-ENGINEERING.md` | 7 alavancas, prompt caching, compaction, routing — Score 3.80 |
+| S79 | Spec-Driven Development | `docs/ESTUDOS/S72-S81-LIVROS-IA-EFICIENTE/S79-SPEC-DRIVEN-DEVELOPMENT.md` | SDD flow, steering files, hooks system — Score 4.45 |
+| S80 | Platform Architecture Pipeline | `docs/ESTUDOS/S72-S81-LIVROS-IA-EFICIENTE/S80-PLATFORM-ARCHITECTURE-PIPELINE.md` | 5-stage loop, SCOUT/GUARD/ORCH/BUILD/CHECK, handoff files — Score 4.00 |
+| S81 | Error Defense in Depth | `docs/ESTUDOS/S72-S81-LIVROS-IA-EFICIENTE/S81-ERROR-DEFENSE-IN-DEPTH.md` | 8 defesas, SWE-Judge, verification gates — Score 4.20 |
+
+### Revisão de Viabilidade e Identidade
+| Documento | Caminho | Descrição |
+|-----------|---------|-----------|
+| Revisão de Viabilidade | `docs/ESTUDOS/REVISAO-VIABILIDADE-IDENTIDADE.md` | Análise de alinhamento de todos os 286 estudos com a identidade core da IDEIA. 3 estudos arquivados/contextualizados (S50, S59, S77), 4 postergados (S53, S62, S69, S71). |
+
+### Expansões Realizadas (2026-07-26)
+| Estudo | Antes | Depois | Formato |
+|--------|-------|--------|---------|
+| ESTUDO-POLICY-RISK-APPROVAL.md | 15 linhas (stub) | ~900 linhas | TEMPLATE + deep-dive técnico |
+| ESTUDO-QUALITY-GATES-AVANCADO.md | 39 linhas (stub) | ~858 linhas | TEMPLATE + deep-dive técnico |
+| ESTUDO-PLANNING-ENGINE-AVANCADO.md | 51 linhas (stub) | ~820 linhas | TEMPLATE + deep-dive técnico |
+| ESTUDO-CONTEXT-BUILDER-COMPOSER.md | 80 linhas (stub) | ~780 linhas | TEMPLATE + deep-dive técnico |
+| S72-S81 (10 estudos) | 42-84 linhas (stub/sumário) | 400-611 linhas cada | TEMPLATE + formato original fundidos |
+
+### Sessão Especial — Livros IA Eficiente
+| Documento | Caminho | Descrição |
+|-----------|---------|-----------|
+| Sessão Especial | `docs/governance/SESSION-CONTINUIDADE-2026-07-26-LIVROS.md` | Sessão dedicada à série "Engenharia de IA Generativa Eficiente" (Vol 1-4) |
+
+### Sessão 10 — Análise Completa de Pendências
+| Documento | Caminho | Descrição |
+|-----------|---------|-----------|
+| Sessão Pendências | `docs/governance/SESSION-CONTINUIDADE-2026-07-26-PENDENCIAS.md` | Escaneamento completo de TODO/FIXME/HACK/PENDING_ACTION, tasks, checklists, vulnerabilidades, compliance |
+
+### Próximas Fases — Priorizadas (Atualizado 2026-07-26)
 
 | Foco | Descrição | Prioridade | Esforço |
 |------|-----------|-----------|---------|
+| FA-03/FA-04 Handoff | `docs/governance/HANDOFF-NEXT-SESSION.md` | Sessão 13 — FA-03 (Clean Context) + FA-04 (Metrics Fix). Session ID: `e16c2851`. Próximo passo: FA-05 root cause analysis + tsc-error-report. |
+| Regenerate Metrics Script | `scripts/audit/regenerate-metrics.ts` | Script determinístico (926 linhas) que lê codebase real e sobrescreve 12 arquivos de contexto. Modos `--audit`, `--fix`, `--ci`. |
+| Legacy Archive Manifest | `.ai/context/_legacy/ARCHIVE-MANIFEST.md` | Registro dos 12 arquivos originais poluídos com "ai-devkit" que foram arquivados durante FA-03. |
 | 🎯 Self-Awareness CLI | ~~Integrar service-catalog, self-awareness, lifecycle, tutorials como comandos CLI~~ | ✅ Completo | ~4h |
 | 🎯 Widgets reais | Conectar Studies/Suggestions/Search ao backend (remover mock data) | 🔴 Alta | ~3h |
 | 🎯 Fixar versions | ~~Popular `version: '0.0.0'` nos 96 packages~~ | ✅ Completo | ~2h |

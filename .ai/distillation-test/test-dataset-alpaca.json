@@ -1,0 +1,17 @@
+[
+  {
+    "instruction": "What is 2+2?",
+    "input": "",
+    "output": "4"
+  },
+  {
+    "instruction": "What is 3+3?",
+    "input": "",
+    "output": "6"
+  },
+  {
+    "instruction": "What is 4+4?",
+    "input": "",
+    "output": "8"
+  }
+]

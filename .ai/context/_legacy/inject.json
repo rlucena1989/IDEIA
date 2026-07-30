@@ -1,0 +1,1769 @@
+{
+  "generatedAt": "2026-07-27T14:06:14.135Z",
+  "projectVersion": "1.0.0",
+  "stats": {
+    "packages": 292,
+    "testFiles": 1565,
+    "linesOfCode": 432342,
+    "hasTheiaPlugin": true
+  },
+  "packages": [
+    {
+      "name": "@ideia/a11y-scanner",
+      "path": "a11y-scanner",
+      "tests": 2,
+      "loc": 540
+    },
+    {
+      "name": "@ideia/acceleration",
+      "path": "acceleration",
+      "tests": 27,
+      "loc": 6589
+    },
+    {
+      "name": "@ideia/acp",
+      "path": "acp",
+      "tests": 1,
+      "loc": 183
+    },
+    {
+      "name": "@ideia/adapter-base",
+      "path": "adapter-base",
+      "tests": 2,
+      "loc": 145
+    },
+    {
+      "name": "@ideia/adapter-dart",
+      "path": "adapter-dart",
+      "tests": 2,
+      "loc": 680
+    },
+    {
+      "name": "@ideia/adapter-elixir",
+      "path": "adapter-elixir",
+      "tests": 2,
+      "loc": 413
+    },
+    {
+      "name": "@ideia/adapter-fastapi",
+      "path": "adapter-fastapi",
+      "tests": 2,
+      "loc": 550
+    },
+    {
+      "name": "@ideia/adapter-go",
+      "path": "adapter-go",
+      "tests": 2,
+      "loc": 690
+    },
+    {
+      "name": "@ideia/adapter-haskell",
+      "path": "adapter-haskell",
+      "tests": 2,
+      "loc": 420
+    },
+    {
+      "name": "@ideia/adapter-java",
+      "path": "adapter-java",
+      "tests": 2,
+      "loc": 608
+    },
+    {
+      "name": "@ideia/adapter-kotlin",
+      "path": "adapter-kotlin",
+      "tests": 2,
+      "loc": 396
+    },
+    {
+      "name": "@ideia/adapter-nestjs",
+      "path": "adapter-nestjs",
+      "tests": 2,
+      "loc": 756
+    },
+    {
+      "name": "@ideia/adapter-php",
+      "path": "adapter-php",
+      "tests": 2,
+      "loc": 471
+    },
+    {
+      "name": "@ideia/adapter-ruby",
+      "path": "adapter-ruby",
+      "tests": 2,
+      "loc": 435
+    },
+    {
+      "name": "@ideia/adapter-scala",
+      "path": "adapter-scala",
+      "tests": 2,
+      "loc": 382
+    },
+    {
+      "name": "@ideia/adapter-swift",
+      "path": "adapter-swift",
+      "tests": 2,
+      "loc": 391
+    },
+    {
+      "name": "@ideia/adapter-typescript",
+      "path": "adapter-typescript",
+      "tests": 2,
+      "loc": 561
+    },
+    {
+      "name": "@ideia/adapter-zig",
+      "path": "adapter-zig",
+      "tests": 2,
+      "loc": 479
+    },
+    {
+      "name": "@ideia/adaptive-compressor",
+      "path": "adaptive-compressor",
+      "tests": 1,
+      "loc": 971
+    },
+    {
+      "name": "@ideia/adaptive-decomposer",
+      "path": "adaptive-decomposer",
+      "tests": 1,
+      "loc": 130
+    },
+    {
+      "name": "@ideia/adaptive-learning",
+      "path": "adaptive-learning",
+      "tests": 1,
+      "loc": 729
+    },
+    {
+      "name": "@ideia/adaptive-thresholds",
+      "path": "adaptive-thresholds",
+      "tests": 1,
+      "loc": 1252
+    },
+    {
+      "name": "@ideia/agent-benchmark",
+      "path": "agent-benchmark",
+      "tests": 10,
+      "loc": 1035
+    },
+    {
+      "name": "@ideia/agent-coordinator",
+      "path": "agent-coordinator",
+      "tests": 1,
+      "loc": 319
+    },
+    {
+      "name": "@ideia/agent-graph",
+      "path": "agent-graph",
+      "tests": 2,
+      "loc": 481
+    },
+    {
+      "name": "@ideia/agent-identity",
+      "path": "agent-identity",
+      "tests": 1,
+      "loc": 167
+    },
+    {
+      "name": "@ideia/agent-memory",
+      "path": "agent-memory",
+      "tests": 1,
+      "loc": 895
+    },
+    {
+      "name": "@ideia/agent-memory-ext",
+      "path": "agent-memory-ext",
+      "tests": 1,
+      "loc": 112
+    },
+    {
+      "name": "@ideia/agent-protocols",
+      "path": "agent-protocols",
+      "tests": 1,
+      "loc": 1042
+    },
+    {
+      "name": "@ideia/agent-registry",
+      "path": "agent-registry",
+      "tests": 1,
+      "loc": 1361
+    },
+    {
+      "name": "@ideia/agent-router",
+      "path": "agent-router",
+      "tests": 6,
+      "loc": 340
+    },
+    {
+      "name": "@ideia/agent-runtime",
+      "path": "agent-runtime",
+      "tests": 10,
+      "loc": 5016
+    },
+    {
+      "name": "@ideia/agent-specialization",
+      "path": "agent-specialization",
+      "tests": 1,
+      "loc": 542
+    },
+    {
+      "name": "@ideia/ai-debug",
+      "path": "ai-debug",
+      "tests": 4,
+      "loc": 514
+    },
+    {
+      "name": "@ideia/ai-engineer",
+      "path": "ai-engineer",
+      "tests": 1,
+      "loc": 316
+    },
+    {
+      "name": "@ideia/ai-safety",
+      "path": "ai-safety",
+      "tests": 1,
+      "loc": 624
+    },
+    {
+      "name": "@ideia/ai-testing",
+      "path": "ai-testing",
+      "tests": 7,
+      "loc": 909
+    },
+    {
+      "name": "@ideia/anomaly-detection",
+      "path": "anomaly-detection",
+      "tests": 1,
+      "loc": 233
+    },
+    {
+      "name": "@ideia/anomaly-detector",
+      "path": "anomaly-detector",
+      "tests": 1,
+      "loc": 2246
+    },
+    {
+      "name": "@ideia/api-sdk",
+      "path": "api-sdk",
+      "tests": 1,
+      "loc": 771
+    },
+    {
+      "name": "@ideia/api-server",
+      "path": "api-server",
+      "tests": 1,
+      "loc": 825
+    },
+    {
+      "name": "@ideia/architecture-adr",
+      "path": "architecture-adr",
+      "tests": 1,
+      "loc": 50
+    },
+    {
+      "name": "@ideia/audit-exporter",
+      "path": "audit-exporter",
+      "tests": 2,
+      "loc": 189
+    },
+    {
+      "name": "@ideia/audit-trail",
+      "path": "audit-trail",
+      "tests": 5,
+      "loc": 1282
+    },
+    {
+      "name": "@ideia/auth",
+      "path": "ideia-auth",
+      "tests": 2,
+      "loc": 459
+    },
+    {
+      "name": "@ideia/auto-adr",
+      "path": "auto-adr",
+      "tests": 6,
+      "loc": 988
+    },
+    {
+      "name": "@ideia/autonomous-editor",
+      "path": "autonomous-editor",
+      "tests": 1,
+      "loc": 131
+    },
+    {
+      "name": "@ideia/autonomous-evolution-engine",
+      "path": "autonomous-evolution-engine",
+      "tests": 5,
+      "loc": 1195
+    },
+    {
+      "name": "@ideia/autonomy-controller",
+      "path": "autonomy-controller",
+      "tests": 4,
+      "loc": 652
+    },
+    {
+      "name": "@ideia/autonomy-orchestrator",
+      "path": "autonomy-orchestrator",
+      "tests": 1,
+      "loc": 140
+    },
+    {
+      "name": "@ideia/backend-logging",
+      "path": "backend-logging",
+      "tests": 1,
+      "loc": 254
+    },
+    {
+      "name": "@ideia/bayesian-risk",
+      "path": "bayesian-risk",
+      "tests": 1,
+      "loc": 1653
+    },
+    {
+      "name": "@ideia/bhp",
+      "path": "bhp",
+      "tests": 6,
+      "loc": 1303
+    },
+    {
+      "name": "@ideia/bias-detection",
+      "path": "bias-detection",
+      "tests": 1,
+      "loc": 917
+    },
+    {
+      "name": "@ideia/blueprint-engine",
+      "path": "blueprint-engine",
+      "tests": 1,
+      "loc": 880
+    },
+    {
+      "name": "@ideia/blueprint-scaffold",
+      "path": "blueprint-scaffold",
+      "tests": 1,
+      "loc": 877
+    },
+    {
+      "name": "@ideia/browser-agent",
+      "path": "browser-agent",
+      "tests": 1,
+      "loc": 1105
+    },
+    {
+      "name": "@ideia/cache",
+      "path": "cache",
+      "tests": 7,
+      "loc": 733
+    },
+    {
+      "name": "@ideia/capability-matcher",
+      "path": "capability-matcher",
+      "tests": 10,
+      "loc": 1326
+    },
+    {
+      "name": "@ideia/capability-registry",
+      "path": "capability-registry",
+      "tests": 2,
+      "loc": 587
+    },
+    {
+      "name": "@ideia/checkpoint-engine",
+      "path": "checkpoint-engine",
+      "tests": 3,
+      "loc": 192
+    },
+    {
+      "name": "@ideia/cli",
+      "path": "cli",
+      "tests": 793,
+      "loc": 171513
+    },
+    {
+      "name": "@ideia/cli-framework",
+      "path": "cli-framework",
+      "tests": 1,
+      "loc": 182
+    },
+    {
+      "name": "@ideia/client-sdk",
+      "path": "client-sdk",
+      "tests": 1,
+      "loc": 79
+    },
+    {
+      "name": "@ideia/code-signing",
+      "path": "code-signing",
+      "tests": 1,
+      "loc": 505
+    },
+    {
+      "name": "@ideia/collaborative-editing",
+      "path": "collaborative-editing",
+      "tests": 1,
+      "loc": 378
+    },
+    {
+      "name": "@ideia/command-system",
+      "path": "command-system",
+      "tests": 1,
+      "loc": 361
+    },
+    {
+      "name": "@ideia/complex-system-erp",
+      "path": "complex-system-erp",
+      "tests": 1,
+      "loc": 88
+    },
+    {
+      "name": "@ideia/compliance",
+      "path": "compliance",
+      "tests": 1,
+      "loc": 723
+    },
+    {
+      "name": "@ideia/compliance-checker",
+      "path": "compliance-checker",
+      "tests": 1,
+      "loc": 1310
+    },
+    {
+      "name": "@ideia/compliance-cli",
+      "path": "compliance-cli",
+      "tests": 2,
+      "loc": 228
+    },
+    {
+      "name": "@ideia/computer-use",
+      "path": "computer-use",
+      "tests": 1,
+      "loc": 602
+    },
+    {
+      "name": "@ideia/confidence",
+      "path": "confidence",
+      "tests": 4,
+      "loc": 255
+    },
+    {
+      "name": "@ideia/config-engine",
+      "path": "config-engine",
+      "tests": 7,
+      "loc": 3471
+    },
+    {
+      "name": "@ideia/context-budget",
+      "path": "context-budget",
+      "tests": 1,
+      "loc": 188
+    },
+    {
+      "name": "@ideia/context-builder",
+      "path": "context-builder",
+      "tests": 8,
+      "loc": 1952
+    },
+    {
+      "name": "@ideia/context-pack-system",
+      "path": "context-pack-system",
+      "tests": 2,
+      "loc": 2827
+    },
+    {
+      "name": "@ideia/context-provenance",
+      "path": "context-provenance",
+      "tests": 1,
+      "loc": 922
+    },
+    {
+      "name": "@ideia/continuity-engine",
+      "path": "continuity-engine",
+      "tests": 1,
+      "loc": 779
+    },
+    {
+      "name": "@ideia/contract-cdc",
+      "path": "contract-cdc",
+      "tests": 8,
+      "loc": 1949
+    },
+    {
+      "name": "@ideia/contracts",
+      "path": "contracts",
+      "tests": 6,
+      "loc": 509
+    },
+    {
+      "name": "@ideia/control-tower",
+      "path": "control-tower",
+      "tests": 1,
+      "loc": 372
+    },
+    {
+      "name": "@ideia/core",
+      "path": "core",
+      "tests": 2,
+      "loc": 17
+    },
+    {
+      "name": "@ideia/core-backend",
+      "path": "core-backend",
+      "tests": 2,
+      "loc": 616
+    },
+    {
+      "name": "@ideia/core-contributions",
+      "path": "core-contributions",
+      "tests": 3,
+      "loc": 665
+    },
+    {
+      "name": "@ideia/correction-oracle",
+      "path": "correction-oracle",
+      "tests": 1,
+      "loc": 197
+    },
+    {
+      "name": "@ideia/cost-benefit",
+      "path": "cost-benefit",
+      "tests": 1,
+      "loc": 74
+    },
+    {
+      "name": "@ideia/cost-benefit-analyzer",
+      "path": "cost-benefit-analyzer",
+      "tests": 1,
+      "loc": 825
+    },
+    {
+      "name": "@ideia/cqrs-bus",
+      "path": "cqrs-bus",
+      "tests": 9,
+      "loc": 1221
+    },
+    {
+      "name": "@ideia/cqrs-projections",
+      "path": "cqrs-projections",
+      "tests": 1,
+      "loc": 1415
+    },
+    {
+      "name": "@ideia/cross-shell",
+      "path": "cross-shell",
+      "tests": 1,
+      "loc": 758
+    },
+    {
+      "name": "@ideia/custom-contributions",
+      "path": "custom-contributions",
+      "tests": 1,
+      "loc": 167
+    },
+    {
+      "name": "@ideia/data-inventory",
+      "path": "data-inventory",
+      "tests": 1,
+      "loc": 129
+    },
+    {
+      "name": "@ideia/data-layer",
+      "path": "data-layer",
+      "tests": 17,
+      "loc": 5215
+    },
+    {
+      "name": "@ideia/deep-dives-engine",
+      "path": "deep-dives-engine",
+      "tests": 1,
+      "loc": 235
+    },
+    {
+      "name": "@ideia/defense-loop",
+      "path": "defense-loop",
+      "tests": 1,
+      "loc": 4165
+    },
+    {
+      "name": "@ideia/delivery-orchestrator",
+      "path": "delivery-orchestrator",
+      "tests": 8,
+      "loc": 4054
+    },
+    {
+      "name": "@ideia/dependency-analyzer",
+      "path": "dependency-analyzer",
+      "tests": 1,
+      "loc": 664
+    },
+    {
+      "name": "@ideia/desktop",
+      "path": "desktop",
+      "tests": 1,
+      "loc": 1149
+    },
+    {
+      "name": "@ideia/desktop-tray-shortcuts",
+      "path": "desktop-tray-shortcuts",
+      "tests": 1,
+      "loc": 383
+    },
+    {
+      "name": "@ideia/desktop-updater",
+      "path": "desktop-updater",
+      "tests": 1,
+      "loc": 405
+    },
+    {
+      "name": "@ideia/devx-metrics",
+      "path": "devx-metrics",
+      "tests": 1,
+      "loc": 761
+    },
+    {
+      "name": "@ideia/diff-engine",
+      "path": "diff-engine",
+      "tests": 4,
+      "loc": 487
+    },
+    {
+      "name": "@ideia/distillation-engine",
+      "path": "distillation-engine",
+      "tests": 2,
+      "loc": 1083
+    },
+    {
+      "name": "@ideia/docs-generator",
+      "path": "docs-generator",
+      "tests": 1,
+      "loc": 264
+    },
+    {
+      "name": "@ideia/dx-metrics",
+      "path": "dx-metrics",
+      "tests": 3,
+      "loc": 1051
+    },
+    {
+      "name": "@ideia/dynamic-agent-spawning",
+      "path": "dynamic-agent-spawning",
+      "tests": 1,
+      "loc": 215
+    },
+    {
+      "name": "@ideia/economic-control",
+      "path": "economic-control",
+      "tests": 3,
+      "loc": 426
+    },
+    {
+      "name": "@ideia/edge-runtime",
+      "path": "edge-runtime",
+      "tests": 4,
+      "loc": 703
+    },
+    {
+      "name": "@ideia/editor-core",
+      "path": "editor-core",
+      "tests": 4,
+      "loc": 1473
+    },
+    {
+      "name": "@ideia/editor-intelligence",
+      "path": "editor-intelligence",
+      "tests": 4,
+      "loc": 960
+    },
+    {
+      "name": "@ideia/electron-theia-migration",
+      "path": "electron-theia-migration",
+      "tests": 1,
+      "loc": 554
+    },
+    {
+      "name": "@ideia/embedding-pipeline",
+      "path": "embedding-pipeline",
+      "tests": 1,
+      "loc": 851
+    },
+    {
+      "name": "@ideia/encryption",
+      "path": "encryption",
+      "tests": 2,
+      "loc": 506
+    },
+    {
+      "name": "@ideia/enterprise-compliance",
+      "path": "enterprise-compliance",
+      "tests": 1,
+      "loc": 2277
+    },
+    {
+      "name": "@ideia/environment-snapshot",
+      "path": "environment-snapshot",
+      "tests": 1,
+      "loc": 447
+    },
+    {
+      "name": "@ideia/event-aggregate",
+      "path": "event-aggregate",
+      "tests": 1,
+      "loc": 81
+    },
+    {
+      "name": "@ideia/event-bus",
+      "path": "event-bus",
+      "tests": 8,
+      "loc": 3868
+    },
+    {
+      "name": "@ideia/event-projections",
+      "path": "event-projections",
+      "tests": 1,
+      "loc": 83
+    },
+    {
+      "name": "@ideia/event-sourcing",
+      "path": "event-sourcing",
+      "tests": 1,
+      "loc": 1322
+    },
+    {
+      "name": "@ideia/event-sourcing-nats",
+      "path": "event-sourcing-nats",
+      "tests": 1,
+      "loc": 165
+    },
+    {
+      "name": "@ideia/execution-layer",
+      "path": "execution-layer",
+      "tests": 2,
+      "loc": 53
+    },
+    {
+      "name": "@ideia/experiment-design",
+      "path": "experiment-design",
+      "tests": 1,
+      "loc": 534
+    },
+    {
+      "name": "@ideia/extension-host",
+      "path": "extension-host",
+      "tests": 7,
+      "loc": 836
+    },
+    {
+      "name": "@ideia/external-connectors",
+      "path": "external-connectors",
+      "tests": 1,
+      "loc": 168
+    },
+    {
+      "name": "@ideia/feedback-loop",
+      "path": "feedback-loop",
+      "tests": 3,
+      "loc": 179
+    },
+    {
+      "name": "@ideia/feedback-pipeline",
+      "path": "feedback-pipeline",
+      "tests": 5,
+      "loc": 773
+    },
+    {
+      "name": "@ideia/filesystem",
+      "path": "ideia-filesystem",
+      "tests": 2,
+      "loc": 614
+    },
+    {
+      "name": "@ideia/finetuning-pipeline",
+      "path": "finetuning-pipeline",
+      "tests": 3,
+      "loc": 1238
+    },
+    {
+      "name": "@ideia/finops",
+      "path": "finops",
+      "tests": 2,
+      "loc": 1094
+    },
+    {
+      "name": "@ideia/g0-g9-cycle",
+      "path": "g0-g9-cycle",
+      "tests": 1,
+      "loc": 946
+    },
+    {
+      "name": "@ideia/gan-adversarial",
+      "path": "gan-adversarial",
+      "tests": 1,
+      "loc": 1112
+    },
+    {
+      "name": "@ideia/governance-service",
+      "path": "governance-service",
+      "tests": 4,
+      "loc": 571
+    },
+    {
+      "name": "@ideia/health-check",
+      "path": "health-check",
+      "tests": 1,
+      "loc": 417
+    },
+    {
+      "name": "@ideia/heuristic-ai",
+      "path": "heuristic-ai",
+      "tests": 1,
+      "loc": 107
+    },
+    {
+      "name": "@ideia/heuristic-engine",
+      "path": "heuristic-engine",
+      "tests": 11,
+      "loc": 1782
+    },
+    {
+      "name": "@ideia/human-gate-pipeline",
+      "path": "human-gate-pipeline",
+      "tests": 1,
+      "loc": 1656
+    },
+    {
+      "name": "@ideia/human-in-the-loop",
+      "path": "human-in-the-loop",
+      "tests": 1,
+      "loc": 247
+    },
+    {
+      "name": "@ideia/hybrid-search",
+      "path": "hybrid-search",
+      "tests": 1,
+      "loc": 1177
+    },
+    {
+      "name": "@ideia/hypothesis-testing",
+      "path": "hypothesis-testing",
+      "tests": 1,
+      "loc": 676
+    },
+    {
+      "name": "@ideia/i18n",
+      "path": "i18n",
+      "tests": 2,
+      "loc": 82
+    },
+    {
+      "name": "@ideia/ide-integration",
+      "path": "ide-integration",
+      "tests": 1,
+      "loc": 140
+    },
+    {
+      "name": "@ideia/idp",
+      "path": "idp",
+      "tests": 1,
+      "loc": 1021
+    },
+    {
+      "name": "@ideia/incident-manager",
+      "path": "incident-manager",
+      "tests": 2,
+      "loc": 518
+    },
+    {
+      "name": "@ideia/incident-response",
+      "path": "incident-response",
+      "tests": 1,
+      "loc": 3765
+    },
+    {
+      "name": "@ideia/initiative-feedback",
+      "path": "initiative-feedback",
+      "tests": 1,
+      "loc": 462
+    },
+    {
+      "name": "@ideia/innovation-roadmap",
+      "path": "innovation-roadmap",
+      "tests": 1,
+      "loc": 431
+    },
+    {
+      "name": "@ideia/installer-linux",
+      "path": "installer-linux",
+      "tests": 1,
+      "loc": 388
+    },
+    {
+      "name": "@ideia/installer-macos",
+      "path": "installer-macos",
+      "tests": 1,
+      "loc": 355
+    },
+    {
+      "name": "@ideia/integration-bridge",
+      "path": "integration-bridge",
+      "tests": 1,
+      "loc": 406
+    },
+    {
+      "name": "@ideia/ipc-security",
+      "path": "ipc-security",
+      "tests": 1,
+      "loc": 936
+    },
+    {
+      "name": "@ideia/keybinding-system",
+      "path": "keybinding-system",
+      "tests": 7,
+      "loc": 1852
+    },
+    {
+      "name": "@ideia/langgraph-observability",
+      "path": "langgraph-observability",
+      "tests": 1,
+      "loc": 832
+    },
+    {
+      "name": "@ideia/langgraph-tracing",
+      "path": "langgraph-tracing",
+      "tests": 1,
+      "loc": 126
+    },
+    {
+      "name": "@ideia/learning-engine",
+      "path": "learning-engine",
+      "tests": 3,
+      "loc": 587
+    },
+    {
+      "name": "@ideia/llm-attack-mutation",
+      "path": "llm-attack-mutation",
+      "tests": 1,
+      "loc": 210
+    },
+    {
+      "name": "@ideia/llm-gateway",
+      "path": "llm-gateway",
+      "tests": 1,
+      "loc": 839
+    },
+    {
+      "name": "@ideia/llm-integration",
+      "path": "llm-integration",
+      "tests": 4,
+      "loc": 1616
+    },
+    {
+      "name": "@ideia/llm-provider",
+      "path": "llm-provider",
+      "tests": 3,
+      "loc": 1218
+    },
+    {
+      "name": "@ideia/local-ai",
+      "path": "local-ai",
+      "tests": 5,
+      "loc": 2048
+    },
+    {
+      "name": "@ideia/logger",
+      "path": "logger",
+      "tests": 2,
+      "loc": 258
+    },
+    {
+      "name": "@ideia/lsp-integration",
+      "path": "lsp-integration",
+      "tests": 1,
+      "loc": 281
+    },
+    {
+      "name": "@ideia/manifest-self-description",
+      "path": "manifest-self-description",
+      "tests": 1,
+      "loc": 1310
+    },
+    {
+      "name": "@ideia/markers-output",
+      "path": "markers-output",
+      "tests": 5,
+      "loc": 804
+    },
+    {
+      "name": "@ideia/mcp",
+      "path": "mcp",
+      "tests": 6,
+      "loc": 873
+    },
+    {
+      "name": "@ideia/mcp-marketplace",
+      "path": "mcp-marketplace",
+      "tests": 1,
+      "loc": 993
+    },
+    {
+      "name": "@ideia/mcp-server",
+      "path": "mcp-server",
+      "tests": 1,
+      "loc": 316
+    },
+    {
+      "name": "@ideia/memory-continuous-learning",
+      "path": "memory-continuous-learning",
+      "tests": 1,
+      "loc": 718
+    },
+    {
+      "name": "@ideia/memory-graph",
+      "path": "memory-graph",
+      "tests": 3,
+      "loc": 673
+    },
+    {
+      "name": "@ideia/memory-hierarchy",
+      "path": "memory-hierarchy",
+      "tests": 7,
+      "loc": 615
+    },
+    {
+      "name": "@ideia/memory-hierarchy-ext",
+      "path": "memory-hierarchy-ext",
+      "tests": 1,
+      "loc": 121
+    },
+    {
+      "name": "@ideia/memory-store",
+      "path": "memory-store",
+      "tests": 10,
+      "loc": 3578
+    },
+    {
+      "name": "@ideia/menu-system",
+      "path": "menu-system",
+      "tests": 2,
+      "loc": 470
+    },
+    {
+      "name": "@ideia/meta-learning",
+      "path": "meta-learning",
+      "tests": 7,
+      "loc": 1697
+    },
+    {
+      "name": "@ideia/meta-learning-maml",
+      "path": "meta-learning-maml",
+      "tests": 1,
+      "loc": 194
+    },
+    {
+      "name": "@ideia/metadata-cache",
+      "path": "metadata-cache",
+      "tests": 2,
+      "loc": 665
+    },
+    {
+      "name": "@ideia/metrics-store",
+      "path": "metrics-store",
+      "tests": 4,
+      "loc": 894
+    },
+    {
+      "name": "@ideia/model-manager",
+      "path": "model-manager",
+      "tests": 1,
+      "loc": 290
+    },
+    {
+      "name": "@ideia/module-loader",
+      "path": "module-loader",
+      "tests": 3,
+      "loc": 304
+    },
+    {
+      "name": "@ideia/multi-region-compliance",
+      "path": "multi-region-compliance",
+      "tests": 1,
+      "loc": 204
+    },
+    {
+      "name": "@ideia/native-file-dialogs",
+      "path": "native-file-dialogs",
+      "tests": 1,
+      "loc": 66
+    },
+    {
+      "name": "@ideia/nats-auth",
+      "path": "nats-auth",
+      "tests": 1,
+      "loc": 685
+    },
+    {
+      "name": "@ideia/nats-observability",
+      "path": "nats-observability",
+      "tests": 1,
+      "loc": 91
+    },
+    {
+      "name": "@ideia/nats-security",
+      "path": "nats-security",
+      "tests": 1,
+      "loc": 2819
+    },
+    {
+      "name": "@ideia/neural-decomposition",
+      "path": "neural-decomposition",
+      "tests": 1,
+      "loc": 261
+    },
+    {
+      "name": "@ideia/neural-planner",
+      "path": "neural-planner",
+      "tests": 1,
+      "loc": 750
+    },
+    {
+      "name": "@ideia/notification-system",
+      "path": "notification-system",
+      "tests": 8,
+      "loc": 1321
+    },
+    {
+      "name": "@ideia/observability",
+      "path": "observability",
+      "tests": 2,
+      "loc": 915
+    },
+    {
+      "name": "@ideia/observability-engine",
+      "path": "observability-engine",
+      "tests": 3,
+      "loc": 919
+    },
+    {
+      "name": "@ideia/onboarding-engine",
+      "path": "onboarding-engine",
+      "tests": 1,
+      "loc": 42
+    },
+    {
+      "name": "@ideia/onboarding-wizard",
+      "path": "onboarding-wizard",
+      "tests": 5,
+      "loc": 1527
+    },
+    {
+      "name": "@ideia/org-trust",
+      "path": "org-trust",
+      "tests": 1,
+      "loc": 45
+    },
+    {
+      "name": "@ideia/package-managers",
+      "path": "package-managers",
+      "tests": 2,
+      "loc": 89
+    },
+    {
+      "name": "@ideia/pattern-detector",
+      "path": "pattern-detector",
+      "tests": 2,
+      "loc": 751
+    },
+    {
+      "name": "@ideia/performance-monitor",
+      "path": "performance-monitor",
+      "tests": 2,
+      "loc": 624
+    },
+    {
+      "name": "@ideia/persistent-instructions",
+      "path": "persistent-instructions",
+      "tests": 2,
+      "loc": 174
+    },
+    {
+      "name": "@ideia/planning-engine",
+      "path": "planning-engine",
+      "tests": 7,
+      "loc": 794
+    },
+    {
+      "name": "@ideia/planning-service",
+      "path": "planning-service",
+      "tests": 1,
+      "loc": 275
+    },
+    {
+      "name": "@ideia/plugin",
+      "path": "ideia-plugin",
+      "tests": 16,
+      "loc": 13138
+    },
+    {
+      "name": "@ideia/plugin-sdk",
+      "path": "plugin-sdk",
+      "tests": 3,
+      "loc": 640
+    },
+    {
+      "name": "@ideia/policy-engine",
+      "path": "policy-engine",
+      "tests": 3,
+      "loc": 1538
+    },
+    {
+      "name": "@ideia/policy-gateway",
+      "path": "policy-gateway",
+      "tests": 2,
+      "loc": 223
+    },
+    {
+      "name": "@ideia/ppo-planner",
+      "path": "ppo-planner",
+      "tests": 1,
+      "loc": 658
+    },
+    {
+      "name": "@ideia/ppo-planning",
+      "path": "ppo-planning",
+      "tests": 1,
+      "loc": 109
+    },
+    {
+      "name": "@ideia/pr-automation",
+      "path": "pr-automation",
+      "tests": 1,
+      "loc": 363
+    },
+    {
+      "name": "@ideia/predictive-quality",
+      "path": "predictive-quality",
+      "tests": 2,
+      "loc": 1304
+    },
+    {
+      "name": "@ideia/preferences",
+      "path": "ideia-preferences",
+      "tests": 4,
+      "loc": 848
+    },
+    {
+      "name": "@ideia/privacy",
+      "path": "privacy",
+      "tests": 9,
+      "loc": 1640
+    },
+    {
+      "name": "@ideia/privacy-center",
+      "path": "privacy-center",
+      "tests": 3,
+      "loc": 287
+    },
+    {
+      "name": "@ideia/profiles",
+      "path": "profiles",
+      "tests": 5,
+      "loc": 1965
+    },
+    {
+      "name": "@ideia/progressive-disclosure",
+      "path": "progressive-disclosure",
+      "tests": 1,
+      "loc": 776
+    },
+    {
+      "name": "@ideia/project-scanner",
+      "path": "project-scanner",
+      "tests": 1,
+      "loc": 387
+    },
+    {
+      "name": "@ideia/prompt-economy",
+      "path": "prompt-economy",
+      "tests": 8,
+      "loc": 2462
+    },
+    {
+      "name": "@ideia/prompt-security",
+      "path": "prompt-security",
+      "tests": 10,
+      "loc": 4836
+    },
+    {
+      "name": "@ideia/prototyping-engine",
+      "path": "prototyping-engine",
+      "tests": 1,
+      "loc": 56
+    },
+    {
+      "name": "@ideia/quality-gates",
+      "path": "quality-gates",
+      "tests": 11,
+      "loc": 1300
+    },
+    {
+      "name": "@ideia/quality-threshold",
+      "path": "quality-threshold",
+      "tests": 1,
+      "loc": 95
+    },
+    {
+      "name": "@ideia/quantization-engine",
+      "path": "quantization-engine",
+      "tests": 6,
+      "loc": 1553
+    },
+    {
+      "name": "@ideia/rag-engine",
+      "path": "rag-engine",
+      "tests": 1,
+      "loc": 624
+    },
+    {
+      "name": "@ideia/real-data",
+      "path": "real-data",
+      "tests": 1,
+      "loc": 52
+    },
+    {
+      "name": "@ideia/reality-sync",
+      "path": "reality-sync",
+      "tests": 6,
+      "loc": 5098
+    },
+    {
+      "name": "@ideia/realtime-collaboration",
+      "path": "realtime-collaboration",
+      "tests": 1,
+      "loc": 88
+    },
+    {
+      "name": "@ideia/release-automation",
+      "path": "release-automation",
+      "tests": 1,
+      "loc": 519
+    },
+    {
+      "name": "@ideia/remote-web-ide",
+      "path": "remote-web-ide",
+      "tests": 1,
+      "loc": 84
+    },
+    {
+      "name": "@ideia/requirements-engine",
+      "path": "requirements-engine",
+      "tests": 1,
+      "loc": 248
+    },
+    {
+      "name": "@ideia/resilience-engine",
+      "path": "resilience-engine",
+      "tests": 2,
+      "loc": 1204
+    },
+    {
+      "name": "@ideia/resilience-v2",
+      "path": "resilience-v2",
+      "tests": 5,
+      "loc": 2725
+    },
+    {
+      "name": "@ideia/resource-manager",
+      "path": "resource-manager",
+      "tests": 3,
+      "loc": 1136
+    },
+    {
+      "name": "@ideia/risk-approval",
+      "path": "risk-approval",
+      "tests": 5,
+      "loc": 220
+    },
+    {
+      "name": "@ideia/risk-dashboard",
+      "path": "risk-dashboard",
+      "tests": 1,
+      "loc": 178
+    },
+    {
+      "name": "@ideia/risk-monitor",
+      "path": "risk-monitor",
+      "tests": 1,
+      "loc": 1865
+    },
+    {
+      "name": "@ideia/robot-registry",
+      "path": "robot-registry",
+      "tests": 4,
+      "loc": 559
+    },
+    {
+      "name": "@ideia/robotic-integration",
+      "path": "robotic-integration",
+      "tests": 1,
+      "loc": 67
+    },
+    {
+      "name": "@ideia/rpc-messaging",
+      "path": "rpc-messaging",
+      "tests": 2,
+      "loc": 289
+    },
+    {
+      "name": "@ideia/safety-circuit",
+      "path": "safety-circuit",
+      "tests": 7,
+      "loc": 2018
+    },
+    {
+      "name": "@ideia/schema-migration",
+      "path": "schema-migration",
+      "tests": 1,
+      "loc": 990
+    },
+    {
+      "name": "@ideia/schema-registry",
+      "path": "schema-registry",
+      "tests": 6,
+      "loc": 866
+    },
+    {
+      "name": "@ideia/schema-versioning",
+      "path": "schema-versioning",
+      "tests": 1,
+      "loc": 109
+    },
+    {
+      "name": "@ideia/scope-isolation",
+      "path": "scope-isolation",
+      "tests": 8,
+      "loc": 1050
+    },
+    {
+      "name": "@ideia/search-scm-task",
+      "path": "search-scm-task",
+      "tests": 3,
+      "loc": 1117
+    },
+    {
+      "name": "@ideia/security-middleware",
+      "path": "security-middleware",
+      "tests": 2,
+      "loc": 453
+    },
+    {
+      "name": "@ideia/security-pipeline",
+      "path": "security-pipeline",
+      "tests": 1,
+      "loc": 1391
+    },
+    {
+      "name": "@ideia/self-chat-protocol",
+      "path": "self-chat-protocol",
+      "tests": 1,
+      "loc": 1082
+    },
+    {
+      "name": "@ideia/self-healing",
+      "path": "self-healing",
+      "tests": 1,
+      "loc": 2069
+    },
+    {
+      "name": "@ideia/self-optimization-panel",
+      "path": "self-optimization-panel",
+      "tests": 2,
+      "loc": 960
+    },
+    {
+      "name": "@ideia/semantic-dedup",
+      "path": "semantic-dedup",
+      "tests": 1,
+      "loc": 397
+    },
+    {
+      "name": "@ideia/server-bootstrap",
+      "path": "server-bootstrap",
+      "tests": 1,
+      "loc": 176
+    },
+    {
+      "name": "@ideia/service-catalog",
+      "path": "service-catalog",
+      "tests": 4,
+      "loc": 644
+    },
+    {
+      "name": "@ideia/shell-layout",
+      "path": "shell-layout",
+      "tests": 6,
+      "loc": 1648
+    },
+    {
+      "name": "@ideia/silent-installer",
+      "path": "silent-installer",
+      "tests": 1,
+      "loc": 378
+    },
+    {
+      "name": "@ideia/slo-monitor",
+      "path": "slo-monitor",
+      "tests": 4,
+      "loc": 1277
+    },
+    {
+      "name": "@ideia/spec-engine",
+      "path": "spec-engine",
+      "tests": 1,
+      "loc": 762
+    },
+    {
+      "name": "@ideia/spec-generator",
+      "path": "spec-generator",
+      "tests": 2,
+      "loc": 299
+    },
+    {
+      "name": "@ideia/spec-product-engineering",
+      "path": "spec-product-engineering",
+      "tests": 1,
+      "loc": 1074
+    },
+    {
+      "name": "@ideia/sso",
+      "path": "sso",
+      "tests": 1,
+      "loc": 692
+    },
+    {
+      "name": "@ideia/study-engine",
+      "path": "study-engine",
+      "tests": 1,
+      "loc": 369
+    },
+    {
+      "name": "@ideia/supply-chain",
+      "path": "supply-chain",
+      "tests": 5,
+      "loc": 233
+    },
+    {
+      "name": "@ideia/supply-chain-sec",
+      "path": "supply-chain-sec",
+      "tests": 1,
+      "loc": 897
+    },
+    {
+      "name": "@ideia/swe-bench",
+      "path": "swe-bench",
+      "tests": 1,
+      "loc": 337
+    },
+    {
+      "name": "@ideia/synthetic-memory",
+      "path": "synthetic-memory",
+      "tests": 1,
+      "loc": 2209
+    },
+    {
+      "name": "@ideia/task-queue",
+      "path": "task-queue",
+      "tests": 3,
+      "loc": 189
+    },
+    {
+      "name": "@ideia/tauri",
+      "path": "tauri",
+      "tests": 3,
+      "loc": 158
+    },
+    {
+      "name": "@ideia/tauri-sidecar",
+      "path": "tauri-sidecar",
+      "tests": 1,
+      "loc": 631
+    },
+    {
+      "name": "@ideia/technology-radar",
+      "path": "technology-radar",
+      "tests": 2,
+      "loc": 987
+    },
+    {
+      "name": "@ideia/telemetry",
+      "path": "telemetry",
+      "tests": 2,
+      "loc": 651
+    },
+    {
+      "name": "@ideia/terminal-sandbox",
+      "path": "terminal-sandbox",
+      "tests": 2,
+      "loc": 459
+    },
+    {
+      "name": "@ideia/test-orchestrator",
+      "path": "test-orchestrator",
+      "tests": 2,
+      "loc": 531
+    },
+    {
+      "name": "@ideia/theia-ai",
+      "path": "theia-ai",
+      "tests": 7,
+      "loc": 1935
+    },
+    {
+      "name": "@ideia/theia-cloud",
+      "path": "theia-cloud",
+      "tests": 3,
+      "loc": 1800
+    },
+    {
+      "name": "@ideia/token-optimization",
+      "path": "token-optimization",
+      "tests": 1,
+      "loc": 363
+    },
+    {
+      "name": "@ideia/trace-propagation",
+      "path": "trace-propagation",
+      "tests": 1,
+      "loc": 54
+    },
+    {
+      "name": "@ideia/trace-registry",
+      "path": "trace-registry",
+      "tests": 2,
+      "loc": 372
+    },
+    {
+      "name": "@ideia/tree-of-thought",
+      "path": "tree-of-thought",
+      "tests": 1,
+      "loc": 1702
+    },
+    {
+      "name": "@ideia/trusted-context",
+      "path": "trusted-context",
+      "tests": 2,
+      "loc": 56
+    },
+    {
+      "name": "@ideia/tutorial-system",
+      "path": "tutorial-system",
+      "tests": 5,
+      "loc": 991
+    },
+    {
+      "name": "@ideia/unified-intelligence",
+      "path": "unified-intelligence",
+      "tests": 1,
+      "loc": 108
+    },
+    {
+      "name": "@ideia/unified-nucleus",
+      "path": "unified-nucleus",
+      "tests": 1,
+      "loc": 611
+    },
+    {
+      "name": "@ideia/usability-profile",
+      "path": "usability-profile",
+      "tests": 1,
+      "loc": 325
+    },
+    {
+      "name": "@ideia/uta",
+      "path": "uta",
+      "tests": 1,
+      "loc": 194
+    },
+    {
+      "name": "@ideia/ux-metrics",
+      "path": "ux-metrics",
+      "tests": 2,
+      "loc": 1043
+    },
+    {
+      "name": "@ideia/vector-benchmark",
+      "path": "vector-benchmark",
+      "tests": 2,
+      "loc": 1373
+    },
+    {
+      "name": "@ideia/vector-store",
+      "path": "vector-store",
+      "tests": 2,
+      "loc": 608
+    },
+    {
+      "name": "@ideia/verification-layer",
+      "path": "verification-layer",
+      "tests": 2,
+      "loc": 280
+    },
+    {
+      "name": "@ideia/views-widgets",
+      "path": "views-widgets",
+      "tests": 5,
+      "loc": 1417
+    },
+    {
+      "name": "@ideia/violation-registry",
+      "path": "violation-registry",
+      "tests": 1,
+      "loc": 168
+    },
+    {
+      "name": "@ideia/visual-agent-debugger",
+      "path": "visual-agent-debugger",
+      "tests": 1,
+      "loc": 387
+    },
+    {
+      "name": "@ideia/vulnerability-manager",
+      "path": "vulnerability-manager",
+      "tests": 1,
+      "loc": 198
+    },
+    {
+      "name": "@ideia/widget-contributions",
+      "path": "widget-contributions",
+      "tests": 1,
+      "loc": 179
+    },
+    {
+      "name": "@ideia/windows-installer",
+      "path": "windows-installer",
+      "tests": 1,
+      "loc": 342
+    },
+    {
+      "name": "@ideia/workflow-engine",
+      "path": "workflow-engine",
+      "tests": 2,
+      "loc": 839
+    },
+    {
+      "name": "@ideia/workspace-resources",
+      "path": "workspace-resources",
+      "tests": 4,
+      "loc": 1091
+    },
+    {
+      "name": "@ideia/zero-to-deploy",
+      "path": "zero-to-deploy",
+      "tests": 2,
+      "loc": 695
+    }
+  ],
+  "rules": {
+    "docSyncRequired": true,
+    "preCommitValidation": true,
+    "contextAutoInject": true
+  }
+}

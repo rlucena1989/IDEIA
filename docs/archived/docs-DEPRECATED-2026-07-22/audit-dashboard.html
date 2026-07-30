@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDEIA Audit Dashboard</title>
+<style>
+  :root { --bg: #0f172a; --card: #1e293b; --text: #e2e8f0; --muted: #64748b; --green: #22c55e; --red: #ef4444; --yellow: #eab308; --blue: #3b82f6; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: ui-monospace, monospace; background: var(--bg); color: var(--text); padding: 20px; }
+  h1 { font-size: 1.5em; margin-bottom: 5px; }
+  .subtitle { color: var(--muted); font-size: 0.85em; margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .card { background: var(--card); border-radius: 8px; padding: 16px; border: 1px solid #334155; }
+  .card h3 { font-size: 0.8em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+  .card .value { font-size: 2em; font-weight: bold; }
+  .card .sub { font-size: 0.75em; color: var(--muted); margin-top: 4px; }
+  .green { color: var(--green); } .red { color: var(--red); } .yellow { color: var(--yellow); } .blue { color: var(--blue); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+  th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid #334155; }
+  th { color: var(--muted); font-size: 0.75em; text-transform: uppercase; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.75em; font-weight: bold; }
+  .badge-pass { background: #166534; color: #86efac; }
+  .badge-fail { background: #7f1d1d; color: #fca5a5; }
+  .badge-warn { background: #713f12; color: #fde047; }
+  .section-title { font-size: 1.1em; margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 1px solid #334155; }
+  .bar-container { background: #334155; border-radius: 4px; height: 20px; overflow: hidden; }
+  .bar { height: 100%; border-radius: 4px; transition: width 0.3s; }
+  .flex { display: flex; gap: 8px; align-items: center; }
+</style>
+</head>
+<body>
+<h1>📊 IDEIA Audit Dashboard</h1>
+<p class="subtitle">Autonomous Audit & Quality Monitoring · <span id="timestamp"></span></p>
+
+<div class="grid" id="kpiGrid">
+  <div class="card"><h3>GAPS Resolved</h3><div class="value green" id="gapsResolved">—</div><div class="sub">of 60 total</div></div>
+  <div class="card"><h3>SEC Tasks</h3><div class="value green" id="secTasks">—</div><div class="sub">of 25 implemented</div></div>
+  <div class="card"><h3>Coverage</h3><div class="value blue" id="coverage">—</div><div class="sub">lines threshold</div></div>
+  <div class="card"><h3>Compliance</h3><div class="value green" id="compliance">—</div><div class="sub">checks passing</div></div>
+  <div class="card"><h3>Adapter Tests</h3><div class="value blue" id="adapterTests">—</div><div class="sub">tests passing</div></div>
+  <div class="card"><h3>Audit Trail</h3><div class="value blue" id="auditTests">—</div><div class="sub">tests passing</div></div>
+  <div class="card"><h3>Workflows CI</h3><div class="value blue" id="workflows">—</div><div class="sub">active workflows</div></div>
+  <div class="card"><h3>Security Docs</h3><div class="value green" id="secDocs">—</div><div class="sub">documents published</div></div>
+</div>
+
+<h2 class="section-title">📋 Security Compliance</h2>
+<table><thead><tr><th>Control</th><th>Status</th><th>Detail</th></tr></thead><tbody id="complianceTable"></tbody></table>
+
+<h2 class="section-title">📦 Gap Analysis</h2>
+<table><thead><tr><th>Area</th><th>Status</th><th>Detail</th></tr></thead><tbody id="gapsTable"></tbody></table>
+
+<h2 class="section-title">📈 SLO Metrics</h2>
+<table><thead><tr><th>Metric</th><th>Value</th><th>Status</th></tr></thead><tbody id="sloTable"></tbody></table>
+
+<h2 class="section-title">🔴 Security Alerts</h2>
+<div id="alerts"><p style="color: var(--muted)">Nenhum alerta ativo.</p></div>
+
+<script>
+async function loadData() {
+  document.getElementById('timestamp').textContent = new Date().toISOString();
+
+  // Load KPI data from security-kpis if available
+  try {
+    const complianceResp = await fetch('../docs/governance/MATRIZ-COMPLIANCE-SEGURANCA.md');
+    const complianceText = await complianceResp.text();
+    const resolved = (complianceText.match(/✅/g) || []).length;
+    document.getElementById('secTasks').textContent = resolved;
+  } catch {}
+
+  try {
+    const gapsResp = await fetch('../docs/governance/GAPS-PRODUCAO-IDE.md');
+    const gapsText = await gapsResp.text();
+    const totalMatch = gapsText.match(/\*\*Total\*\*.*?(\d+)\s+resolvidos/);
+    if (totalMatch) document.getElementById('gapsResolved').textContent = totalMatch[1];
+    
+    // GAPS table
+    const gaps = gapsText.match(/### (G\d+.*?)(?=###|$)/gs) || [];
+    const tbody = document.getElementById('gapsTable');
+    gaps.slice(0, 20).forEach(g => {
+      const title = g.match(/### (G\d+.*)/);
+      const status = g.includes('RESOLVIDO') ? '✅ Pass' : g.includes('Pendente') ? '❌ Fail' : '⚠️ Warn';
+      const cls = status.includes('Pass') ? 'badge-pass' : status.includes('Fail') ? 'badge-fail' : 'badge-warn';
+      tbody.innerHTML += `<tr><td>${title?.[1] || 'Gap'}</td><td><span class="badge ${cls}">${status}</span></td><td>${g.slice(0, 100)}</td></tr>`;
+    });
+  } catch {}
+
+  try {
+    const complianceResp = await fetch('../docs/governance/MATRIZ-COMPLIANCE-SEGURANCA.md');
+    const text = await complianceResp.text();
+    const controls = text.match(/\*\*(SEC-\d+)\*\*.*?✅\s*\*\*RESOLVIDO\*\*/g) || [];
+    document.getElementById('compliance').textContent = `${controls.length}/25`;
+    document.getElementById('secDocs').textContent = (text.match(/✅/g) || []).length - 4;
+    const tbody = document.getElementById('complianceTable');
+    controls.slice(0, 25).forEach(c => {
+      const id = c.match(/SEC-\d+/)?.[0] || '';
+      const desc = c.replace(/\*\*/g, '').slice(0, 80);
+      tbody.innerHTML += `<tr><td>${id}</td><td><span class="badge badge-pass">✅ Implemented</span></td><td>${desc}</td></tr>`;
+    });
+  } catch {}
+}
+loadData();
+</script>
+</body>
+</html>

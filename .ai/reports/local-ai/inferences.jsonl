@@ -1334,3 +1334,484 @@
 {"timestamp":"2026-07-21T16:31:17.643Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
 {"timestamp":"2026-07-21T16:31:17.646Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":0,"success":true}
 {"timestamp":"2026-07-21T16:31:17.651Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T10:57:12.598Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":7,"success":true}
+{"timestamp":"2026-07-29T10:57:12.608Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T10:57:12.611Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T10:57:12.618Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T10:57:12.624Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T10:57:12.632Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T10:57:12.635Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T10:57:12.638Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":0,"success":true}
+{"timestamp":"2026-07-29T11:53:18.827Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":3,"success":true}
+{"timestamp":"2026-07-29T11:53:18.832Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T11:53:18.836Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T11:53:18.844Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T11:53:18.850Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T11:53:18.861Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T11:53:18.865Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T11:53:18.868Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T13:48:44.833Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":4,"success":true}
+{"timestamp":"2026-07-29T13:48:44.836Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T13:48:44.843Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T13:48:44.851Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T13:48:44.855Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T13:48:44.862Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T13:48:44.869Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":0,"success":true}
+{"timestamp":"2026-07-29T13:48:44.874Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T13:59:18.269Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":7,"success":true}
+{"timestamp":"2026-07-29T13:59:18.274Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T13:59:18.278Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T13:59:18.286Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T13:59:18.290Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T13:59:18.300Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T13:59:18.305Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T13:59:18.310Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T14:00:57.881Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":3,"success":true}
+{"timestamp":"2026-07-29T14:00:57.886Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:00:57.890Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:00:57.902Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T14:00:57.906Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T14:00:57.914Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":0,"success":true}
+{"timestamp":"2026-07-29T14:00:57.920Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T14:00:57.926Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T14:01:58.184Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":5,"success":true}
+{"timestamp":"2026-07-29T14:01:58.188Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T14:01:58.194Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:01:58.201Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T14:01:58.205Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":0,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T14:01:58.215Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T14:01:58.221Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:01:58.224Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:03:04.226Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":4,"success":true}
+{"timestamp":"2026-07-29T14:03:04.232Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:03:04.238Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:03:04.248Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T14:03:04.252Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T14:03:04.262Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:03:04.266Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:03:04.269Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":0,"success":true}
+{"timestamp":"2026-07-29T14:07:41.562Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T14:07:41.567Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:07:41.571Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:07:41.580Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T14:07:41.584Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T14:07:41.591Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:07:41.595Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:07:41.599Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:09:19.104Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":3,"success":true}
+{"timestamp":"2026-07-29T14:09:19.108Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:09:19.114Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:09:19.123Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T14:09:19.126Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T14:09:19.133Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T14:09:19.140Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":0,"success":true}
+{"timestamp":"2026-07-29T14:09:19.143Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":0,"success":true}
+{"timestamp":"2026-07-29T14:28:42.510Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":38,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:28:42.522Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:28:42.535Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:28:42.561Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:28:42.573Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:28:42.586Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:29:37.797Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":49,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:29:37.811Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:29:37.823Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:29:37.846Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:29:37.857Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:29:37.868Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:30:20.444Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":42,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:30:20.460Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:30:20.471Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:30:20.497Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:30:20.510Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T14:30:20.522Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:13:49.384Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":83,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:13:49.397Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:13:49.408Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:13:49.434Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:13:49.455Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":12,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:13:49.465Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:14:17.699Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":38,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:14:17.710Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:14:17.720Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:14:17.747Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:14:17.758Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:14:17.770Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:14:48.122Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":84,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:14:48.132Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:14:48.141Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:14:48.173Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:14:48.183Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:14:48.202Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":12,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:15:46.518Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":84,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:15:46.531Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:15:46.545Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:15:46.570Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:15:46.588Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":11,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:15:46.601Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":3,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:16:17.642Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":42,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:16:17.657Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:16:17.672Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:16:17.697Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:16:17.710Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:16:17.721Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:16:50.459Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":86,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:16:50.473Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:16:50.482Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:16:50.511Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:16:50.522Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:16:50.534Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:17:48.599Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":36,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:17:48.611Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:17:48.623Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:17:48.646Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:17:48.656Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:17:48.667Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:18:27.444Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":35,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:18:27.457Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:18:27.469Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:18:27.494Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:18:27.506Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:18:27.515Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:19:01.945Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":83,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:19:01.955Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:19:01.965Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:19:01.996Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":13,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:19:02.007Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:19:02.019Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:21:27.354Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":36,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:21:27.366Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:21:27.378Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:21:27.402Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:21:27.513Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:21:27.585Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:22:11.603Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":94,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:22:11.614Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:22:11.626Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:22:11.652Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:22:11.662Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:22:11.672Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:22:41.906Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":49,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:22:41.919Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:22:41.933Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:22:41.956Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:22:41.969Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:22:41.983Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:25:39.405Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":14,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:25:39.419Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:25:39.433Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:25:39.455Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:25:39.469Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:25:39.481Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:25:42.024Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T16:25:42.031Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T16:25:42.034Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T16:25:42.041Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T16:25:42.045Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T16:25:42.055Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T16:25:42.059Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T16:25:42.062Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T16:27:15.514Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":8,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:27:15.526Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:27:15.538Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:27:15.562Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:27:15.572Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:27:15.584Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T16:27:18.151Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T16:27:18.156Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T16:27:18.161Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T16:27:18.169Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T16:27:18.173Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T16:27:18.181Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T16:27:18.186Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T16:27:18.189Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:11:40.055Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":12,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:11:40.067Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:11:40.080Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:11:40.102Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:11:40.117Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:11:40.129Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:11:52.747Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T17:11:52.752Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":0,"success":true}
+{"timestamp":"2026-07-29T17:11:52.756Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:11:52.765Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T17:11:52.768Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T17:11:52.781Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T17:11:52.784Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":0,"success":true}
+{"timestamp":"2026-07-29T17:11:52.788Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:24:54.020Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":11,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:24:54.041Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:24:54.050Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:24:54.084Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":10,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:24:54.230Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:24:54.240Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:25:02.760Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T17:25:03.039Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:25:03.411Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:25:03.671Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T17:25:03.921Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T17:25:04.176Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:25:04.426Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:25:04.798Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T17:38:47.491Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:38:47.509Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:38:47.522Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:38:47.554Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:38:47.570Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:38:47.585Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":7,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:39:10.607Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T17:39:10.611Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:39:10.615Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:39:10.627Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T17:39:10.631Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T17:39:10.641Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T17:39:10.646Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:39:10.649Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:54:16.090Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":13,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:54:16.104Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":7,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:54:16.119Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":7,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:54:16.150Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":7,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:54:16.166Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:54:16.181Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T17:54:24.204Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:54:24.208Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:54:24.211Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:54:24.219Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T17:54:24.224Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":0,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T17:54:24.233Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:54:24.237Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T17:54:24.240Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T18:04:29.275Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":17,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T18:04:29.290Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T18:04:29.302Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T18:04:29.332Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":8,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T18:04:29.350Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":9,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T18:04:29.362Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T18:04:36.842Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T18:04:36.846Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":0,"success":true}
+{"timestamp":"2026-07-29T18:04:36.850Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T18:04:36.858Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T18:04:36.861Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T18:04:36.871Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T18:04:36.875Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T18:04:36.878Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T18:14:39.296Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T18:14:39.310Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T18:14:39.321Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T18:14:39.355Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":11,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T18:14:39.369Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T18:14:39.381Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":4,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T18:15:07.079Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":3,"success":true}
+{"timestamp":"2026-07-29T18:15:07.085Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T18:15:07.088Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T18:15:07.096Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T18:15:07.103Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T18:15:07.112Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T18:15:07.117Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T18:15:07.121Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:06:22.488Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":474,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:07:45.967Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":407,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:08:57.824Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":455,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:10:07.732Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":339,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:11:17.684Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":370,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:12:41.989Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":385,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:13:52.631Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":427,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:15:14.501Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":385,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:16:32.629Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":384,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:17:41.556Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":331,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:18:48.027Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":330,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:19:59.270Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":347,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:21:25.944Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":332,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:22:37.083Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":402,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:23:50.622Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":317,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:24:58.189Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":340,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:33:08.516Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":347,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:35:16.561Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":289,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:36:47.818Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":313,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:38:13.855Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":325,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:39:05.891Z","route":"fallback","model":"local-small","prompt_hash":"e3b0c44298fc1c14","duration_ms":382,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:39:12.788Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":8,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:39:12.802Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:39:12.813Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:39:12.848Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:39:12.863Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:39:12.875Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":5,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-29T19:39:28.692Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":15,"success":true}
+{"timestamp":"2026-07-29T19:39:28.701Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T19:39:28.708Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:39:28.723Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T19:39:28.729Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T19:39:28.744Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:39:28.752Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":3,"success":true}
+{"timestamp":"2026-07-29T19:39:28.758Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T19:40:21.255Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":6,"success":true}
+{"timestamp":"2026-07-29T19:40:21.261Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T19:40:21.267Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T19:40:21.281Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T19:40:21.288Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T19:40:21.304Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T19:40:21.310Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T19:40:21.315Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T19:41:45.138Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":5,"success":true}
+{"timestamp":"2026-07-29T19:41:45.144Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:41:45.150Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:41:45.161Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T19:41:45.167Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T19:41:45.179Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:41:45.184Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T19:41:45.187Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:42:56.990Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":3,"success":true}
+{"timestamp":"2026-07-29T19:42:56.997Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:42:57.001Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:42:57.010Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T19:42:57.015Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T19:42:57.029Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-29T19:42:57.033Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:42:57.037Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:44:11.107Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":5,"success":true}
+{"timestamp":"2026-07-29T19:44:11.114Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:44:11.118Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:44:11.129Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T19:44:11.134Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-29T19:44:11.144Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:44:11.150Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-29T19:44:11.155Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T00:21:29.713Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":5,"success":true}
+{"timestamp":"2026-07-30T00:21:29.727Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T00:21:29.732Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T00:21:29.751Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":3,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T00:21:29.758Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T00:21:29.772Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T00:21:29.779Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T00:21:29.784Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T00:32:52.177Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":7,"success":true}
+{"timestamp":"2026-07-30T00:32:52.668Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T00:32:52.676Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T00:32:52.696Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T00:32:52.707Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T00:32:52.725Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T00:32:52.734Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T00:32:52.744Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T00:38:34.054Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":25,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:38:34.078Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":12,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:38:34.094Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":11,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:38:34.136Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":17,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:38:34.158Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":11,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:38:34.175Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":10,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:38:41.238Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":8,"success":true}
+{"timestamp":"2026-07-30T00:38:41.245Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T00:38:41.254Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T00:38:41.271Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T00:38:41.277Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T00:38:41.293Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T00:38:41.300Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":3,"success":true}
+{"timestamp":"2026-07-30T00:38:41.308Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T00:53:11.777Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":36,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:53:11.803Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":16,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:53:11.820Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":8,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:53:11.863Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":14,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:53:11.884Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":8,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:53:11.913Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":15,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:58:22.582Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":22,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:58:22.600Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":8,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:58:22.615Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":8,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:58:22.649Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":9,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:58:22.665Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":8,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T00:58:22.682Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":8,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T01:57:50.387Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":9,"success":true}
+{"timestamp":"2026-07-30T01:57:50.393Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T01:57:50.397Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T01:57:50.411Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T01:57:50.420Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T01:57:50.434Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T01:57:50.440Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T01:57:50.445Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T02:10:19.465Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":61,"success":true}
+{"timestamp":"2026-07-30T02:10:19.481Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T02:10:19.487Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T02:10:19.518Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T02:10:19.530Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T02:10:19.594Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":40,"success":true}
+{"timestamp":"2026-07-30T02:10:19.611Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":6,"success":true}
+{"timestamp":"2026-07-30T02:10:19.630Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T02:17:09.340Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":46,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T02:17:09.393Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":36,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T02:17:09.430Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":28,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T02:17:09.526Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":57,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T02:17:09.553Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":11,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T02:17:09.581Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":18,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T02:29:48.963Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":22,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T02:29:48.989Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":7,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T02:29:49.003Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T02:29:49.033Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":7,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T02:29:49.048Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":7,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T02:29:49.063Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":7,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:00:54.936Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":14,"success":true}
+{"timestamp":"2026-07-30T04:00:54.957Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T04:00:54.961Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T04:00:54.979Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T04:00:54.988Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":5,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T04:00:55.006Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":4,"success":true}
+{"timestamp":"2026-07-30T04:00:55.011Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T04:00:55.015Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T04:06:01.093Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":30,"success":true}
+{"timestamp":"2026-07-30T04:06:01.098Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T04:06:01.106Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T04:06:01.124Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T04:06:01.136Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":5,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T04:06:01.151Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":4,"success":true}
+{"timestamp":"2026-07-30T04:06:01.158Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T04:06:01.163Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T04:11:27.420Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":23,"success":true}
+{"timestamp":"2026-07-30T04:11:27.429Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T04:11:27.438Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T04:11:27.455Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T04:11:27.460Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T04:11:27.487Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":6,"success":true}
+{"timestamp":"2026-07-30T04:11:27.493Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T04:11:27.497Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T04:18:38.080Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":32,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:18:38.102Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":8,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:18:38.121Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":8,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:18:38.162Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":13,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:18:38.184Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":13,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:18:38.203Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":9,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:24:29.329Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":32,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:24:29.361Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":19,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:24:29.378Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":10,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:24:29.438Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":32,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:24:29.454Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":9,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:24:29.471Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":9,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:25:25.286Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":15,"success":true}
+{"timestamp":"2026-07-30T04:25:25.294Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T04:25:25.299Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T04:25:25.321Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":5,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T04:25:25.327Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T04:25:25.344Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T04:25:25.349Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T04:25:25.354Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":true}
+{"timestamp":"2026-07-30T04:29:26.813Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":28,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:29:26.845Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":22,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:29:26.871Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":18,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:29:26.906Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":10,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:29:26.929Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":12,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:29:26.951Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":16,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:40:14.675Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":25,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:40:14.694Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":11,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:40:14.712Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":10,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:40:14.747Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":9,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:40:14.775Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":16,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:40:14.790Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":9,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T04:59:06.547Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":60,"success":true}
+{"timestamp":"2026-07-30T04:59:06.559Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":5,"success":true}
+{"timestamp":"2026-07-30T04:59:06.565Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":2,"success":true}
+{"timestamp":"2026-07-30T04:59:06.590Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":3,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T04:59:06.597Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":1,"success":false,"error":"offline"}
+{"timestamp":"2026-07-30T04:59:06.629Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":9,"success":true}
+{"timestamp":"2026-07-30T04:59:06.645Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":5,"success":true}
+{"timestamp":"2026-07-30T04:59:06.660Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"mockhash","duration_ms":5,"success":true}
+{"timestamp":"2026-07-30T05:12:45.690Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"0d17991ff9154447","duration_ms":19,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T05:12:45.704Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"2756b9b5cf124283","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T05:12:45.718Z","route":"agent-task","model":"qwen2:0.5b","prompt_hash":"437100aac35eaa6b","duration_ms":7,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T05:12:46.538Z","route":"agent-task","model":"llama3","prompt_hash":"2ccc57921e2f53c7","duration_ms":6,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T05:12:47.174Z","route":"agent-task","model":"llama3","prompt_hash":"91c2efc1d7408eee","duration_ms":7,"success":false,"error":"TypeError: fetch failed"}
+{"timestamp":"2026-07-30T05:12:47.929Z","route":"agent-task","model":"llama3","prompt_hash":"7aeae6aef513c22a","duration_ms":8,"success":false,"error":"TypeError: fetch failed"}

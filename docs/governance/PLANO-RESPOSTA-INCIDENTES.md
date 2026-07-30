@@ -108,8 +108,65 @@
 | Incident commander | A definir |
 | Escalação | BDFL (anomalyco) |
 
-## 8. Histórico
+## 8. Notificação Automática
+
+### 8.1 Roteamento por Severidade
+
+O `IncidentNotifier` (`packages/incident-manager/src/incident-notifier.ts`) roteia notificações automaticamente:
+
+| Severidade | Canais |
+|------------|--------|
+| 🔴 Crítico | PagerDuty + Slack + Email |
+| 🟠 Alto | Slack + Email |
+| 🟡 Médio | Email + Dashboard (console) |
+| 🟢 Baixo | Email + Dashboard (console) |
+
+### 8.2 Eventos Notificados
+
+- `notifyCreated` — disparado após `IncidentManager.create()`
+- `notifyStatusChanged` — disparado após `IncidentManager.updateStatus()`
+- `notifyEscalated` — escalonamento manual via `IncidentNotifier.notifyEscalated()`
+
+### 8.3 Configuração via Environment
+
+```env
+# Slack
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...
+SLACK_CHANNEL=#security
+
+# Email (SMTP)
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=user
+SMTP_PASS=pass
+ALERT_EMAIL_FROM=incidents@ideia.dev
+ALERT_EMAIL_TO=security@ideia.dev
+
+# PagerDuty (apenas crítico)
+PAGERDUTY_API_KEY=...
+PAGERDUTY_ROUTING_KEY=...
+PAGERDUTY_SERVICE_ID=...
+```
+
+### 8.4 Comandos CLI
+
+```bash
+ai-devkit incident notifier status    # Verificar configuração
+ai-devkit incident notifier test      # Testar canais
+ai-devkit incident create -s critical "Título"   # Criar incidente
+ai-devkit incident list               # Listar incidentes
+```
+
+### 8.5 Implementação
+
+- `IncidentNotifier` — `packages/incident-manager/src/incident-notifier.ts`
+- Hook no `IncidentManager` — notificador opcional (graceful fallback se não configurado)
+- `loadNotifierConfig()` — carrega configuração de variáveis de ambiente
+- Compatível com `sendWebhookAlert()` em `packages/cli/src/utils/alert-webhook.ts`
+
+## 9. Histórico
 
 | Versão | Data | Autor | Mudanças |
 |--------|------|-------|----------|
 | 1.0 | 2026-07-18 | IDEIA Core Team | Versão inicial |
+| 1.1 | 2026-07-26 | IDEIA Core Team | Adicionada seção 8 — Notificação Automática com IncidentNotifier |

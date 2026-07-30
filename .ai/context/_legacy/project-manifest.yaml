@@ -1,0 +1,38 @@
+project:
+  name: ai-devkit-project
+  type: fullstack
+  default_language: pt-BR
+
+backend:
+  framework: nestjs
+  adapter: express
+  architecture: clean-architecture
+  domain_style: ddd
+  validation: zod
+  orm: prisma
+  database: postgresql
+  auth: jwt
+
+frontend:
+  framework: nextjs
+  styling: tailwind
+  ui: shadcn-ui
+  forms: react-hook-form
+  validation: zod
+  server_state: tanstack-query
+  tables: tanstack-table
+
+quality:
+  lint: true
+  typecheck: true
+  unit_tests: true
+  e2e_tests: true
+  build_required: true
+  coverage_min: 80
+
+ai:
+  context_strategy: minimal-relevant-files
+  require_artifact_manifest: true
+  require_diff: true
+  require_quality_gate: true
+  allow_model_specific_rules: false

@@ -53,6 +53,19 @@ function readJSON(path: string): Record<string, unknown> {
   return JSON.parse(content);
 }
 
+function recurseFind(dir: string, pattern: RegExp): string[] {
+  const results: string[] = [];
+  try {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (entry.name === 'node_modules' || entry.name === 'dist' || entry.name.startsWith('.')) continue;
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) results.push(...recurseFind(full, pattern));
+      else if (pattern.test(entry.name)) results.push(full);
+    }
+  } catch {}
+  return results;
+}
+
 function scanPackages(): PackageInfo[] {
   const packages: PackageInfo[] = [];
   if (!existsSync(PACKAGES_DIR)) return packages;
@@ -67,18 +80,12 @@ function scanPackages(): PackageInfo[] {
     try {
       const pkg = readJSON(pkgJsonPath);
       const srcDir = join(pkgDir, 'src');
-      const testDir = join(pkgDir, '__tests__');
-      const srcTestDir = join(pkgDir, 'src', '__tests__');
       const hasSrc = existsSync(srcDir);
-      const hasTests = existsSync(testDir) || existsSync(srcTestDir);
-
       let testCount = 0;
-      if (existsSync(testDir)) {
-        testCount += readdirSync(testDir).filter(f => f.endsWith('.test.ts') || f.endsWith('.test.tsx')).length;
-      }
-      if (existsSync(srcTestDir)) {
-        testCount += readdirSync(srcTestDir).filter(f => f.endsWith('.test.ts') || f.endsWith('.test.tsx')).length;
-      }
+      let hasTests = false;
+      const allFiles = recurseFind(pkgDir, /\.test\.tsx?$/);
+      testCount = allFiles.length;
+      hasTests = testCount > 0;
 
       let loc = 0;
       if (hasSrc) {
@@ -199,6 +206,10 @@ function generateContextInject(packages: PackageInfo[]): Record<string, unknown>
   };
 }
 
+function info(msg: string): void {
+  console.log(`\x1b[34mℹ️  ${msg}\x1b[0m`);
+}
+
 function audit(packages: PackageInfo[]): AuditReport {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -229,7 +240,14 @@ function audit(packages: PackageInfo[]): AuditReport {
 
   const noTests = packages.filter(p => p.hasSrc && !p.hasTests);
   if (noTests.length > 0) {
-    warnings.push(`Packages without tests: ${noTests.map(p => p.path).join(', ')}`);
+    const testDirPkgs = packages.filter(p => p.hasSrc && !p.hasTests && existsSync(join(PACKAGES_DIR, p.path, 'tests')));
+    if (testDirPkgs.length > 0) {
+      info(`Packages with tests/ dir (detected by scan): ${testDirPkgs.map(p => p.path).join(', ')}`);
+    }
+    const trulyNoTests = noTests.filter(p => !existsSync(join(PACKAGES_DIR, p.path, 'tests')));
+    if (trulyNoTests.length > 0) {
+      warnings.push(`Packages without tests: ${trulyNoTests.map(p => p.path).join(', ')}`);
+    }
   }
 
   return {

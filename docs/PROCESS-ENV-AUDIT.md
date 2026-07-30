@@ -1,0 +1,151 @@
+# Process.env Usage Audit
+
+**Generated:** 2026-07-27T05:05:30.906Z
+
+## Summary
+
+- **Total files with process.env:** 79
+- **Total occurrences:** 213
+
+## Top 20 Files by Usage
+
+| File | Occurrences | Variables |
+|------|------------|----------|
+| incident-manager\src\incident-notifier.ts | 16 | SLACK_WEBHOOK_URL, SLACK_CHANNEL, ALERT_EMAIL_TO, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, ALERT_EMAIL_FROM, PAGERDUTY_API_KEY, PAGERDUTY_ROUTING_KEY, PAGERDUTY_SERVICE_ID |
+| event-bus\src\nats-config.ts | 10 | NATS_SERVERS, NATS_STREAM, NATS_MAX_HISTORY, NATS_RECONNECT, NATS_MAX_RECONNECT, NATS_RECONNECT_WAIT, NATS_TIMEOUT, NATS_TOKEN, NATS_USER, NATS_PASS |
+| human-gate-pipeline\src\human-approval-gate.ts | 10 | SLACK_WEBHOOK_URL, HITL_EMAIL_TO, HITL_WEBHOOK_URL, HITL_SMS_TO, TWILIO_ACCOUNT_SID, PAGERDUTY_API_KEY, PAGERDUTY_ROUTING_KEY |
+| llm-provider\src\index.ts | 10 | IDEIA_LLM_ENDPOINT, IDEIA_LLM_API_KEY, IDEIA_LLM_MODEL, IDEIA_LLM_REASONING, GEMINI_API_KEY, GOOGLE_API_KEY |
+| acceleration\src\config.ts | 9 | AI_MODE, AI_LOOP, AI_STOP_ON_FAILURE, AI_CONCURRENCY, AI_REPORT_DIR, AI_CACHE_FILE, AI_STATE_FILE, AI_METRICS_FILE, AI_TELEMETRY_FILE |
+| code-signing\src\code-sign-pipeline.ts | 9 | AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, CERT_PFX_PATH, CERT_PASSWORD, COSIGN_KEY_PATH, APPLE_TEAM_ID, GPG_KEY_ID |
+| cli\src\local-ai\providers\aws.ts | 8 | AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, AWS_REGION |
+| cli\src\utils\alert-webhook.ts | 8 | SLACK_WEBHOOK_URL, DISCORD_WEBHOOK_URL, ALERT_EMAIL_TO, ALERT_EMAIL_FROM, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS |
+| config-engine\src\context-detection.ts | 7 | CI, GITHUB_ACTIONS, GITLAB_CI, NODE_ENV, IDEIA_LEARNING, IDEIA_EMERGENCY |
+| llm-provider\src\index.js | 6 | IDEIA_LLM_ENDPOINT, IDEIA_LLM_API_KEY, IDEIA_LLM_MODEL |
+| api-server\src\server.ts | 5 | PORT, API_KEY, JWT_SECRET, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW_MS |
+| api-server\src\routes\system.ts | 4 | npm_package_version, NODE_ENV, API_KEY, JWT_SECRET |
+| ideia-plugin\lib\node\llm-provider.js | 4 | IDEIA_LLM_MODEL, IDEIA_LLM_ENDPOINT, IDEIA_LLM_API_KEY |
+| ideia-plugin\src\node\llm-provider.ts | 4 | IDEIA_LLM_MODEL, IDEIA_LLM_ENDPOINT, IDEIA_LLM_API_KEY |
+| langgraph-observability\src\langgraph-observability.ts | 4 | LANGFUSE_SECRET_KEY, LANGFUSE_PUBLIC_KEY, LANGFUSE_HOST, LANGSMITH_API_KEY |
+| local-ai\src\hardware.ts | 4 | CUDA_VISIBLE_DEVICES, ROCM_VISIBLE_DEVICES |
+| supply-chain-sec\src\sigstore-signer.ts | 4 | IDEIA_SIGNING_KEY, IDEIA_SIGNING_PUBLIC_KEY |
+| acceleration\src\route-selector.ts | 3 | OPENAI_API_KEY, ANTHROPIC_API_KEY, GOOGLE_API_KEY |
+| core\bin\ai-runner.js | 3 | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_MODEL |
+| llm-integration\src\providers\index.ts | 3 | OPENAI_API_KEY, ANTHROPIC_API_KEY, GEMINI_API_KEY |
+
+## All Environment Variables Used
+
+| Variable | Files |
+|----------|-------|
+| IDEIA_LLM_ENDPOINT | 9 |
+| IDEIA_LLM_MODEL | 6 |
+| IDEIA_LLM_API_KEY | 5 |
+| PORT | 5 |
+| OPENAI_API_KEY | 5 |
+| SLACK_WEBHOOK_URL | 4 |
+| NODE_ENV | 4 |
+| npm_package_version | 4 |
+| SHELL | 4 |
+| GENERATOR_STACK | 4 |
+| JWT_SECRET | 3 |
+| COMSPEC | 3 |
+| NATS_URL | 3 |
+| ALERT_EMAIL_TO | 2 |
+| SMTP_HOST | 2 |
+| SMTP_PORT | 2 |
+| SMTP_USER | 2 |
+| SMTP_PASS | 2 |
+| ALERT_EMAIL_FROM | 2 |
+| PAGERDUTY_API_KEY | 2 |
+| PAGERDUTY_ROUTING_KEY | 2 |
+| GEMINI_API_KEY | 2 |
+| GOOGLE_API_KEY | 2 |
+| AI_LOOP | 2 |
+| DISCORD_WEBHOOK_URL | 2 |
+| CI | 2 |
+| GITHUB_ACTIONS | 2 |
+| API_KEY | 2 |
+| CUDA_VISIBLE_DEVICES | 2 |
+| ROCM_VISIBLE_DEVICES | 2 |
+| ANTHROPIC_API_KEY | 2 |
+| AI_LLM_MODE | 2 |
+| EVENT_BUS_TYPE | 2 |
+| IDEIA_MEMORY_PATH | 2 |
+| IDEIA_WORKSPACE_ROOT | 2 |
+| SLACK_CHANNEL | 1 |
+| PAGERDUTY_SERVICE_ID | 1 |
+| NATS_SERVERS | 1 |
+| NATS_STREAM | 1 |
+| NATS_MAX_HISTORY | 1 |
+| NATS_RECONNECT | 1 |
+| NATS_MAX_RECONNECT | 1 |
+| NATS_RECONNECT_WAIT | 1 |
+| NATS_TIMEOUT | 1 |
+| NATS_TOKEN | 1 |
+| NATS_USER | 1 |
+| NATS_PASS | 1 |
+| HITL_EMAIL_TO | 1 |
+| HITL_WEBHOOK_URL | 1 |
+| HITL_SMS_TO | 1 |
+| TWILIO_ACCOUNT_SID | 1 |
+| IDEIA_LLM_REASONING | 1 |
+| AI_MODE | 1 |
+| AI_STOP_ON_FAILURE | 1 |
+| AI_CONCURRENCY | 1 |
+| AI_REPORT_DIR | 1 |
+| AI_CACHE_FILE | 1 |
+| AI_STATE_FILE | 1 |
+| AI_METRICS_FILE | 1 |
+| AI_TELEMETRY_FILE | 1 |
+| AZURE_CLIENT_ID | 1 |
+| AZURE_CLIENT_SECRET | 1 |
+| CERT_PFX_PATH | 1 |
+| CERT_PASSWORD | 1 |
+| COSIGN_KEY_PATH | 1 |
+| APPLE_TEAM_ID | 1 |
+| GPG_KEY_ID | 1 |
+| AWS_ACCESS_KEY_ID | 1 |
+| AWS_SECRET_ACCESS_KEY | 1 |
+| AWS_SESSION_TOKEN | 1 |
+| AWS_REGION | 1 |
+| GITLAB_CI | 1 |
+| IDEIA_LEARNING | 1 |
+| IDEIA_EMERGENCY | 1 |
+| RATE_LIMIT_MAX | 1 |
+| RATE_LIMIT_WINDOW_MS | 1 |
+| LANGFUSE_SECRET_KEY | 1 |
+| LANGFUSE_PUBLIC_KEY | 1 |
+| LANGFUSE_HOST | 1 |
+| LANGSMITH_API_KEY | 1 |
+| IDEIA_SIGNING_KEY | 1 |
+| IDEIA_SIGNING_PUBLIC_KEY | 1 |
+| OPENAI_BASE_URL | 1 |
+| OPENAI_MODEL | 1 |
+| GTI_WEBHOOK_URL | 1 |
+| AI_DEVKIT_WEBHOOK_URL | 1 |
+| AI_JOB_TIMEOUT_MS | 1 |
+| AI_JOB_MAX_ATTEMPTS | 1 |
+| GITHUB_SHA | 1 |
+| CI_COMMIT_SHA | 1 |
+| AI_DEVKIT_NO_RECURSION | 1 |
+| MOCK_PORT | 1 |
+| MOCK_URL | 1 |
+| GITHUB_REPOSITORY | 1 |
+| CI_SERVER_URL | 1 |
+| TAVILY_API_KEY | 1 |
+| LANG | 1 |
+| LC_ALL | 1 |
+| IDEIA_ROOT | 1 |
+| NODE_OPTIONS | 1 |
+| HOME | 1 |
+| USERPROFILE | 1 |
+| PROGRAMDATA | 1 |
+| APPDATA | 1 |
+| TAURI_DEBUG | 1 |
+| A2A_API_KEY | 1 |
+| IDEIA_API_KEY | 1 |
+| AI_DAEMON_CHILD | 1 |
+| IDEIA_SESSION_ID | 1 |
+| GTI_TEST_MODE | 1 |
+| USER | 1 |
+| ProgramFiles | 1 |
+| GITHUB_TOKEN | 1 |

@@ -252,3 +252,8 @@
 {"timestamp":"2026-07-22T12:55:01.305Z","memory_rss_mb":2080,"memory_heap_used_mb":1841,"source":"auto"}
 {"timestamp":"2026-07-22T12:55:39.675Z","memory_rss_mb":1856,"memory_heap_used_mb":1635,"source":"auto"}
 {"timestamp":"2026-07-22T13:22:03.981Z","memory_rss_mb":2904,"memory_heap_used_mb":2009,"source":"auto"}
+{"timestamp":"2026-07-25T23:30:11.884Z","memory_rss_mb":2460,"memory_heap_used_mb":2188,"source":"auto"}
+{"timestamp":"2026-07-29T19:04:38.514Z","command":"test-cmd","status":"success","latency_ms":100,"memory_rss_mb":2568,"memory_heap_used_mb":2330,"source":"auto"}
+{"timestamp":"2026-07-29T19:04:38.517Z","command":"test-cmd","status":"error","latency_ms":100,"memory_rss_mb":2568,"memory_heap_used_mb":2330,"source":"auto","error":"something failed"}
+{"timestamp":"2026-07-29T19:39:30.622Z","command":"test-cmd","status":"success","latency_ms":100,"memory_rss_mb":329,"memory_heap_used_mb":101,"source":"auto"}
+{"timestamp":"2026-07-29T19:39:30.637Z","command":"test-cmd","status":"error","latency_ms":100,"memory_rss_mb":329,"memory_heap_used_mb":101,"source":"auto","error":"something failed"}

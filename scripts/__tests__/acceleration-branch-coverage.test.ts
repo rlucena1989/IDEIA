@@ -6,8 +6,8 @@ import os from 'node:os';
 // optimizer.ts — 21% branches → 100%
 // Nota: avoid mocking hardware-profile; use only tests that work on any hardware
 // ──────────────────────────────────────
-import { suggestOptimizations, optimizeMode, canRunLocally } from '../acceleration/optimizer';
-import type { RouteDecision, HardwareProfile } from '../acceleration/types';
+import { suggestOptimizations, optimizeMode, canRunLocally } from '../../packages/acceleration/src/optimizer';
+import type { RouteDecision, HardwareProfile } from '../../packages/acceleration/src/types';
 
 describe('optimizer branch coverage', () => {
   const lowHw: HardwareProfile = { cpuCores: 2, cpuUsage: 0.8, ramTotalGb: 4, ramFreeGb: 1, diskFreeGb: 10, nodeVersion: 'v18', platform: 'win32' };
@@ -74,7 +74,7 @@ describe('optimizer branch coverage', () => {
 // ──────────────────────────────────────
 // policy-engine.ts — 42% branches → 100%
 // ──────────────────────────────────────
-import { evaluatePolicies, addPolicy, clearPolicies, getPolicies, setPolicies } from '../acceleration/policy-engine';
+import { evaluatePolicies, addPolicy, clearPolicies, getPolicies, setPolicies } from '../../packages/acceleration/src/policy-engine';
 
 describe('policy-engine branch coverage', () => {
   beforeEach(() => {
@@ -151,7 +151,7 @@ describe('policy-engine branch coverage', () => {
 // ──────────────────────────────────────
 // calculation-engine.ts — 10% branches → 100%
 // ──────────────────────────────────────
-import { executeCalculation, isLocallySolvable } from '../acceleration/calculation-engine';
+import { executeCalculation, isLocallySolvable } from '../../packages/acceleration/src/calculation-engine';
 
 describe('calculation-engine branch coverage', () => {
   describe('executeCalculation', () => {
@@ -324,7 +324,7 @@ describe('health-check branch coverage', () => {
   });
 
   async function getHealthCheck() {
-    return import('../acceleration/health-check');
+    return import('../../packages/acceleration/src/health-check');
   }
 
   it('saudavel quando tudo existe', async () => {
@@ -443,7 +443,7 @@ describe('gap-detector branch coverage', () => {
   });
 
   async function getGapDetector() {
-    return import('../acceleration/gap-detector');
+    return import('../../packages/acceleration/src/gap-detector');
   }
 
   it('scorecard inexistente nao gera gaps de scorecard', async () => {
@@ -569,7 +569,7 @@ describe('engine branch coverage (unit, mocked I/O)', () => {
   });
 
   async function getEngine() {
-    return import('../acceleration/engine');
+    return import('../../packages/acceleration/src/engine');
   }
 
   // Setup minimal project structure for engine to work
@@ -677,13 +677,13 @@ describe('engine branch coverage (unit, mocked I/O)', () => {
 // ──────────────────────────────────────
 // planner.ts — branches extras (95% → 100%)
 // ──────────────────────────────────────
-import { createPlan } from '../acceleration/planner';
+import { createPlan } from '../../packages/acceleration/src/planner';
 
 describe('planner branch completion', () => {
-  const riskHigh: import('../acceleration/types').Forecast = { estimatedJobs: 5, estimatedDurationMs: 5000, risk: 'high' };
-  const riskMed: import('../acceleration/types').Forecast = { estimatedJobs: 5, estimatedDurationMs: 5000, risk: 'medium' };
-  const unstable: import('../acceleration/types').PrecisionReport = { confidence: 0.3, variance: 0.5, stable: false };
-  const stable: import('../acceleration/types').PrecisionReport = { confidence: 0.9, variance: 0.1, stable: true };
+  const riskHigh: import('../../packages/acceleration/src/types').Forecast = { estimatedJobs: 5, estimatedDurationMs: 5000, risk: 'high' };
+  const riskMed: import('../../packages/acceleration/src/types').Forecast = { estimatedJobs: 5, estimatedDurationMs: 5000, risk: 'medium' };
+  const unstable: import('../../packages/acceleration/src/types').PrecisionReport = { confidence: 0.3, variance: 0.5, stable: false };
+  const stable: import('../../packages/acceleration/src/types').PrecisionReport = { confidence: 0.9, variance: 0.1, stable: true };
 
   it('risk=medium adiciona medium-risk tag', () => {
     const plan = createPlan('fast', riskMed, stable);
@@ -691,7 +691,7 @@ describe('planner branch completion', () => {
   });
 
   it('risk=low adiciona low-risk tag', () => {
-    const lowRisk: import('../acceleration/types').Forecast = { estimatedJobs: 3, estimatedDurationMs: 2000, risk: 'low' };
+    const lowRisk: import('../../packages/acceleration/src/types').Forecast = { estimatedJobs: 3, estimatedDurationMs: 2000, risk: 'low' };
     const plan = createPlan('fast', lowRisk, stable);
     for (const job of plan) expect(job.tags).toContain('low-risk');
   });
@@ -719,11 +719,11 @@ describe('planner branch completion', () => {
 // ──────────────────────────────────────
 // quality-gate.ts — branches extras
 // ──────────────────────────────────────
-import { qualityGate } from '../acceleration/quality-gate';
+import { qualityGate } from '../../packages/acceleration/src/quality-gate';
 
 describe('quality-gate branch completion', () => {
-  const ok: import('../acceleration/types').JobResult = { id: 'j1', name: 't', status: 'success', durationMs: 100, exitCode: 0 };
-  const fail: import('../acceleration/types').JobResult = { id: 'j1', name: 't', status: 'failed', durationMs: 100, exitCode: 1, error: 'err' };
+  const ok: import('../../packages/acceleration/src/types').JobResult = { id: 'j1', name: 't', status: 'success', durationMs: 100, exitCode: 0 };
+  const fail: import('../../packages/acceleration/src/types').JobResult = { id: 'j1', name: 't', status: 'failed', durationMs: 100, exitCode: 1, error: 'err' };
   const forecast = { estimatedJobs: 5, estimatedDurationMs: 2000, risk: 'low' } as const;
   const precision = { confidence: 0.95, variance: 0.05, stable: true } as const;
 
@@ -760,7 +760,7 @@ describe('quality-gate branch completion', () => {
 // ──────────────────────────────────────
 // feedback-controller.ts — branches extras
 // ──────────────────────────────────────
-import { decideFeedback } from '../acceleration/feedback-controller';
+import { decideFeedback } from '../../packages/acceleration/src/feedback-controller';
 
 describe('feedback-controller branch completion', () => {
   it('warning em modo balanced vai para deep sem pausa', () => {
@@ -797,9 +797,9 @@ describe('feedback-controller branch completion', () => {
 // ──────────────────────────────────────
 // observability.ts — branches extras
 // ──────────────────────────────────────
-import { Telemetry } from '../acceleration/telemetry';
-import { MetricsStore } from '../acceleration/metrics-store';
-import { Observability } from '../acceleration/observability';
+import { Telemetry } from '../../packages/acceleration/src/telemetry';
+import { MetricsStore } from '../../packages/acceleration/src/metrics-store';
+import { Observability } from '../../packages/acceleration/src/observability';
 
 describe('observability branch completion', () => {
   let tmpDir: string;

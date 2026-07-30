@@ -1,6 +1,6 @@
 # .ai/bin
 
-Scripts executaveis auxiliares do ai-devkit. PENDING_ACTIONs sao Node.js puro (sem dependencias externas) e podem ser executados com `node .ai/bin/<script>.js` ou via `npm run ai:*`.
+Scripts executaveis auxiliares do ai-devkit. Todos sao Node.js puro (sem dependencias externas) e podem ser executados com `node .ai/bin/<script>.js` ou via `npm run ai:*`.
 
 ## Biblioteca comum
 

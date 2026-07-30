@@ -1,26 +1,39 @@
+# Gerado por scripts/audit/regenerate-metrics.ts — NÃO editar à mão.
+# Projeto: IDEIA (não confundir com o legado do diretório-pai do workspace)
 project:
-  name: ai-devkit-project
-  type: fullstack
-  default_language: pt-BR
+  name: ideia
+  type: ide-platform
+  default_language: typescript
+
+architecture:
+  pattern: clean-architecture + ddd + event-driven
+  shell: eclipse-theia
+  layers: 15
 
 backend:
-  framework: nestjs
-  adapter: express
-  architecture: clean-architecture
-  domain_style: ddd
+  framework: fastify
+  adapter: fastify
   validation: zod
   orm: prisma
   database: postgresql
   auth: jwt
 
 frontend:
-  framework: nextjs
+  framework: react
+  hosting: theia-widgets
   styling: tailwind
   ui: shadcn-ui
   forms: react-hook-form
   validation: zod
   server_state: tanstack-query
-  tables: tanstack-table
+
+messaging:
+  bus: nats-jetstream
+  patterns: [pub-sub, req-rep, kv, dlq]
+
+multiagent:
+  orchestrator: langgraph
+  llm: ollama-local
 
 quality:
   lint: true
@@ -32,7 +45,15 @@ quality:
 
 ai:
   context_strategy: minimal-relevant-files
+  context_generator: scripts/audit/regenerate-metrics.ts
   require_artifact_manifest: true
   require_diff: true
   require_quality_gate: true
   allow_model_specific_rules: false
+
+metrics:
+  regenerated_by: scripts/audit/regenerate-metrics.ts
+  src_packages: 292
+  loc: 440083
+  test_files: 1565
+  cli_commands: 345

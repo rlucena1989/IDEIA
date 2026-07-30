@@ -1,15 +1,123 @@
-# Leis Arquiteturais (ai-devkit v12.1)
+# Regras de compliance e governança — IDEIA
+# Lido pelo compliance mapper em packages/cli/src/compliance/mapper.ts
+
 architecture: "Clean Architecture"
 defensive_programming: true
 contract_first: true
 
 rules:
-  - "Todo DTO deve ser validado com Contract.pre()"
-  - "Erros de negocio devem usar AppError"
-  - "Proibido uso de any sem justificativa documentada"
-  - "Cobertura de testes minima: 20% (real: ~20%)"
-  - "Toda funcao publica deve ter JSDoc"
-  - "Camada de dominio nao pode importar infraestrutura"
-  - "Use cases devem ser testaveis isoladamente"
-  - "Nao colocar regra de negocio em controllers"
-  - "Nao alterar arquivos fora do escopo da tarefa"
+  - id: SEC-001
+    description: Hash chain for audit trail integrity
+    frameworks: [gdpr, lgpd, soc2, iso27001]
+    evidence: audit-trail implementation
+    status: implemented
+  - id: SEC-006
+    description: Output validation for PII detection
+    frameworks: [gdpr, lgpd]
+    evidence: output-validator with PII patterns
+    status: implemented
+  - id: SEC-023
+    description: PII scanner for personal data detection
+    frameworks: [gdpr, lgpd]
+    evidence: pii-detector with 30+ patterns
+    status: implemented
+  - id: PRIV-001
+    description: Right to erasure (RGPD Art. 17 / LGPD Art. 15)
+    frameworks: [gdpr, lgpd]
+    evidence: RightToBeForgotten class
+    status: implemented
+  - id: PRIV-002
+    description: Consent management (RGPD Art. 7 / LGPD Art. 7)
+    frameworks: [gdpr, lgpd]
+    evidence: ConsentManager class
+    status: implemented
+  - id: PRIV-003
+    description: Data Subject Request management (access, rectification, erasure, portability)
+    frameworks: [gdpr, lgpd]
+    evidence: DSRManager class
+    status: implemented
+  - id: PRIV-004
+    description: Anonymization pipeline for data sanitization
+    frameworks: [gdpr, lgpd]
+    evidence: Anonymizer + AnonymizationPipeline
+    status: implemented
+  - id: PRIV-005
+    description: Privacy policy with versioning
+    frameworks: [gdpr, lgpd]
+    evidence: PolicyManager class
+    status: implemented
+  - id: PRIV-006
+    description: Data retention management with auto-purge
+    frameworks: [gdpr, lgpd]
+    evidence: DataRetentionManager
+    status: implemented
+  - id: PRIV-007
+    description: DPIA documentado
+    frameworks: [gdpr, lgpd]
+    evidence: docs/governance/DPIA-IDEIA.md
+    status: implemented
+  - id: PRIV-008
+    description: Incident response plan with 72h breach notification
+    frameworks: [gdpr, lgpd]
+    evidence: PLANO-RESPOSTA-INCIDENTES.md
+    status: implemented
+  - id: PRIV-009
+    description: Privacy by design policy
+    frameworks: [gdpr, lgpd]
+    evidence: POLITICA-SEGURANCA.md
+    status: implemented
+  - id: PRIV-010
+    description: International PII detection (30+ patterns)
+    frameworks: [gdpr, lgpd]
+    evidence: pii-detector.ts
+    status: implemented
+  - id: PRIV-011
+    description: Right to explanation via explainability commands
+    frameworks: [gdpr, lgpd]
+    evidence: CLI ai explain command
+    status: implemented
+  - id: PRIV-012
+    description: Data portability (export user data in standard format)
+    frameworks: [gdpr, lgpd]
+    evidence: DSRManager with portability type
+    status: implemented
+  - id: SEC-024
+    description: Access control with RBAC enforcement
+    frameworks: [gdpr, lgpd, soc2, iso27001]
+    evidence: policy-engine with Cedar policies
+    status: implemented
+  - id: SEC-025
+    description: Data encryption at rest and in transit
+    frameworks: [gdpr, lgpd, soc2, iso27001]
+    evidence: crypto utilities in security-middleware
+    status: implemented
+  - id: SEC-026
+    description: Breach notification procedure (72h for GDPR/LGPD)
+    frameworks: [gdpr, lgpd]
+    evidence: PLANO-RESPOSTA-INCIDENTES.md
+    status: implemented
+  - id: AIA-001
+    description: Human oversight for AI decisions
+    frameworks: [eu-ai-act]
+    evidence: approval workflow with human-in-the-loop
+    status: implemented
+  - id: AIA-002
+    description: Transparency of AI decision-making
+    frameworks: [eu-ai-act]
+    evidence: explain command with decision traces
+    status: implemented
+  - id: AIA-003
+    description: Risk classification for AI systems
+    frameworks: [eu-ai-act]
+    evidence: risk-approval package with risk levels
+    status: implemented
+  - id: AIA-004
+    description: Technical documentation for AI systems
+    frameworks: [eu-ai-act]
+    evidence: governance documentation in docs/governance
+    status: implemented
+  - id: AIA-005
+    description: Accuracy and robustness of AI models
+    frameworks: [eu-ai-act]
+    evidence: quality-gates with verification layer
+    status: implemented

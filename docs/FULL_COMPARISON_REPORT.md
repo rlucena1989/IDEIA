@@ -1,0 +1,1230 @@
+============================================================
+  COMPLETE DIRECTORY COMPARISON REPORT
+  A: F:\PROJETOS\ai-devkit-workspace\docs
+  B: F:\PROJETOS\ai-devkit-workspace\IDEIA\docs
+============================================================
+
+=== SECTION 1: Files in A (root docs) compared to B (IDEIA docs) ===
+
+FILE: adr\ADR-001-theia-como-plataforma-base.md
+  A: size=5305  modified=2026-07-18 19:29:22
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-002-nats-jetstream-como-barramento-de-eventos.md
+  A: size=5404  modified=2026-07-18 19:29:25
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-003-mem0-sqlite-duckdb-como-stack-de-memoria.md
+  A: size=5778  modified=2026-07-18 19:29:29
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-004-langgraph-para-orquestracao-multiagente.md
+  A: size=5715  modified=2026-07-18 19:29:32
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-005-cedar-como-policy-engine.md
+  A: size=6150  modified=2026-07-18 19:29:35
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-006-dagger-github-actions-para-cicd.md
+  A: size=5494  modified=2026-07-18 19:29:38
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-007-estrategia-llm-slm-local-api-cloud.md
+  A: size=6232  modified=2026-07-18 19:29:42
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-008-adapt-para-task-decomposition.md
+  A: size=6262  modified=2026-07-18 19:29:45
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-009-opentelemetry-langfuse-para-observabilidade.md
+  A: size=5848  modified=2026-07-18 19:29:49
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-010-estrategia-de-qualidade-em-4-gates.md
+  A: size=6203  modified=2026-07-18 19:29:53
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-011-self-optimization-panel.md
+  A: size=979  modified=2026-07-18 18:36:25
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-012-topologia-integracao.md
+  A: size=905  modified=2026-07-18 18:36:27
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-013-controle-sintonia.md
+  A: size=1041  modified=2026-07-18 18:36:29
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-014-perfis-configuracao.md
+  A: size=1047  modified=2026-07-18 18:36:32
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-015-memoria-contexto.md
+  A: size=1144  modified=2026-07-18 18:43:34
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: adr\ADR-016-seguranca-camadas.md
+  A: size=1192  modified=2026-07-18 18:43:37
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: audit-dashboard.html
+  A: size=6129  modified=2026-07-18 19:32:36
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: ESTUDOS\BARRAMENTO-EVENTOS-MENSAGERIA-DISTRIBUIDA.md
+  A: size=28958  modified=2026-07-17 21:37:22
+  B: size=28958  modified=2026-07-17 21:37:22
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-AI-SAFETY-ALIGNMENT.md
+  A: size=107269  modified=2026-07-18 04:07:04
+  B: size=107269  modified=2026-07-18 04:07:04
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-AJUSTES-USUARIO-PERFIS-CONFIGURACAO.md
+  A: size=30974  modified=2026-07-18 19:00:51
+  B: size=30974  modified=2026-07-18 19:00:51
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-ALEM-DA-FRONTEIRA-CAPACIDADES-ENTERPRISE.md
+  A: size=66345  modified=2026-07-22 07:06:05
+  B: size=66345  modified=2026-07-22 07:06:05
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-ANALISE-COMPARATIVA-DEVIN-FACTORY-AGENTES.md
+  A: size=74420  modified=2026-07-20 14:58:57
+  B: size=74420  modified=2026-07-20 14:58:57
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-ANALISE-COMPLETA-CONCORRENCIA-PLANO-COMERCIAL.md
+  A: size=38561  modified=2026-07-21 09:46:37
+  B: size=38561  modified=2026-07-21 09:46:37
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-ANALISE-PROFUNDA-SISTEMA.md
+  A: size=18046  modified=2026-07-18 21:08:34
+  B: size=18046  modified=2026-07-18 21:08:34
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-API-SDK-ARCHITECTURE.md
+  A: size=87650  modified=2026-07-22 08:09:13
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: ESTUDOS\ESTUDO-APRENDIZADO-ADAPTATIVO-FEEDBACK-LOOP-EVOLUCAO-CROSS-PROJETO.md
+  A: size=29810  modified=2026-07-17 21:44:39
+  B: size=29810  modified=2026-07-17 21:44:39
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-AUTENTICACAO-AUTORIZACAO.md
+  A: size=105901  modified=2026-07-18 19:12:51
+  B: size=105901  modified=2026-07-18 19:12:51
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-BLUEPRINT-SCAFFOLD.md
+  A: size=111824  modified=2026-07-22 07:57:34
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: ESTUDOS\ESTUDO-CAPABILITY-REGISTRY.md
+  A: size=92209  modified=2026-07-22 07:56:58
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: ESTUDOS\ESTUDO-CLOUD-INFRAESTRUTURA.md
+  A: size=52301  modified=2026-07-18 03:55:32
+  B: size=52301  modified=2026-07-18 03:55:32
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-COLABORACAO-TEMPO-REAL.md
+  A: size=65561  modified=2026-07-18 03:58:14
+  B: size=65561  modified=2026-07-18 03:58:14
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-COMPLETO-FLUXO-IDEIA-ENTREGA.md
+  A: size=37087  modified=2026-07-18 04:03:34
+  B: size=37087  modified=2026-07-18 04:03:34
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-COMPLETO-TOPOLOGIA-INTEGRACAO-IDEIA.md
+  A: size=30926  modified=2026-07-18 19:01:00
+  B: size=30926  modified=2026-07-18 19:01:00
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-CONTEXT-PACK-SYSTEM.md
+  A: size=87846  modified=2026-07-22 08:14:04
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: ESTUDOS\ESTUDO-CONTROLE-SEGURANCA-SINTONIA-IDEIA-IA.md
+  A: size=27244  modified=2026-07-18 19:00:43
+  B: size=27244  modified=2026-07-18 19:00:43
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-DEPLOY-ENTREGA-CONTINUA.md
+  A: size=55600  modified=2026-07-18 03:57:30
+  B: size=55600  modified=2026-07-18 03:57:30
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-DESCOBERTAS-THEIA-AI-COMPLETO.md
+  A: size=10423  modified=2026-07-18 20:43:01
+  B: size=10423  modified=2026-07-18 20:43:01
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-DESKTOP-NATIVE.md
+  A: size=70662  modified=2026-07-18 04:00:36
+  B: size=70662  modified=2026-07-18 04:00:36
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-EMPILHAMENTO-CONTRATOS-INTEGRACOES.md
+  A: size=147913  modified=2026-07-17 22:17:58
+  B: size=147913  modified=2026-07-17 22:17:58
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-EMPILHAMENTO-CONTRATOS-INTEGRACOES-V2-SUPLEMENTO.md
+  A: size=81091  modified=2026-07-18 19:09:08
+  B: size=81091  modified=2026-07-18 19:09:08
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-ENGENHARIA-PROMPTS-AGENTES.md
+  A: size=57805  modified=2026-07-18 03:57:44
+  B: size=57805  modified=2026-07-18 03:57:44
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-EXTERNAL-LLM-INTEGRATION.md
+  A: size=78890  modified=2026-07-22 08:06:01
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: ESTUDOS\ESTUDO-IMPLEMENTACAO-TECNICA-MOCKUP.md
+  A: size=22706  modified=2026-07-18 20:25:05
+  B: size=22706  modified=2026-07-18 20:25:05
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-INOVACAO-ROTEIRO-FINAL.md
+  A: size=14184  modified=2026-07-18 20:37:08
+  B: size=14184  modified=2026-07-18 20:37:08
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-INTEGRACAO-THEIA-MOCKUP-FINAL.md
+  A: size=20824  modified=2026-07-18 20:17:31
+  B: size=20824  modified=2026-07-18 20:17:31
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-INTEGRACAO-TRIPLA-THEIA-IDEIA-IA.md
+  A: size=18676  modified=2026-07-18 20:52:53
+  B: size=18676  modified=2026-07-18 20:52:53
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-INTEGRACAO-UNIFICADA-IDEIA.md
+  A: size=22701  modified=2026-07-18 19:46:53
+  B: size=22701  modified=2026-07-18 19:46:53
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-INTENSIFICACAO-BENCHMARKS-DADOS.md
+  A: size=108296  modified=2026-07-18 07:23:09
+  B: size=108296  modified=2026-07-18 07:23:09
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-INTENSIFICACAO-BLUEPRINTS-IMPLEMENTACAO.md
+  A: size=135264  modified=2026-07-18 19:12:58
+  B: size=135264  modified=2026-07-18 19:12:58
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-INTENSIFICACAO-CONSOLIDADA-TODOS-ESTUDOS.md
+  A: size=12732  modified=2026-07-18 19:04:35
+  B: size=12732  modified=2026-07-18 19:04:35
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-INTENSIFICACAO-DEEP-DIVES-TECNICOS.md
+  A: size=127698  modified=2026-07-18 07:20:30
+  B: size=127698  modified=2026-07-18 07:20:30
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-INTENSIFICACAO-IMPLEMENTACAO-REAL.md
+  A: size=34759  modified=2026-07-18 19:13:06
+  B: size=34759  modified=2026-07-18 19:13:06
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-INTENSIFICACAO-MATRIZ-CROSS-STUDIES.md
+  A: size=109944  modified=2026-07-18 07:28:04
+  B: size=109944  modified=2026-07-18 07:28:04
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-MANIFEST-SELF-DESCRIPTION.md
+  A: size=118718  modified=2026-07-22 07:57:42
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: ESTUDOS\ESTUDO-MASTER-CONSOLIDADO-EXECUCAO.md
+  A: size=8958  modified=2026-07-18 21:14:06
+  B: size=8958  modified=2026-07-18 21:14:06
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-MELHORIA-USABILIDADE-EXPERIENCIA-USUARIO.md
+  A: size=19270  modified=2026-07-18 18:59:39
+  B: size=19270  modified=2026-07-18 18:59:39
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-MOCKUP-FRONTEND-IDEIA.md
+  A: size=16372  modified=2026-07-18 20:03:43
+  B: size=16372  modified=2026-07-18 20:03:43
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-MOCKUP-FRONTEND-IDEIA-V2.md
+  A: size=15576  modified=2026-07-18 20:09:59
+  B: size=15576  modified=2026-07-18 20:09:59
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-OBSERVABILIDADE-FULLSTACK.md
+  A: size=65076  modified=2026-07-18 03:59:31
+  B: size=65076  modified=2026-07-18 03:59:31
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-ONBOARDING-TUTORIALS.md
+  A: size=110219  modified=2026-07-22 07:58:07
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: ESTUDOS\ESTUDO-PERFORMANCE-ESCALABILIDADE.md
+  A: size=60847  modified=2026-07-18 19:09:35
+  B: size=60847  modified=2026-07-18 19:09:35
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-PLUGINS-ECOSSISTEMA.md
+  A: size=118588  modified=2026-07-18 19:09:49
+  B: size=118588  modified=2026-07-18 19:09:49
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-QUALIDADE-TOTAL-IDEIA.md
+  A: size=64911  modified=2026-07-18 04:03:30
+  B: size=64911  modified=2026-07-18 04:03:30
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-SELF-OPTIMIZATION-PANEL-AUTONOMOUS-EVOLUTION.md
+  A: size=43223  modified=2026-07-18 19:00:35
+  B: size=43223  modified=2026-07-18 19:00:35
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-TERMINAL-DEBUG.md
+  A: size=76914  modified=2026-07-18 19:08:55
+  B: size=76914  modified=2026-07-18 19:08:55
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-TESTES-QUALIDADE-AUTOMATIZADA.md
+  A: size=98896  modified=2026-07-18 19:13:12
+  B: size=98896  modified=2026-07-18 19:13:12
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-TITLEBAR-CUSTOMIZACAO-TOTAL.md
+  A: size=10929  modified=2026-07-18 20:27:39
+  B: size=10929  modified=2026-07-18 20:27:39
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-UX-EXPERIENCIA-USUARIO.md
+  A: size=62291  modified=2026-07-18 03:54:42
+  B: size=62291  modified=2026-07-18 03:54:42
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-VIABILIDADE-MOCKUP-IDENTICO.md
+  A: size=12788  modified=2026-07-18 20:21:08
+  B: size=12788  modified=2026-07-18 20:21:08
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-VISAO-COMPLETA-IDEIA-INDUSTRIAL.md
+  A: size=17217  modified=2026-07-22 07:07:12
+  B: size=17217  modified=2026-07-22 07:07:12
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ESTUDO-ZERO-TO-DEPLOY.md
+  A: size=89080  modified=2026-07-22 07:57:04
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: ESTUDOS\IDEIA-MASTER.md
+  A: size=30834  modified=2026-07-22 14:51:29
+  B: size=29519  modified=2026-07-22 15:49:05
+  STATUS: DIFFERENT_SIZE (A=30834 vs B=29519)
+
+FILE: ESTUDOS\INTENT-TO-PLAN-RESEARCH.md
+  A: size=44889  modified=2026-07-17 21:38:25
+  B: size=44889  modified=2026-07-17 21:38:25
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\MATRIZ-TECNOLOGICA-COMPLETA.md
+  A: size=86404  modified=2026-07-17 22:13:05
+  B: size=86404  modified=2026-07-17 22:13:05
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\MATRIZ-TECNOLOGICA-COMPLETA-V2-SUPLEMENTO.md
+  A: size=77145  modified=2026-07-18 04:10:38
+  B: size=77145  modified=2026-07-18 04:10:38
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\MEMORIA-E-CONTEXTO-PESQUISA.md
+  A: size=47819  modified=2026-07-17 21:38:16
+  B: size=47819  modified=2026-07-17 21:38:16
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\ORQUESTRACAO-MULTIAGENTE-DISTRIBUIDA.md
+  A: size=27382  modified=2026-07-17 21:40:56
+  B: size=27382  modified=2026-07-17 21:40:56
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\PIPELINE-VERIFICACAO-QUALIDADE-ENTREGA.md
+  A: size=39085  modified=2026-07-17 21:41:37
+  B: size=39085  modified=2026-07-17 21:41:37
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\PLANO-IMPLEMENTACAO-IDEIA-DETALHADO.md
+  A: size=67035  modified=2026-07-17 22:21:32
+  B: size=13348  modified=2026-07-20 23:04:51
+  STATUS: DIFFERENT_SIZE (A=67035 vs B=13348)
+
+FILE: ESTUDOS\PLANO-IMPLEMENTACAO-IDEIA-DETALHADO-V2.md
+  A: size=98798  modified=2026-07-18 04:11:51
+  B: size=21687  modified=2026-07-22 15:36:00
+  STATUS: DIFFERENT_SIZE (A=98798 vs B=21687)
+
+FILE: ESTUDOS\RELATORIO-GAPS-NAO-COBERTOS-2026-07-21.md
+  A: size=13237  modified=2026-07-21 09:54:37
+  B: size=13237  modified=2026-07-21 09:54:37
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\RELATORIO-SELF-AWARENESS-GAPS-IDEIA.md
+  A: size=15970  modified=2026-07-21 13:37:47
+  B: size=15970  modified=2026-07-21 13:37:47
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\RELATORIO-STATUS-IMPLEMENTACAO-2026-07-21.md
+  A: size=11411  modified=2026-07-21 09:43:47
+  B: size=11411  modified=2026-07-21 09:43:47
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\SEGURANCA-PROMPT-GOVERNADOR-AI.md
+  A: size=38138  modified=2026-07-17 21:40:59
+  B: size=38138  modified=2026-07-17 21:40:59
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\TECNOLOGIAS-EMERGENTES.md
+  A: size=31912  modified=2026-07-18 19:01:07
+  B: size=31912  modified=2026-07-18 19:01:07
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\TEMPLATE-ANALISE-PERMANENTE.md
+  A: size=2809  modified=2026-07-18 17:25:38
+  B: size=5710  modified=2026-07-15 09:28:11
+  STATUS: DIFFERENT_SIZE (A=2809 vs B=5710)
+
+FILE: ESTUDOS\THEIA-IDEIA-RESEARCH.md
+  A: size=35401  modified=2026-07-18 19:13:20
+  B: size=35401  modified=2026-07-18 19:13:20
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: ESTUDOS\VISAO-PRODUTO-IDEIA.md
+  A: size=32999  modified=2026-07-17 22:06:23
+  B: size=32999  modified=2026-07-17 22:06:23
+  STATUS: IDENTICAL (size + first 100 bytes match)
+
+FILE: governance\ARBOR-COMPLETA-WORKSPACE.md
+  A: size=46439  modified=2026-07-20 11:46:57
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\ARCHITECTURE-DRIFT-REPORT.md
+  A: size=6428  modified=2026-07-18 11:14:39
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\AUDITORIA-ARQUITETURA-DESIGN-2026-07-22.md
+  A: size=17782  modified=2026-07-22 10:10:42
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\AUDITORIA-CODIGO-QUALIDADE-2026-07-22.md
+  A: size=15311  modified=2026-07-22 10:12:18
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\AUDITORIA-COMPLETA-CONSOLIDADA-2026-07-21.md
+  A: size=15871  modified=2026-07-21 11:31:18
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\AUDITORIA-COMPLETA-IDEIA-2026-07-18.md
+  A: size=68460  modified=2026-07-18 23:05:57
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\AUDITORIA-FINAL-2026-07-22.md
+  A: size=12348  modified=2026-07-22 10:21:06
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\AUDITORIA-FUNCIONAL-COMPLETA-2026-07-20.md
+  A: size=43712  modified=2026-07-20 20:04:43
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\AUDITORIA-PERFORMANCE-2026-07-22.md
+  A: size=15134  modified=2026-07-22 10:19:48
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\AUDITORIA-RESTANTES-2026-07-22.md
+  A: size=15813  modified=2026-07-22 10:20:38
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\AUDITORIA-SEGURANCA-2026-07-22.md
+  A: size=21760  modified=2026-07-22 10:18:26
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\AUDITORIA-TECNICA-IDEIA.md
+  A: size=37817  modified=2026-07-18 07:40:03
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\AUDITORIA-TESTES-COBERTURA-2026-07-22.md
+  A: size=12738  modified=2026-07-22 10:15:41
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\DIFERENCAS-DIRETORIOS-WORKSPACE.md
+  A: size=26211  modified=2026-07-20 11:48:50
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\document-registry.md
+  A: size=25717  modified=2026-07-22 15:17:30
+  B: size=37378  modified=2026-07-22 15:48:55
+  STATUS: DIFFERENT_SIZE (A=25717 vs B=37378)
+
+FILE: governance\DPIA-IDEIA.md
+  A: size=3689  modified=2026-07-18 09:56:26
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\GAPS-PRODUCAO-IDE.md
+  A: size=59114  modified=2026-07-22 14:50:07
+  B: size=24732  modified=2026-07-22 16:07:32
+  STATUS: DIFFERENT_SIZE (A=59114 vs B=24732)
+
+FILE: governance\GLOSSARIO-IDEIA.md
+  A: size=9706  modified=2026-07-18 20:42:16
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\GUIA-DE-INICIO-RAPIDO.md
+  A: size=2457  modified=2026-07-18 20:41:54
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\GUIA-DIRETORIOS-WORKSPACE.md
+  A: size=21398  modified=2026-07-20 11:47:45
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\INVENTARIO-ATIVOS.md
+  A: size=3849  modified=2026-07-18 09:51:50
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\MATRIZ-COMPLIANCE-SEGURANCA.md
+  A: size=44318  modified=2026-07-18 11:17:16
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\ORGANIZACAO-TAREFAS-SESSAO-2026-07-20.md
+  A: size=10881  modified=2026-07-22 14:50:45
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\PLANO-RESPOSTA-INCIDENTES.md
+  A: size=4360  modified=2026-07-18 09:54:57
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\POLITICA-GOVERNANCA-IDEIA.md
+  A: size=53203  modified=2026-07-18 08:11:43
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\POLITICA-SEGURANCA.md
+  A: size=2687  modified=2026-07-18 08:13:03
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\PRIVACY-POLICY.md
+  A: size=2968  modified=2026-07-18 20:41:48
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\REALITY-MANIFEST.md
+  A: size=19301  modified=2026-07-22 15:15:31
+  B: size=8328  modified=2026-07-22 15:19:57
+  STATUS: DIFFERENT_SIZE (A=19301 vs B=8328)
+
+FILE: governance\RELATORIO-ESTADO-ESTEIRA-2026-07-20.md
+  A: size=8385  modified=2026-07-20 15:06:03
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\SECRETS-MANAGEMENT.md
+  A: size=2661  modified=2026-07-18 11:08:43
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\TERMS-OF-SERVICE.md
+  A: size=3608  modified=2026-07-18 20:41:41
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: governance\TESTES-DOS-ESTUDOS.md
+  A: size=8454  modified=2026-07-18 18:43:24
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: legacy\AI-DEVKIT-REUSE-ANALYSIS.md
+  A: size=43878  modified=2026-07-13 15:46:55
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: legacy\IDE-GAP-ANALYSIS.md
+  A: size=52997  modified=2026-07-13 15:53:36
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: legacy\IDE-MVP-DEFINITION.md
+  A: size=55640  modified=2026-07-13 15:56:43
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: legacy\IDE-plan.md
+  A: size=44088  modified=2026-07-14 07:47:50
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: legacy\INTELLIGENT-MODULES-ANALYSIS.md
+  A: size=52872  modified=2026-07-13 16:03:31
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: legacy\MIGRACAO-AI-DEVKIT-PARA-IDEIA.md
+  A: size=34365  modified=2026-07-17 22:30:23
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: legacy\PLANO-DE-VALIDACAO-MVP.md
+  A: size=9938  modified=2026-07-17 22:28:24
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: legacy\PLANO-IMPLEMENTACAO-TECNICA-COMPLETO.md
+  A: size=20900  modified=2026-07-18 11:33:26
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: legacy\ROADMAP-GAP-ANALYSIS.md
+  A: size=16238  modified=2026-07-10 15:56:22
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: legacy\theia-research-report.md
+  A: size=37881  modified=2026-07-17 21:20:00
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: livro-IDEIA.md
+  A: size=436481  modified=2026-07-21 22:31:11
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: livro-IDEIA-ANALISE-CRUZADA.md
+  A: size=22531  modified=2026-07-21 23:30:27
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: PLANO-IMPLEMENTACAO-THEIA-MOCKUP.md
+  A: size=10697  modified=2026-07-18 12:43:42
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: user\COMANDOS.md
+  A: size=7069  modified=2026-07-17 22:54:02
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: user\CONCEITOS.md
+  A: size=8814  modified=2026-07-17 22:53:47
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: user\EXEMPLOS.md
+  A: size=12261  modified=2026-07-17 22:54:29
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: user\FAQ.md
+  A: size=8628  modified=2026-07-17 22:54:48
+  B: (DOES NOT EXIST)
+  STATUS: MISSING_IN_B
+
+FILE: user\PRIMEIROS-PASSOS.md
+  A: size=9735  modified=2026-07-17 22:53:29
+  B: size=3382  modified=2026-07-21 11:28:57
+  STATUS: DIFFERENT_SIZE (A=9735 vs B=3382)
+
+
+=== SECTION 2: Files in B (IDEIA docs) that do NOT exist in A (root docs) ===
+
+FILE: adr\0001-use-theia-platform.md
+  B: size=655  modified=2026-07-20 23:04:51
+
+FILE: adr\0002-use-nats-jetstream.md
+  B: size=615  modified=2026-07-20 23:04:53
+
+FILE: adr\0003-use-langgraph.md
+  B: size=625  modified=2026-07-20 23:04:55
+
+FILE: api\audit.schema.json
+  B: size=1341  modified=2026-07-21 07:59:51
+
+FILE: api\session.schema.json
+  B: size=1268  modified=2026-07-21 07:59:51
+
+FILE: api\task.schema.json
+  B: size=1519  modified=2026-07-21 07:59:51
+
+FILE: api\workspace.schema.json
+  B: size=1089  modified=2026-07-21 07:59:51
+
+FILE: architecture\README.md
+  B: size=11613  modified=2026-07-21 11:29:55
+
+FILE: benchmarks\postgres-vs-sqlite.md
+  B: size=2332  modified=2026-07-21 11:38:01
+
+FILE: ESTUDOS\53-ANALISE-COMPARATIVA-CONCORRENCIA.md
+  B: size=24424  modified=2026-07-20 23:04:46
+
+FILE: ESTUDOS\54-GAPS-UNIVERSAIS-NENHUMA-FERRAMENTA-RESOLVE.md
+  B: size=29136  modified=2026-07-20 23:04:47
+
+FILE: ESTUDOS\55-REQUISITOS-IMPLEMENTACAO-ESTUDOS-53-54.md
+  B: size=56074  modified=2026-07-20 23:04:47
+
+FILE: ESTUDOS\7-OPORTUNIDADES-ESTRATEGICAS-SUMMARY.md
+  B: size=5107  modified=2026-07-15 14:51:05
+
+FILE: ESTUDOS\99-Y-ANALISE-INVIABILIDADE.md
+  B: size=23402  modified=2026-07-17 22:07:25
+
+FILE: ESTUDOS\99-Z-REQUISITOS-TODOS-ESTUDOS.md
+  B: size=35748  modified=2026-07-17 22:07:18
+
+FILE: ESTUDOS\CONTRATOS-INTEGRACAO.md
+  B: size=19687  modified=2026-07-20 23:04:48
+
+FILE: ESTUDOS\ESTUDO-AGENT-ROUTER-COMPLEXITY.md
+  B: size=1483  modified=2026-07-21 23:52:44
+
+FILE: ESTUDOS\ESTUDO-CONTEXT-BUILDER-COMPOSER.md
+  B: size=2857  modified=2026-07-21 23:43:13
+
+FILE: ESTUDOS\ESTUDO-IMPLEMENTACAO-CEDAR-SEGURANCA-COMPLIANCE.md
+  B: size=3087  modified=2026-07-21 11:28:43
+
+FILE: ESTUDOS\ESTUDO-IMPLEMENTACAO-LANGGRAPH-MULTIAGENTE.md
+  B: size=3410  modified=2026-07-21 11:28:15
+
+FILE: ESTUDOS\ESTUDO-IMPLEMENTACAO-NATS-JETSTREAM.md
+  B: size=3745  modified=2026-07-21 11:28:03
+
+FILE: ESTUDOS\ESTUDO-IMPLEMENTACAO-POSTGRESQL-PGVECTOR.md
+  B: size=4320  modified=2026-07-21 11:28:29
+
+FILE: ESTUDOS\ESTUDO-INTENSIFICACAO-CONCORRENCIA-PLANO-COMERCIAL.md
+  B: size=18046  modified=2026-07-21 11:41:29
+
+FILE: ESTUDOS\ESTUDO-MEMORY-HIERARCHY.md
+  B: size=1671  modified=2026-07-22 00:17:30
+
+FILE: ESTUDOS\ESTUDO-PLANNING-ENGINE-AVANCADO.md
+  B: size=2082  modified=2026-07-21 23:49:33
+
+FILE: ESTUDOS\ESTUDO-POLICY-RISK-APPROVAL.md
+  B: size=547  modified=2026-07-22 07:01:23
+
+FILE: ESTUDOS\ESTUDO-PROMPT-ECONOMY-TOKENS.md
+  B: size=8552  modified=2026-07-21 23:34:49
+
+FILE: ESTUDOS\ESTUDO-QUALITY-GATES-AVANCADO.md
+  B: size=1520  modified=2026-07-22 06:54:12
+
+FILE: ESTUDOS\ESTUDO-S34-THEIA-EDITOR-WIDGET.md
+  B: size=92084  modified=2026-07-22 09:36:42
+
+FILE: ESTUDOS\ESTUDO-S35-FILESYSTEM-WORKSPACE.md
+  B: size=111467  modified=2026-07-22 08:29:49
+
+FILE: ESTUDOS\ESTUDO-S36-EXTENSION-HOST.md
+  B: size=100366  modified=2026-07-22 08:35:59
+
+FILE: ESTUDOS\ESTUDO-S37-SEARCH-SCM-TASK.md
+  B: size=111112  modified=2026-07-22 08:30:33
+
+FILE: ESTUDOS\ESTUDO-S38-EDITOR-INTELLIGENCE.md
+  B: size=102478  modified=2026-07-22 08:44:28
+
+FILE: ESTUDOS\ESTUDO-S39-SETTINGS-KEYBINDINGS-THEME.md
+  B: size=89979  modified=2026-07-22 08:49:51
+
+FILE: ESTUDOS\ESTUDO-S40-WEBVIEW-LAYOUT.md
+  B: size=90588  modified=2026-07-22 08:46:49
+
+FILE: ESTUDOS\ESTUDO-S41-REMOTE-WEB-IDE.md
+  B: size=103650  modified=2026-07-22 08:48:54
+
+FILE: ESTUDOS\ESTUDO-S42-THEIA-DI-CONTRIBUTIONS.md
+  B: size=65530  modified=2026-07-22 09:35:55
+
+FILE: ESTUDOS\ESTUDO-S43-THEIA-VIEWS-WIDGETS.md
+  B: size=95137  modified=2026-07-22 09:37:00
+
+FILE: ESTUDOS\ESTUDO-S44-THEIA-SHELL-LAYOUT.md
+  B: size=119774  modified=2026-07-22 09:37:50
+
+FILE: ESTUDOS\ESTUDO-S45-THEIA-WORKSPACE-RESOURCES.md
+  B: size=112869  modified=2026-07-22 09:45:39
+
+FILE: ESTUDOS\ESTUDO-S46-THEIA-MARKERS-OUTPUT.md
+  B: size=96816  modified=2026-07-22 09:41:26
+
+FILE: ESTUDOS\ESTUDO-S47-THEIA-AI-AGENTS.md
+  B: size=123977  modified=2026-07-22 09:45:05
+
+FILE: ESTUDOS\ESTUDO-S48-THEIA-CLI-BACKEND.md
+  B: size=113599  modified=2026-07-22 09:46:56
+
+FILE: ESTUDOS\ESTUDO-S49-THEIA-PREFERENCES.md
+  B: size=109101  modified=2026-07-22 09:41:49
+
+FILE: ESTUDOS\ESTUDO-S50-COMPUTER-USE-BROWSER.md
+  B: size=118799  modified=2026-07-22 09:57:47
+
+FILE: ESTUDOS\ESTUDO-S51-PARALLEL-AGENTS-SCALABILITY.md
+  B: size=116689  modified=2026-07-22 09:58:06
+
+FILE: ESTUDOS\ESTUDO-S52-PR-AUTOMATION-PIPELINE.md
+  B: size=87291  modified=2026-07-22 09:57:57
+
+FILE: ESTUDOS\ESTUDO-S53-MCP-ECOSYSTEM-MARKETPLACE.md
+  B: size=31351  modified=2026-07-22 10:02:53
+
+FILE: ESTUDOS\ESTUDO-S54-PERFORMANCE-OPTIMIZATION.md
+  B: size=44929  modified=2026-07-22 10:11:59
+
+FILE: ESTUDOS\ESTUDO-S55-RESILIENCE-SELF-HEALING.md
+  B: size=90487  modified=2026-07-22 10:07:48
+
+FILE: ESTUDOS\ESTUDO-S56-UX-TRANSFORMATION.md
+  B: size=72398  modified=2026-07-22 10:12:02
+
+FILE: ESTUDOS\ESTUDO-S57-COMPETITIVE-POSITIONING.md
+  B: size=100737  modified=2026-07-22 10:08:54
+
+FILE: ESTUDOS\ESTUDO-S58-DATA-STRATEGY-GOVERNANCE.md
+  B: size=117699  modified=2026-07-22 10:28:16
+
+FILE: ESTUDOS\ESTUDO-S59-THEIA-CLOUD-MULTITENANT.md
+  B: size=120314  modified=2026-07-22 10:32:35
+
+FILE: ESTUDOS\ESTUDO-S60-FINETUNING-PIPELINE.md
+  B: size=225638  modified=2026-07-22 10:32:33
+
+FILE: ESTUDOS\ESTUDO-S61-VULNERABILITY-MANAGEMENT.md
+  B: size=109719  modified=2026-07-22 10:29:05
+
+FILE: ESTUDOS\ESTUDO-S62-COLLABORATIVE-EDITING-CRDT.md
+  B: size=114698  modified=2026-07-22 10:37:00
+
+FILE: ESTUDOS\ESTUDO-S63-VISUAL-AGENT-DEBUGGER.md
+  B: size=11370  modified=2026-07-22 10:38:13
+
+FILE: ESTUDOS\ESTUDO-S64-SELF-HEALING-MONITORING.md
+  B: size=719  modified=2026-07-22 10:43:02
+
+FILE: ESTUDOS\ESTUDO-S65-ENTERPRISE-COMPLIANCE.md
+  B: size=133606  modified=2026-07-22 10:38:13
+
+FILE: ESTUDOS\G1-EVENT-BUS\README.md
+  B: size=6849  modified=2026-07-15 14:48:15
+
+FILE: ESTUDOS\G2-TASK-QUEUE\README.md
+  B: size=5952  modified=2026-07-15 14:48:41
+
+FILE: ESTUDOS\G3-POLICY-GATEWAY\README.md
+  B: size=6319  modified=2026-07-15 14:48:54
+
+FILE: ESTUDOS\G4-SCHEMA-REGISTRY\README.md
+  B: size=6299  modified=2026-07-15 14:49:10
+
+FILE: ESTUDOS\G5-FEEDBACK-PIPELINE\README.md
+  B: size=6840  modified=2026-07-15 14:49:36
+
+FILE: ESTUDOS\G6-CODEGEN-SPECAST\DECISAO.md
+  B: size=691  modified=2026-07-22 15:48:02
+
+FILE: ESTUDOS\G6-CODEGEN-SPECAST\README.md
+  B: size=6446  modified=2026-07-15 14:49:49
+
+FILE: ESTUDOS\G7-HEALTH-CHECK\README.md
+  B: size=6873  modified=2026-07-15 14:50:05
+
+FILE: ESTUDOS\GAPS-ESTRUTURAIS-G1-G7-SUMMARY.md
+  B: size=8523  modified=2026-07-22 15:36:08
+
+FILE: ESTUDOS\GAPS-PRODUCAO-IDE.md
+  B: size=13388  modified=2026-07-15 09:24:55
+
+FILE: ESTUDOS\MALHA-DE-INTEGRACAO.md
+  B: size=20489  modified=2026-07-20 23:04:50
+
+FILE: ESTUDOS\MATRIZ-CONSOLIDADA-FRONTEIRAS.md
+  B: size=10248  modified=2026-07-15 09:31:33
+
+FILE: ESTUDOS\OP1-AI-CONTEXT-PROTOCOL\README.md
+  B: size=8729  modified=2026-07-15 14:48:21
+
+FILE: ESTUDOS\OP2-UNIFIED-TOOL-API\README.md
+  B: size=8225  modified=2026-07-15 14:48:38
+
+FILE: ESTUDOS\OP3-AI-MEMORY-GRAPH\README.md
+  B: size=9021  modified=2026-07-15 14:48:59
+
+FILE: ESTUDOS\OP4-SELF-DEBUGGING-STACK\DECISAO.md
+  B: size=706  modified=2026-07-22 15:48:07
+
+FILE: ESTUDOS\OP4-SELF-DEBUGGING-STACK\README.md
+  B: size=7886  modified=2026-07-15 14:49:21
+
+FILE: ESTUDOS\OP5-CONFIDENCE-ENGINE\README.md
+  B: size=8766  modified=2026-07-15 14:49:38
+
+FILE: ESTUDOS\OP6-AUTONOMOUS-LOOP-CHECKPOINT\README.md
+  B: size=9035  modified=2026-07-15 14:49:57
+
+FILE: ESTUDOS\OP7-ENGINEERING-FEEDBACK-LOOP\README.md
+  B: size=9482  modified=2026-07-15 14:50:36
+
+FILE: ESTUDOS\REFERENCIA-RAPIDA.md
+  B: size=4671  modified=2026-07-15 08:47:55
+
+FILE: ESTUDOS\ROADMAP-IMPLEMENTACAO.md
+  B: size=9783  modified=2026-07-15 14:51:17
+
+FILE: ESTUDOS\ROADMAP-OPORTUNIDADES-POS-57.md
+  B: size=7139  modified=2026-07-22 15:36:24
+
+FILE: estudos-analise\ESTUDO-ANALISE-CONSOLIDADA-MESTRE.md
+  B: size=17905  modified=2026-07-20 23:05:00
+
+FILE: estudos-analise\PLANO-EXECUCAO-INTEGRAL.md
+  B: size=33131  modified=2026-07-20 23:05:04
+
+FILE: governance\ANALISE-CHAT-CENTRAL.md
+  B: size=49989  modified=2026-07-21 08:01:11
+
+FILE: governance\api-principles.md
+  B: size=4149  modified=2026-07-20 23:05:14
+
+FILE: governance\AUDITORIA-ACHADOS-2026-07-15.md
+  B: size=17531  modified=2026-07-21 08:01:11
+
+FILE: governance\AUDITORIA-COMPLETA.md
+  B: size=35337  modified=2026-07-21 08:01:11
+
+FILE: governance\AUDITORIA-COMPLETA-2026-07-15.md
+  B: size=22631  modified=2026-07-21 08:01:11
+
+FILE: governance\AUDITORIA-COMPLETA-IDEIA-2026-07-21.md
+  B: size=20885  modified=2026-07-21 13:18:19
+
+FILE: governance\AUDITORIA-DIRETRIZES-2026-07-15.md
+  B: size=6413  modified=2026-07-21 08:01:11
+
+FILE: governance\AUDITORIA-DOCUMENTAL-COMPLETA.md
+  B: size=17134  modified=2026-07-21 08:01:11
+
+FILE: governance\AUDITORIA-FLUXO-INTEGRACAO-2026-07-15.md
+  B: size=37898  modified=2026-07-21 08:01:11
+
+FILE: governance\AUDITORIA-FUNCIONAL-IDEIA-2026-07-20.md
+  B: size=22289  modified=2026-07-20 23:05:08
+
+FILE: governance\AUDITORIA-FUNCIONAL-IDEIA-2026-07-21.md
+  B: size=38076  modified=2026-07-20 23:05:09
+
+FILE: governance\AUDITORIA-MODULOS-INTELIGENTES.md
+  B: size=41810  modified=2026-07-21 08:01:11
+
+FILE: governance\AUDITORIA-TECNICA-REAL-2026-07-13.md
+  B: size=22358  modified=2026-07-21 08:01:11
+
+FILE: governance\cli-consolidation.md
+  B: size=4875  modified=2026-07-20 23:05:15
+
+FILE: governance\conflict-resolution.md
+  B: size=2064  modified=2026-07-20 23:05:17
+
+FILE: governance\CONFRONTACAO-DOCS-CODIGO.md
+  B: size=26036  modified=2026-07-21 08:01:11
+
+FILE: governance\coverage-autonomy-flow.md
+  B: size=4508  modified=2026-07-20 23:05:17
+
+FILE: governance\document-policy.md
+  B: size=2264  modified=2026-07-20 23:05:17
+
+FILE: governance\document-priority.md
+  B: size=1816  modified=2026-07-20 23:05:18
+
+FILE: governance\ESTUDOS-INTEGRACAO-CODE-MAP.md
+  B: size=4759  modified=2026-07-22 15:47:56
+
+FILE: governance\feature-triage.md
+  B: size=3175  modified=2026-07-20 23:05:18
+
+FILE: governance\FUNCIONALIDADES_V2_MATRIX.md
+  B: size=3310  modified=2026-07-21 08:01:11
+
+FILE: governance\FUNCIONALIDADES_V2_METRICS.md
+  B: size=2497  modified=2026-07-21 08:01:11
+
+FILE: governance\FUNCIONALIDADES_V2_PROPOSALS.md
+  B: size=4659  modified=2026-07-21 08:01:11
+
+FILE: governance\FUNCIONALIDADES_V2_ROADMAP.md
+  B: size=4079  modified=2026-07-21 08:01:11
+
+FILE: governance\HANDOFF-NEXT-SESSION.md
+  B: size=22346  modified=2026-07-22 15:44:50
+
+FILE: governance\planning-flow.md
+  B: size=4462  modified=2026-07-20 23:05:19
+
+FILE: governance\platform-architecture.md
+  B: size=6283  modified=2026-07-20 23:05:19
+
+FILE: governance\RELATORIO-COMPLETO-ESTADO-ATUAL-IDEIA.md
+  B: size=35397  modified=2026-07-21 23:43:17
+
+FILE: governance\RELATORIO-FINAL-GAPS-IDEIA.md
+  B: size=5703  modified=2026-07-21 11:29:03
+
+FILE: governance\RELATORIO-VALIDACAO-FINAL.md
+  B: size=5775  modified=2026-07-20 23:05:12
+
+FILE: governance\release-criteria.md
+  B: size=2742  modified=2026-07-20 23:05:19
+
+FILE: governance\REVISAO-COMPLETA-IDEIA-2026-07-21.md
+  B: size=17114  modified=2026-07-21 09:09:50
+
+FILE: governance\SECURITY-GOVERNANCE-ASSESSMENT.md
+  B: size=24812  modified=2026-07-20 23:05:13
+
+FILE: governance\SESSION-CONTINUIDADE-2026-07-21.md
+  B: size=2751  modified=2026-07-21 06:59:56
+
+FILE: governance\SESSION-CONTINUIDADE-2026-07-22.md
+  B: size=5536  modified=2026-07-22 08:11:13
+
+FILE: governance\SISTEMA-AUTONOMIA-CONFIGURAVEL.md
+  B: size=52694  modified=2026-07-20 23:05:13
+
+FILE: governance\source-of-truth-map.md
+  B: size=6808  modified=2026-07-20 23:05:19
+
+FILE: governance\v3-boundaries.md
+  B: size=5347  modified=2026-07-20 23:05:19
+
+FILE: governance\v3-contracts.md
+  B: size=4763  modified=2026-07-20 23:05:20
+
+FILE: governance\v3-migration-plan.md
+  B: size=6244  modified=2026-07-20 23:05:20
+
+FILE: governance\version-decision-log.md
+  B: size=3572  modified=2026-07-20 23:05:20
+
+FILE: governance\version-scope-matrix.md
+  B: size=5779  modified=2026-07-20 23:05:20
+
+FILE: marketing\demo-script.md
+  B: size=2146  modified=2026-07-21 11:29:32
+
+FILE: user\.gitkeep
+  B: size=0  modified=2026-07-20 21:13:39
+
+FILE: user\ai-safety.md
+  B: size=3504  modified=2026-07-21 11:25:24
+
+FILE: user\api-reference\index.md
+  B: size=4235  modified=2026-07-21 11:29:45
+
+FILE: user\api-reference\README.md
+  B: size=3288  modified=2026-07-21 11:29:34
+
+FILE: user\delivery-pipeline.md
+  B: size=3612  modified=2026-07-21 10:39:23
+
+FILE: user\demo-script.md
+  B: size=2581  modified=2026-07-21 11:30:11
+
+FILE: user\instalacao.md
+  B: size=2674  modified=2026-07-21 11:28:48
+
+FILE: user\troubleshooting.md
+  B: size=2916  modified=2026-07-21 11:30:04
+
+
+=== SECTION 3: Specific files requested ===
+
+FILE: livro-IDEIA-ANALISE-CRUZADA.md
+  Exists in A (root docs): True
+  Exists in B (IDEIA docs): False
+  A: size=22531  modified=2026-07-21 23:30:27
+
+FILE: livro-IDEIA.md
+  Exists in A (root docs): True
+  Exists in B (IDEIA docs): False
+  A: size=436481  modified=2026-07-21 22:31:11
+
+FILE: PLANO-IMPLEMENTACAO-THEIA-MOCKUP.md
+  Exists in A (root docs): True
+  Exists in B (IDEIA docs): False
+  A: size=10697  modified=2026-07-18 12:43:42
+
+FILE: audit-dashboard.html
+  Exists in A (root docs): True
+  Exists in B (IDEIA docs): False
+  A: size=6129  modified=2026-07-18 19:32:36
+
+
+=== SECTION 4: governance/ subdirectory deep comparison ===
+
+Files ONLY in docs/governance/ (A):
+
+  ARBOR-COMPLETA-WORKSPACE.md  (size=46439, modified=2026-07-20 11:46:57)
+  ARCHITECTURE-DRIFT-REPORT.md  (size=6428, modified=2026-07-18 11:14:39)
+  AUDITORIA-ARQUITETURA-DESIGN-2026-07-22.md  (size=17782, modified=2026-07-22 10:10:42)
+  AUDITORIA-CODIGO-QUALIDADE-2026-07-22.md  (size=15311, modified=2026-07-22 10:12:18)
+  AUDITORIA-COMPLETA-CONSOLIDADA-2026-07-21.md  (size=15871, modified=2026-07-21 11:31:18)
+  AUDITORIA-COMPLETA-IDEIA-2026-07-18.md  (size=68460, modified=2026-07-18 23:05:57)
+  AUDITORIA-FINAL-2026-07-22.md  (size=12348, modified=2026-07-22 10:21:06)
+  AUDITORIA-FUNCIONAL-COMPLETA-2026-07-20.md  (size=43712, modified=2026-07-20 20:04:43)
+  AUDITORIA-PERFORMANCE-2026-07-22.md  (size=15134, modified=2026-07-22 10:19:48)
+  AUDITORIA-RESTANTES-2026-07-22.md  (size=15813, modified=2026-07-22 10:20:38)
+  AUDITORIA-SEGURANCA-2026-07-22.md  (size=21760, modified=2026-07-22 10:18:26)
+  AUDITORIA-TECNICA-IDEIA.md  (size=37817, modified=2026-07-18 07:40:03)
+  AUDITORIA-TESTES-COBERTURA-2026-07-22.md  (size=12738, modified=2026-07-22 10:15:41)
+  DIFERENCAS-DIRETORIOS-WORKSPACE.md  (size=26211, modified=2026-07-20 11:48:50)
+  DPIA-IDEIA.md  (size=3689, modified=2026-07-18 09:56:26)
+  GLOSSARIO-IDEIA.md  (size=9706, modified=2026-07-18 20:42:16)
+  GUIA-DE-INICIO-RAPIDO.md  (size=2457, modified=2026-07-18 20:41:54)
+  GUIA-DIRETORIOS-WORKSPACE.md  (size=21398, modified=2026-07-20 11:47:45)
+  INVENTARIO-ATIVOS.md  (size=3849, modified=2026-07-18 09:51:50)
+  MATRIZ-COMPLIANCE-SEGURANCA.md  (size=44318, modified=2026-07-18 11:17:16)
+  ORGANIZACAO-TAREFAS-SESSAO-2026-07-20.md  (size=10881, modified=2026-07-22 14:50:45)
+  PLANO-RESPOSTA-INCIDENTES.md  (size=4360, modified=2026-07-18 09:54:57)
+  POLITICA-GOVERNANCA-IDEIA.md  (size=53203, modified=2026-07-18 08:11:43)
+  POLITICA-SEGURANCA.md  (size=2687, modified=2026-07-18 08:13:03)
+  PRIVACY-POLICY.md  (size=2968, modified=2026-07-18 20:41:48)
+  RELATORIO-ESTADO-ESTEIRA-2026-07-20.md  (size=8385, modified=2026-07-20 15:06:03)
+  SECRETS-MANAGEMENT.md  (size=2661, modified=2026-07-18 11:08:43)
+  TERMS-OF-SERVICE.md  (size=3608, modified=2026-07-18 20:41:41)
+  TESTES-DOS-ESTUDOS.md  (size=8454, modified=2026-07-18 18:43:24)
+
+Files ONLY in IDEIA/docs/governance/ (B):
+
+  ANALISE-CHAT-CENTRAL.md  (size=49989, modified=2026-07-21 08:01:11)
+  api-principles.md  (size=4149, modified=2026-07-20 23:05:14)
+  AUDITORIA-ACHADOS-2026-07-15.md  (size=17531, modified=2026-07-21 08:01:11)
+  AUDITORIA-COMPLETA-2026-07-15.md  (size=22631, modified=2026-07-21 08:01:11)
+  AUDITORIA-COMPLETA-IDEIA-2026-07-21.md  (size=20885, modified=2026-07-21 13:18:19)
+  AUDITORIA-COMPLETA.md  (size=35337, modified=2026-07-21 08:01:11)
+  AUDITORIA-DIRETRIZES-2026-07-15.md  (size=6413, modified=2026-07-21 08:01:11)
+  AUDITORIA-DOCUMENTAL-COMPLETA.md  (size=17134, modified=2026-07-21 08:01:11)
+  AUDITORIA-FLUXO-INTEGRACAO-2026-07-15.md  (size=37898, modified=2026-07-21 08:01:11)
+  AUDITORIA-FUNCIONAL-IDEIA-2026-07-20.md  (size=22289, modified=2026-07-20 23:05:08)
+  AUDITORIA-FUNCIONAL-IDEIA-2026-07-21.md  (size=38076, modified=2026-07-20 23:05:09)
+  AUDITORIA-MODULOS-INTELIGENTES.md  (size=41810, modified=2026-07-21 08:01:11)
+  AUDITORIA-TECNICA-REAL-2026-07-13.md  (size=22358, modified=2026-07-21 08:01:11)
+  cli-consolidation.md  (size=4875, modified=2026-07-20 23:05:15)
+  conflict-resolution.md  (size=2064, modified=2026-07-20 23:05:17)
+  CONFRONTACAO-DOCS-CODIGO.md  (size=26036, modified=2026-07-21 08:01:11)
+  coverage-autonomy-flow.md  (size=4508, modified=2026-07-20 23:05:17)
+  document-policy.md  (size=2264, modified=2026-07-20 23:05:17)
+  document-priority.md  (size=1816, modified=2026-07-20 23:05:18)
+  ESTUDOS-INTEGRACAO-CODE-MAP.md  (size=4759, modified=2026-07-22 15:47:56)
+  feature-triage.md  (size=3175, modified=2026-07-20 23:05:18)
+  FUNCIONALIDADES_V2_MATRIX.md  (size=3310, modified=2026-07-21 08:01:11)
+  FUNCIONALIDADES_V2_METRICS.md  (size=2497, modified=2026-07-21 08:01:11)
+  FUNCIONALIDADES_V2_PROPOSALS.md  (size=4659, modified=2026-07-21 08:01:11)
+  FUNCIONALIDADES_V2_ROADMAP.md  (size=4079, modified=2026-07-21 08:01:11)
+  HANDOFF-NEXT-SESSION.md  (size=22346, modified=2026-07-22 15:44:50)
+  planning-flow.md  (size=4462, modified=2026-07-20 23:05:19)
+  platform-architecture.md  (size=6283, modified=2026-07-20 23:05:19)
+  RELATORIO-COMPLETO-ESTADO-ATUAL-IDEIA.md  (size=35397, modified=2026-07-21 23:43:17)
+  RELATORIO-FINAL-GAPS-IDEIA.md  (size=5703, modified=2026-07-21 11:29:03)
+  RELATORIO-VALIDACAO-FINAL.md  (size=5775, modified=2026-07-20 23:05:12)
+  release-criteria.md  (size=2742, modified=2026-07-20 23:05:19)
+  REVISAO-COMPLETA-IDEIA-2026-07-21.md  (size=17114, modified=2026-07-21 09:09:50)
+  SECURITY-GOVERNANCE-ASSESSMENT.md  (size=24812, modified=2026-07-20 23:05:13)
+  SESSION-CONTINUIDADE-2026-07-21.md  (size=2751, modified=2026-07-21 06:59:56)
+  SESSION-CONTINUIDADE-2026-07-22.md  (size=5536, modified=2026-07-22 08:11:13)
+  SISTEMA-AUTONOMIA-CONFIGURAVEL.md  (size=52694, modified=2026-07-20 23:05:13)
+  source-of-truth-map.md  (size=6808, modified=2026-07-20 23:05:19)
+  v3-boundaries.md  (size=5347, modified=2026-07-20 23:05:19)
+  v3-contracts.md  (size=4763, modified=2026-07-20 23:05:20)
+  v3-migration-plan.md  (size=6244, modified=2026-07-20 23:05:20)
+  version-decision-log.md  (size=3572, modified=2026-07-20 23:05:20)
+  version-scope-matrix.md  (size=5779, modified=2026-07-20 23:05:20)
+
+Files in BOTH governance directories (content comparison):
+
+  document-registry.md  A:25717  B:37378  DIFFERENT_SIZE (A=25717 vs B=37378)
+  GAPS-PRODUCAO-IDE.md  A:59114  B:24732  DIFFERENT_SIZE (A=59114 vs B=24732)
+  REALITY-MANIFEST.md  A:19301  B:8328  DIFFERENT_SIZE (A=19301 vs B=8328)
+
+=== SUMMARY ===
+
+Total files in A (root docs): 138
+Total files in B (IDEIA docs): 204
+
+Files with same relative path in both: 67
+Files only in A (missing from B): 71
+Files only in B (new in IDEIA docs): 137

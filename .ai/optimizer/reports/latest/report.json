@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-21T14:27:32.149Z",
+  "generated_at": "2026-07-25T23:29:22.802Z",
   "summary": [
     {
       "file": "latest-request.json",
@@ -32,7 +32,7 @@
       "content": {
         "score": 95,
         "level": "pass",
-        "generated_at": "2026-07-21T14:27:31.885Z",
+        "generated_at": "2026-07-25T23:29:22.592Z",
         "reasons": [
           "Escopo pequeno e controlado.",
           "Aderência declarada ao design system.",
@@ -45,7 +45,7 @@
       "content": {
         "score": 10,
         "level": "low",
-        "generated_at": "2026-07-21T14:27:31.946Z",
+        "generated_at": "2026-07-25T23:29:22.640Z",
         "reasons": [
           "Escopo muito pequeno."
         ]
@@ -55,7 +55,7 @@
       "file": "latest-patch.json",
       "content": {
         "strategy": "minimal",
-        "generated_at": "2026-07-21T14:27:31.830Z",
+        "generated_at": "2026-07-25T23:29:22.544Z",
         "files_changed": [
           "src/components/UserCard/UserCard.tsx"
         ],

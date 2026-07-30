@@ -1,0 +1,77 @@
+[
+  {
+    "pattern": ".husky/*",
+    "severity": "block",
+    "description": "FA-07: Git hooks — imutável pelo agente"
+  },
+  {
+    "pattern": ".github/workflows/*",
+    "severity": "block",
+    "description": "FA-07: CI gates — imutável pelo agente"
+  },
+  {
+    "pattern": "scripts/audit/regenerate-metrics.ts",
+    "severity": "block",
+    "description": "FA-04/FA-07: Script de métricas determinísticas"
+  },
+  {
+    "pattern": "scripts/audit/gate-guard.ts",
+    "severity": "block",
+    "description": "FA-07: Guardião de imutabilidade dos gates"
+  },
+  {
+    "pattern": ".ai/governance/*",
+    "severity": "block",
+    "description": "FA-07: Manifesto SHA-256 dos gates"
+  },
+  {
+    "pattern": "jest.config.js",
+    "severity": "block",
+    "description": "FA-07: Config de testes — imutável pelo agente"
+  },
+  {
+    "pattern": "jest.e2e.config.js",
+    "severity": "block",
+    "description": "FA-07: Config E2E — imutável pelo agente"
+  },
+  {
+    "pattern": ".lintstagedrc.json",
+    "severity": "block",
+    "description": "FA-07: lint-staged config"
+  },
+  {
+    "pattern": ".ai/policies/project-policy.yaml",
+    "severity": "block",
+    "description": "FA-07: Política de autonomia — anti-escalação"
+  },
+  {
+    "pattern": ".ai/policies/security-policy.yaml",
+    "severity": "block",
+    "description": "FA-07: Política de segurança"
+  },
+  {
+    "pattern": "docs/governance/REALITY-MANIFEST.md",
+    "severity": "block",
+    "description": "FA-04: Manifesto — só via regenerate-metrics.ts --fix"
+  },
+  {
+    "pattern": "auth*.ts",
+    "severity": "block",
+    "description": "Arquivos de autenticacao"
+  },
+  {
+    "pattern": ".env*",
+    "severity": "block",
+    "description": "Arquivos de ambiente"
+  },
+  {
+    "pattern": "credentials*",
+    "severity": "block",
+    "description": "Arquivos de credenciais"
+  },
+  {
+    "pattern": "secrets*",
+    "severity": "block",
+    "description": "Arquivos de secrets"
+  }
+]

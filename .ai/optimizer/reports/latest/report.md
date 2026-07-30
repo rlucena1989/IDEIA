@@ -1,6 +1,6 @@
 # Optimizer Report
 
-Generated at: 2026-07-21T14:27:32.143Z
+Generated at: 2026-07-25T23:29:22.800Z
 
 ## Summary
 
@@ -44,7 +44,7 @@ Generated at: 2026-07-21T14:27:32.143Z
 {
   "score": 95,
   "level": "pass",
-  "generated_at": "2026-07-21T14:27:31.885Z",
+  "generated_at": "2026-07-25T23:29:22.592Z",
   "reasons": [
     "Escopo pequeno e controlado.",
     "Aderência declarada ao design system.",
@@ -59,7 +59,7 @@ Generated at: 2026-07-21T14:27:32.143Z
 {
   "score": 10,
   "level": "low",
-  "generated_at": "2026-07-21T14:27:31.946Z",
+  "generated_at": "2026-07-25T23:29:22.640Z",
   "reasons": [
     "Escopo muito pequeno."
   ]
@@ -71,7 +71,7 @@ Generated at: 2026-07-21T14:27:32.143Z
 ```json
 {
   "strategy": "minimal",
-  "generated_at": "2026-07-21T14:27:31.830Z",
+  "generated_at": "2026-07-25T23:29:22.544Z",
   "files_changed": [
     "src/components/UserCard/UserCard.tsx"
   ],

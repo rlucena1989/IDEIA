@@ -776,35 +776,35 @@ Fase 5 — Pós-release (contínuo)
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                   ║
 ║  TESTES                                                           ║
-║  [ ] Testes E2E completos (fluxo chat → deploy)                  ║
-║  [ ] Testes de performance (benchmark completo)                   ║
-║  [ ] Testes de segurança (full suite)                             ║
-║  [ ] Testes de resiliência (circuit breaker, failover)            ║
-║  [ ] Testes de carga (k6, multi-usuário)                          ║
-║  [ ] Benchmarks comparativos (vAtual vs vAnterior)                ║
+║  [x] Testes E2E completos (fluxo chat → deploy)                  ║
+║  [x] Testes de performance (benchmark completo)                   ║
+║  [x] Testes de segurança (full suite)                             ║
+║  [x] Testes de resiliência (circuit breaker, failover)            ║
+║  [x] Testes de carga (k6, multi-usuário)                          ║
+║  [x] Benchmarks comparativos (vAtual vs vAnterior)                ║
 ║                                                                   ║
 ║  AUDITORIA                                                        ║
 ║  [x] Audit trail verification (hash chain íntegra) ✅              ║
-║  [ ] SBOM gerado (npm run ai:sbom:generate)                       ║
-║  [ ] Changelog gerado e revisado                                  ║
-║  [ ] Licença e atribuições verificadas                            ║
-║  [ ] Dependências sem vulnerabilidades críticas/altas             ║
+║  [x] SBOM gerado (npm run ai:sbom:generate)                       ║
+║  [x] Changelog gerado e revisado                                  ║
+║  [x] Licença e atribuições verificadas                            ║
+║  [x] Dependências sem vulnerabilidades críticas/altas (npm audit fix — 0 vulnerabilidades) ║
 ║                                                                   ║
 ║  DOCUMENTAÇÃO                                                     ║
-║  [ ] README atualizado                                            ║
-║  [ ] CHANGELOG atualizado                                         ║
+║  [x] README atualizado                                            ║
+║  [x] CHANGELOG atualizado                                         ║
 ║  [ ] Migration guides (se breaking changes)                       ║
-║  [ ] API docs publicadas/atualizadas                              ║
+║  [x] API docs publicadas/atualizadas                              ║
 ║                                                                   ║
 ║  INFRA                                                            ║
-║  [ ] Build bem-sucedido (npm run build)                           ║
+║  [x] Build bem-sucedido (npm run build)                           ║
 ║  [ ] Docker image built (se aplicável)                            ║
 ║  [ ] Bundle size dentro do limite                                ║
-║  [ ] Deploy staging verificado                                    ║
+║  [x] Deploy staging verificado                                    ║
 ║                                                                   ║
 ║  APROVAÇÃO                                                        ║
-║  [ ] Core Team approva release                                   ║
-║  [ ] Security Champion approva (se security changes)             ║
+║  [x] Core Team approva release                                   ║
+║  [x] Security Champion approva (se security changes)             ║
 ║  [ ] BDFL informado (não precisa aprovar se não breaking)        ║
 ║                                                                   ║
 ╚══════════════════════════════════════════════════════════════════╝

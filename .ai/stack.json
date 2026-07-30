@@ -1,5 +1,5 @@
 {
-  "detectedAt": "2026-07-21T23:00:00.000Z",
+  "detectedAt": "2026-07-29T19:40:52.790Z",
   "project": "IDEIA",
   "languages": [
     "typescript",
@@ -9,7 +9,9 @@
   "frameworks": [
     "theia",
     "react",
-    "express"
+    "fastify",
+    "langchain",
+    "langgraph"
   ],
   "packageManager": "npm",
   "ciProviders": [

@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "generatedAt": "2026-07-28T17:45:00.758Z",
+  "generatedBy": "gate-guard.ts --update-manifest",
+  "faPhase": "FA-07",
+  "enforcement": "sha256-manifest + actor-block + audit-chain",
+  "entries": [
+    {
+      "path": ".ai/policies/project-policy.yaml",
+      "sha256": "a033417c89b0762d6fd5a6092b75693ef17f14fe8ad423a7e2f8cc654fc8489e",
+      "category": "governance"
+    },
+    {
+      "path": ".ai/policies/security-policy.yaml",
+      "sha256": "114789f5573e453c6cf7fe260e790afe251ddc33c72d77ed09d40c2c9458fac9",
+      "category": "governance"
+    },
+    {
+      "path": ".ai/policies/security.policy.yaml",
+      "sha256": "62254c80267e44479d465a0361c08eefe9e44fa7f1920bf8a64b90ef54957616",
+      "category": "governance"
+    },
+    {
+      "path": ".ai/security/agent-safety-policy.md",
+      "sha256": "a8e8fd369b3c63ed85c3d6e86a83d7bfbd17cedb3a3eb3224cb539a52fa52613",
+      "category": "self"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "ae54a11da5839fcd5b944ee9b1de1e5f60afbc61ef06d261efd25ab6c70672ba",
+      "category": "ci"
+    },
+    {
+      "path": ".github/workflows/docs-verify.yml",
+      "sha256": "3ff2003b47d15e2125552ad416dfb4333d00b1bc1e85da18ad9568585aba46b0",
+      "category": "ci"
+    },
+    {
+      "path": ".github/workflows/pr-gate.yml",
+      "sha256": "f15b304aab816ab53b95f534bb6ec19ba49b4fd57486f5a897d0175bec0744b4",
+      "category": "ci"
+    },
+    {
+      "path": ".github/workflows/release-gate.yml",
+      "sha256": "36ef919075107be1d14e0e6174f36ce20a2dca71342455b061a9f0eb6a3a2eff",
+      "category": "ci"
+    },
+    {
+      "path": ".husky/commit-msg",
+      "sha256": "bbc08cdae3a2ca839ba63aebfae512171ca68fe502264d8380b269eab8279bf7",
+      "category": "hooks"
+    },
+    {
+      "path": ".husky/pre-commit",
+      "sha256": "e73124c95033de954493dacdf1586064194fe8d2495e982c7ee012e17cbdab7c",
+      "category": "hooks"
+    },
+    {
+      "path": ".lintstagedrc.json",
+      "sha256": "45b2b91b41c5e79ee07dcdf82ddac2accdf6fc10e5c32bba5f1f887e30a42023",
+      "category": "self"
+    },
+    {
+      "path": "docs/governance/REALITY-MANIFEST.md",
+      "sha256": "f2f7345235850dbe78fb23246467edc1555e38698b09b8a298a41616574ffd1b",
+      "category": "metrics"
+    },
+    {
+      "path": "jest.config.js",
+      "sha256": "e4a169ff7f812d5f63fcfbba1b74bdf392ee55983c405d3c1534043496da1ccf",
+      "category": "tests"
+    },
+    {
+      "path": "jest.e2e.config.js",
+      "sha256": "d2884ac38d29fa2eea790a0b5d1626afe987bcb41e009669a0827b02af481c0c",
+      "category": "tests"
+    },
+    {
+      "path": "package.json",
+      "sha256": "8019ba9df0d23bf33bb5bea957e2b3bece6d22a4375af817a1e832f6225f2566",
+      "category": "build"
+    },
+    {
+      "path": "scripts/audit/gate-guard.ts",
+      "sha256": "838e83a91807399e3edb562b8b907c50b71f4216778b4b47183b40db9eb8b2ef",
+      "category": "governance"
+    },
+    {
+      "path": "scripts/audit/regenerate-metrics.ts",
+      "sha256": "a9acf93a6e93bc82602ac0f4d25d19741f0b2a4d97ebf8c936abfb4d962785c1",
+      "category": "metrics"
+    },
+    {
+      "path": "tsconfig.base.json",
+      "sha256": "9baeedbe90b45139947264bae580368bb11fa4d71579761651673c877bd1dfd2",
+      "category": "build"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "080aa1366fe5bdfe73576cebb6605a7ef0e2cd5708c66ea479bc4f90b83037c2",
+      "category": "build"
+    }
+  ],
+  "manifestHash": "69fb533ab3288e12baeabba4d8c22d588ffeeee3ff9ecb3d4c8e2ae49d0ca779"
+}

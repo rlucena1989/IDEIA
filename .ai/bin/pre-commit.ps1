@@ -15,7 +15,7 @@ if (-not $NoLint) {
 
 # 2. Typecheck
 Write-Host "[2/5] Running TypeScript check..." -NoNewline
-$result = & "npx.cmd" tsc --noEmit 2>&1
+$result = & "npx.cmd" tsc -b 2>&1
 if ($LASTEXITCODE -eq 0) { Write-Host " ✅" -ForegroundColor Green }
 else { Write-Host " ❌ FAIL" -ForegroundColor Red; $failures++ }
 

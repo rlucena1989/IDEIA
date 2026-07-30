@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IDEIA — IDE que transforma ideias em sistemas completos. Descreva sua ideia, nós entregamos o sistema.">
+  <title>IDEIA — IDE que transforma ideias em sistemas completos</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(88,166,255,0.08) 0%, transparent 70%);
+      top: -200px;
+      right: -200px;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 800px; }
+    .hero h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.02em; }
+    .hero h1 span { background: linear-gradient(135deg, #58a6ff, #3fb950); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 1.25rem; color: #8b949e; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px; border-radius: 8px; font-size: 1rem; font-weight: 600;
+      text-decoration: none; transition: all 0.2s; cursor: pointer; border: none;
+    }
+    .btn-primary { background: #238636; color: #fff; }
+    .btn-primary:hover { background: #2ea043; transform: translateY(-1px); }
+    .btn-secondary { background: #21262d; color: #e6edf3; border: 1px solid #30363d; }
+    .btn-secondary:hover { background: #30363d; transform: translateY(-1px); }
+
+    .hero-metrics {
+      display: flex; gap: 48px; justify-content: center; margin-top: 48px;
+      flex-wrap: wrap;
+    }
+    .hero-metrics div { text-align: center; }
+    .hero-metrics strong { font-size: 2rem; display: block; color: #58a6ff; }
+    .hero-metrics span { font-size: 0.875rem; color: #8b949e; }
+
+    /* Sections */
+    section { padding: 96px 0; }
+    section h2 { font-size: 2rem; font-weight: 700; margin-bottom: 48px; text-align: center; }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: #161b22; border: 1px solid #21262d; border-radius: 12px;
+      padding: 32px; transition: all 0.2s;
+    }
+    .feature-card:hover { border-color: #30363d; transform: translateY(-2px); }
+    .feature-card .icon { font-size: 2rem; margin-bottom: 16px; }
+    .feature-card h3 { font-size: 1.125rem; margin-bottom: 8px; }
+    .feature-card p { font-size: 0.875rem; color: #8b949e; }
+
+    /* Architecture Diagram */
+    .arch { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .arch-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .arch-layer {
+      background: #161b22; border: 1px solid #21262d; border-radius: 8px;
+      padding: 12px 20px; font-size: 0.8rem; color: #8b949e; text-align: center;
+    }
+    .arch-layer.highlight { border-color: #238636; color: #3fb950; }
+    .arch-arrow { color: #30363d; font-size: 1.2rem; }
+
+    /* Steps */
+    .steps { display: flex; flex-direction: column; gap: 24px; max-width: 700px; margin: 0 auto; }
+    .step { display: flex; gap: 20px; align-items: flex-start; }
+    .step-num {
+      width: 40px; height: 40px; border-radius: 50%; background: #238636;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; flex-shrink: 0;
+    }
+    .step-content h3 { font-size: 1.125rem; margin-bottom: 4px; }
+    .step-content p { font-size: 0.875rem; color: #8b949e; }
+
+    /* Agent Pipeline */
+    .pipeline { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 24px; }
+    .pipeline-node {
+      background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+      padding: 12px 16px; text-align: center; min-width: 100px;
+    }
+    .pipeline-node .title { font-size: 0.75rem; color: #8b949e; }
+    .pipeline-node .role { font-weight: 600; font-size: 0.9rem; margin-top: 4px; }
+    .pipeline-arrow { display: flex; align-items: center; color: #30363d; }
+
+    /* Security */
+    .security-list { max-width: 700px; margin: 0 auto; }
+    .security-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 0; border-bottom: 1px solid #21262d;
+    }
+    .security-item:last-child { border-bottom: none; }
+    .security-item .check { color: #3fb950; font-size: 1.2rem; }
+    .security-item .label { flex: 1; }
+    .security-item .badge {
+      background: #21262d; padding: 4px 10px; border-radius: 20px;
+      font-size: 0.75rem; color: #8b949e;
+    }
+
+    /* CLI Demo */
+    .cli-demo {
+      background: #0d1117; border: 1px solid #21262d; border-radius: 12px;
+      padding: 24px; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.875rem;
+      max-width: 700px; margin: 0 auto; overflow-x: auto;
+    }
+    .cli-demo .prompt { color: #3fb950; }
+    .cli-demo .output { color: #8b949e; }
+    .cli-demo .highlight { color: #58a6ff; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid #21262d; padding: 48px 0; text-align: center;
+      color: #8b949e; font-size: 0.875rem;
+    }
+    footer a { color: #58a6ff; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    footer .links { display: flex; gap: 24px; justify-content: center; margin-bottom: 16px; flex-wrap: wrap; }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.2rem; }
+      .hero p { font-size: 1rem; }
+      .hero-metrics { gap: 24px; }
+      .hero-metrics strong { font-size: 1.5rem; }
+      .features-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Descreva sua <span>ideia</span>,<br>nós entregamos o <span>sistema</span>.</h1>
+      <p>IDE profissional com IA integrada que transforma descrições em linguagem natural em sistemas completos — com arquitetura, testes, segurança e deploy.</p>
+      <div class="hero-cta">
+        <a href="#comece" class="btn btn-primary">Comece Agora</a>
+        <a href="#features" class="btn btn-secondary">Ver Funcionalidades</a>
+      </div>
+      <div class="hero-metrics">
+        <div><strong>128</strong><span>Pacotes</span></div>
+        <div><strong>4.300+</strong><span>Testes</span></div>
+        <div><strong>10</strong><span>Agentes IA</span></div>
+        <div><strong>7</strong><span>Camadas Segurança</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Como Funciona -->
+  <section id="como-funciona">
+    <div class="container">
+      <h2>Como Funciona</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h3>Descreva sua ideia</h3>
+            <p>No chat da IDEIA, descreva o que precisa em linguagem natural. Ex: "Crie uma API REST de tarefas com autenticação JWT."</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h3>Agentes planejam e executam</h3>
+            <p>6 agentes especializados (Analyst, Architect, Programmer, Reviewer, Tester, DevOps) orquestrados via LangGraph analisam, projetam, codificam, revisam e testam.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h3>Segurança e compliance</h3>
+            <p>Cada etapa passa por policy engine, audit trail imutável, detecção de jailbreak e validação de compliance (LGPD, HIPAA, GDPR, SOC2).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h3>Deploy contínuo</h3>
+            <p>Com qualidade gates verdes, a IDEIA faz deploy automatizado com canary, rollback automático e GitOps.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Agent Pipeline -->
+  <section style="background:#161b22">
+    <div class="container" style="text-align:center">
+      <h2>Pipeline de Agentes</h2>
+      <p style="color:#8b949e;margin-bottom:32px">6 agentes especializados orquestrados em sequência com feedback loops</p>
+      <div class="pipeline">
+        <div class="pipeline-node"><div class="title">Análise</div><div class="role" style="color:#58a6ff">Analyst</div></div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node"><div class="title">Arquitetura</div><div class="role" style="color:#d2a8ff">Architect</div></div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node"><div class="title">Implementação</div><div class="role" style="color:#3fb950">Programmer</div></div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node"><div class="title">Revisão</div><div class="role" style="color:#f0883e">Reviewer</div></div>
+        <div class="pipeline-arrow">← erro →</div>
+        <div class="pipeline-node"><div class="title">Testes</div><div class="role" style="color:#f85149">Tester</div></div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-node"><div class="title">Deploy</div><div class="role" style="color:#58a6ff">DevOps</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="container">
+      <h2>Funcionalidades</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="icon">🧠</div>
+          <h3>Multiagente LangGraph</h3>
+          <p>6 agentes orquestrados com StateGraph, checkpointing, paralelismo e retry automático.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🔒</div>
+          <h3>AI Safety</h3>
+          <p>Jailbreak detection (9 categorias), bias detection, content filter, OWASP LLM Top 10.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📋</div>
+          <h3>Policy Engine</h3>
+          <p>Cedar adapter com 27 padrões de segurança, 3 níveis de aprovação, audit trail SHA-256.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🔍</div>
+          <h3>LSP Multi-linguagem</h3>
+          <p>8 providers (completion, hover, definition, references, etc.) para 5 linguagens.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🐳</div>
+          <h3>NATS JetStream</h3>
+          <p>EventBus persistente com DLQ, consumer groups, KV store, Object Store, Req-Reply.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📊</div>
+          <h3>Observabilidade</h3>
+          <p>OpenTelemetry, Prometheus, Grafana, SLO monitoring, health checks, distributed tracing.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🛡️</div>
+          <h3>Compliance Automático</h3>
+          <p>LGPD, HIPAA, GDPR, SOC2 — checks automáticos com dashboard e relatórios.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🔄</div>
+          <h3>CI/CD Integrado</h3>
+          <p>Canary deploy, rollback automático, GitOps, quality gates em 4 níveis.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">💻</div>
+          <h3>Desktop Nativo</h3>
+          <p>Electron com auto-updater, tray icon, deep links, notificações nativas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Arquitetura -->
+  <section style="background:#161b22">
+    <div class="container" style="text-align:center">
+      <h2>Arquitetura em Camadas</h2>
+      <div class="arch">
+        <div class="arch-row"><div class="arch-layer">Electron</div><div class="arch-layer">Tauri v2</div><div class="arch-layer">Theia Cloud</div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-row"><div class="arch-layer highlight">Theia Platform · Monaco · React 18 · Inversify DI</div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-row"><div class="arch-layer">Agentes (Analyst · Architect · Programmer · Reviewer · Tester · DevOps)</div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-row"><div class="arch-layer">Inteligência (Pattern Detector · ADAPT · RAG · DSPy)</div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-row"><div class="arch-layer">Memória (Mem0 · SQLite+FTS5 · DuckDB · Knowledge Graph)</div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-row"><div class="arch-layer highlight">NATS JetStream (Pub/Sub · Req/Rep · KV · DLQ)</div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-row"><div class="arch-layer">Segurança (Cedar · LLM Guard · Output Validation · Audit)</div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-row"><div class="arch-layer">Dados (PostgreSQL+pgvector · MinIO · Schema Registry)</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Segurança -->
+  <section id="seguranca">
+    <div class="container">
+      <h2>Segurança em 7 Camadas</h2>
+      <div class="security-list">
+        <div class="security-item"><span class="check">✓</span><span class="label"><strong>L1</strong> — Rollback Ready</span><span class="badge">Backup automático</span></div>
+        <div class="security-item"><span class="check">✓</span><span class="label"><strong>L2</strong> — Sandbox Isolation</span><span class="badge">vm.Script isolado</span></div>
+        <div class="security-item"><span class="check">✓</span><span class="label"><strong>L3</strong> — Policy Engine</span><span class="badge">27 padrões</span></div>
+        <div class="security-item"><span class="check">✓</span><span class="label"><strong>L4</strong> — Audit Trail</span><span class="badge">SHA-256 chain</span></div>
+        <div class="security-item"><span class="check">✓</span><span class="label"><strong>L5</strong> — Output Validation</span><span class="badge">31 regras PII</span></div>
+        <div class="security-item"><span class="check">✓</span><span class="label"><strong>L6</strong> — Safety Circuit Breaker</span><span class="badge">5 triggers</span></div>
+        <div class="security-item"><span class="check">✓</span><span class="label"><strong>L7</strong> — Human Override</span><span class="badge">3 níveis aprovação</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLI Demo -->
+  <section id="comece" style="background:#161b22">
+    <div class="container" style="text-align:center">
+      <h2>Comece em Segundos</h2>
+      <p style="color:#8b949e;margin-bottom:32px">Instale via npm e comece a criar sistemas com IA</p>
+      <div class="cli-demo">
+        <span class="prompt">$</span> <span class="highlight">npm install -g @ideia/cli</span><br>
+        <span class="prompt">$</span> <span class="highlight">ideia init meu-projeto</span><br>
+        <span class="output">  ✓ Projeto criado em ./meu-projeto</span><br>
+        <span class="prompt">$</span> <span class="highlight">cd meu-projeto && ideia start</span><br>
+        <span class="output">  ✓ IDEIA rodando em http://localhost:3001</span><br>
+        <span class="prompt">&gt;</span> <span class="highlight">"Crie uma API REST de tarefas com PostgreSQL e autenticação JWT"</span><br>
+        <span class="output">  ✓ Plano aprovado · 6 agentes executando · 47 arquivos gerados</span>
+      </div>
+      <div class="hero-cta" style="margin-top:32px">
+        <a href="https://github.com/anomalyco/ideia" class="btn btn-primary">GitHub</a>
+        <a href="docs/user/instalacao.md" class="btn btn-secondary">Documentação</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="links">
+      <a href="#features">Funcionalidades</a>
+      <a href="#seguranca">Segurança</a>
+      <a href="https://github.com/anomalyco/ideia">GitHub</a>
+      <a href="docs/">Documentação</a>
+      <a href="docs/marketing/demo-script.md">Demo Video</a>
+    </div>
+    <p>IDEIA — MIT License · 2026</p>
+  </footer>
+
+</body>
+</html>
