@@ -1,7 +1,7 @@
 ﻿# Handoff — Próxima Sessão
 
-> **Gerado em:** 2026-07-29 (Sessão 15 — FA-07: Análise e Correção de Testes Falhando)
-> **Sessão anterior:** 2026-07-28 (Sessão 14 — FA-06: Correção de Config ts-jest/Erros TS + Validação de Testes)
+> **Gerado em:** 2026-07-30 (Sessão 16 — FA-05 Concluído + Testes Patológicos Neutralizados)
+> **Sessão anterior:** 2026-07-29 (Sessão 15 — FA-07: Análise e Correção de Testes Falhando)
 > **Session ID:** `e16c2851`
 > **Propósito:** Documento único de continuidade. Leia este arquivo ANTES de qualquer operação.
 
@@ -12,6 +12,70 @@
 O diretório de trabalho é **EXCLUSIVAMENTE** `F:\PROJETOS\ai-devkit-workspace\IDEIA`.
 
 Existem outros diretórios no workspace (`ai-devkit-v2/`, arquivos na raiz), mas são **legado**. Ignore-os completamente. Todas as operações, leituras e alterações devem ser dentro de `IDEIA/`.
+
+---
+
+## Estado Atual — Sessão 16 (FA-05 Concluído + Testes Patológicos Neutralizados)
+
+### FA-05 — Build Errors Resolvidos
+
+**Status:** CONCLUÍDO - 0 erros TypeScript (tsc -b --force)
+
+**Commit:** `0133ebd5` - "fix: Resolve FA-05 build errors - zero TypeScript errors"
+
+**Correções realizadas:**
+- Removidos arquivos de exemplo NestJS do adapter-nestjs (items/, unknown-type/) - causavam 12× TS2307
+- Adicionadas anotações de tipo ao ideia-chat-widget.tsx (react-window props)
+- Adicionado arquivo de declaração react-window.d.ts para TS7016
+- Adicionado pnpm-workspace.yaml para workspace management
+
+**Build verification:** `tsc -b --force` = 0 erros (sem exclusão)
+
+### Testes Patológicos Neutralizados
+
+**Status:** CONCLUÍDO - Suite default agora roda em minutos (não horas)
+
+**Testes excluídos do run default (testPathIgnorePatterns):**
+1. **packages/prompt-security/__tests__/asvs-checker.test.ts** (~38 min)
+   - Causa: `const report = checker.runAll();` (linha 6) - scanning ASVS completo (13 categorias)
+   - Categoria: A (trabalho pesado real - integração por natureza)
+
+2. **packages/prompt-security/__tests__/asvs.test.ts** (~11 min)
+   - Causa: `const report = checker.runAll();` (linha 6) - scanning ASVS completo
+   - Categoria: A (trabalho pesado real - integração por natureza)
+
+3. **packages/initiative-feedback/__tests__/initiative-feedback.test.ts** (~2.1 min)
+   - Causa: `await feedback.runCycle(process.cwd(), ['node_modules']);` (linha 58) - scanning do projeto real
+   - Categoria: A (trabalho pesado real - integração por natureza)
+
+**Teste refatorado (ainda no run default):**
+4. **packages/cli/src/__tests__/test-loop.test.ts** (~4.7 min → ~1.2 min)
+   - Causa: `runTestLoop()` chamado 4× redundante (linhas 85, 95, 103, 112)
+   - Categoria: C (redundância) - refatorado para beforeAll
+   - Mudança: Mover execução para beforeAll, compartilhar report entre 4 its
+   - Preservadas todas as asserções originais
+
+**Testes que PERMANECEM no run default (incluindo FAILs):**
+- **packages/pr-automation/src/__tests__/pr-automation.test.ts** (~2.1 min, FAIL)
+  - Causa: `await pipeline.execute(request)` (linha 22) - pipeline completo PR
+  - Categoria: A (trabalho pesado real) + bug independente
+  - Bug: `expect(tests[0].passed).toBe(true)` (linha 48) - triar no FA-06b
+
+- **packages/cost-benefit-analyzer/src/__tests__/cost-benefit-analyzer.test.ts** (~1.8 min, FAIL)
+  - Causa: `const mcSamples = 10000; for (let i = 0; i < mcSamples; i++)` (bayesian-cost-estimator.ts:23-29)
+  - Categoria: C (loop Monte Carlo pesado) + bug independente
+  - Bug: `expect(decision.decision).toBe('plan')` vs `'execute_directly'` (linha 50) - triar no FA-06b
+
+**Como rodar testes slow:**
+```bash
+npm run test:slow
+```
+Roda os 3 testes excluídos (asvs, asvs-checker, initiative-feedback) - usar nightly/manual
+
+**Comando de teste default atualizado:**
+```bash
+npm test -- --no-coverage --testPathIgnorePatterns="scripts/__tests__|tests/integration|tests/edge-cases|tests/performance|packages/prompt-security/__tests__/asvs|packages/prompt-security/__tests__/asvs-checker|packages/initiative-feedback/__tests__"
+```
 
 ---
 

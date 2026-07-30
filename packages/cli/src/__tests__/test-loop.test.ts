@@ -71,6 +71,11 @@ describe('test-loop - formatTestReport', () => {
 
 describe('test-loop - runTestLoop', () => {
   const reportDir = path.join(process.cwd(), '.ai/reports/test-loop');
+  let report: ReturnType<typeof runTestLoop>;
+
+  beforeAll(() => {
+    report = runTestLoop();
+  });
 
   afterEach(() => {
     try {
@@ -82,7 +87,6 @@ describe('test-loop - runTestLoop', () => {
   });
 
   it('deve executar todas as fases e retornar relatorio', () => {
-    const report = runTestLoop();
     expect(report.sessionId).toMatch(/^test_/);
     expect(report.results).toHaveLength(5);
     expect(report.results.map(r => r.phase)).toEqual(['lint', 'typecheck', 'unit', 'build', 'security']);
@@ -92,7 +96,6 @@ describe('test-loop - runTestLoop', () => {
   });
 
   it('deve criar arquivo de relatorio no diretorio correto', () => {
-    const report = runTestLoop();
     const reportFile = path.join(reportDir, `${report.sessionId}.json`);
     expect(fs.existsSync(reportFile)).toBe(true);
     const saved = JSON.parse(fs.readFileSync(reportFile, 'utf8'));
@@ -100,7 +103,6 @@ describe('test-loop - runTestLoop', () => {
   });
 
   it('deve capturar erros de comandos que falham', () => {
-    const report = runTestLoop();
     const failedPhases = report.results.filter(r => !r.passed);
     failedPhases.forEach(phase => {
       expect(phase.errors.length).toBeGreaterThan(0);
@@ -109,7 +111,6 @@ describe('test-loop - runTestLoop', () => {
   });
 
   it('deve limitar output a 2000 caracteres', () => {
-    const report = runTestLoop();
     report.results.forEach(result => {
       expect(result.output.length).toBeLessThanOrEqual(2000);
     });
