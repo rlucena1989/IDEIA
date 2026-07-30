@@ -17,9 +17,12 @@
     "declarationMap": true,
     "sourceMap": true,
     "downlevelIteration": true,
+    "jsx": "react-jsx",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "composite": true,
     "paths": {
-      "@ideia/*": ["./packages/*/src"]
+      "@ideia/*": ["./packages/*/dist"]
     }
   }
 }

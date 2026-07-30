@@ -8,12 +8,38 @@ module.exports = {
     '/\\.test-gen/',
     'a11y-test-',
   ],
+  testTimeout: 10000,
   transform: {
-    '^.+\\.tsx?$': [tsJestPath, { tsconfig: 'tsconfig.base.json' }],
+    '^.+\\.tsx?$': [tsJestPath, {
+      tsconfig: 'tsconfig.base.json',
+      isolatedModules: true,
+      compilerOptions: {
+        paths: {
+          '@ideia/*': ['./packages/*/src']
+        }
+      }
+    }],
   },
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
   forceExit: true,
   detectOpenHandles: true,
+  collectCoverage: false,
+  collectCoverageFrom: [
+    'packages/*/src/**/*.ts',
+    '!packages/*/src/**/*.d.ts',
+    '!packages/*/src/**/__tests__/**',
+    '!packages/*/node_modules/**',
+  ],
+  coverageReporters: ['lcov', 'text', 'text-summary', 'json-summary'],
+  coverageDirectory: '<rootDir>/coverage',
+  coverageThreshold: {
+    global: {
+      branches: 65,
+      functions: 65,
+      lines: 65,
+      statements: 65,
+    },
+  },
 };

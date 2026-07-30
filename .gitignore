@@ -1,24 +1,49 @@
 node_modules/
-dist/
-lib/
 *.tsbuildinfo
+dist/
+dist-installer/
+lib/
 coverage/
+!packages/cli/src/coverage/
+tmp/
+__test_backup__/
+
+# Env files
 .env
 .env.local
+.env.*
+!.env.example
+
+# Logs
 *.log
-dist-installer/
-.ai/audit/
+
+# OS
 .DS_Store
 Thumbs.db
 
-# Auto-generated caches
+# Auto-generated caches & temp reports
 .ai/context/cache/
 .ai/optimizer/runtime/
 .ai/reports/review-*.md
+.ai-devkit/reports/
+.ai/tasks/
+.ai/performance/
+.ai/contract-cdc/
+.ai/input/
+
+# Temp test artifacts
+a11y-score-low-*/
+ux-test-*/
+.env-snapshots/
+
+# JSON reports
+eslint-output*.json
+*-report.json
+jest-output.txt
+.benchmark-history.json
+.stryker-tmp.conf.json
 
 # Secrets & credentials
-.env.*
-!.env.example
 *.pem
 *.key
 *.p12
@@ -28,3 +53,16 @@ Thumbs.db
 secrets.json
 *.secret
 .ai/credentials/
+.ai/audit/
+
+# Test output files
+test-*.txt
+tmp-*.txt
+test-output/
+tot-failures.txt
+
+# Freebuff database
+.freebuff/
+
+# Dagger (CI/CD)
+.dagger/

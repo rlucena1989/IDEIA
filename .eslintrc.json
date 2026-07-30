@@ -7,28 +7,57 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2022,
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "import"
   ],
   "extends": [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript"
   ],
   "rules": {
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
-
+    
+    "complexity": ["warn", 15],
+    "max-depth": ["warn", 4],
+    "max-lines-per-function": ["warn", 200],
+    "max-params": ["warn", 5],
+    "max-statements": ["warn", 30],
+    "max-nested-callbacks": ["warn", 3],
     "no-console": "off",
     "no-empty": ["warn", { "allowEmptyCatch": true }],
     "eqeqeq": ["warn", "smart"],
     "prefer-const": "error",
     "no-var": "error",
     "no-throw-literal": "warn",
-    "prefer-template": "off"
+    "prefer-template": "off",
+    
+    "import/order": ["warn", {
+      "groups": [
+        "builtin",
+        "external",
+        "internal",
+        "parent",
+        "sibling",
+        "index"
+      ],
+      "newlines-between": "always",
+      "alphabetize": {
+        "order": "asc",
+        "caseInsensitive": true
+      }
+    }],
+    "import/no-duplicates": "warn",
+    "import/no-cycle": "warn",
+    "import/no-unused-modules": "warn"
   },
   "ignorePatterns": [
     "node_modules",
@@ -44,5 +73,13 @@
     "electron",
     "__snapshots__",
     "**/*.d.ts"
-  ]
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
+      }
+    }
+  }
 }
