@@ -66,3 +66,6 @@ tot-failures.txt
 
 # Dagger (CI/CD)
 .dagger/
+
+# Orphan gitlink backup (causava exit 128 no CI checkout)
+packages/cli/templates/.ai/audit/backup/
