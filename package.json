@@ -48,7 +48,8 @@
     "docker:reset": "docker compose -f docker/docker-compose.yml down -v && docker compose -f docker/docker-compose.yml up -d",
     "test:e2e:nats": "jest --no-coverage tests/integration/nats-e2e.test.ts",
     "test:e2e:pg": "jest --no-coverage tests/integration/postgres-e2e.test.ts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "pretest": "tsc -b --force"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
