@@ -13,32 +13,32 @@ jobs:
     name: Cyclomatic Complexity Analysis
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - run: npm ci
-      
+
       - name: Run ESLint with complexity rules
         run: |
           npx eslint packages/ --ext .ts --format json --output-file complexity-report.json || true
-          
+
       - name: Generate complexity report
         run: |
           npx tsx scripts/complexity-report.ts --input complexity-report.json --output complexity-summary.md
-          
+
       - name: Upload complexity report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: complexity-report
           path: |
             complexity-report.json
             complexity-summary.md
           retention-days: 30
-          
+
       - name: Comment PR with complexity summary
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7

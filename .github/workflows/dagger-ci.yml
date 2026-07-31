@@ -22,12 +22,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Dagger
         uses: dagger/setup-dagger@v1
         with:
-          version: "0.12.0"
+          version: '0.12.0'
 
       - name: Run Dagger Pipeline
         run: |
@@ -40,7 +40,7 @@ jobs:
           else
             GATE="gate1-commit"
           fi
-          
+
           dagger run .dagger/ci.ts -- $GATE
 
   dagger-local-test:
@@ -49,12 +49,12 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Dagger
         uses: dagger/setup-dagger@v1
         with:
-          version: "0.12.0"
+          version: '0.12.0'
 
       - name: Test Gate 1
         run: dagger run .dagger/ci.ts -- gate1-commit

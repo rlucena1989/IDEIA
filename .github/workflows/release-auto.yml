@@ -10,8 +10,8 @@ jobs:
   docs-verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
           cache: 'npm'
@@ -24,8 +24,8 @@ jobs:
   quality-gates:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
           cache: 'npm'
@@ -35,7 +35,7 @@ jobs:
       - name: Test
         run: npx jest --passWithNoTests
       - name: Build
-        run: npx tsc -b
+        run: npx tsc -b --force
       - name: Security
         run: npm audit --audit-level=high
 
@@ -43,14 +43,14 @@ jobs:
     needs: quality-gates
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Generate Release Notes
         run: |
           echo "## Release ${GITHUB_REF_NAME}" > RELEASE_NOTES.md
           git log --oneline --format="* %s" $(git describe --tags --abbrev=0 HEAD^)..HEAD >> RELEASE_NOTES.md || true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: release-notes
           path: RELEASE_NOTES.md
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: echo "Deploying ${GITHUB_REF_NAME} to staging"
 
   deploy-production:
@@ -68,6 +68,5 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: echo "Deploying ${GITHUB_REF_NAME} to production"
-

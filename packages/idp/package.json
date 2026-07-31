@@ -14,11 +14,11 @@
     "dist"
   ],
   "bugs": {
-    "url": "https://github.com/anomalyco/ideia/issues"
+    "url": "https://github.com/rlucena1989/IDEIA/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/anomalyco/ideia.git"
+    "url": "https://github.com/rlucena1989/IDEIA.git"
   },
   "dependencies": {
     "@ideia/logger": "*"

@@ -13,18 +13,18 @@ jobs:
     name: Coverage Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - run: npm ci
-      
+
       - name: Run tests with coverage
         run: npm test -- --coverage --coverageReporters=lcov --coverageReporters=json-summary
-      
+
       - name: Check coverage thresholds
         run: |
           COVERAGE=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
@@ -34,7 +34,7 @@ jobs:
             exit 1
           fi
           echo "Coverage meets 65% threshold"
-      
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:

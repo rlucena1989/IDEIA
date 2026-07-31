@@ -7,8 +7,8 @@ jobs:
   security:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: '20' }
       - run: npm ci
       - name: Secret scan
@@ -20,7 +20,7 @@ jobs:
       - name: SBOM
         run: npx tsx scripts/generate-sbom.ts --ci
       - name: Upload reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: security-reports
           path: .ai/security-*

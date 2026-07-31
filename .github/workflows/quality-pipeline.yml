@@ -13,12 +13,12 @@ jobs:
   gate1-commit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: '20', cache: 'npm' }
       - run: npm ci
       - name: TypeScript check
-        run: npx tsc -b
+        run: npx tsc -b --force
       - name: Lint (fails on errors)
         run: npx eslint packages/ --max-warnings 0 --format json --output-file reports/eslint.json || echo "Lint issues found"
       - name: Test (changed files)
@@ -31,8 +31,8 @@ jobs:
     needs: gate1-commit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: '20', cache: 'npm' }
       - run: npm ci
 
@@ -52,7 +52,7 @@ jobs:
           npx tsx scripts/quality-scorecard.ts --ci --min-score=50 2>/dev/null || echo "Scorecard generated with warnings"
 
       - name: Upload reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: quality-reports
           path: reports/
@@ -64,8 +64,8 @@ jobs:
     needs: gate2-pr
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: '20', cache: 'npm' }
       - run: npm ci
       - run: npm run build 2>/dev/null || true
@@ -82,7 +82,7 @@ jobs:
         run: npx tsx scripts/generate-changelog.ts --output CHANGELOG.md 2>/dev/null || echo "Changelog generation placeholder"
 
       - name: Upload release reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: release-reports
           path: reports/

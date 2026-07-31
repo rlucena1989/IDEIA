@@ -17,11 +17,11 @@ jobs:
     name: SonarQube Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
           cache: 'npm'
@@ -68,9 +68,9 @@ jobs:
           script: |
             const sonarUrl = '${{ secrets.SONAR_HOST_URL }}/dashboard?id=ideia&pullRequest=${{ github.event.pull_request.number }}';
             const comment = `## SonarQube Analysis Results
-            
+
             [View detailed analysis in SonarQube](${sonarUrl})
-            
+
             The analysis has been completed. Check the link above for:
             - Code quality metrics
             - Security hotspots
@@ -78,7 +78,7 @@ jobs:
             - Bugs and vulnerabilities
             - Test coverage
             - Technical debt ratio`;
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

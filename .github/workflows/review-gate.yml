@@ -16,8 +16,8 @@ jobs:
   docs-verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
           cache: 'npm'
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Review Gate for ${{ github.event.inputs.deployId }}
         run: |
           echo "Review required for deploy ${{ github.event.inputs.deployId }}"
@@ -39,4 +39,3 @@ jobs:
       - name: Notify
         run: |
           echo "Review notification sent for ${{ github.event.inputs.deployId }}"
-

@@ -9,8 +9,8 @@ jobs:
   k6-benchmark:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
           cache: 'npm'
@@ -23,7 +23,7 @@ jobs:
         with:
           filename: scripts/benchmark/k6-test.js
           flags: --out json=perf-report.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: perf-report
           path: perf-report.json
@@ -31,8 +31,8 @@ jobs:
   lighthouse-audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
       - run: npx lhci autorun --collect.staticDistDir=./apps/ideia-app/lib --upload.target=temporary-public-storage || true
