@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-07-28T17:45:00.758Z",
+  "generatedAt": "2026-07-31T18:11:57.813Z",
   "generatedBy": "gate-guard.ts --update-manifest",
   "faPhase": "FA-07",
   "enforcement": "sha256-manifest + actor-block + audit-chain",
@@ -27,22 +27,22 @@
     },
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "ae54a11da5839fcd5b944ee9b1de1e5f60afbc61ef06d261efd25ab6c70672ba",
+      "sha256": "f3bfafcc4cefda18b186929a39ddaa1f06a7e6b74e10f7d7e3ac81cbf769d12e",
       "category": "ci"
     },
     {
       "path": ".github/workflows/docs-verify.yml",
-      "sha256": "3ff2003b47d15e2125552ad416dfb4333d00b1bc1e85da18ad9568585aba46b0",
+      "sha256": "2ea0d29dc2d0bb5b8e5c6d4f49189bb53da9f94713eb87c62163c4f59998e156",
       "category": "ci"
     },
     {
       "path": ".github/workflows/pr-gate.yml",
-      "sha256": "f15b304aab816ab53b95f534bb6ec19ba49b4fd57486f5a897d0175bec0744b4",
+      "sha256": "96e7382006cc246bd2c47712db876bb4f6e1beb2ff179a5118a216d07b4a506c",
       "category": "ci"
     },
     {
       "path": ".github/workflows/release-gate.yml",
-      "sha256": "36ef919075107be1d14e0e6174f36ce20a2dca71342455b061a9f0eb6a3a2eff",
+      "sha256": "514fadea16bb2ea71e2dddfb8cd3279333fbc9fd8abe6d3ded70f29bb8ed8d27",
       "category": "ci"
     },
     {
@@ -52,7 +52,7 @@
     },
     {
       "path": ".husky/pre-commit",
-      "sha256": "e73124c95033de954493dacdf1586064194fe8d2495e982c7ee012e17cbdab7c",
+      "sha256": "61c86953079defeed47a33f02361b94f56b089f951bd588dc7374ec9923d62e2",
       "category": "hooks"
     },
     {
@@ -62,12 +62,12 @@
     },
     {
       "path": "docs/governance/REALITY-MANIFEST.md",
-      "sha256": "f2f7345235850dbe78fb23246467edc1555e38698b09b8a298a41616574ffd1b",
+      "sha256": "460b473123a2318c1e6010ba5055a4034bd930b96f2a1495c6145c802f94609f",
       "category": "metrics"
     },
     {
       "path": "jest.config.js",
-      "sha256": "e4a169ff7f812d5f63fcfbba1b74bdf392ee55983c405d3c1534043496da1ccf",
+      "sha256": "f04545c3c3a147cae52eac84b5f46b2a5c97c66c6bef62bde524767e748c3720",
       "category": "tests"
     },
     {
@@ -77,7 +77,7 @@
     },
     {
       "path": "package.json",
-      "sha256": "8019ba9df0d23bf33bb5bea957e2b3bece6d22a4375af817a1e832f6225f2566",
+      "sha256": "31ba41076ff95b5cad1229643e06fdd9583b704d112234831a2e560abe513978",
       "category": "build"
     },
     {
@@ -97,9 +97,9 @@
     },
     {
       "path": "tsconfig.json",
-      "sha256": "080aa1366fe5bdfe73576cebb6605a7ef0e2cd5708c66ea479bc4f90b83037c2",
+      "sha256": "2322608b31aecb90842f05ba834cc98bcc31d60908adae0a84bb736abf0fc80e",
       "category": "build"
     }
   ],
-  "manifestHash": "69fb533ab3288e12baeabba4d8c22d588ffeeee3ff9ecb3d4c8e2ae49d0ca779"
+  "manifestHash": "a73436a91c1d1c1ccd1fdb9e052b29982f1080e3c18b827fa0d69c3219ed7784"
 }
